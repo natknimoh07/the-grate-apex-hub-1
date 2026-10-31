@@ -148,6 +148,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       unsubSnapshot = onSnapshot(
         userRef,
+        // Also told when a save made here is confirmed (metadata only, no read): the profile
+        // often arrived while the start-up "online" save was still waiting, and without this the
+        // confirmation never came, so the profile never counted as loaded — no coin balance, the
+        // chosen interface not applied (2026-10-31).
+        { includeMetadataChanges: true },
         (snap) => {
           if (!snap.metadata.fromCache && !snap.metadata.hasPendingWrites) fromServer = true;
           const profile = fromServer ? snap.data() || {} : { ...(copy ?? {}), ...(snap.data() || {}) };
