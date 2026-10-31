@@ -7,7 +7,27 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 export const FIXES = {
+  // Questions that pointed at a picture the app does not have ("the given
+  // pedigree", "Fig. 1", "the following graph") were reworded so the words
+  // describe what the picture showed; the answer is unchanged.
+  algebra: [
+    { id: 'gbqkwd', q: 'Which equation describes a parabola that opens downwards with its vertex at (h, k), to the right of the y-axis and above the x-axis? (a, h and k are positive real numbers.)', why: 'referred to a graph that is not in the app' },
+  ],
+  biolchem: [
+    { id: '1wx9b83', q: "In the lecture's chart of minerals and what they do, which mineral helps the body 'fight infection'?", why: 'referred to a diagram that is not in the app' },
+    { id: '1tolkvt', q: "In the lecture's chart of minerals and what they do, which mineral helps to 'reduce blood pressure'?", why: 'referred to a diagram that is not in the app' },
+    { id: '3aixvm', q: "In the lecture's chart of minerals and what they do, which mineral is linked to 'blood production and disease resistance'?", why: 'referred to a diagram that is not in the app' },
+  ],
+  cellstruct: [
+    { id: 'dw3kx1', q: 'In a fluorescence microscope, what is the name and function of the angled mirror that sends the excitation light down to the sample and lets the emitted light pass up to the detector?', why: 'referred to Fig. 1, which is not in the app' },
+    { id: '1aau42b', q: 'In a fluorescence microscope, what is the name and function of the filter between the lamp and the dichroic mirror?', why: 'referred to Fig. 1, which is not in the app' },
+    { id: 'dov8kf', q: 'In a fluorescence microscope, what is the name and function of the filter between the dichroic mirror and the detector?', why: 'referred to Fig. 1, which is not in the app' },
+  ],
+  compapp: [
+    { id: 'uwq3po', q: 'In PowerPoint, the small toolbar at the very top left of the window, with the Save, Undo and Redo buttons, is known as the _____', e: 'The Quick Access toolbar (menu) holds the commands you use most — Save, Undo, Redo — and can be customised.', why: 'referred to a labelled screenshot that is not in the app' },
+  ],
   medgen: [
+    { id: '1qkypg3', q: 'In a family pedigree, a trait affects both males and females, appears in every generation, and each affected parent passes it to about half of the children. The pattern of inheritance is:', e: 'Both sexes affected and no skipped generations, with a 1 in 2 chance from an affected parent: autosomal dominant.', why: 'referred to a pedigree that is not in the app' },
     { id: '1qd9eo4', a: 4, e: 'A 1:1:1:1 litter is a testcross of a double heterozygote: the belted syndactylous sow is Bb Ss and the unbelted cloven boar (both recessive) is bb ss.', why: 'key said Bb Ss × BB ss, which cannot give unbelted piglets' },
     { id: '18480ys', a: 1, e: 'White = cc: 1/4 white means both parents are Cc. Among the coloured, red : blue = 1 : 1, so the R gene is a testcross (Rr × rr). Cc Rr × Cc rr gives 3/8 red, 3/8 blue, 1/4 white.', why: 'Cc Rr × Cc Rr gives 9 red : 3 blue : 4 white, not 3/8 : 3/8 : 1/4' },
     { id: '18ijxlr', a: 1, e: 'Pigmented : unpigmented = 3 : 1, so Pp × Pp; tall : dwarf = 1 : 1, so Tt × tt. The parents are Pp Tt × Pp tt.', why: 'Pp TT × PP tt would give no unpigmented or dwarf progeny' },
