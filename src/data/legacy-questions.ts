@@ -101,15 +101,13 @@ export function buildPractice(source: readonly (BankQuestion & { setName?: strin
       }
       if (roll < 0.3) {
         const showCorrect = random() < 0.5;
-        // A wrong option that is only part of the full answer ("wavelength of light used" inside
-        // "wavelength of light used and numerical aperture…") reads as true, so it is never shown as false.
-        const wrong = q.o.map(plainText).filter((text, index) => index !== q.a && !answer.toLowerCase().includes(text.toLowerCase()));
-        const shown = showCorrect || !wrong.length ? answer : wrong[Math.floor(random() * wrong.length)];
+        const wrong = q.o.map(plainText).filter((_, index) => index !== q.a);
+        const shown = showCorrect ? answer : wrong[Math.floor(random() * wrong.length)];
         // Asked as one plain statement ("Hydrolase is the enzyme type that…"); a question
         // that does not read well as a statement stays as written.
         const statement = !showCorrect && wrongIsPartOfAnswer(shown, answer) ? null : trueFalseStatement(plainText(q.q), shown);
         if (statement) {
-          out.push({ ...original, id: `${original.id}:tf`, type: 'choice', prompt: statement, options: ['True', 'False'], answer: shown === answer ? 0 : 1, fixedOrder: true, label: 'True or false' } as Question);
+          out.push({ ...original, id: `${original.id}:tf`, type: 'choice', prompt: statement, options: ['True', 'False'], answer: showCorrect ? 0 : 1, fixedOrder: true, label: 'True or false' } as Question);
           continue;
         }
       }
