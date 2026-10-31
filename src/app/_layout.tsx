@@ -22,8 +22,8 @@ import { StreakCelebrationWatcher } from '@/components/streak-celebration-watche
 import { EXPERIENCES_ENABLED, heldExperience, needsExperience, saveHeldExperience } from '@/data/experience';
 import { needsOnboarding, saveHeldSignUpConsent, useOnboardingState } from '@/data/onboarding';
 import { syncProfileWithCloud } from '@/data/user';
-import { useFontSizePreference, usePageZoomPreference } from '@/data/settings';
-import { applyWebFontScale } from '@/lib/web-font-scaling';
+import { usePageZoomPreference } from '@/data/settings';
+import { applyWebZoom } from '@/lib/web-zoom';
 import { readClassSelection } from '@/data/class-curriculum';
 import { AuthProvider, useAuth } from '@/hooks/use-auth';
 import { useIsClient } from '@/hooks/use-is-client';
@@ -176,7 +176,6 @@ export default function TabLayout() {
   const [appShellReady, setAppShellReady] = useState(false);
   const isClient = useIsClient();
   const pageZoom = usePageZoomPreference();
-  const fontSize = useFontSizePreference();
   useHomeUnderneath();
 
   // Web: fetch the display font once the app is running (never blocks paint),
@@ -188,15 +187,11 @@ export default function TabLayout() {
     installCrashReporting();
   }, []);
 
+  // App zoom (web): the page is zoomed and React Native's window size matches it (lib/web-zoom.ts).
+  // Font size is applied by every Text itself (components/ui/text.tsx).
   useEffect(() => {
-    if (Platform.OS === 'web' && typeof document !== 'undefined') {
-      document.documentElement.style.zoom = String(pageZoom / 100);
-    }
+    if (Platform.OS === 'web') applyWebZoom(pageZoom);
   }, [pageZoom]);
-
-  useEffect(() => {
-    if (Platform.OS === 'web') applyWebFontScale(fontSize);
-  }, [fontSize]);
 
   useEffect(() => {
     if (!isClient) return;
