@@ -76,7 +76,7 @@ export function LegacyCourseList({ courses, selection, headerRight }: { courses:
               </Interactive>
               {next ? (
                 <Interactive
-                  onPress={() => router.push(routes.legacyLesson(next.id))}
+                  onPress={() => router.push(course.subject ? routes.lesson(next.id) : routes.legacyLesson(next.id))}
                   accessibilityRole="link"
                   accessibilityLabel={`Up next in ${course.name}: ${next.title}`}
                   style={({ hovered }) => [styles.next, hovered && styles.hovered]}

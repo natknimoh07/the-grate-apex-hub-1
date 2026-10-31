@@ -1,5 +1,5 @@
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 
@@ -21,6 +21,8 @@ import type { ThemeColors } from '@/constants/theme';
 import { conceptKey, findLesson, getCourseInfo, getLessonQuizBank, isTrackableConcept } from '@/data/curriculum';
 import { classLessonCompletion, firstClassOffering, firstIncompleteClassBefore, isClassAhead, readAcademicTrial, readClassSelection } from '@/data/class-curriculum';
 import { lessonToText } from '@/data/ai-study';
+import { hb2LessonById } from '@/data/hb2-study';
+import { LessonStartChoice } from '@/components/learning/lesson-start-choice';
 import { beginLesson, finishLesson, type LessonFinish } from '@/data/learning/actions';
 import { saveLessonSession, useLessonSessions } from '@/data/learning/lesson-sessions';
 import { describeDue } from '@/data/learning/time';
@@ -98,6 +100,18 @@ function LessonPlayer({
     if (completed) return 'read';
     return 'learn';
   });
+  // Reading is the section-by-section reader, one page at a time (hb-lesson), for every lesson
+  // that has one (owner, 2026-10-31): the Read tab, a read link, and finishing "learn by
+  // answering" all go there instead of showing the whole lesson at once.
+  const sectioned = Boolean(lesson && hb2LessonById(lesson.id));
+  // Opening a lesson without saying how asks first: learn by answering, or read.
+  const [choosing, setChoosing] = useState(() => !requestedLayer && hasInteractive);
+  // Only while this page is on screen (pages stay mounted in the background: tests/navigation-redirects).
+  useFocusEffect(
+    useCallback(() => {
+      if (lesson && sectioned && view === 'read' && !choosing) router.replace(routes.legacyLesson(lesson.id));
+    }, [lesson, sectioned, view, choosing])
+  );
 
   // Start (or resume) the lesson session once.
   useEffect(() => {
@@ -155,6 +169,34 @@ function LessonPlayer({
   const nextLesson = topic.lessons[index + 1];
   const xp = lessonCompletionXp(lesson.xp);
   const resumed = !completed && session && session.phase === 'interactive' && session.position > 0 && view === 'learn';
+
+  // Part-way through the steps: carry on without asking.
+  const midway = !completed && session?.phase === 'interactive' && session.position > 0;
+  if (choosing && !midway) {
+    return (
+      <LessonStartChoice
+        kicker={topic.title}
+        title={lesson.title}
+        description={lesson.description}
+        steps={lesson.interactive?.length ?? 0}
+        sections={lesson.chunks.length}
+        completed={completed}
+        back={routes.topic(topic.id)}
+        onLearn={() => {
+          if (completed) {
+            router.replace(routes.lesson(lesson.id, { layer: 'learn', restart: true }));
+            return;
+          }
+          setChoosing(false);
+          setView('learn');
+        }}
+        onRead={() => {
+          setChoosing(false);
+          setView('read');
+        }}
+      />
+    );
+  }
 
   function scrollTop() {
     scrollRef.current?.scrollTo({ y: 0, animated: true });
