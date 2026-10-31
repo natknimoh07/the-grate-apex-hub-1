@@ -188,6 +188,11 @@ export type LessonFigure = {
   caption?: string;
   sourceRefs: SourceReference[]; // the slide it comes from
   spots: FigureSpot[];
+  // Other printed text on the picture that would give an answer away
+  // (labels of parts no spot asks about, second labels): covered with the
+  // spots' boxes in "Test yourself", "Label it" and quiz questions.
+  // Filled in from data/figures/covers.ts.
+  masks?: [x: number, y: number, w: number, h: number][];
 };
 
 // ─── Lessons ────────────────────────────────────────────────────────

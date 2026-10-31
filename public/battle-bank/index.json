@@ -4696,7 +4696,7 @@
   {
    "id": "physiology",
    "name": "Physiology",
-   "total": 563,
+   "total": 579,
    "topics": [
     {
      "id": "Action Potential",
@@ -4744,7 +4744,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 10
+     "unrated": 26
     },
     {
      "id": "Blood Composition",
@@ -6070,7 +6070,7 @@
   {
    "id": "behavioural",
    "name": "Behavioural Science",
-   "total": 447,
+   "total": 471,
    "topics": [
     {
      "id": "Biological Foundations",
@@ -6079,6 +6079,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 63
+    },
+    {
+     "id": "Intelligence",
+     "title": "Intelligence",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Memory",
+     "title": "Memory",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 15
     },
     {
      "id": "Motivation",
@@ -6137,6 +6153,14 @@
      "unrated": 51
     },
     {
+     "id": "Stress",
+     "title": "Stress",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Theoretical Paradigms",
      "title": "Theoretical Paradigms",
      "easy": 0,
@@ -6149,7 +6173,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 564,
+   "total": 598,
    "topics": [
     {
      "id": "Anopheline & Culicine Mosquitoes",
@@ -6160,12 +6184,44 @@
      "unrated": 23
     },
     {
+     "id": "Bed nets",
+     "title": "Bed nets",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Blackflies",
+     "title": "Blackflies",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 13
+    },
+    {
+     "id": "Fleas",
+     "title": "Fleas",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Introduction to Entomology",
      "title": "Introduction to Entomology",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 17
+    },
+    {
+     "id": "IVM",
+     "title": "IVM",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Lice & Bed Bugs",
@@ -6198,6 +6254,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 53
+    },
+    {
+     "id": "Roll Back Malaria",
+     "title": "Roll Back Malaria",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "general",

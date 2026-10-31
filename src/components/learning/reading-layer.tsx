@@ -2,12 +2,14 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 
 import { FigureExplorer } from '@/components/learning/figure-view';
+import { WithIllustrations } from '@/components/learning/illustration';
 import { RelatedLessons } from '@/components/learning/related-lessons';
 import { PathwaySteps } from '@/components/pathway-steps';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Card } from '@/components/ui/interactive';
 import { Fonts, type ThemeColors } from '@/constants/theme';
 import { chunkFigures, type Lesson, type LessonChunk, type LessonChunkKind, type LessonNote } from '@/data/lesson-types';
+import { illustrationsFor } from '@/data/illustrations';
 import { describeSourceRefs, describeTextbookRefs } from '@/data/source-labels';
 import { useExperience } from '@/hooks/use-experience';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -45,7 +47,7 @@ export function ReadingLayer({ lesson }: { lesson: Lesson }) {
   return (
     <View style={styles.reading}>
       {lesson.chunks.map((chunk, index) => (
-        <ReadingSection key={`${chunk.title}-${index}`} chunk={chunk} index={index} total={lesson.chunks.length} />
+        <ReadingSection key={`${chunk.title}-${index}`} lessonId={lesson.id} chunk={chunk} index={index} total={lesson.chunks.length} />
       ))}
 
       {lesson.highYield && lesson.highYield.length > 0 ? (
@@ -92,7 +94,7 @@ export function ReadingLayer({ lesson }: { lesson: Lesson }) {
   );
 }
 
-function ReadingSection({ chunk, index, total }: { chunk: LessonChunk; index: number; total: number }) {
+function ReadingSection({ lessonId, chunk, index, total }: { lessonId: string; chunk: LessonChunk; index: number; total: number }) {
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
   const serif = useExperience() === 'originate' ? styles.serif : null;
@@ -112,11 +114,20 @@ function ReadingSection({ chunk, index, total }: { chunk: LessonChunk; index: nu
         {chunk.title}
       </Text>
 
-      {chunk.teach?.map((paragraph, i) => (
-        <Text key={`teach-${i}`} style={[styles.paragraph, serif]}>
-          {paragraph}
-        </Text>
-      ))}
+      {/* The section's teaching, with any pictures beside it (data/illustrations.ts). */}
+      <WithIllustrations
+        items={illustrationsFor(lessonId, chunk.title)}
+        lead={chunk.teach?.slice(0, 1).map((paragraph, i) => (
+          <Text key={`teach-${i}`} style={[styles.paragraph, serif]}>
+            {paragraph}
+          </Text>
+        ))}
+        rest={chunk.teach?.slice(1).map((paragraph, i) => (
+          <Text key={`teach-${i + 1}`} style={[styles.paragraph, serif]}>
+            {paragraph}
+          </Text>
+        ))}
+      />
 
       {chunk.teach?.length ? (
         <View style={[styles.kickerRow, styles.keyPointsHeading]}>

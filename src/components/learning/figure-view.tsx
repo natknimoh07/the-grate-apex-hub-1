@@ -36,8 +36,13 @@ const SITE = LIVE_SITE;
 const figureUri = (src: string) => (Platform.OS === 'web' ? src : `${SITE}${src}`);
 const pct = (fraction: number) => `${fraction * 100}%` as const;
 
-// Tall diagrams are kept short enough to see the picture and its panel together.
+// Tall diagrams are kept short enough to see the picture and its panel
+// together; on big screens they get more of the window (owner, 2026-10-31).
 const MAX_HEIGHT = 480;
+function useDiagramHeight() {
+  const { height } = useWindowDimensions();
+  return Math.max(MAX_HEIGHT, Math.min(760, height - 300));
+}
 // In a quiz question the diagram stays modest beside the question and its options.
 const QUESTION_MAX_HEIGHT = 280;
 // The preview card in a lesson.
@@ -109,11 +114,13 @@ export function QuestionImage({ src, label = 'Diagram for this question', onRead
 }
 
 /** The picture at its own shape, with covers and pins drawn over it. */
-function Canvas({ figure, children, label, maxHeight = MAX_HEIGHT, onReady }: { figure: LessonFigure; children?: ReactNode; label: string; maxHeight?: number; onReady?: () => void }) {
+function Canvas({ figure, children, label, maxHeight, onReady }: { figure: LessonFigure; children?: ReactNode; label: string; maxHeight?: number; onReady?: () => void }) {
   const styles = useThemedStyles(createStyles);
+  const roomy = useDiagramHeight();
+  const height = maxHeight ?? roomy;
   const aspectRatio = figure.width / figure.height;
   return (
-    <View style={[styles.canvas, { aspectRatio, maxWidth: Math.min(760, maxHeight * aspectRatio) }]}>
+    <View style={[styles.canvas, { aspectRatio, maxWidth: Math.min(1100, height * aspectRatio) }]}>
       <Picture uri={figureUri(figure.src)} label={label} onReady={onReady} />
       {children}
     </View>
@@ -132,6 +139,23 @@ function Covers({ spot }: { spot: FigureSpot }) {
   );
 }
 
+/**
+ * Covers every other printed label that could give an answer away (second
+ * labels, labels of parts no spot asks about: data/figures/covers.ts). Shown
+ * whenever labels are hidden: "Test yourself", "Label it" and quiz questions.
+ */
+function Masks({ figure }: { figure: LessonFigure }) {
+  const styles = useThemedStyles(createStyles);
+  if (!figure.masks?.length) return null;
+  return (
+    <>
+      {figure.masks.map(([x, y, w, h], index) => (
+        <View key={`m${index}`} pointerEvents="none" style={[styles.cover, { left: pct(x), top: pct(y), width: pct(w), height: pct(h) }]} />
+      ))}
+    </>
+  );
+}
+
 /** The selected part's name, in a small bubble beside its pin. */
 function Bubble({ spot, text }: { spot: FigureSpot; text: string }) {
   const styles = useThemedStyles(createStyles);
@@ -145,7 +169,26 @@ function Bubble({ spot, text }: { spot: FigureSpot; text: string }) {
   );
 }
 
-type PinTone = 'idle' | 'selected' | 'done' | 'target' | 'wrong';
+type PinTone = 'idle' | 'selected' | 'done' | 'wrong';
+
+/**
+ * The part a quiz question asks about: a small see-through ring with a tiny
+ * "?" tag beside it (owner, 2026-10-31: the big filled "?" hid the leader
+ * lines). The ring is hollow, so the line and the structure under it still
+ * show.
+ */
+function TargetMark({ spot }: { spot: FigureSpot }) {
+  const styles = useThemedStyles(createStyles);
+  return (
+    <View pointerEvents="none" style={[styles.pinSlot, { left: pct(spot.x), top: pct(spot.y) }]} accessibilityLabel="The marked part">
+      <View style={styles.targetHalo} />
+      <View style={styles.targetRing} />
+      <View style={styles.targetTag}>
+        <Text style={styles.targetTagText}>?</Text>
+      </View>
+    </View>
+  );
+}
 
 function Pin({ spot, number, tone, onPress, label }: { spot: FigureSpot; number: string; tone: PinTone; onPress?: () => void; label: string }) {
   const styles = useThemedStyles(createStyles);
@@ -197,7 +240,7 @@ export function FigureExplorer({ figureId }: { figureId: string }) {
           </View>
         </View>
       </Interactive>
-      <Sheet visible={open} onClose={() => setOpen(false)} title={figure.title} subtitle="Lecture diagram" width={860}>
+      <Sheet visible={open} onClose={() => setOpen(false)} title={figure.title} subtitle="Lecture diagram" width={1180}>
         <FigureExplorerBody figure={figure} />
       </Sheet>
     </>
@@ -238,6 +281,7 @@ export function FigureExplorerBody({ figure, initialMode = 'explore', onLabelled
     <View style={styles.block}>
       <ModeRow mode={mode} onChange={switchMode} />
       <Canvas figure={figure} label={`${figure.title} — lecture diagram`}>
+        {testing ? <Masks figure={figure} /> : null}
         {testing ? figure.spots.filter((item) => !isShown(item.id)).map((item) => <Covers key={item.id} spot={item} />) : null}
         {figure.spots.map((item, i) => (
           <Pin
@@ -369,6 +413,7 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
   return (
     <>
       <Canvas figure={figure} label={`${figure.title} — lecture diagram to label`}>
+        <Masks figure={figure} />
         {figure.spots.filter((item) => !placed.has(item.id)).map((item) => <Covers key={item.id} spot={item} />)}
         {figure.spots.map((item, i) => (
           <Pin
@@ -418,20 +463,23 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
 /** The diagram for a quiz question: labels covered, the asked-about part marked. */
 export function QuestionFigure({ figure: ref, revealed, onReady }: { figure: { id: string; spot?: string }; revealed: boolean; onReady?: () => void }) {
   const styles = useThemedStyles(createStyles);
+  // Laptops and tablets have room for a bigger picture beside the options.
+  const questionHeight = useWindowDimensions().width >= 900 ? 400 : QUESTION_MAX_HEIGHT;
   const figure = getFigure(ref.id);
   if (!figure) return null;
   const target = getSpot(figure, ref.spot);
   return (
     <View style={styles.questionFigure}>
-      <Canvas figure={figure} maxHeight={QUESTION_MAX_HEIGHT} onReady={onReady} label={`${figure.title} — lecture diagram${target ? ', one part marked' : ''}`}>
+      <Canvas figure={figure} maxHeight={questionHeight} onReady={onReady} label={`${figure.title} — lecture diagram${target ? ', one part marked' : ''}`}>
+        <Masks figure={figure} />
         {figure.spots.filter((spot) => !(revealed && spot.id === target?.id)).map((spot) => <Covers key={spot.id} spot={spot} />)}
-        {target ? <Pin spot={target} number="?" tone="target" label="The marked part" /> : null}
+        {target ? <TargetMark spot={target} /> : null}
       </Canvas>
     </View>
   );
 }
 
-const PIN = 26;
+const PIN = 21;
 
 function createStyles(colors: ThemeColors) {
   return StyleSheet.create({
@@ -440,13 +488,13 @@ function createStyles(colors: ThemeColors) {
     modes: { minWidth: 300 },
     kicker: { fontSize: 11, fontWeight: '800', letterSpacing: 1, color: colors.textTertiary },
     title: { ...Type.headline, color: colors.text },
-    canvas: { width: '100%', maxWidth: 760, alignSelf: 'center', borderRadius: Radius.md, overflow: 'hidden', borderWidth: 1, borderColor: colors.border, backgroundColor: Paper },
+    canvas: { width: '100%', maxWidth: 1100, alignSelf: 'center', borderRadius: Radius.md, overflow: 'hidden', borderWidth: 1, borderColor: colors.border, backgroundColor: Paper },
     cover: { position: 'absolute', borderRadius: 4, backgroundColor: colors.surfaceSunken, borderWidth: 1, borderColor: colors.borderStrong },
     pinSlot: { position: 'absolute', width: 0, height: 0, alignItems: 'center', justifyContent: 'center', overflow: 'visible' },
     pinHit: { position: 'absolute', width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
-    pin: { width: PIN, height: PIN, borderRadius: PIN / 2, alignItems: 'center', justifyContent: 'center', borderWidth: 2 },
-    pinSmall: { width: 20, height: 20, borderRadius: 10, borderWidth: 1.5 },
-    pinTextSmall: { fontSize: 10 },
+    pin: { width: PIN, height: PIN, borderRadius: PIN / 2, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5 },
+    pinSmall: { width: 16, height: 16, borderRadius: 8, borderWidth: 1 },
+    pinTextSmall: { fontSize: 9 },
     pin_idle: { backgroundColor: colors.primary, borderColor: colors.surface },
     pin_selected: { backgroundColor: colors.surface, borderColor: colors.primary, transform: [{ scale: 1.15 }] },
     pin_done: { backgroundColor: colors.success, borderColor: colors.surface },
@@ -457,8 +505,11 @@ function createStyles(colors: ThemeColors) {
     chipHover: { borderColor: colors.primaryBorder },
     chipText: { fontSize: 13, fontWeight: '600', color: colors.text },
     chipTextOn: { color: colors.onPrimary },
-    pin_target: { width: PIN + 6, height: PIN + 6, borderRadius: (PIN + 6) / 2, backgroundColor: colors.error, borderColor: colors.surface, borderWidth: 3 },
-    pinText: { fontSize: 12, fontWeight: '800', color: colors.onPrimary },
+    targetHalo: { position: 'absolute', width: 18, height: 18, borderRadius: 9, borderWidth: 4, borderColor: colors.surface, opacity: 0.8 },
+    targetRing: { position: 'absolute', width: 16, height: 16, borderRadius: 8, borderWidth: 2.5, borderColor: colors.error, backgroundColor: 'transparent' },
+    targetTag: { position: 'absolute', left: 8, top: -17, minWidth: 13, height: 13, paddingHorizontal: 2, borderRadius: 7, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.error },
+    targetTagText: { fontSize: 9, lineHeight: 11, fontWeight: '800', color: colors.onPrimary },
+    pinText: { fontSize: 10.5, fontWeight: '800', color: colors.onPrimary },
     pinTextStrong: { color: colors.text },
     bubble: { position: 'absolute', maxWidth: 220, paddingVertical: 5, paddingHorizontal: 9, borderRadius: Radius.sm, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.primary },
     bubbleText: { ...Type.caption, fontWeight: '700', color: colors.text },

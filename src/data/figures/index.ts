@@ -30,9 +30,10 @@ import { figures as urinarySystemGrossPictures } from '@/data/figures/pictures/u
 import { figures as upperLimbPictures } from '@/data/figures/pictures/upper-limb';
 import { figures as headAndNeckPictures } from '@/data/figures/pictures/head-and-neck';
 import { figures as neuroanatomyPictures } from '@/data/figures/pictures/neuroanatomy';
+import { figureMasks, grownSpotBoxes } from '@/data/figures/covers';
 import type { FigureSpot, LessonFigure } from '@/data/lesson-types';
 
-export const allFigures: LessonFigure[] = [
+const lectureFigures: LessonFigure[] = [
   ...cardiovascular,
   ...upperLimb,
   ...fattyAcids,
@@ -58,6 +59,22 @@ export const allFigures: LessonFigure[] = [
   ...headAndNeckPictures,
   ...neuroanatomyPictures,
 ];
+
+/** Adds the extra covers (data/figures/covers.ts) so no printed label gives an answer away. */
+function withCovers(figure: LessonFigure): LessonFigure {
+  const masks = figureMasks[figure.id];
+  const grown = grownSpotBoxes[figure.id];
+  if (!masks && !grown) return figure;
+  return {
+    ...figure,
+    masks: masks ?? figure.masks,
+    spots: grown
+      ? figure.spots.map((spot) => (grown[spot.id] ? { ...spot, boxes: [...(spot.boxes ?? []), ...grown[spot.id]] } : spot))
+      : figure.spots,
+  };
+}
+
+export const allFigures: LessonFigure[] = lectureFigures.map(withCovers);
 
 const byId = new Map(allFigures.map((figure) => [figure.id, figure]));
 

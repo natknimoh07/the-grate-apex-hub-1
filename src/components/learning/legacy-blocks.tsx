@@ -1,4 +1,5 @@
 import { Image } from 'expo-image';
+import { IllustrationFigure } from '@/components/learning/illustration';
 import { FigureExplorer } from '@/components/learning/figure-view';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { Linking, ScrollView, StyleSheet, View } from 'react-native';
@@ -220,6 +221,8 @@ export function LegacyBlocks({ blocks }: { blocks: readonly Block[] }) {
             return <Figure key={i} block={b} />;
           case 'lfig':
             return <FigureExplorer key={i} figureId={b.id} />;
+          case 'illus':
+            return <IllustrationFigure key={i} item={{ src: b.src, width: b.w, height: b.h, caption: b.cap, credit: b.credit, sourceUrl: b.url }} />;
           default:
             return null;
         }

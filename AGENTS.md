@@ -207,6 +207,15 @@ Learning remarks are currently in:
 
 `src/data/remarks.ts`
 
+## Owner's requests, 2026-10-31 (diagrams, layout, simulations, pictures, HB1)
+
+* **Diagram markers**: numbered pins are smaller (21 px, 16 px on phones); the part a quiz question asks about is a small see-through ring with a tiny "?" tag (`TargetMark` in `figure-view.tsx`), so leader lines stay visible.
+* **No label gives the answer away**: `src/data/figures/covers.ts` (`masks` per figure, `grownSpotBoxes` per spot), merged in `data/figures/index.ts`, drawn in Test yourself, Label it and quiz questions. Made by OCR; how to regenerate: `docs/figure-covers.md`.
+* **More of the screen**: prose 860, learning 1040, content 1440; phone gutters 16 / 12 (`constants/theme.ts`); HB2 lesson column up to 1000; diagrams grow with the window (`useDiagramHeight`), quiz diagrams 400 px tall on laptops.
+* **Simulations teach first**: a **Learn** tab opens every simulation — the idea (`src/data/simulations/guides.ts`, one per simulation, from each model's lecture facts), how to read the screen (controls and tiles), and guided experiments computed from the model (`guide-activities.ts`; practice, not recorded). `tests/simulation-guides.test.mjs`.
+* **Pictures in the reading**: 140 OpenStax *Anatomy and Physiology* (1st ed., **CC BY 4.0**) figures in `public/images/openstax/`, listed by lesson and section title in `src/data/illustrations.ts`; shown beside the teaching text on wide screens and after the first paragraph otherwise (`components/learning/illustration.tsx`), and as `illus` blocks on HB2 lesson pages. Credit line is required. Only figures OpenStax made themselves (no third-party photos or U-Michigan micrographs). `tests/illustrations.test.mjs`. If a section title changes, move its entry.
+* **HB1 review**: answer-key and text fixes in `scripts/hb1-review/fixes.mjs` (by question id, with the reason); new "Topic Review" sets for thinly covered lectures (`scripts/hb1-review/new-sets.py`, each set names its source file). Rebuild the battle bank after running either.
+
 ## Lesson simulations (interactive models)
 
 The interactive layer has a fourth step type, `simulate` (`SimulationStep` in `src/data/lesson-types.ts`). Each Cardiovascular Physiology, Central Nervous System, Respiratory Physiology, Renal Physiology, Endocrinology, Gastrointestinal Physiology, Reproductive Physiology and Special Senses lesson has one — every Physiology topic, placed just before its final recall prompt. Newer topics use the shared helpers in `src/data/topics/sim-helpers.ts` and the drawing kit `graphics/kit.tsx`.

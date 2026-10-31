@@ -19,16 +19,20 @@ import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 import { SimulationGraphic } from './graphics';
 import { SimControls } from './sim-controls';
+import { SimulationGuide } from './simulation-guide';
 import { useSimClock } from './use-sim-clock';
 
 // A "simulate" step of the interactive layer:
+//   Learn     — opens first: the idea in plain words, how to read the
+//               screen, and guided experiments on the model (practice;
+//               owner, 2026-10-31: "explain it to the learner and teach it").
 //   Predict   — answer a checkpoint first; the model then runs the change
 //               and shows the result next to your answer.
 //   Explore   — situations from the lecture, or move any control.
 //   Challenge — reach a goal with some controls locked.
 // Explore and Challenge open once the predictions are answered.
 
-type Mode = 'predict' | 'explore' | 'challenge';
+type Mode = 'learn' | 'predict' | 'explore' | 'challenge';
 
 const TWEEN_MS = 1300;
 
@@ -69,7 +73,7 @@ function SimulationBody({
   const predictions = step.predictions;
   const hasPredictions = predictions.length > 0;
 
-  const [mode, setMode] = useState<Mode>(hasPredictions ? 'predict' : 'explore');
+  const [mode, setMode] = useState<Mode>('learn');
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState<Answer | undefined>(undefined);
   const [revealed, setRevealed] = useState(false);
@@ -97,8 +101,10 @@ function SimulationBody({
     if (tween.current !== null) cancelAnimationFrame(tween.current);
   }, []);
   function animateTo(target: SimValues, done?: () => void) {
+    animateFrom(values, target, done);
+  }
+  function animateFrom(from: SimValues, target: SimValues, done?: () => void) {
     if (tween.current !== null) cancelAnimationFrame(tween.current);
-    const from = values;
     const sliders = new Set(definition.controls.filter((c) => c.kind === 'slider').map((c) => c.key));
     if (reduceMotion) {
       setValues(target);
@@ -156,11 +162,14 @@ function SimulationBody({
   }
 
   function openMode(next: Mode) {
-    if (next !== 'predict' && !unlocked) return;
+    if (next !== 'predict' && next !== 'learn' && !unlocked) return;
     if (tween.current !== null) cancelAnimationFrame(tween.current);
     setRunning(false);
     setMode(next);
-    if (next === 'predict') {
+    if (next === 'learn') {
+      setValues(definition.initial);
+      setBaselineValues(definition.initial);
+    } else if (next === 'predict') {
       startPrediction(0);
     } else if (next === 'explore') {
       const first = definition.scenarios[0];
@@ -192,6 +201,7 @@ function SimulationBody({
   const goalsMet = challenge ? challenge.goals.every((goal) => goalMet(goal, state.readouts)) : false;
   const watched = prediction ? definition.readouts.find((readout) => readout.key === prediction.watch) : undefined;
   const tabs: { mode: Mode; label: string; shown: boolean }[] = [
+    { mode: 'learn', label: 'Learn', shown: true },
     { mode: 'predict', label: 'Predict', shown: hasPredictions },
     { mode: 'explore', label: 'Explore', shown: definition.scenarios.length > 0 },
     { mode: 'challenge', label: 'Challenge', shown: definition.challenges.length > 0 },
@@ -210,7 +220,7 @@ function SimulationBody({
           .filter((tab) => tab.shown)
           .map((tab) => {
             const selected = tab.mode === mode;
-            const locked = tab.mode !== 'predict' && !unlocked;
+            const locked = tab.mode !== 'predict' && tab.mode !== 'learn' && !unlocked;
             return (
               <Interactive
                 key={tab.mode}
@@ -230,6 +240,23 @@ function SimulationBody({
             );
           })}
       </View>
+
+      {mode === 'learn' ? (
+        <SimulationGuide
+          definition={definition}
+          running={running}
+          onRun={(from, to) => {
+            setBaselineValues(from);
+            setValues(from);
+            if (from === to) return;
+            setRunning(true);
+            // Start from `from` on the next frame so the move is visible.
+            requestAnimationFrame(() => animateFrom(from, to, () => setRunning(false)));
+          }}
+          onDone={() => openMode(hasPredictions ? 'predict' : 'explore')}
+          doneLabel={hasPredictions ? 'Now make your predictions' : 'Explore it yourself'}
+        />
+      ) : null}
 
       {prediction ? (
         <View style={styles.panel}>
@@ -340,6 +367,7 @@ function SimulationBody({
 
       <SimControls controls={definition.controls} values={values} onChange={change} lockAll={mode === 'predict' && (!revealed || running)} challenge={challenge} />
 
+      {mode === 'learn' ? <Text style={styles.note}>You can also move any control yourself while you learn — nothing here is recorded.</Text> : null}
       {mode === 'predict' && !revealed ? <Text style={styles.note}>Answer first — the controls unlock once the model has run.</Text> : null}
       <Text style={styles.note}>{definition.modelNote}</Text>
     </Card>

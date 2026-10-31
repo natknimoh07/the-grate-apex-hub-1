@@ -530,15 +530,17 @@ export const WIDE_BREAKPOINT = 1280;
 
 // Reading width for long-form text (lessons, articles). Long lines are
 // hard to read, so prose is capped narrower than dashboards.
-export const PROSE_MAX_WIDTH = 760;
+// Widened 2026-10-31 (owner: "make maximum use of the space on every device").
+export const PROSE_MAX_WIDTH = 860;
 // General content column for dashboards and card grids.
-export const CONTENT_MAX_WIDTH = 1360;
+export const CONTENT_MAX_WIDTH = 1440;
 // Roomier shell for the full-bleed learning surfaces (quiz, results).
-export const LEARNING_MAX_WIDTH = 880;
+export const LEARNING_MAX_WIDTH = 1040;
 
 // Standard responsive horizontal gutters.
-export const GUTTER_MOBILE = 20;
-export const GUTTER_COMPACT = 16;
+// Phones: narrower side margins so cards and text get more of the screen.
+export const GUTTER_MOBILE = 16;
+export const GUTTER_COMPACT = 12;
 export const GUTTER_DESKTOP = 32;
 
 // Desktop navigation rail width. When the rail is docked the content
