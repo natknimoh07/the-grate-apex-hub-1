@@ -85,3 +85,18 @@ it('no question bank has options that lost their symbols (scripts/audit-missing-
   const out = execFileSync('node', ['scripts/audit-missing-symbols.mjs'], { encoding: 'utf8' });
   assert.match(out, /Total flagged: 0/, out);
 });
+
+it('cell-cycle keys follow the standard accounts (checked online 2026-10-31)', () => {
+  const key = (id) => { const q = find('medgen', id); return q.o[q.a]; };
+  assert.equal(key('1d86bov'), 'S phase');
+  assert.equal(key('whyj6j'), 'Prophase');
+  assert.equal(key('6z57du'), 'M phase');
+  assert.equal(key('sise1b'), 'G₁ phase');
+});
+
+it('the Windows file-name question keeps "<" and explains the older-Windows list', () => {
+  const q = find('compapp', '18dut31');
+  assert.equal(q.o[q.a], '<');
+  assert.match(q.e, /older Windows/);
+  assert.match(q.e, /allows ' and !/);
+});
