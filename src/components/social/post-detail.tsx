@@ -10,6 +10,7 @@ import { MentionInput } from '@/components/social/mention-input';
 import { VoiceClipRecorder, type VoiceClip } from '@/components/social/voice-clip';
 import { VoiceNotePlayer } from '@/components/social/voice-note';
 import { PersonAvatar } from '@/components/social/profile-card';
+import { PostPoll } from '@/components/social/poll-card';
 import { StumpCard, useStumpQuestion } from '@/components/social/stump-card';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Interactive } from '@/components/ui/interactive';
@@ -125,7 +126,9 @@ export function PostDetail({
 
   const caption = (
     <>
-      {post.stump && stumped ? (
+      {post.poll ? (
+        <PostPoll postId={post.id} poll={post.poll} nameOf={(uid) => (uid === ownId ? 'You' : (() => { const person = people.find((item) => item.userId === uid); return person ? personName(person) : null; })())} />
+      ) : post.stump && stumped ? (
         <StumpCard postId={post.id} question={stumped} stump={post.stump} authorId={post.author_id} authorName={name} ownId={ownId} people={people} />
       ) : displayBody(post) ? (
         <View style={styles.row}>

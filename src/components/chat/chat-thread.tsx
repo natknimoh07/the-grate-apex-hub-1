@@ -25,7 +25,9 @@ import { hideMessage, isHidden, isStarred, previewOf, REACTIONS, reactToMessage,
 import { contrastRatio } from '@/data/contrast';
 import { deleteCommunityMessage, getOrCreateFriendConversation, markConversationSeen, messageStatus, sendVoiceNote, VOICE_NOTE_MAX_SECONDS, watchConversationMessages, watchConversationMeta, type CommunityMessage, type ConversationMeta, type MessageStatus } from '@/data/community';
 import { FriendStreakNotice, useStreakNoticeHidden } from '@/components/chat/friend-streak-notice';
+import { PollCard, PollComposer } from '@/components/social/poll-card';
 import { StumpById, StumpComposer, StumpUnavailable } from '@/components/social/stump-card';
+import type { PollDef } from '@/data/polls';
 import type { ChoiceQuestion } from '@/data/questions';
 import { answerChatStump, chatStumpAnswers, pickStumpQuestion, type StumpAnswer, watchGroupStumpAnswers } from '@/data/stumps';
 import { type FriendStreakStatus, todaysStreakKey } from '@/data/friend-streaks';
@@ -245,6 +247,15 @@ export function ChatThread({ friendId = '', groupId, name, onBack }: { friendId?
     picker.click();
   }
 
+  // Polls (data/polls.ts): written here, sent as a message; votes go through the server.
+  const [pollOpen, setPollOpen] = useState(false);
+  async function sendPoll(poll: PollDef) {
+    if (!chatId || !me) throw new Error('This chat is not ready yet.');
+    const share = { kind: 'poll', uid: me, username: user?.profile?.username ?? null, id: 'poll', text: poll.q, poll: { ...poll, counts: [], total: 0, voters: null, names: {} } };
+    if (isGroup) { await sendGroupMessage(chatId, '', { share }); void announceGroupMessage(chatId); }
+    else { await sendChatMessage(chatId, '', { share }); void announceMessage(chatId, friendId); }
+  }
+
   function openStump(another = false) {
     if (!another) offered.current = new Set();
     const question = pickStumpQuestion(offered.current);
@@ -370,6 +381,7 @@ export function ChatThread({ friendId = '', groupId, name, onBack }: { friendId?
           const lastOfGroup = !next || next.sender_id !== message.sender_id;
           const replied = message.reply ? byId.get(message.reply.mid) : undefined;
           const share = message.share?.kind === 'stump' ? message.share : null;
+          const poll = message.share?.kind === 'poll' ? message.share.poll ?? null : null;
           return (
             <View key={message.id}>
               {newDay ? <Text style={styles.day}>{dayLabel(at)}</Text> : null}
@@ -378,7 +390,17 @@ export function ChatThread({ friendId = '', groupId, name, onBack }: { friendId?
                   {!mine ? <View style={styles.avatarSlot}>{lastOfGroup ? <PersonAvatar uid={message.sender_id} uri={isGroup ? null : friend?.avatarUrl ?? null} name={senderName(message)} size={28} /> : null}</View> : null}
                   <View style={[styles.stack, mine && styles.stackMine]}>
                     {isGroup && !mine && (!prev || prev.sender_id !== message.sender_id) ? <Text style={styles.sender}>{senderName(message)}</Text> : null}
-                    {share ? (
+                    {poll && chatId ? (
+                      <View style={styles.stumpWrap}>
+                        <PollCard
+                          host={isGroup ? { host: 'group', groupId: chatId, messageId: message.id } : { host: 'chat', chatId, messageId: message.id }}
+                          poll={poll}
+                          nameOf={(uid) => (uid === me ? 'You' : (() => { const person = social.people.find((item) => item.userId === uid); return person ? personName(person) : null; })())}
+                          compact
+                        />
+                        <Text style={styles.stumpTime}>{mine ? 'You · ' : isGroup ? `${senderName(message)} · ` : ''}{new Date(at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</Text>
+                      </View>
+                    ) : share ? (
                       <View style={styles.stumpWrap}>
                         <StumpById
                           postId={message.id}
@@ -486,6 +508,7 @@ export function ChatThread({ friendId = '', groupId, name, onBack }: { friendId?
         <View style={styles.composer}>
           <Interactive onPress={() => setEmojiOpen((value) => !value)} accessibilityLabel="Emoji" style={styles.tool}><Text style={styles.emojiButton}>🙂</Text></Interactive>
           <Interactive onPress={() => openStump()} disabled={!chatId} accessibilityRole="button" accessibilityLabel={isGroup ? 'Stamp the group with a question' : `Stamp ${title} with a question (keeps your friend streak)`} style={styles.tool}><Icon name="challenge" size={21} color={colors.primaryText} /></Interactive>
+          <Interactive onPress={() => setPollOpen(true)} disabled={!chatId} accessibilityRole="button" accessibilityLabel="Create a poll" style={styles.tool}><Icon name="chart" size={21} color={colors.text} /></Interactive>
           <TextInput
             ref={input}
             value={draft}
@@ -557,6 +580,7 @@ export function ChatThread({ friendId = '', groupId, name, onBack }: { friendId?
 
       {/* Forward to a friend */}
       {isGroup && group ? <GroupInfoSheet visible={groupInfo} group={group} onClose={() => setGroupInfo(false)} onChanged={() => {}} onReport={() => { setGroupInfo(false); setReport({ type: 'user', id: group.ownerUid, label: `group “${group.name}”` }); }} /> : null}
+      <PollComposer visible={pollOpen} onClose={() => setPollOpen(false)} onSend={sendPoll} where={isGroup ? `the group${group?.name ? ` “${group.name}”` : ''}` : `your chat with ${title}`} />
       <StumpComposer
         question={stumpQ}
         onClose={() => setStumpQ(null)}

@@ -17,9 +17,10 @@ import { VideoPlayer } from '@/components/ui/video-player';
 import { routes } from '@/lib/routes';
 import { ReportSheet, type ReportTarget } from '@/components/social/report-sheet';
 import { StumpCard, useStumpQuestion } from '@/components/social/stump-card';
+import { PollComposer, PostPoll } from '@/components/social/poll-card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Sheet } from '@/components/ui/sheet';
-import { addPostComment, deletePostComment, createCommunityPost, createVoicePost, deleteCommunityPost, displayBody, listCommunityFeed, listPostsBy, listPostComments, recordPostView, togglePostLike, type CommunityMedia, type CommunityPost } from '@/data/community';
+import { addPostComment, deletePostComment, createCommunityPost, createPollPost, createVoicePost, deleteCommunityPost, displayBody, listCommunityFeed, listPostsBy, listPostComments, recordPostView, togglePostLike, type CommunityMedia, type CommunityPost } from '@/data/community';
 import { personName, type SocialPerson, useSocial } from '@/data/social';
 import { useDisplayName } from '@/data/user';
 import { useAuth } from '@/hooks/use-auth';
@@ -50,6 +51,8 @@ export function CommunityPostsFeed({ authorId, showComposer = true }: { authorId
   const [media, setMedia] = useState<CommunityMedia[]>([]);
   const [busy, setBusy] = useState(false);
   const [visibility, setVisibility] = useState<'everyone' | 'friends'>('everyone');
+  // Polls (data/polls.ts): written in their own sheet, posted to the feed.
+  const [pollOpen, setPollOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<CommunityPost | null>(null);
   const [comments, setComments] = useState<PostComment[]>([]);
   const [commentDraft, setCommentDraft] = useState('');
@@ -281,8 +284,19 @@ export function CommunityPostsFeed({ authorId, showComposer = true }: { authorId
         <View style={styles.actions}>
           <Button label="Write a post" variant="secondary" size="sm" onPress={() => setComposeOpen(true)} />
           <Button label="Add photos or video" variant="ghost" size="sm" icon={<Icon name="image" size={16} color={colors.primaryText} />} onPress={() => { setComposeOpen(true); void chooseMedia(); }} />
+          <Button label="Create a poll" variant="ghost" size="sm" icon={<Icon name="chart" size={16} color={colors.primaryText} />} onPress={() => setPollOpen(true)} />
         </View>
       </Card> : null}
+      <PollComposer
+        visible={pollOpen}
+        onClose={() => setPollOpen(false)}
+        where="the feed (everyone)"
+        onSend={async (poll) => {
+          await createPollPost(poll, 'everyone');
+          setNotice('Your poll is live on the feed.');
+          await refresh();
+        }}
+      />
       {notice ? <Text accessibilityRole="text" style={styles.notice}>{notice}</Text> : null}
       {error ? <Card style={styles.errorCard}><Text style={styles.errorTitle}>Community feed issue</Text><Text style={styles.muted}>{error}</Text><Button label="Try again" size="sm" variant="secondary" onPress={() => void refresh()} /></Card> : null}
       {loading ? <Text style={styles.muted}>Loading posts…</Text> : null}
@@ -420,7 +434,7 @@ function PostCard({ post, socialPeople, ownId, ownName, onOpen, onLike, onCommen
       <View style={verticalActions ? styles.postDetailLayout : undefined}>
       <View style={verticalActions ? styles.postDetailContent : styles.postContent}>
       <View style={styles.postHead}><View style={styles.postAuthor}><PersonAvatar uid={post.author_id} uri={friend?.avatarUrl ?? null} name={name} size={42} ring="subtle" /><Interactive onPress={() => router.push(post.author_id && post.author_id !== ownId ? routes.profile(post.author_id) : ('/profile' as never))} accessibilityRole="link" accessibilityLabel={`View ${name}'s profile`} style={styles.flex}><View style={styles.nameRow}><Text style={styles.author}>{name}</Text><VerifiedBadge username={post.author_name} uid={post.author_id} /></View><Text style={styles.muted}>{new Date(post.created_at).toLocaleString()}</Text></Interactive></View>{post.visibility === 'friends' ? <Pill label="Friends only" /> : null}{post.reshared_post_id ? <Pill label="Reposted" /> : null}{post.author_id === ownId ? <Button label="Delete" size="sm" variant="ghost" icon={<Icon name="trash" size={16} color={colors.error} />} onPress={onDelete} accessibilityLabel="Delete post" /> : null}</View>
-      {post.stump && stumped ? <StumpCard postId={post.id} question={stumped} stump={post.stump} authorId={post.author_id} authorName={name} ownId={ownId} people={socialPeople} /> : displayBody(post) ? <Interactive onPress={onOpen} accessibilityRole="button" accessibilityLabel="Open post" style={styles.postBodyOpen}><Text style={styles.body}>{displayBody(post)}</Text></Interactive> : null}
+      {post.poll ? <PostPoll postId={post.id} poll={post.poll} nameOf={(uid) => (uid === ownId ? 'You' : (() => { const person = socialPeople.find((item) => item.userId === uid); return person ? personName(person) : null; })())} /> : post.stump && stumped ? <StumpCard postId={post.id} question={stumped} stump={post.stump} authorId={post.author_id} authorName={name} ownId={ownId} people={socialPeople} /> : displayBody(post) ? <Interactive onPress={onOpen} accessibilityRole="button" accessibilityLabel="Open post" style={styles.postBodyOpen}><Text style={styles.body}>{displayBody(post)}</Text></Interactive> : null}
       {post.reshared_post_id ? (
         <View style={styles.reshareBox}>
           <Text style={styles.muted}>Original post by {resharedName}</Text>

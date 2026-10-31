@@ -23,6 +23,7 @@ import {
   type Unsubscribe,
 } from 'firebase/firestore';
 
+import { type Poll, type PollDef, pollOf } from '@/data/polls';
 import { auth, db } from '@/lib/firebase';
 import { cleanMedia, optimized, safeUrl, uploadMedia, uploadVoiceNote } from '@/lib/media';
 import { ONLINE_WITHIN_MS } from '@/lib/presence';
@@ -102,6 +103,7 @@ export type CommunityPost = {
   reshares: number;
   my_reaction: 'like' | null;
   stump?: StumpRef | null; // a "Stump a friend" question (data/stumps.ts)
+  poll?: Poll | null; // a poll (data/polls.ts): question, options and results
   /** Learners who have seen the post (once each); null until the first view is counted. */
   views?: number | null;
   /** Who can see this post: 'everyone' (default) or 'friends' (mutual follows). */
@@ -163,7 +165,7 @@ export type CommunityMessage = {
  * id, plus the sender's note) and 'stumpAnswer' (id = the stump message id,
  * plus the picked option and whether it was right).
  */
-export type MessageShare = { kind: string; uid: string; username: string | null; id: string; text: string; note?: string; pick?: number; ok?: boolean };
+export type MessageShare = { kind: string; uid: string; username: string | null; id: string; text: string; note?: string; pick?: number; ok?: boolean; poll?: Poll | null };
 
 export function shareOf(value: unknown): MessageShare | null {
   if (!value || typeof value !== 'object') return null;
@@ -178,6 +180,8 @@ export function shareOf(value: unknown): MessageShare | null {
     ...(typeof s.note === 'string' ? { note: s.note } : {}),
     ...(typeof s.pick === 'number' ? { pick: s.pick } : {}),
     ...(typeof s.ok === 'boolean' ? { ok: s.ok } : {}),
+    // A poll (data/polls.ts): its question, options and results.
+    ...(s.kind === 'poll' ? { poll: pollOf(s.poll) } : {}),
   };
 }
 
@@ -342,6 +346,7 @@ async function postsFrom(rows: readonly { id: string; data: () => DocumentData }
       reshares: 0, // not counted by the shared rules
       my_reaction: liked[index] ? 'like' : null,
       stump: readStump(d),
+      poll: pollOf(d.poll),
       views: readViews(d),
       visibility: (d.visibility === 'friends' ? 'friends' : 'everyone') as 'everyone' | 'friends',
     };
@@ -450,6 +455,34 @@ export async function createCommunityPost(
     media_type: uploaded[0]?.t ?? null, media_url: uploaded[0]?.url ?? null, media_list: mediaList(uploaded),
     reshared_post_id: resharedPostId ?? null, created_at: new Date().toISOString(), reactions: 0, comments: 0, reshares: 0, my_reaction: null,
     stump: stump ?? null,
+    visibility: visibility === 'friends' ? 'friends' : 'everyone',
+  };
+}
+
+/** A poll on the feed (data/polls.ts). Its question is also the post's title and text. */
+export async function createPollPost(poll: PollDef, visibility: 'everyone' | 'friends' = 'everyone'): Promise<CommunityPost> {
+  const me = await myUsername();
+  const text = poll.q.padEnd(3, PAD);
+  const ref = doc(collection(db, 'posts'));
+  await setDoc(ref, {
+    board: 'general',
+    title: text.slice(0, 120),
+    body: text,
+    authorUid: me.uid,
+    authorName: me.username,
+    replyCount: 0,
+    likeCount: 0,
+    createdAt: serverTimestamp(),
+    lastActivityAt: serverTimestamp(),
+    visibility: visibility === 'friends' ? 'friends' : 'everyone',
+    poll: { q: poll.q, opts: poll.opts, multi: poll.multi, anon: poll.anon },
+  });
+  return {
+    id: ref.id, author_id: me.uid, author_name: me.username, body: text, media_path: null,
+    media_type: null, media_url: null, media_list: [],
+    reshared_post_id: null, created_at: new Date().toISOString(), reactions: 0, comments: 0, reshares: 0, my_reaction: null,
+    stump: null,
+    poll: { ...poll, counts: poll.opts.map(() => 0), total: 0, voters: poll.anon ? null : {}, names: {} },
     visibility: visibility === 'friends' ? 'friends' : 'everyone',
   };
 }
