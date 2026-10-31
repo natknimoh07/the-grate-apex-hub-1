@@ -79,3 +79,9 @@ it('typed set answers are right in any order, with or without brackets', () => {
   assert.ok(!typedAnswerMatches('{−3, −2, −1, 1}', accept));
 });
 
+
+it('no question bank has options that lost their symbols (scripts/audit-missing-symbols.mjs)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const out = execFileSync('node', ['scripts/audit-missing-symbols.mjs'], { encoding: 'utf8' });
+  assert.match(out, /Total flagged: 0/, out);
+});
