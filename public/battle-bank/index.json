@@ -91,7 +91,7 @@
   {
    "id": "hb2-physiology",
    "name": "Physiology",
-   "total": 2423,
+   "total": 2426,
    "topics": [
     {
      "id": "cardiovascular-physiology",
@@ -99,7 +99,7 @@
      "easy": 189,
      "medium": 45,
      "hard": 0,
-     "unrated": 236
+     "unrated": 237
     },
     {
      "id": "respiratory-physiology",
@@ -131,7 +131,7 @@
      "easy": 187,
      "medium": 0,
      "hard": 0,
-     "unrated": 116
+     "unrated": 118
     },
     {
      "id": "renal-physiology",
@@ -297,7 +297,7 @@
   {
    "id": "biolchem",
    "name": "Biological Chemistry",
-   "total": 978,
+   "total": 980,
    "topics": [
     {
      "id": "Acid-Base Chemistry",
@@ -369,7 +369,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 11
+     "unrated": 12
     },
     {
      "id": "Carbohydrates",
@@ -625,7 +625,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 11
+     "unrated": 12
     },
     {
      "id": "Nucleic Acid Analogues",
@@ -864,7 +864,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1650,
+   "total": 1659,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -888,7 +888,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 121
+     "unrated": 128
     },
     {
      "id": "Cell Structure & Organelles",
@@ -960,7 +960,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 208
+     "unrated": 209
     },
     {
      "id": "Prions & Transmissible Spongiform Encephalopathies",
@@ -984,7 +984,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 192
+     "unrated": 193
     }
    ]
   },
@@ -1446,7 +1446,7 @@
   {
    "id": "bmc",
    "name": "Basic Medical Chemistry",
-   "total": 718,
+   "total": 719,
    "topics": [
     {
      "id": "Acidity & Salts",
@@ -1670,7 +1670,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 39
+     "unrated": 40
     },
     {
      "id": "Organohalogen Compounds",
@@ -1789,7 +1789,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 728,
+   "total": 769,
    "topics": [
     {
      "id": "Absolute Value & Inequalities",
@@ -1845,7 +1845,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 10
     },
     {
      "id": "Combinations",
@@ -1861,7 +1861,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 10
     },
     {
      "id": "Continuity at a Point",
@@ -1893,7 +1893,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 7
     },
     {
      "id": "Curve Analysis",
@@ -1901,7 +1901,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 14
+     "unrated": 17
     },
     {
      "id": "DEs & Partial Derivatives",
@@ -1909,7 +1909,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 9
     },
     {
      "id": "Determinants",
@@ -1941,7 +1941,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 11
+     "unrated": 12
     },
     {
      "id": "Domain of Functions",
@@ -1981,7 +1981,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 16
+     "unrated": 17
     },
     {
      "id": "Evaluating Limits",
@@ -2013,7 +2013,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 10
     },
     {
      "id": "First Principles & Rules",
@@ -2021,7 +2021,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 13
     },
     {
      "id": "Foundations",
@@ -2061,7 +2061,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 11
+     "unrated": 13
     },
     {
      "id": "General",
@@ -2085,7 +2085,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 14
     },
     {
      "id": "Identities",
@@ -2093,7 +2093,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 10
+     "unrated": 14
     },
     {
      "id": "Implicit & Higher-Order",
@@ -2101,7 +2101,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 7
     },
     {
      "id": "Indices",
@@ -2205,7 +2205,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 9
     },
     {
      "id": "Log, Exp & Trig",
@@ -2213,7 +2213,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 13
     },
     {
      "id": "Logarithms & Indices",
@@ -2405,7 +2405,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 6
     },
     {
      "id": "Quadratic Equations by Factorization",
@@ -2429,7 +2429,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 8
     },
     {
      "id": "Sequences & Factorials",
@@ -2469,7 +2469,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 2
     },
     {
      "id": "Set Operations & Laws",
@@ -2533,7 +2533,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 8
     },
     {
      "id": "Summation Notation & Set Theory",
@@ -2557,7 +2557,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 17
+     "unrated": 18
     },
     {
      "id": "Trigonometric",
@@ -2604,7 +2604,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 417,
+   "total": 422,
    "topics": [
     {
      "id": "Addition Rule",
@@ -2612,7 +2612,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 5
     },
     {
      "id": "Bernoulli Distribution",
@@ -2708,7 +2708,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 8
     },
     {
      "id": "Data & Measurement",
@@ -2836,7 +2836,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 10
     },
     {
      "id": "Gamma Distribution",
@@ -2948,7 +2948,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 6
     },
     {
      "id": "Poisson Approximation to Binomial",
@@ -3004,7 +3004,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 4
     },
     {
      "id": "Quartiles – Worked Example",
@@ -3522,7 +3522,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 866,
+   "total": 870,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -3714,7 +3714,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 150
+     "unrated": 151
     },
     {
      "id": "Excel & Spreadsheet Functions",
@@ -3826,7 +3826,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 7
     },
     {
      "id": "Getting Started with Excel",
@@ -4090,7 +4090,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 7
     },
     {
      "id": "Rotating Objects",
@@ -5215,7 +5215,7 @@
   {
    "id": "anatomy",
    "name": "Anatomy",
-   "total": 1717,
+   "total": 1718,
    "topics": [
     {
      "id": "A Brief History of Anatomy",
@@ -6063,7 +6063,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 604
+     "unrated": 605
     }
    ]
   },
