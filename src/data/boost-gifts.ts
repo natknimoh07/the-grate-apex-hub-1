@@ -8,9 +8,9 @@
 //
 // Document id: "<from>_<to>_<day>_<n>" (day = days since 1970, n = 0, 1 or 2):
 // the rules check it, which is what limits gifts to 3 per friend per day.
-import { collection, doc, getDocs, limit, query, runTransaction, serverTimestamp, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, limit, query, runTransaction, serverTimestamp, setDoc, where } from 'firebase/firestore';
 
-import { describeBoost, grantPowerup, type Powerup, returnPowerup, takePowerup } from '@/data/learning/powerups';
+import { describeBoost, grantPowerup, type Powerup, returnPowerup, RUNNING_BOOST_ID, takePowerup, takeRunningBoost } from '@/data/learning/powerups';
 import type { PowerupMultiplier } from '@/data/learning/xp-rules';
 import { auth, db } from '@/lib/firebase';
 import { announceGift } from '@/lib/web-push';
@@ -27,17 +27,35 @@ export function describeGiftBoost(boost: { multiplier: number; kind?: 'single' |
 
 const isPermissionDenied = (error: unknown) => (error as { code?: string })?.code === 'permission-denied';
 
-/** Sends one boost from the inventory to a friend. */
+/** The rules allow gifts only between friends: each follows the other (follows/{follower}_{followee}). */
+async function checkFriends(me: string, friend: string): Promise<void> {
+  let mine = true;
+  let theirs = true;
+  try {
+    const [a, b] = await Promise.all([getDoc(doc(db, 'follows', `${me}_${friend}`)), getDoc(doc(db, 'follows', `${friend}_${me}`))]);
+    mine = a.exists();
+    theirs = b.exists();
+  } catch {
+    return; // offline or the reads are used up: let the send itself decide
+  }
+  if (!mine) throw new Error('You need to follow this friend to gift them a boost. Follow them back in Connect, then try again. Your boost is still yours.');
+  if (!theirs) throw new Error('This friend does not follow you back yet. Boosts can only go to friends who follow each other. Your boost is still yours.');
+}
+
+/** Sends one boost to a friend: one from the inventory, or (RUNNING_BOOST_ID) what is left of the boost running now. */
 export async function sendBoostGift(recipientId: string, powerupId: string, fromName: string): Promise<Powerup> {
   const user = auth.currentUser;
   if (!user) throw new Error('Sign in to gift a boost.');
   if (!recipientId) throw new Error('Choose a friend first.');
   if (recipientId === user.uid) throw new Error('Choose a friend, not yourself.');
+  await checkFriends(user.uid, recipientId);
 
-  const boost = await takePowerup(powerupId);
-  if (!boost) throw new Error('That boost is no longer in your inventory.');
+  const boost = powerupId === RUNNING_BOOST_ID ? await takeRunningBoost() : await takePowerup(powerupId);
+  if (!boost) throw new Error(powerupId === RUNNING_BOOST_ID ? 'That boost has ended, or has less than a minute left.' : 'That boost is no longer in your inventory.');
   const kind = boost.kind === 'timed' ? 'timed' : 'single';
-  const day = Math.floor(Date.now() / 86_400_000);
+  // The rules use the server's day; this device's clock may be a little off, or it may be
+  // just past midnight UTC, so the days either side are tried too.
+  const today = Math.floor(Date.now() / 86_400_000);
   const data = {
     from: user.uid,
     to: recipientId,
@@ -49,7 +67,7 @@ export async function sendBoostGift(recipientId: string, powerupId: string, from
     createdAt: serverTimestamp(),
   };
   // Try today's three slots in turn: a slot already used is refused by the rules.
-  for (let n = 0; n < BOOST_GIFTS_PER_FRIEND_PER_DAY; n++) {
+  for (const day of [today, today - 1, today + 1]) for (let n = 0; n < BOOST_GIFTS_PER_FRIEND_PER_DAY; n++) {
     const id = `${user.uid}_${recipientId}_${day}_${n}`;
     try {
       await setDoc(doc(db, 'boostTransfers', id), data);
@@ -63,7 +81,7 @@ export async function sendBoostGift(recipientId: string, powerupId: string, from
     }
   }
   await returnPowerup(boost);
-  throw new Error(`You can gift up to ${BOOST_GIFTS_PER_FRIEND_PER_DAY} boosts to each friend a day, and only to friends (you follow each other). Your boost is still yours.`);
+  throw new Error(`This friend has probably had ${BOOST_GIFTS_PER_FRIEND_PER_DAY} boosts from you today, the most a day, so try again tomorrow. Your boost is still yours.`);
 }
 
 /** Adds every waiting boost gift to the signed-in learner's inventory. Returns what arrived. */

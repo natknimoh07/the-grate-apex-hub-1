@@ -16,7 +16,7 @@ import { Radius, type ThemeColors, Type } from '@/constants/theme';
 import { type AchievementGroup, type AchievementState } from '@/data/achievements';
 import { useAchievements } from '@/data/achievements-store';
 import { describeGiftBoost } from '@/data/boost-gifts';
-import { boostRemainingMs, describeBoost, usePowerups, useActiveBoost } from '@/data/learning/powerups';
+import { boostRemainingMs, describeBoost, MIN_GIFT_SECONDS, RUNNING_BOOST_ID, usePowerups, useActiveBoost } from '@/data/learning/powerups';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // /achievements — hidden; reached from You (profile) and the level-complete
@@ -117,6 +117,7 @@ function BoostPanel() {
         <View style={styles.activeRow} accessibilityLiveRegion="polite">
           <Pill label={`×${active.multiplier} XP active`} tone="gold" />
           <Text style={styles.countdown}>{`${minutes}:${String(seconds).padStart(2, '0')} left`}</Text>
+          {remaining >= MIN_GIFT_SECONDS * 1000 ? <Button label="Gift" size="sm" variant="ghost" onPress={() => setGift({ id: RUNNING_BOOST_ID })} accessibilityLabel="Gift the time left on this boost to a friend" /> : null}
         </View>
       ) : null}
       {timed.length === 0 && single.length === 0 ? <Text style={styles.muted}>Complete an achievement level to earn a boost. Friends can also gift you theirs.</Text> : null}
@@ -133,7 +134,7 @@ function BoostPanel() {
           <Button label="Gift" size="sm" variant="ghost" onPress={() => setGift({ id: item.id })} accessibilityLabel={`Gift ${describeGiftBoost(item)} to a friend`} />
         </View>
       ))}
-      {inventory.length > 0 ? <Button label="Gift a boost to a friend" variant="secondary" size="sm" icon={<Icon name="sparkle" size={15} color={colors.text} />} onPress={() => setGift({ id: null })} style={styles.giftButton} /> : null}
+      {inventory.length > 0 || remaining >= MIN_GIFT_SECONDS * 1000 ? <Button label="Gift a boost to a friend" variant="secondary" size="sm" icon={<Icon name="sparkle" size={15} color={colors.text} />} onPress={() => setGift({ id: null })} style={styles.giftButton} /> : null}
       <GiftBoostSheet visible={gift !== null} boostId={gift?.id ?? null} onClose={() => setGift(null)} />
       {remaining > 0 && timed.length > 0 ? <Text style={styles.muted}>One boost at a time: {timed.length === 1 ? 'the next one starts' : 'the next ones start'} by itself when this one ends.</Text> : null}
     </Card>

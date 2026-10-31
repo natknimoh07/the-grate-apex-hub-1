@@ -9,7 +9,7 @@ import { Sheet } from '@/components/ui/sheet';
 import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { BOOST_GIFTS_PER_FRIEND_PER_DAY, describeGiftBoost, sendBoostGift } from '@/data/boost-gifts';
-import { usePowerups } from '@/data/learning/powerups';
+import { boostRemainingMs, MIN_GIFT_SECONDS, RUNNING_BOOST_ID, useActiveBoost, usePowerups } from '@/data/learning/powerups';
 import { personName, type SocialPerson, useSocial } from '@/data/social';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -23,6 +23,20 @@ export function GiftBoostSheet({ visible, onClose, boostId }: { visible: boolean
   const { user } = useAuth();
   const social = useSocial();
   const inventory = usePowerups();
+  const running = useActiveBoost();
+  // The boost running now can be given too (boosts start as soon as you get them, so it is
+  // often the only one you have): what is left of it goes to the friend.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!visible || !running) return;
+    const timer = setInterval(() => setNow(Date.now()), 15_000);
+    return () => clearInterval(timer);
+  }, [visible, running]);
+  const runningLeft = Math.floor(boostRemainingMs(running, now) / 1000);
+  const runningGift = running && runningLeft >= MIN_GIFT_SECONDS
+    ? { id: RUNNING_BOOST_ID, multiplier: running.multiplier, kind: 'timed' as const, durationSeconds: runningLeft }
+    : null;
+  const choices = runningGift ? [runningGift, ...inventory] : inventory;
   const [chosen, setChosen] = useState<string | null>(boostId ?? null);
   const [friend, setFriend] = useState<SocialPerson | null>(null);
   const [busy, setBusy] = useState(false);
@@ -41,7 +55,7 @@ export function GiftBoostSheet({ visible, onClose, boostId }: { visible: boolean
   }
 
   const friends = social.people.filter((person) => person.relationship === 'friends');
-  const boost = inventory.find((item) => item.id === chosen) ?? null;
+  const boost = choices.find((item) => item.id === chosen) ?? null;
   const myName = social.username ? `@${social.username}` : user?.displayName || 'A friend';
 
   async function send() {
@@ -50,7 +64,7 @@ export function GiftBoostSheet({ visible, onClose, boostId }: { visible: boolean
     setMessage(null);
     try {
       await sendBoostGift(friend.userId, boost.id, myName);
-      setMessage({ text: `${describeGiftBoost(boost)} sent to ${personName(friend)}.`, ok: true });
+      setMessage({ text: `${describeGiftBoost(boost)} sent to ${personName(friend)}. It reaches them the next time their app checks for gifts.`, ok: true });
       setChosen(null);
       setFriend(null);
     } catch (error) {
@@ -74,12 +88,15 @@ export function GiftBoostSheet({ visible, onClose, boostId }: { visible: boolean
       }
     >
       <Text style={styles.label}>BOOST</Text>
-      {inventory.length ? (
+      {choices.length ? (
         <View style={styles.list}>
-          {inventory.map((item) => (
+          {choices.map((item) => (
             <Interactive key={item.id} onPress={() => { setChosen(item.id); setMessage(null); }} accessibilityRole="radio" accessibilityState={{ checked: chosen === item.id }} style={[styles.option, chosen === item.id && styles.optionOn]}>
               <Icon name="sparkle" size={16} color={colors.accentText} />
-              <Text style={styles.optionText}>{describeGiftBoost(item)}</Text>
+              <View style={styles.flex}>
+                <Text style={styles.optionText}>{describeGiftBoost(item)}</Text>
+                {item.id === RUNNING_BOOST_ID ? <Text style={styles.detail}>Running now: the time left goes to your friend and stops for you.</Text> : null}
+              </View>
             </Interactive>
           ))}
         </View>
@@ -113,6 +130,7 @@ function createStyles(colors: ThemeColors) {
     option: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10, borderRadius: 12, borderWidth: 1, borderColor: colors.hairline },
     optionOn: { borderColor: colors.primary, backgroundColor: colors.primarySubtle },
     optionText: { ...Type.callout, flex: 1, color: colors.text, fontWeight: '700' },
+    flex: { flex: 1, minWidth: 0 },
     detail: { ...Type.caption, color: colors.textSecondary },
     actions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 10 },
     message: { ...Type.caption, color: colors.primaryText },

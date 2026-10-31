@@ -208,6 +208,33 @@ export async function takePowerup(id: string): Promise<Powerup | null> {
   return item;
 }
 
+/** The id the gift sheet uses for the boost that is running now. */
+export const RUNNING_BOOST_ID = 'running';
+
+/** Shortest running time worth giving: less than a minute left stays with you. */
+export const MIN_GIFT_SECONDS = 60;
+
+/**
+ * Takes the boost that is running now (to gift what is left of it to a friend):
+ * it stops for you, and the time left travels as a timed boost. Boosts start the
+ * moment they arrive (owner, 2026-10-24), so this is often the only boost a learner
+ * has. The next waiting boost, if any, starts straight away. Null when none is running
+ * or less than a minute is left.
+ */
+export async function takeRunningBoost(): Promise<Powerup | null> {
+  await ensureLoaded();
+  const now = Date.now();
+  const left = Math.floor(boostRemainingMs(active, now) / 1000);
+  if (!active || left < MIN_GIFT_SECONDS) return null;
+  const item: Powerup = { id: `${active.id}:rest:${now}`, source: 'gift', sourceId: active.id, multiplier: active.multiplier, earnedAt: now, kind: 'timed', durationSeconds: clampSeconds(left) };
+  active = null;
+  startNextTimed(now);
+  scheduleNextStart();
+  await save();
+  notify();
+  return item;
+}
+
 /** The inventory, outside React (emulator checks). */
 export function powerupInventory(): readonly Powerup[] {
   return inventory;
@@ -264,6 +291,8 @@ export async function returnPowerup(powerup: Powerup) {
   if (powerup.id.endsWith(':active')) return; // a running boost was not used up
   if (inventory.some((item) => item.id === powerup.id)) return;
   inventory = ordered([powerup, ...inventory]);
+  // A timed boost that comes back (a gift that could not be sent) runs again straight away.
+  if (powerup.kind === 'timed' && startNextTimed(Date.now())) scheduleNextStart();
   await save();
   notify();
 }
