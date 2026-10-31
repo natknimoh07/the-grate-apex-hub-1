@@ -4,7 +4,7 @@ import { Text } from '@/components/ui/text';
 
 import { useLearning } from '@/data/learning/use-learning';
 import { syncLearningEvents } from '@/data/learning/events';
-import { syncLearningProgress } from '@/data/progress';
+import { syncLearningProgress, watchCloudProgress } from '@/data/progress';
 import { syncQuestionHistory } from '@/data/question-history';
 import { projectScheduleToCloud, syncLegacyReviewSchedule } from '@/data/review';
 import { syncQuizHistory } from '@/data/quiz-history';
@@ -89,6 +89,8 @@ export function LearningSync() {
     }
     const appStateSubscription = AppState.addEventListener('change', onAppState);
     void syncLocalLearning(true);
+    // XP and lessons from the learner's other devices, as soon as they are saved.
+    const stopWatching = watchCloudProgress(session.user.id);
 
     return () => {
       active = false;
@@ -98,6 +100,7 @@ export function LearningSync() {
         window.removeEventListener('focus', onFocus);
       }
       appStateSubscription.remove();
+      stopWatching();
     };
   }, [session?.user.id]);
 

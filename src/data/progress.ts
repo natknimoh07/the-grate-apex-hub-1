@@ -1,9 +1,11 @@
+import { doc, onSnapshot } from 'firebase/firestore';
 import { useSyncExternalStore } from 'react';
 
 import { findLesson, getSubjectTopics } from '@/data/curriculum';
 import { isLegacyLessonId } from '@/data/legacy-ids';
 import type { SubjectId } from '@/data/lesson-types';
 import {
+  forgetCompletionsCache,
   getAuthenticatedLearningUserId,
   loadCloudProgress,
   readLearningCache,
@@ -37,6 +39,7 @@ import {
   weekKeyOf,
 } from '@/data/learning/streak-rules';
 import { track } from '@/lib/analytics';
+import { db } from '@/lib/firebase';
 
 // XP, level, streak and completed lessons — persisted with AsyncStorage
 // (account-scoped) and synced with cloud progress.
@@ -367,6 +370,57 @@ async function repairStreakFromHistory() {
 export async function syncLearningProgress() {
   await ensureProgressLoaded();
   await syncProgressWithCloud(true);
+}
+
+// Progress made on another device, as it happens (owner, 2026-10-31: XP earned or a lesson
+// completed on the laptop did not show on the phone, which then saved its lower XP). The
+// progress document is watched live — one read, then one per change — and when another
+// device is ahead (more XP or more lessons) this device syncs at once, at most every 20 s.
+const WATCH_SYNC_GAP_MS = 20_000;
+
+export function watchCloudProgress(userId: string): () => void {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  let lastRun = 0;
+  let lessonsChanged = false;
+  const syncSoon = (moreLessons: boolean) => {
+    lessonsChanged ||= moreLessons;
+    if (timer) return;
+    timer = setTimeout(() => {
+      timer = null;
+      lastRun = Date.now();
+      if (lessonsChanged) forgetCompletionsCache();
+      lessonsChanged = false;
+      void syncLearningProgress().catch((error) => console.warn('Could not sync progress from another device:', error));
+    }, Math.max(0, lastRun + WATCH_SYNC_GAP_MS - Date.now()));
+  };
+  const stop = onSnapshot(
+    doc(db, 'progress', userId),
+    (snap) => {
+      // Our own writes, and the saved copy shown before the server answers, are not news.
+      if (snap.metadata.hasPendingWrites || snap.metadata.fromCache) return;
+      const data = snap.data();
+      if (!data) return;
+      void ensureProgressLoaded().then(async () => {
+        if ((await getAuthenticatedLearningUserId()) !== userId) return;
+        const remoteXp = Math.max(0, (Number(data.xp) || 0) - progress.pendingPenalty);
+        const moreLessons = (Number(data.lessonsDone) || 0) > progress.completedLessons.length;
+        if (remoteXp > progress.xp) {
+          // Shown at once, and anything saved from here on carries the higher XP (a save
+          // from this device with its old XP used to lower the account's XP).
+          progress.xp = remoteXp;
+          progress.level = levelFor(progress.xp);
+          await saveProgress();
+          notify();
+          syncSoon(moreLessons);
+        } else if (moreLessons) syncSoon(true);
+      });
+    },
+    () => undefined // offline or signed out: the sync on return still runs
+  );
+  return () => {
+    stop();
+    if (timer) clearTimeout(timer);
+  };
 }
 
 async function flushPendingPenalty() {

@@ -249,6 +249,11 @@ export async function loadCloudProgress(): Promise<CloudProgress | null> {
 const COMPLETIONS_KEEP_MS = 30 * 60_000;
 let completionsCache: { userId: string; at: number; stored: Map<string, StoredCompletion> } | null = null;
 
+/** Another device completed a lesson: the next sync reads the completions again. */
+export function forgetCompletionsCache() {
+  completionsCache = null;
+}
+
 async function readCompletionDocs(userId: string): Promise<Map<string, StoredCompletion> | null> {
   if (completionsCache && completionsCache.userId === userId && Date.now() - completionsCache.at < COMPLETIONS_KEEP_MS) {
     return new Map(completionsCache.stored);
@@ -366,6 +371,8 @@ export async function saveCloudProgress(
       progressDocRef,
       {
         xp: stats.total_xp,
+        // How many lessons are done: another device that sees more than it has reads them again.
+        ...(completedLessons.length ? { lessonsDone: completedLessons.length } : {}),
         streak: stats.current_streak,
         lastActivityDate: stats.last_activity_date,
         ...streakFields(stats),
