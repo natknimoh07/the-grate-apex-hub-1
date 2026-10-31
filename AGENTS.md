@@ -10,7 +10,9 @@ The current project is an early prototype. The initial intended subjects are:
 * Biochemistry
 * Physiology
 
-Lecture material lives in `content/<SUBJECT>/` and is the source of truth. Do not invent or permanently add course content that has not been provided.
+Lecture material lives in `content/<SUBJECT>/` and is the source of truth.
+
+**HB1 sources (owner, 2026-10-31):** the Human Biology folder (`C:\Users\User\OneDrive\Desktop\HUMAN BIOLOGY\HB1`, first and second semester: lectures, past-question PDFs, quizzes, tutorials, textbooks) is part of the content and the source for every HB1 question bank in `public/curriculum/*.json` (algebra, statistics, medical genetics, computer appreciation, biological chemistry, basic medical chemistry, cell structure, anatomy 1, biochemistry 1, physiology 1, behavioural science, entomology). When a question is reported or looks damaged, check it against these files first. `node scripts/audit-missing-symbols.mjs` finds questions that lost symbols (the test in `tests/question-report-fixes.test.mjs` keeps it at 0). Do not invent or permanently add course content that has not been provided.
 
 The first real topic is Biochemistry → Fatty Acid Biosynthesis. The earlier Glycolysis test content has been removed.
 

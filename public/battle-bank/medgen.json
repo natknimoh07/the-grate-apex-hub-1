@@ -155,7 +155,7 @@
 {"id":"p:s2:1vyk56l","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"Which one of the following occurs in zygotene?","options":["Synapsis","Chiasmata","Terminalisation","Crossing over"],"answer":0},
 {"id":"p:s2:ezdibb","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"Division of centromere occurs during.","options":["Prophase","Telophase","Anaphase","Metaphase"],"answer":2},
 {"id":"p:s2:101sa6","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"The progress of cell cycle is regulated by:","options":["All of these","Myosins","Actins","Cyclins"],"answer":3},
-{"id":"p:s2:sise1b","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"Decision for cell division is made during:","options":["M phase","S phase","G₂ phase","G₀ phase"],"answer":1},
+{"id":"p:s2:sise1b","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"Decision for cell division is made during:","options":["M phase","S phase","G₂ phase","G₁ phase"],"answer":3},
 {"id":"p:s2:12kgesq","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"In meiosis, DNA is replicated only once but the nucleus divides twice.","options":["false","True"],"answer":1},
 {"id":"p:s2:ampkja","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"Syneptonemal complexes are lacking in the meiosis of:","options":["Male C.elegans","Female diptera","Male odonata","Male diptera"],"answer":3},
 {"id":"p:s2:1qt6h41","topic":"Cell Cycle, Mitosis & Meiosis","level":null,"prompt":"Which one of the following functions to block the cell cycle, if the DNA is damaged?","options":["p53","Cyclin","CDK","p27"],"answer":0},
