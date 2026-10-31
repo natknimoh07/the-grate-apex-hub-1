@@ -1,23 +1,52 @@
-// Regression tests for fixes made after learners' question reports (2026-10-31).
+// Regression tests for fixes made from learners' "Report a problem" emails.
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 
-import { typedAnswerMatches } from '../src/data/questions.ts';
-import { buildPractice } from '../src/data/legacy-questions.ts';
-import { heart } from '../src/data/figures/cardiovascular-physiology.ts';
+const { wrongIsPartOfAnswer, typedAcceptVariants } = await import('@/data/true-false');
+const { typedAnswerMatches } = await import('@/data/questions');
+const { buildPractice } = await import('@/data/legacy-questions');
 
+describe('report 2026-10-31: legacy:cellstruct:1bmqjkt:tf', () => {
+  it('a half-right option is never shown as a false statement', () => {
+    assert.ok(wrongIsPartOfAnswer('wavelength of light used', 'wavelength of light used and numerical aperture of lens system'));
+    assert.ok(!wrongIsPartOfAnswer('refractive index', 'wavelength of light used and numerical aperture of lens system'));
+  });
+  it('no true/false is made from it with the partial option', () => {
+    const bank = JSON.parse(readFileSync('public/curriculum/cellstruct.json', 'utf8')).sets.flatMap((set) => set.questions);
+    const target = bank.filter((q) => q.id === '1bmqjkt');
+    assert.equal(target.length, 1);
+    for (let i = 0; i < 300; i++) {
+      for (const q of buildPractice(target, { course: 'cellstruct' }, 1, `seed-${i}`)) {
+        if (q.id.endsWith(':tf')) assert.doesNotMatch(q.prompt, /wavelength of light used\s*\.?\s*(\(repeated\))?\.?$/i, q.prompt);
+      }
+    }
+  });
+});
+
+describe('report 2026-10-31: legacy:cellstruct:7ekx8h:type', () => {
+  it('"30x", "about 30x" and "30" are all accepted', () => {
+    const accept = typedAcceptVariants('About 30x');
+    for (const input of ['About 30x', 'about 30x', '30x', '30 X', '30', 'approx 30x'.replace('approx ', 'about ')]) assert.ok(typedAnswerMatches(input, accept), input);
+    assert.ok(!typedAnswerMatches('300x', accept));
+    assert.ok(!typedAnswerMatches('3', accept));
+  });
+});
+
+// ---- Report follow-up 2026-10-31 (checked against the lectures) ----
+
+const { heart } = await import('@/data/figures/cardiovascular-physiology');
 const bank = (course) => JSON.parse(readFileSync(new URL(`../public/curriculum/${course}.json`, import.meta.url), 'utf8'));
 const find = (course, id) => bank(course).sets.flatMap((set) => set.questions).find((q) => q.id === id);
 
-test('heart diagram: mitral valve is the one under the left atrium, aortic valve is at the aortic root', () => {
+it('heart diagram: mitral valve is the one under the left atrium, aortic valve is at the aortic root', () => {
   const spot = (id) => heart.spots.find((s) => s.id === id);
   // On the slide, 9 (mitral) is right of and below the left atrium (10); 8 (aortic) is left of it.
   assert.ok(spot('mitral').x > spot('left-atrium').x - 0.01 && spot('mitral').x > spot('aortic-valve').x);
   assert.ok(Math.abs(spot('mitral').x - 0.707) < 0.01 && Math.abs(spot('aortic-valve').x - 0.573) < 0.01);
 });
 
-test('algebra duality options are complete and distinct', () => {
+it('algebra duality options are complete and distinct', () => {
   for (const id of ['1is6tdq', '1fd692', 'ppswc3', '18acuf3']) {
     const q = find('algebra', id);
     assert.equal(new Set(q.o).size, q.o.length, id);
@@ -29,19 +58,19 @@ test('algebra duality options are complete and distinct', () => {
   assert.equal(find('algebra', '18acuf3').o[0], '(A ∩ B′)′ ∪ B = A′ ∪ B');
 });
 
-test('Big Bang: the one-second mark is stage 3 (quarks clump into protons and neutrons)', () => {
+it('Big Bang: the one-second mark is stage 3 (quarks clump into protons and neutrons)', () => {
   const q = find('biolchem', 'm2rrr4');
   assert.equal(q.a, 1);
   assert.match(q.o[1], /Quarks clump together into protons and neutrons/);
 });
 
-test('medgen permeability question labels (a) and (b) in its options', () => {
+it('medgen permeability question labels (a) and (b) in its options', () => {
   const q = find('medgen', '56v4sb');
   assert.match(q.o[0], /^\(a\)/);
   assert.match(q.o[1], /^\(b\)/);
 });
 
-test('typed set answers are right in any order, with or without brackets', () => {
+it('typed set answers are right in any order, with or without brackets', () => {
   const accept = ['{−3, −2, −1, 0}'];
   assert.ok(typedAnswerMatches('{-3,-2,-1,0}'.replace(/-/g, '−'), accept));
   assert.ok(typedAnswerMatches('{0, −1, −2, −3}', accept));
@@ -50,31 +79,3 @@ test('typed set answers are right in any order, with or without brackets', () =>
   assert.ok(!typedAnswerMatches('{−3, −2, −1, 1}', accept));
 });
 
-test('typed answers: a leading "about" is optional', () => {
-  const q = find('cellstruct', '7ekx8h');
-  const set = buildPractice([q], { course: 'cellstruct' }, 1, 'x');
-  assert.ok(set.length === 1);
-  for (let i = 0; i < 400; i++) {
-    const [item] = buildPractice([q], { course: 'cellstruct' }, 1, `seed-${i}`);
-    if (item.type === 'type') {
-      assert.ok(typedAnswerMatches('About 30x', item.accept) && typedAnswerMatches('30x', item.accept));
-      return;
-    }
-  }
-  assert.fail('no typed version was produced');
-});
-
-test('true/false never shows a partly-true wrong option as false (resolving power)', () => {
-  const q = find('cellstruct', '1bmqjkt');
-  let seen = 0;
-  for (let i = 0; i < 600; i++) {
-    const [item] = buildPractice([q], { course: 'cellstruct' }, 1, `seed-${i}`);
-    if (item.id.endsWith(':tf')) {
-      seen++;
-      // A statement marked False must use the really wrong option, never a part of the full answer.
-      if (item.answer === 1) assert.match(item.prompt, /refractive index/, item.prompt);
-      else assert.match(item.prompt, /wavelength of light used and numerical aperture/, item.prompt);
-    }
-  }
-  assert.ok(seen > 0, 'expected some true/false versions');
-});

@@ -1,7 +1,7 @@
 // Pure helpers for the original app's lessons and questions (no React Native,
 // no Firebase), so the tests can check them. Used by data/legacy-study.ts.
 import type { Question } from '@/data/questions';
-import { trueFalseStatement } from '@/data/true-false';
+import { trueFalseStatement, typedAcceptVariants, wrongIsPartOfAnswer } from '@/data/true-false';
 
 export type BankQuestion = { id: string; q: string; o: string[]; a: number; e: string; t: string; p?: string[]; kind?: 'input'; ans?: string; img?: string; tp?: string };
 
@@ -96,9 +96,7 @@ export function buildPractice(source: readonly (BankQuestion & { setName?: strin
     if (original.type === 'choice' && !q.img && q.o.length >= 3 &&!/\bexcept\b|\bnot\b/i.test(q.q)) {
       const answer = plainText(q.o[q.a]);
       if (roll < 0.15 && short(answer) && !/which of the following/i.test(q.q)) {
-        // "About 30x" is also right as "30x" (a leading "about / approximately / around" is only a hedge).
-        const bare = answer.replace(/^(about|approximately|approx\.?|around|roughly|nearly)\s+/i, '');
-        out.push({ ...original, id: `${original.id}:type`, type: 'type', accept: bare !== answer ? [answer, bare] : [answer], label: 'Type the answer' } as Question);
+        out.push({ ...original, id: `${original.id}:type`, type: 'type', accept: typedAcceptVariants(answer), label: 'Type the answer' } as Question);
         continue;
       }
       if (roll < 0.3) {
@@ -109,7 +107,7 @@ export function buildPractice(source: readonly (BankQuestion & { setName?: strin
         const shown = showCorrect || !wrong.length ? answer : wrong[Math.floor(random() * wrong.length)];
         // Asked as one plain statement ("Hydrolase is the enzyme type that…"); a question
         // that does not read well as a statement stays as written.
-        const statement = trueFalseStatement(plainText(q.q), shown);
+        const statement = !showCorrect && wrongIsPartOfAnswer(shown, answer) ? null : trueFalseStatement(plainText(q.q), shown);
         if (statement) {
           out.push({ ...original, id: `${original.id}:tf`, type: 'choice', prompt: statement, options: ['True', 'False'], answer: shown === answer ? 0 : 1, fixedOrder: true, label: 'True or false' } as Question);
           continue;
