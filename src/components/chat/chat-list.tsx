@@ -2,6 +2,7 @@ import { router, useFocusEffect, type Href } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { FriendStreakBadge } from '@/components/social/friend-streak-badge';
 import { PersonAvatar } from '@/components/social/profile-card';
 import { NewGroupSheet } from '@/components/chat/group-info';
 import { Avatar } from '@/components/ui/avatar';
@@ -14,12 +15,10 @@ import { VerifiedBadge } from '@/components/ui/verified-badge';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { isChatMuted, MUTE_ALWAYS, MUTE_CHOICES, muteChat, PIN_LIMIT, toggleArchivedChat, togglePinnedChat, useChatListPrefs } from '@/data/chat-list-prefs';
 import { listMyConversations, type ConversationSummary } from '@/data/community';
-import { loadFriendStreak } from '@/data/friend-streak-store';
+import { useFriendStreakBadges } from '@/data/friend-streak-badges';
 import { personName, refreshFriendPresence, useSocial } from '@/data/social';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
-
-const streaks = new Map<string, { at: number; value: number }>();
 
 function when(at: number) {
   const minutes = Math.max(0, Math.round((Date.now() - at) / 60_000));
@@ -44,7 +43,6 @@ export function ChatList({ activeId, onOpen, onOpenGroup }: { activeId?: string 
   const [compose, setCompose] = useState(false);
   const [newGroup, setNewGroup] = useState(false);
   const [groups, setGroups] = useState<GroupSummary[]>([]);
-  const [, setTick] = useState(0);
   const prefs = useChatListPrefs();
   const [showArchived, setShowArchived] = useState(false);
   const [actions, setActions] = useState<{ id: string; label: string } | null>(null);
@@ -61,20 +59,15 @@ export function ChatList({ activeId, onOpen, onOpenGroup }: { activeId?: string 
       if (!live) return;
       setChats(list);
       setGroups(mine);
-      // Friend streaks for the first chats (cached for 10 minutes).
-      for (const chat of list.slice(0, 12)) {
-        const hit = streaks.get(chat.id);
-        if (hit && Date.now() - hit.at < 10 * 60_000) continue;
-        const status = user && chat.otherId ? await loadFriendStreak(chat.otherId).catch(() => null) : null;
-        streaks.set(chat.id, { at: Date.now(), value: status?.streak ?? 0 });
-        if (live) setTick((n) => n + 1);
-      }
     };
     void load();
     const timer = setInterval(() => void load(), 15_000);
     return () => { live = false; clearInterval(timer); };
   }, [user]));
 
+  // Friend streaks beside each chat, like Snapchat (data/friend-streak-badges.ts): the
+  // last values seen show at once; the 12 newest chats are refreshed every 10 minutes.
+  const streaks = useFriendStreakBadges((chats ?? []).map((chat) => chat.otherId).filter(Boolean));
   const q = query.trim().toLowerCase();
   const nameOf = (uid: string, fallback: string | null) => {
     const person = known.get(uid);
@@ -155,7 +148,6 @@ export function ChatList({ activeId, onOpen, onOpenGroup }: { activeId?: string 
           const chat = entry.chat;
           const person = known.get(chat.otherId);
           const label = nameOf(chat.otherId, chat.otherName);
-          const streak = streaks.get(chat.id)?.value ?? 0;
           const active = chat.otherId === activeId;
           return (
             <Interactive key={chat.id} onPress={() => onOpen(chat.otherId, label)} onLongPress={() => openActions(chat.id, label)} onContextMenu={() => openActions(chat.id, label)} accessibilityHint="Long-press for pin, archive and mute" accessibilityRole="link" accessibilityLabel={`Chat with ${label}${chat.unread ? ', unread' : ''}`} style={({ hovered }) => [styles.row, (active || hovered) && styles.rowActive]}>
@@ -165,12 +157,7 @@ export function ChatList({ activeId, onOpen, onOpenGroup }: { activeId?: string 
                   <Text style={[styles.name, chat.unread && styles.bold]} numberOfLines={1}>{label}</Text>
                   <VerifiedBadge username={person?.username ?? chat.otherName} uid={chat.otherId} size={13} />
                   {flags(chat.id)}
-                  {streak > 0 ? (
-                    <View style={styles.streakBadge} accessibilityLabel={`${streak}-day friend streak`}>
-                      <Icon name="streak" size={12} color={colors.accentText} filled />
-                      <Text style={styles.streak}>{streak}</Text>
-                    </View>
-                  ) : null}
+                  <FriendStreakBadge badge={streaks[chat.otherId]} size="sm" />
                 </View>
                 <Text style={[styles.preview, chat.unread && styles.previewUnread]} numberOfLines={1}>{chat.lastFromMe ? 'You: ' : ''}{chat.lastText} · {when(chat.lastAt)}</Text>
               </View>

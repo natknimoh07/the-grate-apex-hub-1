@@ -11,6 +11,7 @@ import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { QuestionFigure } from '@/components/learning/figure-view';
+import { FriendStreakBadge } from '@/components/social/friend-streak-badge';
 import { PersonAvatar } from '@/components/social/profile-card';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -21,10 +22,12 @@ import { Sheet } from '@/components/ui/sheet';
 import { Text } from '@/components/ui/text';
 import { Radius, Type, type ThemeColors } from '@/constants/theme';
 import type { StumpRef } from '@/data/community';
+import { useFriendStreakBadges } from '@/data/friend-streak-badges';
 import { type GroupSummary, listMyGroups } from '@/data/group-chat';
 import type { ChoiceQuestion } from '@/data/questions';
 import { personName, type SocialPerson, useSocial } from '@/data/social';
 import { answerStump, canLoadStumpQuestion, LETTERS, listStumpAnswers, loadStumpQuestion, sendStump, STUMP_NOTE_MAX, stumpOptionOrder, stumpQuestion, type StumpAnswer, type StumpSendResult } from '@/data/stumps';
+import { addStampShortcut, removeStampShortcut, SHORTCUT_LIMIT, SHORTCUT_NAME_MAX, useStampShortcuts } from '@/data/stamp-shortcuts';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const errorText = (caught: unknown, fallback: string) => (caught instanceof Error && caught.message ? caught.message : fallback);
@@ -232,7 +235,13 @@ export function StumpComposer({ question, onClose, feed = true, friendIds = [], 
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
   const social = useSocial();
-  const friends = social.people.filter((person) => person.relationship === 'friends');
+  const allFriends = social.people.filter((person) => person.relationship === 'friends');
+  // Friend streaks beside each friend, like Snapchat; friends you have a streak with come first (longest first).
+  const streaks = useFriendStreakBadges(allFriends.map((person) => person.userId));
+  const friends = [...allFriends].sort((a, b) => (streaks[b.userId]?.streak ?? 0) - (streaks[a.userId]?.streak ?? 0));
+  // Shortcuts: a saved set of friends, picked with one tap.
+  const shortcuts = useStampShortcuts();
+  const [naming, setNaming] = useState<string | null>(null);
   const [note, setNote] = useState('');
   const [toFeed, setToFeed] = useState(feed);
   const [pickedFriends, setPickedFriends] = useState<string[]>([...friendIds]);
@@ -317,10 +326,57 @@ export function StumpComposer({ question, onClose, feed = true, friendIds = [], 
             <>
               <Text style={styles.section}>Send to</Text>
               <PickRow label="Post to the feed" detail="Everyone you share the feed with can answer." on={toFeed} onPress={() => setToFeed((value) => !value)} leading={<View style={styles.feedIcon}><Icon name="social" size={18} color={colors.primaryText} /></View>} />
+              {shortcuts.length ? <Text style={styles.subSection}>Shortcuts</Text> : null}
+              {shortcuts.length ? (
+                <View style={styles.shortcuts}>
+                  {shortcuts.map((shortcut) => {
+                    const ids = shortcut.friendIds.filter((id) => allFriends.some((person) => person.userId === id));
+                    const on = ids.length > 0 && ids.every((id) => pickedFriends.includes(id));
+                    return (
+                      <View key={shortcut.id} style={[styles.shortcut, on && styles.shortcutOn]}>
+                        <Interactive
+                          onPress={() => setPickedFriends((list) => (on ? list.filter((id) => !ids.includes(id)) : [...new Set([...list, ...ids])]))}
+                          accessibilityRole="checkbox"
+                          accessibilityState={{ checked: on }}
+                          accessibilityLabel={`Shortcut ${shortcut.name}: ${ids.length} friend${ids.length === 1 ? '' : 's'}`}
+                          style={styles.shortcutPick}
+                        >
+                          <Icon name="social" size={14} color={on ? colors.onPrimary : colors.primaryText} />
+                          <Text style={[styles.shortcutText, on && styles.shortcutTextOn]} numberOfLines={1}>{shortcut.name} · {ids.length}</Text>
+                        </Interactive>
+                        <Interactive onPress={() => removeStampShortcut(shortcut.id)} accessibilityRole="button" accessibilityLabel={`Delete the shortcut ${shortcut.name}`} style={styles.shortcutRemove}>
+                          <Icon name="close" size={12} color={on ? colors.onPrimary : colors.textSecondary} />
+                        </Interactive>
+                      </View>
+                    );
+                  })}
+                </View>
+              ) : null}
               {friends.length ? <Text style={styles.subSection}>Friends</Text> : null}
               {friends.map((person) => (
-                <PickRow key={person.userId} label={personName(person)} on={pickedFriends.includes(person.userId)} onPress={() => setPickedFriends((list) => toggle(list, person.userId))} leading={<PersonAvatar uid={person.userId} uri={person.avatarUrl} name={personName(person)} size={32} />} />
+                <PickRow key={person.userId} label={personName(person)} trailing={<FriendStreakBadge badge={streaks[person.userId]} size="sm" />} on={pickedFriends.includes(person.userId)} onPress={() => setPickedFriends((list) => toggle(list, person.userId))} leading={<PersonAvatar uid={person.userId} uri={person.avatarUrl} name={personName(person)} size={32} />} />
               ))}
+              {pickedFriends.length >= 2 && shortcuts.length < SHORTCUT_LIMIT ? (
+                naming === null ? (
+                  <Button label={`Save these ${pickedFriends.length} friends as a shortcut`} size="sm" variant="ghost" onPress={() => setNaming('')} style={styles.another} />
+                ) : (
+                  <View style={styles.row}>
+                    <TextInput
+                      value={naming}
+                      onChangeText={setNaming}
+                      maxLength={SHORTCUT_NAME_MAX}
+                      autoFocus
+                      placeholder="Shortcut name, e.g. Lab partners"
+                      placeholderTextColor={colors.textTertiary}
+                      accessibilityLabel="Shortcut name"
+                      onSubmitEditing={() => { if (addStampShortcut(naming, pickedFriends)) setNaming(null); }}
+                      style={[styles.input, styles.flexInput]}
+                    />
+                    <Button label="Save" size="sm" disabled={!naming.trim()} onPress={() => { if (addStampShortcut(naming, pickedFriends)) setNaming(null); }} />
+                    <Button label="Cancel" size="sm" variant="ghost" onPress={() => setNaming(null)} />
+                  </View>
+                )
+              ) : null}
               {groups?.length ? <Text style={styles.subSection}>Groups</Text> : null}
               {(groups ?? []).map((group) => (
                 <PickRow key={group.id} label={group.name} detail={`${group.memberUids.length} members`} on={pickedGroups.includes(group.id)} onPress={() => setPickedGroups((list) => toggle(list, group.id))} leading={<Avatar name={group.name} size={32} />} />
@@ -348,13 +404,16 @@ export function StumpComposer({ question, onClose, feed = true, friendIds = [], 
   );
 }
 
-function PickRow({ label, detail, on, onPress, leading }: { label: string; detail?: string; on: boolean; onPress: () => void; leading: ReactNode }) {
+function PickRow({ label, detail, on, onPress, leading, trailing }: { label: string; detail?: string; on: boolean; onPress: () => void; leading: ReactNode; trailing?: ReactNode }) {
   const styles = useThemedStyles(createStyles);
   return (
     <Interactive onPress={onPress} accessibilityRole="checkbox" accessibilityState={{ checked: on }} accessibilityLabel={label} style={styles.pickRow}>
       {leading}
       <View style={styles.pickText}>
-        <Text style={styles.pickLabel} numberOfLines={1}>{label}</Text>
+        <View style={styles.pickNameRow}>
+          <Text style={[styles.pickLabel, styles.pickName]} numberOfLines={1}>{label}</Text>
+          {trailing}
+        </View>
         {detail ? <Text style={styles.muted} numberOfLines={1}>{detail}</Text> : null}
       </View>
       <View style={[styles.check, on && styles.checkOn]} />
@@ -401,6 +460,16 @@ function createStyles(colors: ThemeColors) {
     pickRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 6 },
     pickText: { flex: 1, minWidth: 0 },
     pickLabel: { ...Type.callout, color: colors.text },
+    pickNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    pickName: { flexShrink: 1 },
+    shortcuts: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+    shortcut: { flexDirection: 'row', alignItems: 'center', borderRadius: 999, borderWidth: 1, borderColor: colors.primaryBorder, backgroundColor: colors.primarySubtle, maxWidth: '100%' },
+    shortcutOn: { backgroundColor: colors.primary, borderColor: colors.primary },
+    shortcutPick: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 6, paddingLeft: 12, paddingRight: 4, flexShrink: 1 },
+    shortcutText: { fontSize: 13, fontWeight: '700', color: colors.primaryText, flexShrink: 1 },
+    shortcutTextOn: { color: colors.onPrimary },
+    shortcutRemove: { paddingVertical: 6, paddingLeft: 4, paddingRight: 10 },
+    flexInput: { flex: 1, minWidth: 160 },
     feedIcon: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primarySubtle },
     check: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: colors.borderStrong },
     checkOn: { backgroundColor: colors.primary, borderColor: colors.primary },
