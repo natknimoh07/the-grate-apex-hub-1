@@ -486,6 +486,7 @@ export function QuestionSession({
             reviewNote={reviewNote}
             showMeta
             onPictureReady={() => markPictureReady(question.id)}
+            guessed={confidence[question.id] === 'guess'}
           />
           {complete && !timedOut.has(question.id) && !(mode === 'instant' && isChecked) ? (
             <ConfidenceToggle

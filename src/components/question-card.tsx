@@ -61,6 +61,8 @@ type QuestionCardProps = {
   showMeta?: boolean; // difficulty / type chips
   /** Called once the question's picture (diagram or past-paper picture) has loaded. */
   onPictureReady?: () => void;
+  /** The learner marked this answer "Guessing": Explain with AI is offered even when it was right. */
+  guessed?: boolean;
 };
 
 function choiceOrder(question: Extract<Question, { type: 'choice' | 'multi' }>, seed: string) {
@@ -131,6 +133,7 @@ export function QuestionCard({
   compact = false,
   showMeta = false,
   onPictureReady,
+  guessed = false,
 }: QuestionCardProps) {
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
@@ -294,7 +297,7 @@ export function QuestionCard({
             <MemoryHookBox key={`hook:${question.id}`} conceptKey={conceptKey(question.topicId, question.conceptId)} concept={question.concept} />
           ) : null}
           <ShareQuestionButton key={`share:${question.id}`} question={question} />
-          {!correct ? <AiExplain key={question.id} item={explainItem(question, value)} getLesson={() => aiLessonForQuestion(question)} /> : null}
+          {!correct || guessed ? <AiExplain key={question.id} item={{ ...explainItem(question, value), ...(correct ? { picked: null } : {}) }} getLesson={() => aiLessonForQuestion(question)} /> : null}
           <QuestionReportLink key={`report:${question.id}`} question={question} place={courseNameForQuestion(question) ?? 'Quiz'} />
         </View>
       )}
