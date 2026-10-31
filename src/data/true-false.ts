@@ -122,3 +122,31 @@ export function trueFalseStatement(prompt: string, answer: string): string | nul
   }
   return null;
 }
+
+const words = (text: string) => text.toLowerCase().replace(/[^a-z0-9+\s]/g, ' ').replace(/\s+/g, ' ').trim();
+
+/**
+ * True when a WRONG option is only part of the right answer ("wavelength of light
+ * used" vs "wavelength of light used and numerical aperture"). As a true/false
+ * statement it would be half right yet marked False (report 2026-10-31), so such
+ * a question is not turned into true/false.
+ */
+export function wrongIsPartOfAnswer(wrong: string, right: string) {
+  const a = words(wrong);
+  const b = words(right);
+  return a.length > 0 && a !== b && (b.includes(a) || a.includes(b));
+}
+
+/**
+ * Accepted typed answers: the answer itself, without a leading "About" /
+ * "Approximately", and a bare number for a "30x" style magnification
+ * (report 2026-10-31: "About 30x" refused "30x" and "about 30").
+ */
+export function typedAcceptVariants(answer: string): string[] {
+  const out = [answer];
+  const bare = answer.replace(/^(about|approximately|approx\.?|around|roughly|~)\s*/i, '').trim();
+  if (bare && bare !== answer) out.push(bare);
+  const times = /^(\d[\d,.]*)\s*[x×]$/i.exec(bare);
+  if (times) out.push(times[1]);
+  return out;
+}
