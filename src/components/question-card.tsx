@@ -531,6 +531,8 @@ function MatchInput({
   );
 
   const matchedCount = value.filter((choice) => choice >= 0).length;
+  // Matched pairs are numbered 1, 2, 3… down the left column; both cards of a pair carry the same number.
+  const pairNumber = (leftIndex: number) => value.slice(0, leftIndex + 1).filter((choice) => choice >= 0).length;
   const stacked = width < 520;
 
   function chooseLeft(leftIndex: number) {
@@ -560,7 +562,7 @@ function MatchInput({
       <Text style={styles.hint}>
         {matchedCount === question.pairs.length
           ? 'All pairs matched. Tap a matched item to change it.'
-          : 'Tap an item on the left, then its match on the right.'}
+          : `${matchedCount} of ${question.pairs.length} matched · ${activeLeft !== null ? 'now tap its match on the right' : 'tap an item on the left, then its match on the right'}.`}
       </Text>
 
       <View style={[styles.matchColumns, stacked && styles.matchColumnsStacked]}>
@@ -586,6 +588,7 @@ function MatchInput({
                 accessibilityState={{ selected, disabled: revealed }}
                 accessibilityLabel={matched ? `${pair.left}, matched with ${question.pairs[rightIndex].right}` : pair.left}
               >
+                {matched ? <MatchBadge number={pairNumber(leftIndex)} /> : null}
                 <Text style={[styles.matchOptionText, matched && styles.matchTextMatched]}>{pair.left}</Text>
                 {matched && !revealed && (
                   <Text style={styles.matchPartnerText} numberOfLines={2}>
@@ -617,6 +620,7 @@ function MatchInput({
                 accessibilityLabel={question.pairs[rightIndex].right}
                 accessibilityState={{ selected: matched, disabled: revealed || activeLeft === null }}
               >
+                {matched ? <MatchBadge number={pairNumber(leftIndex)} /> : null}
                 <Text style={[styles.matchOptionText, matched && styles.matchTextMatched]}>
                   {question.pairs[rightIndex].right}
                 </Text>
@@ -625,6 +629,16 @@ function MatchInput({
           })}
         </View>
       </View>
+    </View>
+  );
+}
+
+// The number shown on both cards of a matched pair.
+function MatchBadge({ number }: { number: number }) {
+  const styles = useThemedStyles(createStyles);
+  return (
+    <View style={styles.matchBadge} accessible={false}>
+      <Text style={styles.matchBadgeText}>{number}</Text>
     </View>
   );
 }
@@ -744,9 +758,12 @@ function createStyles(colors: ThemeColors) {
       paddingVertical: 10,
       paddingHorizontal: 9,
     },
-    matchOptionSelected: { borderColor: colors.primary, borderWidth: 2, backgroundColor: colors.primarySubtle },
-    matchOptionMatched: { borderColor: colors.primaryBorder, backgroundColor: colors.surface },
-    matchTextMatched: { color: colors.textSecondary },
+    // Picked, waiting for its match: a dashed outline. Matched: filled, with the pair's number.
+    matchOptionSelected: { borderColor: colors.primary, borderWidth: 2, borderStyle: 'dashed', backgroundColor: colors.surface },
+    matchOptionMatched: { borderColor: colors.primary, borderWidth: 1.5, backgroundColor: colors.primarySubtle, paddingLeft: 30 },
+    matchTextMatched: { color: colors.text, fontWeight: '600' },
+    matchBadge: { position: 'absolute', left: 6, top: 6, width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primary },
+    matchBadgeText: { fontSize: 11, fontWeight: '800', color: colors.onPrimary },
     matchRight: { borderColor: colors.success, backgroundColor: colors.successSubtle },
     matchWrong: { borderColor: colors.error, backgroundColor: colors.errorSubtle },
     matchOptionText: { fontSize: 13, lineHeight: 18, color: colors.text, textAlign: 'center' },

@@ -21,6 +21,7 @@ import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { legacyCourse, loadCourseSets, loadLegacyLessons, loadLegacySectionProgress, type LegacyLessonMeta, plainText } from '@/data/legacy-study';
 import { useProgress } from '@/data/progress';
+import { findLesson } from '@/data/curriculum';
 import { useNow } from '@/data/learning/use-learning';
 import { legacyQuestionMemory, legacyReviewFor } from '@/data/legacy-review';
 import { useQuestionHistory } from '@/data/question-history';
@@ -86,7 +87,13 @@ export default function LegacyCourseScreen() {
     const own = lessons.filter((lesson) => lesson.group === group);
     return { total: own.length, done: own.filter((lesson) => completed.has(lesson.id)).length };
   };
-  const totalQuestions = sets ? sets.reduce((sum, set) => sum + set.count, 0) : null;
+  // HB2 lessons are this app's lessons: a topic made of them has its own topic page.
+  const topicIdOf = (group: string) => {
+    const first = lessons.find((lesson) => lesson.group === group);
+    return (first && findLesson(first.id)?.topic.id) || null;
+  };
+  const byTopic = topics.length > 0 && topics.every((group) => topicIdOf(group));
+  const totalQuestions = sets ?sets.reduce((sum, set) => sum + set.count, 0) : null;
 
   return (
     <Screen width="content">
@@ -156,7 +163,11 @@ export default function LegacyCourseScreen() {
 
       {lessons.length ? <CoursePracticeModes course={course} lessons={lessons} sets={sets ?? []} /> : null}
 
-      <SectionHeader title="Lessons" subtitle={lessons.length ? `${lessons.length} lessons in order · ${done} completed` : undefined} style={styles.section} />
+      <SectionHeader
+        title={byTopic ? 'Topics' : 'Lessons'}
+        subtitle={lessons.length ? (byTopic ? `${topics.length} topics in order · tap one to see its lessons · ${done}/${lessons.length} lessons completed` : `${lessons.length} lessons in order · ${done} completed`) : undefined}
+        style={styles.section}
+      />
       {lessons.length === 0 ? (
         <Card tone="insight" style={styles.empty}>
           <Text style={styles.lessonTitle}>Lessons are on the way</Text>
@@ -172,6 +183,9 @@ export default function LegacyCourseScreen() {
           const last = index === lessons.length - 1;
           const newGroup = lesson.group && lesson.group !== lessons[index - 1]?.group;
           const newSection = lesson.section && lesson.section !== lessons[index - 1]?.section;
+          const topicId = lesson.group ? topicIdOf(lesson.group) : null;
+          // In topic view only each topic's first lesson draws anything (its topic card).
+          if (topicId && !newGroup && !newSection) return null;
           return (
             <View key={lesson.id}>
             {newSection && lesson.section ? (() => {
@@ -189,8 +203,8 @@ export default function LegacyCourseScreen() {
               const stats = topicStats(lesson.group);
               const place = topicPlace(lesson.group);
               const number = place.number;
-              return (
-                <View style={[styles.topicHead, number > 1 && styles.topicHeadGap]} accessibilityRole="header">
+              const head = (
+                <>
                   <View style={[styles.topicBadge, stats.done === stats.total && styles.topicBadgeDone]}>
                     {stats.done === stats.total ? <Icon name="check" size={18} color={colors.onPrimary} strokeWidth={2.6} /> : <Text style={styles.topicBadgeText}>{number}</Text>}
                   </View>
@@ -202,10 +216,24 @@ export default function LegacyCourseScreen() {
                       <Text style={styles.meta}>{stats.done}/{stats.total} lessons</Text>
                     </View>
                   </View>
-                </View>
+                </>
+              );
+              // A topic of this app opens its topic page (lessons, quizzes, review, drills); its lessons are not listed here.
+              return topicId ? (
+                <Interactive
+                  onPress={() => router.push(routes.topic(topicId))}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${lesson.group}. Topic ${number} of ${place.total}. ${stats.done} of ${stats.total} lessons completed`}
+                  style={({ hovered }) => [styles.topicHead, styles.topicLink, number > 1 && styles.topicHeadGap, hovered && styles.topicHover]}
+                >
+                  {head}
+                  <Icon name="chevronRight" size={20} color={colors.textSecondary} />
+                </Interactive>
+              ) : (
+                <View style={[styles.topicHead, number > 1 && styles.topicHeadGap]} accessibilityRole="header">{head}</View>
               );
             })() : null}
-            <View style={styles.pathRow}>
+            {topicId ? null : <View style={styles.pathRow}>
               <View style={styles.rail}>
                 <View style={[styles.node, isDone ? styles.nodeDone : started ? styles.nodeActive : null]}>
                   {isDone ? <Icon name="check" size={14} color={colors.onPrimary} strokeWidth={2.6} /> : <Text style={[styles.nodeText, started && { color: colors.primaryText }]}>{index + 1}</Text>}
@@ -248,7 +276,7 @@ export default function LegacyCourseScreen() {
                     </View>
                 </Card>
               </View>
-            </View>
+            </View>}
             </View>
           );
         })}
@@ -289,6 +317,8 @@ function createStyles(colors: ThemeColors) {
     section: { marginTop: 28 },
     topicHead: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 14, paddingHorizontal: 16, marginBottom: 10, borderRadius: 18, backgroundColor: colors.surfaceMuted, borderWidth: 1, borderColor: colors.border },
     topicHeadGap: { marginTop: 22 },
+    topicLink: { backgroundColor: colors.surface },
+    topicHover: { borderColor: colors.primaryBorder },
     sectionBanner: { paddingVertical: 4, marginBottom: 12, gap: 2 },
     sectionBannerGap: { marginTop: 30 },
     sectionBannerKicker: { ...Type.overline, color: colors.textSecondary },
