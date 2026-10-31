@@ -336,7 +336,19 @@ export default function LearnScreen() {
     else if (step === 'label') router.push(routes.labelDiagram());
     else router.push(lessonAction ? lessonAction.href : routes.exam({ kind: 'sprint' }));
   }
-  const studyTiles: Tile[] = [
+  // Done for today (owner, 2026-10-31: "for one day it is enough"): the Daily 10, a spaced
+  // review, the confused pairs and the weakest 20 leave the tiles once finished today and
+  // come back tomorrow. A note under the heading says what is done.
+  const finishedToday = quizzes.filter((quiz) => quiz.completedAt >= todayStart);
+  const doneToday = new Set<string>([
+    ...(questMarks.daily || finishedToday.some((quiz) => quiz.customQuiz?.exam?.kind === 'daily') ? ['daily'] : []),
+    ...(finishedToday.some((quiz) => quiz.kind === 'review') ? ['review'] : []),
+    ...(finishedToday.some((quiz) => quiz.customQuiz?.exam?.kind === 'pairs') ? ['pairs'] : []),
+    ...(weakestDone ? ['weakest'] : []),
+  ]);
+  const DONE_LABEL: Record<string, string> = { daily: 'Daily 10', review: 'Spaced review', pairs: 'Confused pairs', weakest: 'Your weakest 20' };
+  const doneNote = [...doneToday].map((id) => DONE_LABEL[id]).join(', ');
+  const allStudyTiles: Tile[] = [
     {
       id: 'daily', icon: 'reinforce', title: 'Daily 10',
       detail: dailyIds.length === 0 ? 'Finish a lesson and ten mixed questions wait here each day.' : questMarks.daily ? 'Done today. Go again for more practice.' : 'Ten questions on what is due, from all your courses, mixed.',
@@ -382,6 +394,7 @@ export default function LearnScreen() {
     { id: 'focus', icon: 'timer', title: 'Focus timer', detail: '25 minutes of study, 5 of rest. Focused time counts for your streak.', onPress: () => router.push(routes.focusTimer()) },
     { id: 'chat', icon: 'sparkle', title: 'Apex AI', detail: 'Ask the AI anything: concepts, study plans, memory tricks and quizzes.', onPress: () => router.push('/learn/chat' as never) },
   ];
+  const studyTiles = allStudyTiles.filter((tile) => !doneToday.has(tile.id));
   const reviewCalendar = (
     <Card style={styles.calendarCard}>
       <SectionHeader
@@ -411,6 +424,7 @@ export default function LearnScreen() {
       ) : null}
       <DailyQuestCard onStep={questStep} />
       <SectionHeader title="Practise and plan" subtitle="Ways to practise beyond the lessons, and your week." style={styles.hubSection} />
+      {doneNote ? <Text style={styles.doneToday}>Done for today: {doneNote}. {doneToday.size === 1 ? 'It comes' : 'They come'} back tomorrow.</Text> : null}
       <TileGrid columns={4} tiles={studyTiles} />
       <SectionHeader title="Your progress" subtitle="Your rank, this week and your goals." style={styles.hubSection} />
       {/* This week on the left (wider); rank and goals stacked on the right, matching its height. */}
@@ -574,6 +588,7 @@ function createStyles(colors: ThemeColors) {
     section: { marginTop: 14, marginBottom: 0 },
     toolGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 16, alignItems: 'flex-start' },
     hubSection: { marginTop: 18, marginBottom: 2 },
+    doneToday: { fontSize: 13, color: colors.successText, marginBottom: 6 },
     progressRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 16, alignItems: 'stretch' },
     progressWide: { flexGrow: 2, flexShrink: 1, flexBasis: 460, minWidth: 0, maxWidth: '100%' },
     progressStack: { flexGrow: 1, flexShrink: 1, flexBasis: 300, minWidth: 0, maxWidth: '100%', gap: 16 },
