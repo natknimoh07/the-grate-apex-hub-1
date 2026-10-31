@@ -147,6 +147,15 @@ function editDistance(a: string, b: string) {
 // Typed answers ignore capitals, spaces, hyphens and punctuation.
 // Longer answers also forgive a small typo; short ones (NADH vs NADPH)
 // must be exact, because one letter changes the meaning.
+//
+// A set answer such as "{−3, −2, −1, 0}" is right in any order, with or
+// without the curly brackets (owner's report, 2026-10-31).
+function setElements(text: string): string[] | null {
+  const match = /^\s*\{(.*)\}\s*$/.exec(text);
+  if (!match) return null;
+  return match[1].split(',').map(normalizeAnswer).filter(Boolean).sort();
+}
+
 export function typedAnswerMatches(input: string, accept: string[]) {
   const typed = normalizeAnswer(input);
 
@@ -154,7 +163,13 @@ export function typedAnswerMatches(input: string, accept: string[]) {
     return false;
   }
 
+  const typedSet = setElements(input) ?? setElements(`{${input}}`);
+
   return accept.some((option) => {
+    const expectedSet = setElements(option);
+    if (expectedSet && typedSet && expectedSet.length === typedSet.length && expectedSet.every((item, index) => item === typedSet[index])) {
+      return true;
+    }
     const expected = normalizeAnswer(option);
 
     if (typed === expected) {

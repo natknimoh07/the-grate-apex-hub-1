@@ -1789,7 +1789,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 724,
+   "total": 728,
    "topics": [
     {
      "id": "Absolute Value & Inequalities",
@@ -2365,7 +2365,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 12
     },
     {
      "id": "Properties of Indices",
