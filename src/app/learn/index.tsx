@@ -407,11 +407,9 @@ export default function LearnScreen() {
   );
   const studyHub = (
     <View style={styles.column}>
-      <Columns
-        main={<LegacyCourseList courses={legacyCourses} selection={viewing as ClassSelection} headerRight={originate && !browseOpen ? <Button label="Other classes" variant="ghost" size="sm" onPress={() => setBrowseOpen(true)} /> : undefined} />}
-        side={<QuestionOfTheDay />}
-        sideWidth={440}
-      />
+      {/* Courses across the page, then the Question of the Day (owner, 2026-10-31: a new arrangement). */}
+      <LegacyCourseList courses={legacyCourses} selection={viewing as ClassSelection} headerRight={originate && !browseOpen ? <Button label="Other classes" variant="ghost" size="sm" onPress={() => setBrowseOpen(true)} /> : undefined} />
+      <QuestionOfTheDay />
       {ownSelection && viewingOwnClass ? (
         <ExamCountdownCard
           lessonsLeft={currentCompletion.total - currentCompletion.completed}

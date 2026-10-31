@@ -5,13 +5,15 @@ import { Text } from '@/components/ui/text';
 
 import { QuestionCard } from '@/components/question-card';
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { Card } from '@/components/ui/interactive';
+import { useLayoutWidth } from '@/components/side-panel-store';
 import { Pill } from '@/components/ui/pill';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { findLesson } from '@/data/curriculum';
 import { findQotdQuestion, pickQuestion, qotdDay, readCloudAnswer, readLocalAnswer, readTally, saveAnswer, type SaveResult, type Tally } from '@/data/qotd';
 import { type Answer, isAnswerCorrect } from '@/data/questions';
-import { useThemedStyles } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { routes } from '@/lib/routes';
 import { useExperience } from '@/hooks/use-experience';
 import { setPendingXpReward } from '@/components/xp-toast';
@@ -28,7 +30,16 @@ type Status = 'loading' | 'open' | 'saved' | 'elsewhere' | 'not-saved' | 'local'
 
 export function QuestionOfTheDay() {
   const styles = useThemedStyles(createStyles);
+  const colors = useTheme();
   const experience = useExperience();
+  // Wide pages: the question on the left, its details on the right (owner, 2026-10-31).
+  const wide = useLayoutWidth() >= 900;
+  // Time until tomorrow's question (a new one every UTC day).
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(timer);
+  }, []);
   const day = qotdDay();
   const picked = useMemo(() => pickQuestion(day), [day]);
   // Answered already on this device: always show that question, even if today's
@@ -97,22 +108,50 @@ export function QuestionOfTheDay() {
   }
 
   const share = tally && tally.total > 0 ? `${Math.round((tally.correct / tally.total) * 100)}% of ${tally.total} learner${tally.total === 1 ? '' : 's'} got this right today.` : null;
+  const today = new Date(now);
+  const untilNext = Math.max(0, Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() + 1) - now);
+  const countdown = `New question in ${Math.floor(untilNext / 3_600_000)}h ${Math.floor((untilNext % 3_600_000) / 60_000)}m`;
 
-  return (
-    <Card style={styles.card}>
+  const details = (
+    <View style={styles.details}>
       <View style={styles.header}>
-        <Text style={styles.title}>Question of the Day</Text>
+        <Icon name="sparkle" size={18} color={colors.primaryText} />
+        <Text style={[styles.title, styles.flex]}>Question of the Day</Text>
         <Pill label={`+${XP_RULES.questionOfTheDay.correct} XP`} tone="gold" />
       </View>
       {entry ? <Text style={styles.source}>{entry.topic.title} · {entry.lesson.title}</Text> : null}
+      <View style={styles.metaRow}>
+        <Icon name="clock" size={14} color={colors.textSecondary} />
+        <Text style={styles.source}>{countdown}{tally && tally.total > 0 ? ` · ${tally.total} answered today` : ''}</Text>
+      </View>
       {status === 'loading' ? <Text style={styles.source}>Checking today’s answer…</Text> : null}
-      <QuestionCard question={question} value={answer} onChange={status === 'open' ? setAnswer : () => undefined} revealed={revealed} shuffleSeed={day} compact />
-      {revealed ? (
+    </View>
+  );
+  const question_ = <QuestionCard question={question} value={answer} onChange={status === 'open' ? setAnswer : () => undefined} revealed={revealed} shuffleSeed={day} compact />;
+
+  return (
+    <Card style={styles.card}>
+      {wide ? null : details}
+      <View style={wide ? styles.wideRow : undefined}>
+        <View style={wide ? styles.wideQuestion : undefined}>{question_}</View>
+        {wide ? (
+          <View style={styles.wideSide}>
+            {details}
+            {after()}
+          </View>
+        ) : null}
+      </View>
+      {wide ? null : after()}
+    </Card>
+  );
+
+  function after() {
+    return revealed ? (
         <View style={styles.footer}>
           {status === 'elsewhere' ? (
             <Text style={styles.result}>You already answered today’s question — on another device or in the original app. Come back tomorrow.</Text>
           ) : (
-            <Text style={styles.result}>{isAnswerCorrect(question, answer) ? 'Correct — nice start to the day.' : 'Not this time — see why above.'}{earned ? ` +${earned} XP` : ''}</Text>
+            <Text style={styles.result}>{isAnswerCorrect(question!, answer) ? 'Correct — nice start to the day.' : 'Not this time — see why above.'}{earned ? ` +${earned} XP` : ''}</Text>
           )}
           {status === 'not-saved' ? <Text style={styles.note}>Your answer is saved on this device only. It will count once you’re back online.</Text> : null}
           {status === 'local' ? <Text style={styles.note}>Sign in to add your answer to today’s class results.</Text> : null}
@@ -127,9 +166,8 @@ export function QuestionOfTheDay() {
       ) : (
         // Originate: secondary, so the page's own next step stays the one primary button.
         <Button label="Check answer" size="sm" variant={originate ? 'secondary' : 'primary'} onPress={() => void check()} disabled={answer === undefined || status !== 'open'} />
-      )}
-    </Card>
-  );
+      );
+  }
 }
 
 function statusFor(result: SaveResult): Status {
@@ -149,5 +187,11 @@ function createStyles(colors: ThemeColors) {
     links: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
     result: { fontSize: 14, fontWeight: '700', color: colors.text },
     note: { fontSize: 13, lineHeight: 18, color: colors.textSecondary },
+    flex: { flex: 1, minWidth: 0 },
+    details: { gap: 6 },
+    metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    wideRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 20 },
+    wideQuestion: { flex: 1, minWidth: 0 },
+    wideSide: { width: 300, gap: 14 },
   });
 }

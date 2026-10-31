@@ -313,7 +313,7 @@ export default function SettingsScreen() {
         </SettingsSection>
       ) : null}
 
-      <SettingsSection title="Appearance">
+      <SettingsSection title="Themes">
         <ThemeGrid desktop={desktop} systemScheme={systemScheme === 'dark' ? 'dark' : 'light'} />
       </SettingsSection>
 

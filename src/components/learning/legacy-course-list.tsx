@@ -3,11 +3,11 @@ import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { LegacyCourseTile } from '@/components/learning/legacy-course-tile';
+import { CardGrid } from '@/components/ui/card-grid';
 import { Icon } from '@/components/ui/icon';
-import { PressableCard } from '@/components/ui/interactive';
-import { List, ListRow } from '@/components/ui/list';
+import { Card, Interactive } from '@/components/ui/interactive';
 import { InlineNotice } from '@/components/ui/state-views';
-import { ProgressBar } from '@/components/ui/progress-bar';
+import { ProgressRing } from '@/components/ui/progress-ring';
 import { SectionHeader } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
@@ -15,16 +15,18 @@ import type { ClassSelection } from '@/data/class-curriculum';
 import { type LegacyCourse, type LegacyLessonMeta, loadLegacyLessonList } from '@/data/legacy-study';
 import { hb2Lessons } from '@/data/hb2-study';
 import { useProgress } from '@/data/progress';
-import { useExperience } from '@/hooks/use-experience';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { routes } from '@/lib/routes';
 
-/** A class's original courses on Study, in this app's card style. */
+/**
+ * A class's courses on Study, side by side (owner, 2026-10-31: a new arrangement, the same in
+ * every interface and theme): each card has the course's picture and name, a ring with the
+ * share of lessons done, and "Up next" — the first lesson not yet completed, in course order.
+ */
 export function LegacyCourseList({ courses, selection, headerRight }: { courses: readonly LegacyCourse[]; selection: ClassSelection; headerRight?: ReactNode }) {
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
   const progress = useProgress();
-  const originate = useExperience() === 'originate';
   const [lessons, setLessons] = useState<LegacyLessonMeta[] | null>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
@@ -33,64 +35,68 @@ export function LegacyCourseList({ courses, selection, headerRight }: { courses:
     return () => { live = false; };
   }, []);
   const completed = useMemo(() => new Set(progress.completedLessons), [progress.completedLessons]);
-
-  // Originate: one row per course — its picture, name, what it covers, lessons
-  // done and a thin progress line.
-  if (originate) {
-    const needsList = courses.some((course) => !course.subject);
-    return (
-      <View style={styles.column}>
-        <SectionHeader title="Courses" subtitle={`${selection.classId}, Semester ${selection.semester}`} right={headerRight} style={styles.oHeader} />
-        {failed && needsList ? <InlineNotice tone="warning" message="Some lessons could not be loaded. Check your connection, then reopen Study." /> : null}
-        <List accessibilityLabel="Courses">
-          {courses.map((course) => {
-            const own = course.subject ? hb2Lessons(course.id) : (lessons ?? []).filter((lesson) => lesson.course === course.id);
-            const loading = !course.subject && lessons === null;
-            const done = own.filter((lesson) => completed.has(lesson.id)).length;
-            return (
-              <ListRow
-                key={course.id}
-                leading={<LegacyCourseTile course={course} size={44} />}
-                title={course.name}
-                detail={course.desc}
-                meta={loading ? 'Loading' : own.length ? `${done} of ${own.length} lessons` : 'No lessons yet'}
-                metaTone={loading || !own.length ? 'muted' : 'default'}
-                progress={!loading && own.length ? done / own.length : undefined}
-                progressLabel={`${course.name}: ${done} of ${own.length} lessons completed`}
-                onPress={() => router.push(routes.legacyCourse(course.id))}
-                accessibilityLabel={`${course.name}. ${loading ? 'Loading lessons' : `${done} of ${own.length} lessons completed`}`}
-              />
-            );
-          })}
-        </List>
-      </View>
-    );
-  }
+  const needsList = courses.some((course) => !course.subject);
 
   return (
     <View style={styles.column}>
-      <SectionHeader title="Courses" subtitle={`${selection.classId} · Semester ${selection.semester} · ${courses.length} courses`} style={styles.header} />
-      <View style={styles.grid}>
+      <SectionHeader title="Courses" subtitle={`${selection.classId} · Semester ${selection.semester} · ${courses.length} course${courses.length === 1 ? '' : 's'}`} right={headerRight} style={styles.header} />
+      {failed && needsList ? <InlineNotice tone="warning" message="Some lessons could not be loaded. Check your connection, then reopen Study." /> : null}
+      <CardGrid minItemWidth={250} maxColumns={3} gap={12}>
         {courses.map((course) => {
           const own = course.subject ? hb2Lessons(course.id) : (lessons ?? []).filter((lesson) => lesson.course === course.id);
+          const loading = !course.subject && lessons === null;
           const done = own.filter((lesson) => completed.has(lesson.id)).length;
-          const questions = own.reduce((sum, lesson) => sum + (lesson.qids?.length ?? lesson.qcount ?? 0), 0);
+          const share = own.length ? done / own.length : 0;
+          const next = own.find((lesson) => !completed.has(lesson.id));
           return (
-            <PressableCard key={course.id} onPress={() => router.push(routes.legacyCourse(course.id))} accessibilityLabel={`${course.name}. ${done} of ${own.length} lessons completed`} style={styles.card}>
-              <LegacyCourseTile course={course} size={52} />
-              <View style={styles.info}>
-                <Text style={styles.name}>{course.name}</Text>
-                <Text style={styles.desc} numberOfLines={2}>{course.desc}</Text>
-                <View style={styles.progressRow}>
-                  <ProgressBar value={own.length ? done / own.length : 0} height={6} style={styles.flex} label={`${course.name} lessons completed`} />
-                  <Text style={styles.meta}>{lessons || course.subject ? `${done}/${own.length} lessons${questions ? ` · ${questions.toLocaleString()} questions` : ''}` : 'Loading…'}</Text>
+            <Card key={course.id} style={styles.card}>
+              <Interactive
+                onPress={() => router.push(routes.legacyCourse(course.id))}
+                accessibilityRole="link"
+                accessibilityLabel={`${course.name}. ${loading ? 'Loading lessons' : `${done} of ${own.length} lessons completed`}`}
+                style={({ hovered }) => [styles.main, hovered && styles.hovered]}
+              >
+                <View style={styles.top}>
+                  <LegacyCourseTile course={course} size={48} />
+                  <View style={styles.flex}>
+                    <Text style={styles.name} numberOfLines={2}>{course.name}</Text>
+                    <Text style={styles.desc} numberOfLines={2}>{course.desc}</Text>
+                  </View>
                 </View>
-              </View>
-              <Icon name="chevronRight" size={20} color={colors.textTertiary} />
-            </PressableCard>
+                <View style={styles.stats}>
+                  <ProgressRing value={share} size={52} thickness={5} label={`${course.name}: ${Math.round(share * 100)}% of lessons completed`}>
+                    <Text style={styles.ringText}>{loading ? '…' : `${Math.round(share * 100)}%`}</Text>
+                  </ProgressRing>
+                  <View style={styles.flex}>
+                    <Text style={styles.count}>{loading ? 'Loading…' : own.length ? `${done} of ${own.length}` : 'No lessons yet'}</Text>
+                    {!loading && own.length ? <Text style={styles.meta}>lessons completed</Text> : null}
+                  </View>
+                  <Icon name="chevronRight" size={18} color={colors.textTertiary} />
+                </View>
+              </Interactive>
+              {next ? (
+                <Interactive
+                  onPress={() => router.push(routes.legacyLesson(next.id))}
+                  accessibilityRole="link"
+                  accessibilityLabel={`Up next in ${course.name}: ${next.title}`}
+                  style={({ hovered }) => [styles.next, hovered && styles.hovered]}
+                >
+                  <View style={styles.flex}>
+                    <Text style={styles.nextLabel}>{done ? 'Up next' : 'Start with'}</Text>
+                    <Text style={styles.nextTitle} numberOfLines={1}>{next.title}</Text>
+                  </View>
+                  <Icon name="arrowRight" size={16} color={colors.primaryText} />
+                </Interactive>
+              ) : own.length ? (
+                <View style={styles.next}>
+                  <Icon name="check" size={16} color={colors.success} strokeWidth={2.6} />
+                  <Text style={[styles.nextTitle, styles.flex]}>Every lesson done</Text>
+                </View>
+              ) : null}
+            </Card>
           );
         })}
-      </View>
+      </CardGrid>
     </View>
   );
 }
@@ -100,13 +106,18 @@ function createStyles(colors: ThemeColors) {
     flex: { flex: 1, minWidth: 0 },
     column: { gap: 12 },
     header: { marginTop: 6 },
-    oHeader: { marginBottom: 4 },
-    grid: { gap: 12 },
-    card: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-    info: { flex: 1, minWidth: 0, gap: 4 },
+    card: { padding: 0, gap: 0, overflow: 'hidden', flexGrow: 1 },
+    main: { padding: 14, gap: 14, flexGrow: 1 },
+    hovered: { backgroundColor: colors.surfaceMuted },
+    top: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
     name: { ...Type.title3, color: colors.text },
-    desc: { fontSize: 13.5, lineHeight: 19, color: colors.textSecondary },
-    progressRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 4 },
-    meta: { fontSize: 12, fontWeight: '700', color: colors.textSecondary },
+    desc: { fontSize: 13, lineHeight: 18, minHeight: 36, color: colors.textSecondary, marginTop: 2 },
+    stats: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+    ringText: { fontSize: 13, fontWeight: '800', color: colors.text },
+    count: { fontSize: 16, fontWeight: '800', color: colors.text },
+    meta: { fontSize: 12, color: colors.textSecondary },
+    next: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 10, paddingHorizontal: 14, borderTopWidth: 1, borderTopColor: colors.border },
+    nextLabel: { fontSize: 11.5, fontWeight: '700', color: colors.primaryText },
+    nextTitle: { fontSize: 13.5, fontWeight: '600', color: colors.text },
   });
 }
