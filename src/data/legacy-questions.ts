@@ -50,7 +50,7 @@ export function shuffleSeeded<T>(items: readonly T[], seed: string): T[] {
 
 // ── Original questions as this app's question types ────────────────
 
-const ORDER_WORDS = /\b(all|none|both|neither) of the (above|following)|\b(a|b|c|d) (and|&) (b|c|d|e)\b|^all the above|^none of the above/i;
+const ORDER_WORDS = /\b(all|none|both|neither) of the (above|following)|\bboth \([a-e]\s*\)|\b(a|b|c|d) (and|&) (b|c|d|e)\b|^all the above|^none of the above/i;
 
 function seeded(seed: string) {
   let h = 2166136261;
@@ -96,18 +96,22 @@ export function buildPractice(source: readonly (BankQuestion & { setName?: strin
     if (original.type === 'choice' && !q.img && q.o.length >= 3 &&!/\bexcept\b|\bnot\b/i.test(q.q)) {
       const answer = plainText(q.o[q.a]);
       if (roll < 0.15 && short(answer) && !/which of the following/i.test(q.q)) {
-        out.push({ ...original, id: `${original.id}:type`, type: 'type', accept: [answer], label: 'Type the answer' } as Question);
+        // "About 30x" is also right as "30x" (a leading "about / approximately / around" is only a hedge).
+        const bare = answer.replace(/^(about|approximately|approx\.?|around|roughly|nearly)\s+/i, '');
+        out.push({ ...original, id: `${original.id}:type`, type: 'type', accept: bare !== answer ? [answer, bare] : [answer], label: 'Type the answer' } as Question);
         continue;
       }
       if (roll < 0.3) {
         const showCorrect = random() < 0.5;
-        const wrong = q.o.map(plainText).filter((_, index) => index !== q.a);
-        const shown = showCorrect ? answer : wrong[Math.floor(random() * wrong.length)];
+        // A wrong option that is only part of the full answer ("wavelength of light used" inside
+        // "wavelength of light used and numerical aperture…") reads as true, so it is never shown as false.
+        const wrong = q.o.map(plainText).filter((text, index) => index !== q.a && !answer.toLowerCase().includes(text.toLowerCase()));
+        const shown = showCorrect || !wrong.length ? answer : wrong[Math.floor(random() * wrong.length)];
         // Asked as one plain statement ("Hydrolase is the enzyme type that…"); a question
         // that does not read well as a statement stays as written.
         const statement = trueFalseStatement(plainText(q.q), shown);
         if (statement) {
-          out.push({ ...original, id: `${original.id}:tf`, type: 'choice', prompt: statement, options: ['True', 'False'], answer: showCorrect ? 0 : 1, fixedOrder: true, label: 'True or false' } as Question);
+          out.push({ ...original, id: `${original.id}:tf`, type: 'choice', prompt: statement, options: ['True', 'False'], answer: shown === answer ? 0 : 1, fixedOrder: true, label: 'True or false' } as Question);
           continue;
         }
       }
