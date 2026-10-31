@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import { BackLink } from '@/components/learning/nav-bits';
 import { SimulationLibrary } from '@/components/learning/simulation-library';
 import { SkeletonAtlas } from '@/components/learning/skeleton-atlas';
+import { TopicGlyph } from '@/components/learning/glyphs';
 import { LegacyCourseTile } from '@/components/learning/legacy-course-tile';
 import { CoursePracticeModes } from '@/components/learning/course-practice-modes';
 import { Button } from '@/components/ui/button';
@@ -93,6 +94,8 @@ export default function LegacyCourseScreen() {
     return (first && findLesson(first.id)?.topic.id) || null;
   };
   const byTopic = topics.length > 0 && topics.every((group) => topicIdOf(group));
+  // The first topic, in course order, with lessons still to do.
+  const nextTopic = topics.find((group) => { const stats = topicStats(group); return stats.done < stats.total; }) ?? null;
   const totalQuestions = sets ?sets.reduce((sum, set) => sum + set.count, 0) : null;
 
   return (
@@ -218,18 +221,49 @@ export default function LegacyCourseScreen() {
                   </View>
                 </>
               );
-              // A topic of this app opens its topic page (lessons, quizzes, review, drills); its lessons are not listed here.
-              return topicId ? (
-                <Interactive
-                  onPress={() => router.push(routes.topic(topicId))}
-                  accessibilityRole="button"
-                  accessibilityLabel={`${lesson.group}. Topic ${number} of ${place.total}. ${stats.done} of ${stats.total} lessons completed`}
-                  style={({ hovered }) => [styles.topicHead, styles.topicLink, number > 1 && styles.topicHeadGap, hovered && styles.topicHover]}
-                >
-                  {head}
-                  <Icon name="chevronRight" size={20} color={colors.textSecondary} />
-                </Interactive>
-              ) : (
+              // A topic of this app opens its topic page (lessons, quizzes, review, drills); its lessons are not
+              // listed here. The topics are stops on a path (owner, 2026-10-31): a check when finished, the line
+              // filling in behind, and the topic to do next marked "Up next" / "In progress".
+              if (topicId) {
+                const finished = stats.total > 0 && stats.done === stats.total;
+                const isNext = lesson.group === nextTopic;
+                const reached = finished || isNext || stats.done > 0;
+                const previous = number > 1 ? topicStats(topics[topics.indexOf(lesson.group) - 1]) : null;
+                return (
+                  <View style={styles.pathRow}>
+                    <View style={styles.topicRail}>
+                      <View style={[styles.railTop, number === 1 && styles.railHidden, previous && previous.total > 0 && previous.done === previous.total && styles.lineDone]} />
+                      <View style={[styles.topicNode, reached && styles.nodeActive, finished && styles.nodeDone, isNext && styles.topicNodeNext]}>
+                        {finished ? <Icon name="check" size={18} color={colors.onPrimary} strokeWidth={2.6} /> : <Text style={[styles.topicNodeText, reached && styles.topicNodeTextOn]}>{number}</Text>}
+                      </View>
+                      {number < place.total ? <View style={[styles.line, finished && styles.lineDone]} /> : null}
+                    </View>
+                    <View style={styles.pathCard}>
+                      <Interactive
+                        onPress={() => router.push(routes.topic(topicId))}
+                        accessibilityRole="button"
+                        accessibilityLabel={`${lesson.group}. Topic ${number} of ${place.total}. ${stats.done} of ${stats.total} lessons completed`}
+                        style={({ hovered }) => [styles.topicCard, isNext && styles.topicCardNext, hovered && styles.topicHover]}
+                      >
+                        <TopicGlyph title={lesson.group} subject={course.subject} size={46} />
+                        <View style={styles.flex}>
+                          <View style={styles.topicCardTop}>
+                            <Text style={styles.topicKicker}>TOPIC {number} OF {place.total}</Text>
+                            {isNext ? <Pill label={stats.done > 0 ? 'In progress' : 'Up next'} tone="primary" /> : finished ? <Pill label="Completed" tone="success" /> : null}
+                          </View>
+                          <Text style={styles.topicTitle}>{lesson.group}</Text>
+                          <View style={styles.progressRow}>
+                            <ProgressBar value={stats.total ? stats.done / stats.total : 0} height={6} style={styles.flex} label={`${lesson.group} lessons completed`} />
+                            <Text style={styles.meta}>{stats.done}/{stats.total} lessons</Text>
+                          </View>
+                        </View>
+                        <Icon name="chevronRight" size={20} color={colors.textSecondary} />
+                      </Interactive>
+                    </View>
+                  </View>
+                );
+              }
+              return (
                 <View style={[styles.topicHead, number > 1 && styles.topicHeadGap]} accessibilityRole="header">{head}</View>
               );
             })() : null}
@@ -317,8 +351,18 @@ function createStyles(colors: ThemeColors) {
     section: { marginTop: 28 },
     topicHead: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 14, paddingHorizontal: 16, marginBottom: 10, borderRadius: 18, backgroundColor: colors.surfaceMuted, borderWidth: 1, borderColor: colors.border },
     topicHeadGap: { marginTop: 22 },
-    topicLink: { backgroundColor: colors.surface },
     topicHover: { borderColor: colors.primaryBorder },
+    // The topic path: a rail of numbered stops joined by a line that fills in as topics are finished.
+    topicRail: { width: 44, alignItems: 'center' },
+    railTop: { width: 2, height: 14, backgroundColor: colors.border },
+    railHidden: { opacity: 0 },
+    topicNode: { width: 40, height: 40, borderRadius: 20, borderWidth: 2, borderColor: colors.borderStrong, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
+    topicNodeNext: { borderWidth: 3, backgroundColor: colors.primarySubtle },
+    topicNodeText: { fontSize: 15, fontWeight: '800', color: colors.textSecondary },
+    topicNodeTextOn: { color: colors.primaryText },
+    topicCard: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14, paddingHorizontal: 16, borderRadius: 18, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface },
+    topicCardNext: { borderColor: colors.primary, borderWidth: 1.5 },
+    topicCardTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' },
     sectionBanner: { paddingVertical: 4, marginBottom: 12, gap: 2 },
     sectionBannerGap: { marginTop: 30 },
     sectionBannerKicker: { ...Type.overline, color: colors.textSecondary },

@@ -457,7 +457,7 @@ The full redesign rationale is in `docs/redesign-notes.md`.
 
 ### Icons and glyphs
 
-* No emoji in the interface. Use `Icon` (`src/components/ui/icon.tsx`), the GRATEAPEX SVG icon set.
+* No emoji in the interface. Use `Icon` (`src/components/ui/icon.tsx`), the GRATEAPEX SVG icon set. Exception (owner, 2026-10-31): topic tiles (`TopicGlyph`) show a picture of the topic (a heart, lungs, a blood drop…, `topicPicture` in `glyphs.tsx`) on a gradient tile instead of letters.
 * Subjects and topics use `SubjectGlyph` / `TopicGlyph` (`src/components/learning/glyphs.tsx`). The anatomy glyph is a human body.
 * A subject's topics are shown as a vertical path, in course order (finish one, then the next).
 

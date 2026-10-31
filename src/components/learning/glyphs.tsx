@@ -12,8 +12,9 @@ import { useTheme } from '@/hooks/use-theme';
 // Visual identity for subjects and topics — replaces emoji.
 //
 //   SubjectGlyph: a gradient tile with the subject's drawn icon.
-//   TopicGlyph:   an element-style tile ("FA", "HM"…) in the subject's
-//                 colour, like a periodic-table square.
+//   TopicGlyph:   a picture of the topic (a heart, lungs, a blood drop…) on a
+//                 gradient tile in the subject's colours (owner, 2026-10-31: no more
+//                 "Ur" / "Fa" letters).
 
 export const SUBJECT_TINTS: Record<SubjectId, { gradient: readonly [string, string]; ink: string; soft: string }> = {
   biochemistry: { gradient: ['#3B5BDF', '#142A98'], ink: '#FFFFFF', soft: '#91A9FF' },
@@ -86,42 +87,70 @@ export function topicMonogram(title: string) {
   return letters.length === 2 ? letters[0] + letters[1].toLowerCase() : letters;
 }
 
+// A picture for each topic, from words in its title (first match wins); a topic
+// with none of them gets its subject's picture.
+const TOPIC_PICTURES: readonly [RegExp, string][] = [
+  [/cardio|heart/i, '🫀'],
+  [/respirat|lung|thora/i, '🫁'],
+  [/gastro|digest|abdom|\bgi\b/i, '🍽️'],
+  [/urinary|renal|kidney/i, '💧'],
+  [/upper limb|\barm\b|hand/i, '💪'],
+  [/lower limb|\bleg\b|\bfoot\b/i, '🦵'],
+  [/head and neck|\bface\b/i, '🗣️'],
+  [/special sense|vision|visual|\beye\b|hearing|auditory/i, '👁️'],
+  [/nervous|neuro|brain|\bcns\b|spinal/i, '🧠'],
+  [/endocrin|hormone|thyroid/i, '🦋'],
+  [/reproduct|pregnan|puberty/i, '👶'],
+  [/immun|defen/i, '🛡️'],
+  [/oxygen carrier|myoglobin|haemoglobin|hemoglobin/i, '💨'],
+  [/coagul|fibrinol|blood|clot/i, '🩸'],
+  [/\bhaem|\bheme|porphyr/i, '🧲'],
+  [/free radical|oxidative|toxicity/i, '💥'],
+  [/fatty acid|lipid|\bfat\b/i, '🥑'],
+  [/cholesterol|bile|steroid/i, '🧈'],
+  [/amino acid|protein|enzyme/i, '🧩'],
+  [/collagen|elastin|connective/i, '🧶'],
+  [/inborn|newborn/i, '🍼'],
+  [/nucleic|\bdna\b|\brna\b|gene|purine|pyrimidine/i, '🧬'],
+  [/carbohydrate|glyco|glucose|sugar/i, '🍬'],
+  [/vitamin|nutrition|mineral/i, '🥕'],
+  [/bioenerget|citric|krebs|\batp\b|energy/i, '⚡'],
+  [/bone|skelet|osteo/i, '🦴'],
+  [/muscle|musculo/i, '💪'],
+  [/embryo|develop/i, '🌱'],
+  [/histolog|microanat|cell|tissue/i, '🔬'],
+];
+const SUBJECT_PICTURE: Record<SubjectId, string> = { anatomy: '🦴', physiology: '🩺', biochemistry: '🧪' };
+
+export function topicPicture(title: string, subject: SubjectId | null | undefined): string {
+  return TOPIC_PICTURES.find(([pattern]) => pattern.test(title))?.[1] ?? SUBJECT_PICTURE[subject ?? 'biochemistry'];
+}
+
 export function TopicGlyph({
   title,
   subject,
-  index,
   size = 46,
   style,
 }: {
   title: string;
   subject: SubjectId | null | undefined;
+  /** No longer drawn (the tile shows the topic's picture); kept so older callers still work. */
   index?: number;
   size?: number;
   style?: StyleProp<ViewStyle>;
 }) {
-  const colors = useTheme();
-  const tint = SUBJECT_TINTS[subject ?? 'biochemistry'];
-  const radius = Math.round(size * 0.28);
+  const experience = useExperience();
+  const stops = experience === 'originals' ? ORIGINAL_COURSE[subject ?? 'biochemistry'].gradient : SUBJECT_TINTS[subject ?? 'biochemistry'].gradient;
   return (
-    <View
-      style={[
-        styles.topic,
-        { width: size, height: size, borderRadius: radius, backgroundColor: colors.surfaceMuted, borderColor: tint.soft + '66' },
-        style,
-      ]}
-      aria-hidden
-    >
-      {index !== undefined ? <Text style={[styles.index, { color: colors.textTertiary, fontSize: Math.max(8, size * 0.19) }]}>{index}</Text> : null}
-      <Text style={[styles.monogram, { color: colors.text, fontSize: size * 0.38 }]}>{topicMonogram(title)}</Text>
-      <View style={[styles.bar, { backgroundColor: tint.soft }]} />
+    <View style={[{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }, style]} aria-hidden>
+      <GradientTile size={size} radius={Math.round(size * 0.28)} colors={stops} vertical={experience === 'originals'} />
+      <View style={styles.glyphIcon}>
+        <Text style={{ fontSize: Math.round(size * 0.5), lineHeight: Math.round(size * 0.66) }}>{topicPicture(title, subject)}</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   glyphIcon: { zIndex: 1 },
-  topic: { alignItems: 'center', justifyContent: 'center', borderWidth: 1, overflow: 'hidden' },
-  index: { position: 'absolute', top: 4, left: 6, ...Type.numeral, fontWeight: '700' },
-  monogram: { ...Type.numeral, letterSpacing: -0.5 },
-  bar: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 3 },
 });
