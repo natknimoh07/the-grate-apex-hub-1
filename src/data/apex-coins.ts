@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, doc, getDoc, getDocs, limit, query, runTransaction, serverTimestamp, type Transaction, where } from 'firebase/firestore';
 
 import { auth, db } from '@/lib/firebase';
@@ -20,6 +21,20 @@ export const LESSON_COINS = 10;
 // a refund can only give back what was really paid. Until those rules are published the
 // old rules refuse coinLog, so each step falls back to the plain balance update.
 type CoinKind = 'lesson' | 'apex' | 'topic' | 'gift' | 'refund' | 'spend';
+
+// ─── "+10 Apex Coins" ──────────────────────────────────────────────────
+// Coins earned (lessons, Apex Challenges, topics) are announced here; the floating
+// pill in components/coin-gain-float.tsx shows them. Gifts have their own sheet.
+export type CoinGain = { amount: number; label: string };
+const gainListeners = new Set<(gain: CoinGain) => void>();
+export function onCoinsGained(listener: (gain: CoinGain) => void) {
+  gainListeners.add(listener);
+  return () => { gainListeners.delete(listener); };
+}
+function announceGain(gain: CoinGain) {
+  gainListeners.forEach((listener) => listener(gain));
+}
+const GAIN_LABEL: Partial<Record<CoinKind, string>> = { lesson: 'Lesson completed', apex: 'Apex Challenge', topic: 'Topic finished' };
 const isRefused = (error: unknown) => (error as { code?: string })?.code === 'permission-denied';
 
 /**
@@ -27,7 +42,14 @@ const isRefused = (error: unknown) => (error as { code?: string })?.code === 'pe
  * already there (a reward is never paid twice). `extra` adds writes to the same step.
  * Returns the new balance, or null when nothing was added.
  */
-async function credit(kind: CoinKind, ref: string, amount: number, extra?: (tx: Transaction, uid: string) => void): Promise<number | null> {
+async function credit(kind: CoinKind, ref: string, amount: number, extra?: (tx: Transaction, uid: string) => void, quiet = false): Promise<number | null> {
+  const balance = await creditOnce(kind, ref, amount, extra);
+  const label = GAIN_LABEL[kind];
+  if (balance !== null && label && !quiet) announceGain({ amount, label });
+  return balance;
+}
+
+async function creditOnce(kind: CoinKind, ref: string, amount: number, extra?: (tx: Transaction, uid: string) => void): Promise<number | null> {
   const user = auth.currentUser;
   if (!user) return null;
   const entry = `${kind}_${ref}`;
@@ -153,7 +175,7 @@ export async function awardApexCoins(reward: ApexCoinReward, sourceId: string): 
  * written in the same step (the rules check it), so the reward never waits for the
  * background save of the learner's progress.
  */
-export async function awardLessonCoins(lessonId: string, xp: number, completedAt: number): Promise<number | null> {
+export async function awardLessonCoins(lessonId: string, xp: number, completedAt: number, quiet = false): Promise<number | null> {
   return credit('lesson', lessonId, LESSON_COINS, (tx, uid) => {
     tx.set(doc(db, 'progress', uid, 'completions', lessonId), {
       lessonId,
@@ -161,7 +183,46 @@ export async function awardLessonCoins(lessonId: string, xp: number, completedAt
       xp: Math.max(0, Math.min(1000, Math.round(xp))),
       savedAt: serverTimestamp(),
     });
-  });
+  }, quiet);
+}
+
+// ─── Coins for lessons that never paid ─────────────────────────────────
+// Coins started on 2026-10-25, so lessons finished before then paid nothing, and a
+// reward that failed (offline, or the day's free reads used up) was never tried again.
+// Once per sign-in this pays the 10 coins for every completed lesson without a coin
+// entry (each still checked by the rules, and never twice). The lessons already
+// settled are remembered on the device, so later checks cost no reads.
+const SETTLED_KEY = (uid: string) => `grateapex_lesson_coins:${uid}`;
+const LESSON_ID = /^[a-z0-9-]{1,120}$/; // what the completions rule accepts
+const CATCH_UP_MAX = 200;
+
+export async function catchUpLessonCoins(lessons: readonly { id: string; xp: number; completedAt: number }[]): Promise<{ lessons: number; coins: number }> {
+  const user = auth.currentUser;
+  const none = { lessons: 0, coins: 0 };
+  if (!user) return none;
+  const settled = new Set<string>(JSON.parse((await AsyncStorage.getItem(SETTLED_KEY(user.uid)).catch(() => null)) ?? '[]') as string[]);
+  const todo = lessons.filter((lesson) => LESSON_ID.test(lesson.id) && !settled.has(lesson.id));
+  if (!todo.length) return none;
+  // The lessons already paid (one read per entry, once per device).
+  const paid = await getDocs(query(collection(db, 'users', user.uid, 'coinLog'), where('kind', '==', 'lesson')));
+  paid.forEach((entry) => { const ref = entry.data().ref; if (typeof ref === 'string') settled.add(ref); });
+  let count = 0;
+  // One at a time: every payment changes the same balance.
+  for (const lesson of todo.slice(0, CATCH_UP_MAX)) {
+    if (settled.has(lesson.id)) continue;
+    if (auth.currentUser?.uid !== user.uid) break;
+    try {
+      const balance = await awardLessonCoins(lesson.id, lesson.xp, lesson.completedAt, true);
+      if (balance !== null) count += 1;
+      settled.add(lesson.id);
+    } catch (error) {
+      console.warn('Could not add coins for an earlier lesson:', error);
+      break; // offline or refused: the rest are tried at the next sign-in
+    }
+  }
+  await AsyncStorage.setItem(SETTLED_KEY(user.uid), JSON.stringify([...settled])).catch(() => {});
+  if (count) announceGain({ amount: count * LESSON_COINS, label: `For ${count} lesson${count === 1 ? '' : 's'} you completed earlier` });
+  return { lessons: count, coins: count * LESSON_COINS };
 }
 
 /** A coin payment: its id, so it can be refunded if the paid action fails. */

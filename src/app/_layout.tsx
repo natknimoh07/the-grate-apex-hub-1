@@ -12,6 +12,7 @@ import { AppUpdateWatcher } from '@/components/app-update-watcher';
 import { ProfileCardHost } from '@/components/social/profile-card';
 import { LeaguePromotionWatcher } from '@/components/league-promotion';
 import { NotificationPrompt } from '@/components/notification-prompt';
+import { CoinGainFloat } from '@/components/coin-gain-float';
 import { CoinGiftSync } from '@/components/coin-gift-sync';
 import { ExperienceSync } from '@/components/experience/experience-sync';
 import { LearningSync } from '@/components/learning/learning-sync';
@@ -235,6 +236,7 @@ export default function TabLayout() {
               <AppTabs />
               <LearningSync />
               <CoinGiftSync />
+              <CoinGainFloat />
               <AppUpdateWatcher />
               <ProfileCardHost />
               <LeaguePromotionWatcher />
