@@ -165,7 +165,7 @@ export type CommunityMessage = {
  * id, plus the sender's note) and 'stumpAnswer' (id = the stump message id,
  * plus the picked option and whether it was right).
  */
-export type MessageShare = { kind: string; uid: string; username: string | null; id: string; text: string; note?: string; pick?: number; ok?: boolean; poll?: Poll | null };
+export type MessageShare = { kind: string; uid: string; username: string | null; id: string; text: string; note?: string; pick?: number; ok?: boolean; poll?: Poll | null; img?: string; bg?: string };
 
 export function shareOf(value: unknown): MessageShare | null {
   if (!value || typeof value !== 'object') return null;
@@ -182,6 +182,9 @@ export function shareOf(value: unknown): MessageShare | null {
     ...(typeof s.ok === 'boolean' ? { ok: s.ok } : {}),
     // A poll (data/polls.ts): its question, options and results.
     ...(s.kind === 'poll' ? { poll: pollOf(s.poll) } : {}),
+    // A reply to a story (data/story-replies.ts): the story's picture, or a text story's colour.
+    ...(typeof s.img === 'string' && safeUrl(s.img) ? { img: s.img } : {}),
+    ...(isStoryBg(s.bg) ? { bg: s.bg as string } : {}),
   };
 }
 

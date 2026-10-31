@@ -426,6 +426,22 @@ export function ChatThread({ friendId = '', groupId, name, onBack }: { friendId?
                         <View style={[styles.bubbleLine, mine && styles.bubbleLineMine]}>
                           <View style={[styles.bubble, mine ? styles.mine : styles.theirs, (message.media?.length && !message.body) ? styles.mediaBubble : null]}>
                             {message.fwd ? <Text style={[styles.fwd, mine && styles.mineSoft]}>↪ Forwarded</Text> : null}
+                            {message.share?.kind === 'story' ? (
+                              // A reply to a story (data/story-replies.ts): the story it answers, like Instagram.
+                              <View style={[styles.quote, mine ? styles.quoteMine : styles.quoteTheirs, styles.storyQuote]}>
+                                {message.share.img ? (
+                                  <Image source={{ uri: message.share.img }} style={styles.storyThumb} contentFit="cover" />
+                                ) : (
+                                  <View style={[styles.storyThumb, styles.storyThumbText, { backgroundColor: message.share.bg ?? colors.primary }]}>
+                                    <Text style={styles.storyThumbWords} numberOfLines={4}>{message.share.text}</Text>
+                                  </View>
+                                )}
+                                <View style={styles.storyQuoteText}>
+                                  <Text style={[styles.quoteWho, mine && styles.mineText]}>{mine ? (message.share.uid === user?.id ? 'You replied to your story' : `You replied to ${nameOfUid(message.share.uid)}’s story`) : 'Replied to your story'}</Text>
+                                  {message.share.img && message.share.text && !['Photo', 'Video', 'Story'].includes(message.share.text) ? <Text style={[styles.quoteText, mine && styles.mineSoft]} numberOfLines={2}>{message.share.text}</Text> : null}
+                                </View>
+                              </View>
+                            ) : null}
                             {message.reply ? (
                               <View style={[styles.quote, mine ? styles.quoteMine : styles.quoteTheirs]}>
                                 <Text style={[styles.quoteWho, mine && styles.mineText]}>{message.reply.from === user?.id ? 'You' : nameOfUid(message.reply.from)}</Text>
@@ -724,6 +740,11 @@ function createStyles(colors: ThemeColors) {
     mediaBubble: { padding: 4 },
     fwd: { fontSize: 11.5, fontStyle: 'italic', color: colors.textTertiary },
     quote: { borderLeftWidth: 3, borderRadius: 8, paddingVertical: 4, paddingHorizontal: 8, minWidth: 0, maxWidth: '100%' },
+    storyQuote: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 },
+    storyThumb: { width: 44, height: 70, borderRadius: 6, overflow: 'hidden' },
+    storyThumbText: { alignItems: 'center', justifyContent: 'center', padding: 3 },
+    storyThumbWords: { color: '#FFFFFF', fontSize: 7, lineHeight: 9, fontWeight: '800', textAlign: 'center' },
+    storyQuoteText: { flexShrink: 1, gap: 2 },
     quoteMine: { borderLeftColor: colors.onPrimary, backgroundColor: 'rgba(255,255,255,0.14)' },
     quoteTheirs: { borderLeftColor: colors.primary, backgroundColor: colors.surface },
     quoteWho: { fontSize: 12, fontWeight: '800', color: colors.primaryText },

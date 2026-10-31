@@ -5,9 +5,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/ui/avatar';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Text, TextInput } from '@/components/ui/text';
 import { VideoPlayer } from '@/components/ui/video-player';
 import { STORY_BACKGROUNDS, listStoryViewers, recordStoryView, type CommunityStory, type StoryViewer as Viewer } from '@/data/community';
+import { useSocial } from '@/data/social';
+import { replyToStory, STORY_REACTIONS, STORY_REPLY_MAX } from '@/data/story-replies';
 import { markStorySeen } from '@/data/story-views';
 import { poster } from '@/lib/media-urls';
 
@@ -19,6 +21,8 @@ import { poster } from '@/lib/media-urls';
 //  - when someone's stories end it carries on with the next person
 //  - the timer waits for a photo to finish loading
 //  - on the web: arrow keys, Space (pause) and Esc
+//  - a friend's story has a reply box and quick reactions; a reply goes to your chat
+//    with them (data/story-replies.ts) and the story waits while you type
 //
 // The colours here are fixed on purpose: a story is always shown on black.
 
@@ -71,10 +75,18 @@ export function StoryViewer({
   const [deleting, setDeleting] = useState(false);
   const [viewerList, setViewerList] = useState<{ id: string; list: Viewer[] }>({ id: '', list: [] });
   const [dragY, setDragY] = useState(0);
+  // Replying to a friend's story (like Instagram): the story waits while you type.
+  const social = useSocial();
+  const [reply, setReply] = useState('');
+  const [replyFocused, setReplyFocused] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [replyNote, setReplyNote] = useState<string | null>(null);
 
   const group = data[position.group];
   const story = group?.items[position.item];
-  const paused = held || confirming || deleting;
+  const canReply = Boolean(group && !group.isMine && social.people.some((person) => person.userId === group.authorId && person.relationship === 'friends'));
+  const typing = replyFocused || reply.length > 0 || sending;
+  const paused = held || confirming || deleting || typing;
   const ready = loaded || !story?.media_url; // a text story is ready at once
 
   const elapsed = useRef(0);
@@ -170,10 +182,41 @@ export function StoryViewer({
     return () => { live = false; };
   }, [story, group?.isMine]);
 
+  // A new story starts with an empty reply box.
+  const storyId = story?.id;
+  useEffect(() => {
+    setReply('');
+    setReplyNote(null);
+  }, [storyId]);
+
+  async function sendReply(text: string) {
+    if (!story || !group || sending || !text.trim()) return;
+    setSending(true);
+    setReplyNote(null);
+    try {
+      await replyToStory(story, group.authorId, text);
+      setReply('');
+      setReplyFocused(false);
+      setReplyNote((STORY_REACTIONS as readonly string[]).includes(text) ? `${text} sent to ${group.name}` : `Reply sent to ${group.name}`);
+    } catch (problem) {
+      setReplyNote(problem instanceof Error ? problem.message : 'Your reply could not be sent.');
+    } finally {
+      setSending(false);
+    }
+  }
+  useEffect(() => {
+    if (!replyNote) return;
+    const timer = setTimeout(() => setReplyNote(null), 2500);
+    return () => clearTimeout(timer);
+  }, [replyNote]);
+
   // Keyboard (web).
   useEffect(() => {
     if (Platform.OS !== 'web') return;
     const onKey = (event: KeyboardEvent) => {
+      // Typing a reply: the keys are for the reply box, not for moving between stories.
+      const tag = (event.target as HTMLElement | null)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       if (event.key === 'ArrowRight') next();
       else if (event.key === 'ArrowLeft') previous();
       else if (event.key === 'Escape') onClose();
@@ -351,9 +394,41 @@ export function StoryViewer({
             </View>
           </View>
 
-          {/* Bottom: caption on a photo or video, and who has seen my story */}
-          <View pointerEvents="none" style={[styles.bottom, { paddingBottom: wide ? 16 : Math.max(insets.bottom, 16), opacity: chromeHidden ? 0 : 1 }]}>
-            {hasMedia && story.body ? <Text style={styles.caption}>{story.body}</Text> : null}
+          {/* Bottom: caption on a photo or video, who has seen my story, and replying to a friend's */}
+          <View pointerEvents={canReply && !chromeHidden ? 'box-none' : 'none'} style={[styles.bottom, { paddingBottom: wide ? 16 : Math.max(insets.bottom, 16), opacity: chromeHidden ? 0 : 1 }]}>
+            {hasMedia && story.body ? <Text style={styles.caption} pointerEvents="none">{story.body}</Text> : null}
+            {canReply ? (
+              <View style={styles.replyArea}>
+                <View style={styles.reactions}>
+                  {STORY_REACTIONS.map((emoji) => (
+                    <Pressable key={emoji} onPress={() => void sendReply(emoji)} disabled={sending} accessibilityRole="button" accessibilityLabel={`React with ${emoji}`} hitSlop={4} style={styles.reaction}>
+                      <Text style={styles.reactionText}>{emoji}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+                <View style={styles.replyRow}>
+                  <TextInput
+                    value={reply}
+                    onChangeText={setReply}
+                    onFocus={() => setReplyFocused(true)}
+                    onBlur={() => setReplyFocused(false)}
+                    onSubmitEditing={() => void sendReply(reply)}
+                    maxLength={STORY_REPLY_MAX}
+                    returnKeyType="send"
+                    placeholder={`Reply to ${group.name}…`}
+                    placeholderTextColor={SOFT_WHITE}
+                    accessibilityLabel={`Reply to ${group.name}'s story`}
+                    style={styles.replyInput}
+                  />
+                  {reply.trim() ? (
+                    <Pressable onPress={() => void sendReply(reply)} disabled={sending} accessibilityRole="button" accessibilityLabel="Send reply" hitSlop={6} style={styles.sendButton}>
+                      <Icon name="send" size={18} color={WHITE} />
+                    </Pressable>
+                  ) : null}
+                </View>
+              </View>
+            ) : null}
+            {replyNote ? <Text style={styles.replyNote} pointerEvents="none">{replyNote}</Text> : null}
             {group.isMine ? (
               <Text style={styles.seenBy}>
                 {viewers.length
@@ -407,5 +482,13 @@ const styles = StyleSheet.create({
   bottom: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 18, paddingTop: 24, gap: 10, backgroundColor: SCRIM },
   caption: { color: WHITE, fontSize: 16, lineHeight: 22, fontWeight: '600', textAlign: 'center' },
   seenBy: { color: SOFT_WHITE, fontSize: 13, fontWeight: '600', textAlign: 'center' },
+  replyArea: { gap: 10 },
+  reactions: { flexDirection: 'row', justifyContent: 'center', gap: 14 },
+  reaction: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.12)' },
+  reactionText: { fontSize: 22, lineHeight: 28 },
+  replyRow: { flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 46, paddingLeft: 16, paddingRight: 6, borderRadius: 23, borderWidth: 1, borderColor: 'rgba(255,255,255,0.55)' },
+  replyInput: { flex: 1, minHeight: 44, color: WHITE, fontSize: 15 },
+  sendButton: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.2)' },
+  replyNote: { color: WHITE, fontSize: 13, fontWeight: '700', textAlign: 'center' },
   arrow: { position: 'absolute', top: '50%', width: 44, height: 44, marginTop: -22, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.18)' },
 });

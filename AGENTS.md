@@ -311,6 +311,7 @@ Stories live in `users/{uid}/stories` (rules already allow them; nothing to depl
 * A photo's timer waits until it has loaded. Web videos drive their own progress bar; on phones a video shows its still frame for 15 seconds.
 * Text-only stories can have one of six background colours (saved as `bg`).
 * "+" on your own ring always adds another story.
+* **Replies** (owner, 2026-10-31, like Instagram / WhatsApp status): a friend's story has a reply box and quick reactions (`STORY_REACTIONS`); the story waits while you type. A reply is a message in your private chat with them carrying `share: { kind: 'story', id, text, img | bg }` (`src/data/story-replies.ts`), drawn as "Replied to your story" with a thumbnail. Only friends (chats are between friends); no rules change.
 
 ## Progress system
 
