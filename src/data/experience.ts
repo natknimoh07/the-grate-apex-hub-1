@@ -56,10 +56,18 @@ export async function saveHeldExperience() {
 /** Saves the choice on the account. Throws when it can't be saved. */
 export async function saveExperience(experience: ExperienceId) {
   if (!isExperience(experience)) throw new Error('Choose one of the two interfaces.');
-  const { updateCurrentProfile } = await import('@/lib/profiles'); // loaded on use: keeps this module testable
-  const { error } = await updateCurrentProfile({ experience });
-  if (error) {
+  // Loaded on use: keeps this module testable.
+  const [{ auth, db }, { doc, setDoc }] = await Promise.all([import('@/lib/firebase'), import('firebase/firestore')]);
+  await auth.authStateReady();
+  const uid = auth.currentUser?.uid;
+  if (!uid) throw new Error('Sign in to choose your interface.');
+  // Only the write: re-reading the whole profile afterwards failed whenever the day's free
+  // reads were used up, and the choice then never showed. A write that can't reach Firebase
+  // yet is kept on the device and sent when it answers, so after a while we carry on.
+  const write = setDoc(doc(db, 'users', uid), { experience }, { merge: true });
+  const outcome = await Promise.race([write.then(() => 'saved' as const), new Promise<'queued'>((resolve) => setTimeout(() => resolve('queued'), 8_000))]).catch((error: unknown) => {
     console.warn('Could not save the experience:', error instanceof Error ? `${error.name}: ${error.message}` : String(error));
     throw new Error('Your interface could not be saved. Please try again.');
-  }
+  });
+  if (outcome === 'queued') write.catch((error: unknown) => console.warn('Could not save the experience:', error));
 }

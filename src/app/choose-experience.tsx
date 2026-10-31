@@ -47,10 +47,13 @@ export default function ChooseExperienceScreen() {
         holdExperience(choice);
         setActiveExperience(choice);
       } else {
+        // Shown at once (and remembered on this device); the account copy follows.
+        setActiveExperience(choice);
         await saveExperience(choice);
       }
       router.replace('/');
     } catch (problem) {
+      if (saved) setActiveExperience(saved); // not saved: back to the account's choice
       setError(friendlyError(problem, 'Your interface could not be saved.'));
     } finally {
       setSaving(false);
