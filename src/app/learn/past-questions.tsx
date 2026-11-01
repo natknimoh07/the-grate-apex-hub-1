@@ -14,7 +14,7 @@ import { Type, type ThemeColors } from '@/constants/theme';
 import { readClassSelection } from '@/data/class-curriculum';
 import { HB2_COURSES, type LocalCourse } from '@/data/hb2-study';
 import { LEGACY_COURSES, type LegacyCourse, loadCourseSets, loadLegacyBank } from '@/data/legacy-study';
-import { OTHER_PAST_TOPIC, PAST_TOPICS } from '@/data/past-question-topics';
+import { PAST_TOPICS } from '@/data/past-question-topics';
 import { setKind } from '@/data/practice-modes';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -25,23 +25,57 @@ type Paper = { id: string; name: string; count: number; kind: 'past' | 'predicte
 type CoursePapers = { course: LegacyCourse | LocalCourse; papers: Paper[] };
 type Tab = 'hb1s1' | 'hb1s2' | 'hb2s1';
 type View_ = 'paper' | 'topic';
-type CourseTopics = { course: LocalCourse; topics: { id: string; title: string; count: number }[] };
+type Course = LegacyCourse | LocalCourse;
+type CourseTopics = { course: Course; topics: { id: string; title: string; count: number }[] };
+
+/** The courses on a tab, in course order. */
+function tabCourses(tab: Tab): Course[] {
+  // HB2 Semester 1: Anatomy, Biochemistry, Physiology — past questions from
+  // the supplementary bank files (hb2-biochemistry.json, hb2-physiology.json).
+  if (tab === 'hb2s1') return [...HB2_COURSES];
+  // HB1 tabs show only HB1 courses. (HB2 courses used to be added here for HB2
+  // learners, which made the HB2 past papers appear under both HB1 semesters.)
+  const semester = tab === 'hb1s2' ? 2 : 1;
+  return LEGACY_COURSES.filter((course) => course.classId === 'HB1' && course.semester === semester);
+}
 
 /** A course's past questions counted by topic (each question once), in course order. */
-async function loadCourseTopics(course: LocalCourse): Promise<CourseTopics> {
+async function loadCourseTopics(course: Course): Promise<CourseTopics> {
   const bank = await loadLegacyBank(course.id);
   const counts = new Map<string, number>();
   const seen = new Set<string>();
   for (const set of bank.sets) {
     for (const q of set.questions) {
-      if (seen.has(q.id)) continue;
+      // Only sorted questions have a topic (HB1 quizzes and practice tests have none).
+      if (!q.tp || seen.has(q.id)) continue;
       seen.add(q.id);
-      const topic = q.tp ?? OTHER_PAST_TOPIC;
-      counts.set(topic, (counts.get(topic) ?? 0) + 1);
+      counts.set(q.tp, (counts.get(q.tp) ?? 0) + 1);
     }
   }
   const topics = (PAST_TOPICS[course.id] ?? []).map((topic) => ({ ...topic, count: counts.get(topic.id) ?? 0 })).filter((topic) => topic.count > 0);
   return { course, topics };
+}
+
+/**
+ * Papers in a sensible order: past papers, then predicted papers; each by its number
+ * ("Past Questions 2" before "Past Questions 10"). Papers without a number (Basic
+ * Medical Genetics names its papers by topic) follow the course's topic order.
+ */
+async function orderPapers(course: Course, papers: Paper[]): Promise<Paper[]> {
+  const bank = await loadLegacyBank(course.id).catch(() => null);
+  const topicIds = (PAST_TOPICS[course.id] ?? []).map((topic) => topic.id);
+  const topicRank = (paperId: string) => {
+    const counts = new Map<string, number>();
+    for (const q of bank?.sets.find((set) => set.id === paperId)?.questions ?? []) if (q.tp) counts.set(q.tp, (counts.get(q.tp) ?? 0) + 1);
+    const main = [...counts].sort((a, b) => b[1] - a[1])[0]?.[0];
+    const rank = main ? topicIds.indexOf(main) : -1;
+    return rank === -1 ? Infinity : rank;
+  };
+  const numberOf = (name: string) => Number(/\d+/.exec(name)?.[0] ?? Infinity);
+  return papers
+    .map((paper, index) => ({ paper, index, kind: paper.kind === 'past' ? 0 : 1, number: numberOf(paper.name), topic: topicRank(paper.id) }))
+    .sort((a, b) => a.kind - b.kind || a.number - b.number || a.topic - b.topic || a.index - b.index)
+    .map((item) => item.paper);
 }
 
 // /learn/past-questions — the past question bank: real past papers (and the
@@ -58,40 +92,32 @@ export default function PastQuestionsScreen() {
   const defaultTab: Tab = own?.classId === 'HB2' ? 'hb2s1' : own?.classId === 'HB1' && own.semester === 2 ? 'hb1s2' : 'hb1s1';
   const [tab, setTab] = useState<Tab>(defaultTab);
   const [list, setList] = useState<CoursePapers[] | null>(null);
-  // HB2 past questions are sorted by topic too (scripts/sort-past-questions-by-topic.mjs).
+  // Past questions are sorted by topic too: HB2 (scripts/sort-past-questions-by-topic.mjs)
+  // and HB1 (scripts/sort-hb1-past-questions-by-topic.mjs).
   const [view, setView] = useState<View_>('paper');
-  const byTopic = tab === 'hb2s1' && view === 'topic';
+  const byTopic = view === 'topic';
   const [topicList, setTopicList] = useState<CourseTopics[] | null>(null);
 
   useEffect(() => {
     if (!byTopic) return;
     let live = true;
-    Promise.all(HB2_COURSES.map((course) => loadCourseTopics(course).catch(() => ({ course, topics: [] })))).then((result) => {
+    queueMicrotask(() => { if (live) setTopicList(null); });
+    Promise.all(tabCourses(tab).map((course) => loadCourseTopics(course).catch(() => ({ course, topics: [] })))).then((result) => {
       if (live) setTopicList(result);
     });
     return () => {
       live = false;
     };
-  }, [byTopic]);
+  }, [byTopic, tab]);
 
   useEffect(() => {
     let live = true;
-    let courses: (LegacyCourse | LocalCourse)[];
-    if (tab === 'hb2s1') {
-      // HB2 Semester 1: Anatomy, Biochemistry, Physiology — past questions from
-      // the supplementary bank files (hb2-biochemistry.json, hb2-physiology.json).
-      courses = [...HB2_COURSES];
-    } else {
-      // HB1 tabs show only HB1 courses. (HB2 courses used to be added here for HB2
-      // learners, which made the HB2 past papers appear under both HB1 semesters.)
-      const semester = tab === 'hb1s2' ? 2 : 1;
-      courses = LEGACY_COURSES.filter((course) => course.classId === 'HB1' && course.semester === semester);
-    }
     queueMicrotask(() => { if (live) setList(null); });
     Promise.all(
-      courses.map((course) =>
+      tabCourses(tab).map((course) =>
         loadCourseSets(course.id)
-          .then((sets) => ({ course, papers: sets.filter((set) => setKind(set.name) !== 'quiz' && setKind(set.name) !== 'test').map((set) => ({ ...set, kind: setKind(set.name) as 'past' | 'predicted' })) }))
+          .then((sets) => orderPapers(course, sets.filter((set) => setKind(set.name) !== 'quiz' && setKind(set.name) !== 'test').map((set) => ({ ...set, kind: setKind(set.name) as 'past' | 'predicted' }))))
+          .then((papers) => ({ course, papers }))
           .catch(() => ({ course, papers: [] as Paper[] }))
       )
     ).then((result) => { if (live) setList(result); });
@@ -115,19 +141,17 @@ export default function PastQuestionsScreen() {
       <View style={styles.switch}>
         <SegmentedControl label="Class and semester" options={tabOptions} value={tab} onChange={(value) => setTab(value as Tab)} />
       </View>
-      {tab === 'hb2s1' ? (
-        <View style={styles.switch}>
-          <SegmentedControl
-            label="Show the past questions"
-            options={[
-              { value: 'paper', label: 'By paper' },
-              { value: 'topic', label: 'By topic' },
-            ]}
-            value={view}
-            onChange={(value) => setView(value as View_)}
-          />
-        </View>
-      ) : null}
+      <View style={styles.switch}>
+        <SegmentedControl
+          label="Show the past questions"
+          options={[
+            { value: 'paper', label: 'By paper' },
+            { value: 'topic', label: 'By topic' },
+          ]}
+          value={view}
+          onChange={(value) => setView(value as View_)}
+        />
+      </View>
       {byTopic ? (
         topicList === null ? (
           <LoadingState label="Sorting the questions by topic…" />
@@ -172,15 +196,22 @@ export default function PastQuestionsScreen() {
                 <Text style={styles.meta}>{papers.length} paper{papers.length === 1 ? '' : 's'} · {papers.reduce((s, paper) => s + paper.count, 0)} questions</Text>
               </View>
             </View>
-            {papers.map((paper) => {
+            {papers.map((paper, index) => {
               const saved = findPractice(drafts, course.id, `paper-${paper.id}`);
+              // A heading where a course has both kinds of paper: past papers, then predicted ones.
+              const heading = papers.some((item) => item.kind !== paper.kind) && papers[index - 1]?.kind !== paper.kind
+                ? <Text style={styles.group}>{paper.kind === 'past' ? 'Past papers' : 'Predicted papers'}</Text>
+                : null;
               return (
-              <Interactive key={paper.id} onPress={() => router.push(saved ? resumeHref(saved) : routes.legacyPractice({ course: course.id, set: paper.id, exam: true }))} accessibilityRole="button" accessibilityLabel={`${paper.name}, ${paper.count} questions`} style={({ hovered }) => [styles.paper, hovered && styles.paperHover]}>
+              <View key={paper.id} style={styles.paperRow}>
+              {heading}
+              <Interactive onPress={() => router.push(saved ? resumeHref(saved) : routes.legacyPractice({ course: course.id, set: paper.id, exam: true }))} accessibilityRole="button" accessibilityLabel={`${paper.name}, ${paper.count} questions`} style={({ hovered }) => [styles.paper, hovered && styles.paperHover]}>
                 <Icon name={paper.kind === 'predicted' ? 'achievement' : 'book'} size={16} color={colors.accentText} />
                 <Text style={styles.paperName}>{paper.name}</Text>
                 <Text style={styles.meta}>{saved ? `Resume · ${resumeLabel(saved)}` : `${paper.count} questions`}</Text>
                 <Icon name="chevronRight" size={16} color={colors.textTertiary} />
               </Interactive>
+              </View>
               );
             })}
           </Card>
@@ -204,6 +235,8 @@ function createStyles(colors: ThemeColors) {
     meta: { fontSize: 12.5, color: colors.textTertiary },
     paper: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 11, paddingHorizontal: 12, borderRadius: 12, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface },
     paperHover: { borderColor: colors.primaryBorder },
+    paperRow: { gap: 8 },
+    group: { fontSize: 12.5, fontWeight: '600', color: colors.textSecondary, marginTop: 4 },
     paperName: { flex: 1, fontSize: 14.5, fontWeight: '700', color: colors.text },
   });
 }

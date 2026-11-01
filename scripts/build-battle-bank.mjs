@@ -140,7 +140,9 @@ export function buildBattleBanks() {
     const questions = [];
     for (const set of source.sets) {
       for (const q of set.questions) {
-        const tag = q.tp?.trim() || q.t?.trim() || 'general';
+        // The original labels: `tp` on HB1 papers is for Apex High Yield → By topic
+        // (scripts/sort-hb1-past-questions-by-topic.mjs) and only covers the papers.
+        const tag = q.t?.trim() || 'general';
         if (!titles.has(tag)) titles.set(tag, tag === 'general' ? 'Other / general' : tag);
         const item = fromBank(q, tag, set.id);
         if (item) questions.push(item);

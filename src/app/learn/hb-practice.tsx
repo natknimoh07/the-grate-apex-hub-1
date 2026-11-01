@@ -126,8 +126,9 @@ function LegacyPracticeAttempt() {
         source = all.filter((q) => q.set === setId);
       } else if (practice.kind === 'pastTopic') {
         // Every past question on the topic, once each (some are in more than one paper).
+        // Only sorted questions have a topic (HB1 quizzes and practice tests have none).
         const seen = new Set<string>();
-        source = all.filter((q) => (q.tp ?? 'other') === practice.topicId && !seen.has(q.id) && Boolean(seen.add(q.id)));
+        source = all.filter((q) => q.tp === practice.topicId && !seen.has(q.id) && Boolean(seen.add(q.id)));
       } else if (reviewIds) {
         // Spaced review of the original questions (data/legacy-review.ts).
         source = all.filter((q) => reviewIds.has(q.id));

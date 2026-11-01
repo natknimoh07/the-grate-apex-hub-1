@@ -2,7 +2,7 @@
 //   practice   the whole course, mixed question types (20)
 //   lesson     a lesson's own questions (all of them)
 //   set        one of the course's quizzes (30), or a whole paper as an exam
-//   pastTopic  every past question on one topic, sat as an exam (HB2; data/past-question-topics.ts)
+//   pastTopic  every past question on one topic, sat as an exam (HB1 and HB2; data/past-question-topics.ts)
 //   apex       the Apex Challenge (30 questions, 10 seconds each)
 //   review     spaced review: due questions or last time's mistakes (20)
 //   mock       Predicted test N: a 70-question mock exam, answers at the end
