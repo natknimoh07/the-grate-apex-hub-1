@@ -6206,8 +6206,32 @@
   {
    "id": "behavioural",
    "name": "Behavioural Science",
-   "total": 471,
+   "total": 581,
    "topics": [
+    {
+     "id": "Amnesia",
+     "title": "Amnesia",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Applications",
+     "title": "Applications",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Assessment",
+     "title": "Assessment",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
     {
      "id": "Biological Foundations",
      "title": "Biological Foundations",
@@ -6217,8 +6241,128 @@
      "unrated": 63
     },
     {
+     "id": "Causes",
+     "title": "Causes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Classical conditioning",
+     "title": "Classical conditioning",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
+    },
+    {
+     "id": "Defence mechanisms",
+     "title": "Defence mechanisms",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Definitions",
+     "title": "Definitions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Emotions",
+     "title": "Emotions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
+     "id": "Forgetting",
+     "title": "Forgetting",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Forms of learning",
+     "title": "Forms of learning",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Freud",
+     "title": "Freud",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Humanistic",
+     "title": "Humanistic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Improving memory",
+     "title": "Improving memory",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Intelligence",
      "title": "Intelligence",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Intelligence tests",
+     "title": "Intelligence tests",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Learning",
+     "title": "Learning",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Learning process",
+     "title": "Learning process",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Long-term memory",
+     "title": "Long-term memory",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Managing stress",
+     "title": "Managing stress",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -6230,7 +6374,23 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 15
+     "unrated": 18
+    },
+    {
+     "id": "Memory and the brain",
+     "title": "Memory and the brain",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Mind–body",
+     "title": "Mind–body",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Motivation",
@@ -6239,6 +6399,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 59
+    },
+    {
+     "id": "Neo-Freudians",
+     "title": "Neo-Freudians",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Operant conditioning",
+     "title": "Operant conditioning",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Overview of Psychology",
@@ -6281,6 +6457,22 @@
      "unrated": 30
     },
     {
+     "id": "Psychosexual stages",
+     "title": "Psychosexual stages",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Punishment",
+     "title": "Punishment",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Reference Guide (Practice Only)",
      "title": "Reference Guide (Practice Only)",
      "easy": 0,
@@ -6289,12 +6481,76 @@
      "unrated": 51
     },
     {
+     "id": "Reinforcement",
+     "title": "Reinforcement",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Retrieval",
+     "title": "Retrieval",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Schedules",
+     "title": "Schedules",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Sensory memory",
+     "title": "Sensory memory",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Short-term memory",
+     "title": "Short-term memory",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Signs",
+     "title": "Signs",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Social-cognitive",
+     "title": "Social-cognitive",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Stress",
      "title": "Stress",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 11
+    },
+    {
+     "id": "The 4 A’s",
+     "title": "The 4 A’s",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Theoretical Paradigms",
@@ -6303,6 +6559,30 @@
      "medium": 0,
      "hard": 0,
      "unrated": 64
+    },
+    {
+     "id": "Theories",
+     "title": "Theories",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Traits",
+     "title": "Traits",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Who is prone",
+     "title": "Who is prone",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     }
    ]
   },

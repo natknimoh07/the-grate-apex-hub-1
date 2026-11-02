@@ -17,6 +17,10 @@ import type { LegacyExtras, LegacyLessonBody, LegacyLessonMeta, LegacySection } 
 import { bmcAlkanes } from '@/data/hb1-lessons/bmc-alkanes';
 import { bmcAldehydesKetones } from '@/data/hb1-lessons/bmc-aldehydes-ketones';
 import { bmcStereochemistry } from '@/data/hb1-lessons/bmc-stereochemistry';
+import { behaviouralLearning } from '@/data/hb1-lessons/behavioural-learning';
+import { behaviouralMemory } from '@/data/hb1-lessons/behavioural-memory';
+import { behaviouralPersonality } from '@/data/hb1-lessons/behavioural-personality';
+import { behaviouralStress } from '@/data/hb1-lessons/behavioural-stress';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -40,7 +44,10 @@ export type Hb1Lesson = {
   pastTopics?: string[];
 };
 
-export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [bmcAlkanes, bmcAldehydesKetones, bmcStereochemistry];
+export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
+  bmcAlkanes, bmcAldehydesKetones, bmcStereochemistry,
+  behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
+];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
 
