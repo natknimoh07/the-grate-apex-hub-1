@@ -1,5 +1,5 @@
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 
@@ -101,17 +101,15 @@ function LessonPlayer({
     return 'learn';
   });
   // Reading is the section-by-section reader, one page at a time (hb-lesson), for every lesson
-  // that has one (owner, 2026-10-31): the Read tab, a read link, and finishing "learn by
-  // answering" all go there instead of showing the whole lesson at once.
+  // that has one (owner, 2026-10-31). It is opened only when the learner asks (the choice, the
+  // Read tab, finishing "learn by answering"), as a new page, so Back returns here. (It used to
+  // follow from this page's state, so Back bounced straight back into the reader.)
   const sectioned = Boolean(lesson && hb2LessonById(lesson.id));
   // Opening a lesson without saying how asks first: learn by answering, or read.
   const [choosing, setChoosing] = useState(() => !requestedLayer && hasInteractive);
-  // Only while this page is on screen (pages stay mounted in the background: tests/navigation-redirects).
-  useFocusEffect(
-    useCallback(() => {
-      if (lesson && sectioned && view === 'read' && !choosing) router.replace(routes.legacyLesson(lesson.id));
-    }, [lesson, sectioned, view, choosing])
-  );
+  const openReader = () => {
+    if (lesson) router.push(routes.legacyLesson(lesson.id));
+  };
 
   // Start (or resume) the lesson session once.
   useEffect(() => {
@@ -191,6 +189,11 @@ function LessonPlayer({
           setView('learn');
         }}
         onRead={() => {
+          // The choice stays here: Back from the reader returns to it (it has its own Back).
+          if (sectioned) {
+            openReader();
+            return;
+          }
           setChoosing(false);
           setView('read');
         }}
@@ -204,6 +207,10 @@ function LessonPlayer({
 
   function goTo(next: View3) {
     setAi(null);
+    if (next === 'read' && sectioned) {
+      openReader();
+      return;
+    }
     setView(next);
     scrollTop();
   }
@@ -341,6 +348,8 @@ function LessonPlayer({
           session={session}
           onFinished={() => {
             saveLessonSession({ ...session, phase: 'reading' });
+            // Coming back from the reader shows the choice, never the finished steps again.
+            if (sectioned) setChoosing(true);
             goTo('read');
           }}
         />
@@ -374,7 +383,19 @@ function LessonPlayer({
               />
             </Card>
           ) : null}
-          <ReadingLayer lesson={lesson} />
+          {sectioned ? (
+            // Opened straight on the reading (a read link): the reader is one tap away, never a jump.
+            <Card style={styles.sideCard}>
+              <Text style={styles.completeTitle}>Read section by section</Text>
+              <Text style={styles.doneText}>{lesson.chunks.length} sections, one page at a time, with Next to move on.</Text>
+              <View style={styles.doneActions}>
+                <Button label="Start reading" onPress={openReader} />
+                <Button label="Back to topic" variant="ghost" onPress={() => router.push(routes.topic(topic.id))} />
+              </View>
+            </Card>
+          ) : (
+            <ReadingLayer lesson={lesson} />
+          )}
           {!completed ? (
             <Card tone="primary" style={styles.completeCard}>
               <Text style={styles.completeTitle}>Finished the lesson?</Text>
