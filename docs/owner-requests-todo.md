@@ -41,3 +41,15 @@ Done and live: (1) typed answers accept other forms (units, number words, spelli
 Still to do, in this order (owner's choices):
 - **8. More questions — thinnest topics first, to about 30 per lesson**, from the lesson's own lecture text, citing slides, wrong options as long as the right one (`tests/question-option-lengths.test.mjs`), then rebuild the battle bank. Next: Amino Acid Metabolism (9 lessons, ~13 each), Nucleic Acids (14, ~13), Immunology (10, ~14), Reproductive Physiology (10, ~14), Special Senses (10, ~13); then Endocrinology, GI Physiology, CNS (~18–22).
 - **7. HB1 lessons** (live database `lessonContent`, read by every HB1 student): one course at a time. Save a backup of the current lessons first, write the improved version from `C:\Users\User\OneDrive\Desktop\HUMAN BIOLOGY\HB1`, show it to the owner, publish only after the owner's OK. The service account is in `.env` (`FIREBASE_SERVICE_ACCOUNT`). Ask which course first.
+
+### Update 2026-11-02 (later): HB1 lectures without lessons
+Owner: "add alkanes alkenes and stuff to hb1 courses and all other stuff in the hb folder that do not have lessons". Written in the app (`src/data/hb1-lessons/`, see AGENTS.md), live:
+- Basic Medical Chemistry: Hydrocarbons & Alkanes, Aldehydes & Ketones, Stereochemistry
+- Behavioural Science: Learning, Memory and Intelligence, Personality, Stress and Emotions
+- Physiology 1: The Autonomic Nervous System
+- Entomology: Vector Control (IVM), Fleas and Tungiasis, Blackflies and River Blindness, Venoms/Allergies/Injuries
+Skipped on purpose: Medical Genetics 9–11 (question collections, not lectures — no text to teach from); Ghanaian Sign Language (no course in the app).
+Still without a lesson:
+- Biochemistry 1: "Basic Concept and Design of Metabolism 2023.pptx"; practicals 1–7 (lab skills, units and concentrations, blood collection tubes, enzymes, carbohydrate tests, urinalysis, blood sample).
+- Physiology 1 practicals: resting membrane and action potentials, facilitated diffusion and active transport, skeletal muscle length–tension and stimulus frequency (.ppt slides read through PowerPoint COM, lab reports are PDFs).
+Then item 8 (thin HB2 topics) and item 7 (refining existing HB1 lessons, owner checks first).
