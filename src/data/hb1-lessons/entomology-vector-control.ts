@@ -1,0 +1,145 @@
+// Medical Entomology → Vector control. From "3. IVM.pptx" (R. C. Brenyah) and the handout
+// "Mosquito Control Methods.docx". Explanations are in our own words; facts are the
+// sources'. The bank's topic review set asks the basic IVM facts; this quiz asks others.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+
+export const entomologyVectorControl: Hb1Lesson = {
+  id: 'entomology-vector-control',
+  order: 1.5, // lecture 3, after the introduction and before the mosquitoes
+  title: 'Vector Control: IVM and Mosquito Control',
+  summary: 'R. C. Brenyah · Integrated vector management: its features and objectives, community control and self-protection, the five-stage IVM process, and the methods used against mosquitoes',
+  minutes: 15,
+  source: '3. IVM.pptx (R. C. Brenyah); Mosquito Control Methods.docx',
+  quizId: 'ivm',
+  quizName: 'Topic Review — Vector Control (lesson)',
+  sections: [
+    {
+      id: 'ivm-what',
+      title: 'What integrated vector management is',
+      kicker: 'No vector, no disease',
+      blocks: [
+        { k: 'p', x: '<b>Integrated vector management (IVM)</b> is a rational decision-making process for the best use of resources in managing vector populations, so as to reduce or interrupt the transmission of vector-borne disease. It aims to make vector control more <b>effective, cost-effective, ecologically sound and sustainable</b>.', lede: 1 },
+        { k: 'p', x: 'Much of Africa’s disease burden is vector-borne — malaria, guinea worm, onchocerciasis, schistosomiasis, trypanosomiasis, lymphatic filariasis, yellow fever. Vectors may be <b>mechanical</b> (just carrying the organism) or <b>biological</b> (the organism develops inside them). Hence the gist: <b>no vector, no disease</b>.' },
+        { k: 'h', x: 'Characteristic features', l: 3 },
+        { k: 'ul', ol: 1, items: [
+          'Proven methods chosen from knowledge of the <b>local</b> vector biology, ecology and disease.',
+          'A <b>range of interventions</b>, often combined (synergistically).',
+          '<b>Collaboration</b> within health and with other sectors that affect vector breeding.',
+          '<b>Engagement</b> with local communities and stakeholders.',
+          'A public-health <b>regulatory and legislative</b> framework.',
+          '<b>Rational use</b> of insecticides.',
+          'Good management practice.',
+        ] },
+        { k: 'p', x: 'Specific objectives: keep <b>breeding sites</b> to a minimum, reduce the <b>abundance and longevity</b> of vectors, and reduce <b>human–vector contact</b>.' },
+      ],
+    },
+    {
+      id: 'ivm-community',
+      title: 'Community control',
+      kicker: 'Protecting a whole community',
+      blocks: [
+        { k: 'p', x: 'Protecting a <b>whole community</b> is harder than protecting a household. Methods differ from place to place (spraying mud walls, ITNs and LLINs, environmental management), depend on what the community prefers, and need consultation and everyone’s active participation. They should be <b>effective, affordable, simple, easy to understand, acceptable to local customs, and safe</b>.', lede: 1 },
+        { k: 'h', x: 'The housing problem', l: 3 },
+        { k: 'p', x: 'Urban migration brings poor, crowded housing that pests exploit; good design and materials reduce infestation. Some pests <b>breed in the house</b> (cockroaches, flies, ticks), some <b>on the body</b> (bed bugs, lice, scabies), and <b>adventitious</b> insects come in to feed but breed nearby (mosquitoes, flies).' },
+        { k: 'h', x: 'Avoidance, diversion and spraying', l: 3 },
+        { k: 'ul', items: [
+          '<b>House siting:</b> build upwind, away from streams; provide pipe-borne water.',
+          '<b>Zooprophylaxis:</b> placing cattle to divert mosquitoes from people.',
+          '<b>Residual wall spraying</b> — the “gold standard” — works against <i>Anopheles</i> but not <i>Aedes</i>; households may object to the deposits and to strangers entering.',
+          '<b>Space spraying</b> (aerosols): immediate effect but needs equipment — hand compressors, knapsack sprayers, foggers, vehicle-mounted sprayers, ULV aerial spraying from helicopters and planes.',
+        ] },
+        { k: 'p', x: 'Against mosquitoes, <b>environmental management</b> comes first after a thorough survey: <b>source reduction</b> (containers, car tyres, even dams), <b>vegetation management</b> (ditching, draining, burning) and <b>water management</b> (changing water levels, larva-eating fish), plus insect growth regulators and microbial pesticides; conventional insecticides for adults.' },
+      ],
+    },
+    {
+      id: 'ivm-self',
+      title: 'Self-protection',
+      kicker: 'For you and your household',
+      blocks: [
+        { k: 'p', x: 'Self-protection prevents contact between people and vectors and stops pests sheltering or breeding in and around the house. It is <b>simple, cheap</b> (protective clothing) and needs <b>no specialised health workers</b>.', lede: 1 },
+        { k: 'table', head: ['Method', 'Key points'], rows: [
+          { c: ['Repellents (e.g. DEET)', 'Used when avoidance is not possible; on skin or fabric; evaporate faster than insecticides, <b>do not kill</b> insects, last <b>30 min–1 h</b>. Effect depends on the product, how it is applied, weather, loss by sweat or rubbing, how attractive the person is and how sensitive the insects are.'] },
+          { c: ['Traditional repellents', 'Smoke from an open fire, <b>citronella</b> oil, <b>neem</b> leaves — known locally, cheap, easy to get.'] },
+          { c: ['Insecticide vaporisers', 'Mosquito coils, vaporising mats, spray cans: keep mosquitoes out, paralyse or kill them.'] },
+          { c: ['Mosquito nets (ITNs, LLINs)', 'Especially for pregnant women, children, the elderly and the sick; also affect bed bugs, head lice, ticks and houseflies, and keep out spiders, cockroaches and other pests.'] },
+        ] },
+      ],
+    },
+    {
+      id: 'ivm-process',
+      title: 'The IVM process',
+      kicker: 'Five stages',
+      blocks: [
+        { k: 'step', n: '1', title: 'Survey (situation analysis)', blocks: [{ k: 'p', x: 'An insect becomes a <b>pest</b> once it is of public-health interest; pests need food, water, shelter and warmth — deny any one. Survey the species, distribution, local conditions, adaptive potential, the community’s education, the likely length of the effort and its cost.' }] },
+        { k: 'step', n: '2', title: 'Planning and objectives', blocks: [{ k: 'p', x: 'Set goals, vision, funding and strategy — “<b>failing to plan is planning to fail</b>”. Use an <b>epidemiological assessment</b> (incidence, prevalence, mortality, work or school days lost, seasonality) and a <b>vector assessment</b> (ecosystem, role in disease, habitat, feeding and resting behaviour, insecticide susceptibility).' }] },
+        { k: 'step', n: '3', title: 'Implementation', blocks: [{ k: 'p', x: 'Natural control (releasing natural enemies) and artificial control: quarantine, biological (microbial insecticides), mechanical, physical, chemical, sterilisation, genetic control, chemotherapy and engineering projects.' }] },
+        { k: 'step', n: '4', title: 'Monitoring', blocks: [{ k: 'p', x: 'Regular feedback to stakeholders on progress, with real-time information.' }] },
+        { k: 'step', n: '5', title: 'Evaluation', blocks: [{ k: 'p', x: 'A rigorous, independent, in-depth assessment of how far the objectives are met, using monitoring data — valuable to donors, government, planners and scientists. An <b>optional appraisal</b>, often by an independent scientific body, assesses whether a project is worth starting at all.' }] },
+        { k: 'p', x: 'Strategies must be acceptable ecologically, socially, economically and politically, avoid side effects such as contamination, rest on <b>advocacy, legislation</b> and evidence, integrate chemical and non-chemical methods across several diseases, and build <b>capacity</b> — with <b>community participation</b> paramount. Disease comes from the interplay of <b>human, parasite, vector and environment</b>.' },
+      ],
+    },
+    {
+      id: 'ivm-mosquito',
+      title: 'Methods of mosquito control',
+      kicker: 'From the mosquito control handout',
+      blocks: [
+        { k: 'table', head: ['Method', 'How it works'], rows: [
+          { c: ['Chemical', 'Insecticides by fogging, or applied to breeding and resting sites'] },
+          { c: ['Source reduction', 'Removing containers and tyres where water collects'] },
+          { c: ['Environmental', 'Making breeding impossible, e.g. sub-soil drainage'] },
+          { c: ['Biological', 'Fish, and the bacteria <b>Bacillus thuringiensis israelensis (Bti)</b> and <b>Bacillus sphaericus</b>: safe for the environment, little risk of resistance'] },
+          { c: ['Personal protection', 'Repellents, coils, mats, clothing'] },
+          { c: ['Genetic', 'Modified mosquitoes whose larvae die early or eggs do not hatch'] },
+        ] },
+        { k: 'ul', items: [
+          '<b>Larvicides</b> kill larvae before they become adults — liquids, or dunks, tablets, pellets and granules.',
+          '<b>Insect growth regulators</b> (methoprene, pyriproxyfen) stop larvae completing development.',
+          '<b>Oils and films</b> spread over the water so larvae and pupae that breathe at the surface drown — the <b>only effective way to kill pupae</b>.',
+          '<b>Adulticides</b> such as <b>organophosphates</b> stop the nervous system working; liquid adulticides can be residual sprays on resting sites.',
+          '<b>Aerial spraying</b> treats large areas quickly, but larvicides and adulticides only reduce numbers <b>temporarily</b>.',
+          '<b>Sterile insect technique</b>: mass-rear, sort, and release sterile males that must greatly outnumber wild males; mated wild females have no offspring.',
+          '<b>At home:</b> empty, scrub, cover or discard anything holding water; cover water stores tightly.',
+        ] },
+      ],
+    },
+  ],
+  extras: {
+    facts: [
+      { h: 'Key points to remember', lines: [
+        'IVM: rational decision-making for the best use of resources against vectors; effective, cost-effective, ecological, sustainable.',
+        'Objectives: fewer breeding sites, fewer and shorter-lived vectors, less human contact.',
+        'Community methods: effective, affordable, simple, acceptable, safe. Residual spraying: Anopheles yes, Aedes no. Space spraying: immediate.',
+        'Self-protection: repellents (30 min–1 h, do not kill), neem and citronella, coils and mats, ITNs/LLINs.',
+        'Process: survey → planning → implementation → monitoring → evaluation.',
+        'Bti and B. sphaericus; IGRs (methoprene, pyriproxyfen); oils kill pupae; sterile males must outnumber wild ones.',
+      ] },
+    ],
+  },
+  quiz: [
+    ['Which is a characteristic feature of IVM?', 'Choosing methods from knowledge of the local vector biology', ['Using one single insecticide everywhere, in exactly the same way', 'Working only within the health sector', 'Leaving communities out of all decisions'], 'Slide 2.', 'IVM'],
+    ['A vector in which the disease organism develops is a', 'Biological vector', ['Mechanical vector', 'Adventitious vector', 'Domestic vector'], 'Slide 5: mechanical vectors only carry it.', 'IVM'],
+    ['Which is a specific objective of IVM?', 'Reducing the abundance and longevity of vectors', ['Increasing the number of mosquito breeding sites near houses', 'Using as much insecticide as possible', 'Moving people away from all towns'], 'Slide 4.', 'IVM'],
+    ['Community vector control methods should be', 'Effective, affordable, simple, acceptable and safe', ['Expensive, complex, and run only by outside specialist experts', 'The same in every country and every culture', 'Imposed without asking the residents'], 'Slide 7.', 'Community control'],
+    ['Bed bugs and lice are examples of pests that breed', 'On the body', ['In the house walls', 'In nearby water', 'Only on animals'], 'Slide 9.', 'Community control'],
+    ['Mosquitoes that enter houses to feed but breed nearby are called', 'Adventitious insects', ['Domestic breeders', 'Body breeders', 'Mechanical vectors'], 'Slide 9.', 'Community control'],
+    ['Which is advised when siting a house to avoid biting flies?', 'Build upwind and away from streams', ['Build downwind, right beside a fast-flowing stream', 'Build next to stagnant ponds', 'Build in dense, wet vegetation'], 'Slide 10.', 'Community control'],
+    ['Why do households sometimes object to residual wall spraying?', 'Deposits on walls and strangers entering their homes', ['It kills every single insect in the whole town and the countryside', 'It must be repeated every hour', 'It makes the walls collapse'], 'Slide 11.', 'Community control'],
+    ['In mosquito control, environmental management is', 'Fundamental, after a thorough survey', ['Never used because it is too slow', 'Used only after all of the insecticides have failed', 'Only for adult mosquitoes'], 'Slide 15.', 'Community control'],
+    ['Which is a traditional repellent named in the lecture?', 'Neem tree leaves', ['DEET cream', 'Permethrin spray', 'Organophosphate powder'], 'Slide 19; also smoke and citronella oil.', 'Self-protection'],
+    ['Which affects how well a repellent works?', 'Loss by sweating or rubbing', ['The colour of the person’s clothes only', 'The time since the person last ate', 'The number of windows in the house'], 'Slide 18.', 'Self-protection'],
+    ['Mosquito coils and vaporising mats work by', 'Keeping mosquitoes out and paralysing or killing them', ['Attracting mosquitoes to a sticky trap', 'Making the person completely invisible to all mosquitoes', 'Killing only the mosquito eggs'], 'Slide 20.', 'Self-protection'],
+    ['Besides mosquitoes, ITNs also affect', 'Bed bugs, head lice, ticks and houseflies', ['Only the fish and frogs living in nearby ponds', 'Only blackflies and midges', 'Only rats and mice'], 'Slide 21.', 'Self-protection'],
+    ['An insect becomes a pest when it', 'Becomes of public-health interest', ['Lays more than 100 eggs in a single batch', 'Lives longer than one year', 'Is larger than 1 cm'], 'Slide 29.', 'IVM process'],
+    ['Disease incidence, prevalence and school days lost belong to the', 'Epidemiological assessment', ['Vector assessment', 'Optional appraisal', 'Monitoring stage'], 'Slide 31.', 'IVM process'],
+    ['Feeding and resting behaviour and insecticide susceptibility belong to the', 'Vector assessment', ['Epidemiological assessment', 'Evaluation stage', 'Advocacy stage'], 'Slide 32.', 'IVM process'],
+    ['Quarantine, sterilisation and genetic control are examples of', 'Artificial control factors', ['Natural control factors', 'Monitoring tools', 'Survey methods'], 'Slides 33–34.', 'IVM process'],
+    ['Assessing whether a project is worth starting at all is', 'Optional appraisal', ['Monitoring', 'Implementation', 'Source reduction'], 'Slide 37.', 'IVM process'],
+    ['Which bacteria are among the most successful mosquito biocontrol agents?', 'Bacillus thuringiensis israelensis and Bacillus sphaericus', ['Escherichia coli and Staphylococcus aureus from the human gut', 'Salmonella typhi and Vibrio cholerae', 'Clostridium tetani and Mycobacterium bovis'], 'Mosquito Control Methods handout.', 'Mosquito control'],
+    ['What is an advantage of biological control?', 'Safe for the environment, with little risk of resistance', ['It kills every insect species at once', 'It works within a few seconds, just like space spraying does', 'It needs no knowledge of mosquito biology'], 'Mosquito Control Methods handout.', 'Mosquito control'],
+    ['Methoprene and pyriproxyfen are', 'Insect growth regulators', ['Repellents', 'Organophosphate adulticides', 'Antimalarial drugs'], 'Handout: they stop larvae completing development.', 'Mosquito control'],
+    ['What is the only effective way to kill mosquito pupae?', 'Oils and films spread on the water', ['Residual spraying of walls', 'Insect growth regulators', 'Bed nets'], 'Handout: pupae breathing at the surface drown.', 'Mosquito control'],
+    ['How do organophosphates kill mosquitoes?', 'By stopping their nervous system working properly', ['By blocking the larvae’s growth hormones so they cannot develop', 'By drowning them in a surface film', 'By making the males sterile'], 'Handout.', 'Mosquito control'],
+    ['For the sterile insect technique to work, the released sterile males must', 'Greatly outnumber the wild males', ['Be fewer than the wild males', 'Bite as many people as possible', 'Be released only once a year'], 'Handout.', 'Mosquito control'],
+    ['Aerial spraying of larvicides and adulticides reduces mosquito numbers', 'Only temporarily', ['Permanently, after one treatment', 'Only in the dry season', 'Only indoors'], 'Handout.', 'Mosquito control'],
+  ],
+};

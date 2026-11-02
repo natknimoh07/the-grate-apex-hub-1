@@ -22,6 +22,10 @@ import { behaviouralMemory } from '@/data/hb1-lessons/behavioural-memory';
 import { behaviouralPersonality } from '@/data/hb1-lessons/behavioural-personality';
 import { behaviouralStress } from '@/data/hb1-lessons/behavioural-stress';
 import { physiologyAns } from '@/data/hb1-lessons/physiology-ans';
+import { entomologyBlackflies } from '@/data/hb1-lessons/entomology-blackflies';
+import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
+import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
+import { entomologyVectorControl } from '@/data/hb1-lessons/entomology-vector-control';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -51,6 +55,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   bmcAlkanes, bmcAldehydesKetones, bmcStereochemistry,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyAns,
+  entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];

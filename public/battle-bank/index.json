@@ -6621,8 +6621,24 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 598,
+   "total": 698,
    "topics": [
+    {
+     "id": "Adult",
+     "title": "Adult",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
+     "id": "Allergy",
+     "title": "Allergy",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
     {
      "id": "Anopheline & Culicine Mosquitoes",
      "title": "Anopheline & Culicine Mosquitoes",
@@ -6648,12 +6664,36 @@
      "unrated": 13
     },
     {
+     "id": "Common fleas",
+     "title": "Common fleas",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Community control",
+     "title": "Community control",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Control",
+     "title": "Control",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Fleas",
      "title": "Fleas",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 9
     },
     {
      "id": "Introduction to Entomology",
@@ -6669,7 +6709,23 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 11
+    },
+    {
+     "id": "IVM process",
+     "title": "IVM process",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Kinds of harm",
+     "title": "Kinds of harm",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Lice & Bed Bugs",
@@ -6680,12 +6736,52 @@
      "unrated": 25
     },
     {
+     "id": "Life cycle",
+     "title": "Life cycle",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 15
+    },
+    {
+     "id": "Medical importance",
+     "title": "Medical importance",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Mosquito control",
+     "title": "Mosquito control",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Mosquitoes",
      "title": "Mosquitoes",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 24
+    },
+    {
+     "id": "Nuisance",
+     "title": "Nuisance",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Onchocerciasis",
+     "title": "Onchocerciasis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Past Exam (General/Mosquito)",
@@ -6704,12 +6800,60 @@
      "unrated": 53
     },
     {
+     "id": "Phobias",
+     "title": "Phobias",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Roll Back Malaria",
      "title": "Roll Back Malaria",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Self-protection",
+     "title": "Self-protection",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Tissue invasion",
+     "title": "Tissue invasion",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Toxins",
+     "title": "Toxins",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Tunga",
+     "title": "Tunga",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 12
+    },
+    {
+     "id": "Venoms",
+     "title": "Venoms",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
     },
     {
      "id": "general",
