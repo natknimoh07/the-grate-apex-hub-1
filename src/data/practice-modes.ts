@@ -17,7 +17,7 @@ export type PracticeMode =
   | { kind: 'practice' }
   | { kind: 'lesson'; lessonId: string }
   | { kind: 'set'; setId: string; exam: boolean }
-  | { kind: 'pastTopic'; topicId: string }
+  | { kind: 'pastTopic'; topicId: string; count?: number }
   | { kind: 'apex' }
   | { kind: 'review'; which: 'due' | 'missed' }
   | { kind: 'mock'; n: number }
@@ -31,6 +31,8 @@ export const DRILL = { questions: 20, seconds: 15 } as const;
 export const PREPOST_SIZE = 10;
 export const CUSTOM_COUNTS = [10, 20, 30, 50] as const;
 export const CUSTOM_SECONDS = [0, 10, 20, 30] as const;
+/** "By topic" past questions: how many to sit (0 in the picker = all of them). */
+export const PAST_TOPIC_COUNTS = [20, 30, 50] as const;
 
 const list = (value: string | undefined) => (value ? value.split(',').map((item) => item.trim()).filter(Boolean) : []);
 
@@ -58,7 +60,11 @@ export function parsePracticeMode(get: (key: string) => string | undefined): Pra
       },
     };
   }
-  if (get('ptopic')) return { kind: 'pastTopic', topicId: get('ptopic')! };
+  if (get('ptopic')) {
+    // How many to sit (owner, 2026-11-02: a topic can have about 400); none = all of them.
+    const count = Number(get('pcount'));
+    return { kind: 'pastTopic', topicId: get('ptopic')!, ...((PAST_TOPIC_COUNTS as readonly number[]).includes(count) ? { count } : {}) };
+  }
   if (lesson) return { kind: 'lesson', lessonId: lesson };
   if (set) return { kind: 'set', setId: set, exam: get('exam') === '1' };
   return { kind: 'practice' };
@@ -90,7 +96,7 @@ export function modeSettings(mode: PracticeMode): ModeSettings {
     case 'set': return mode.exam
       ? { count: Infinity, feedback: 'submit', variants: false, fixed: false, xp: 'practice', key: `paper-${mode.setId}` }
       : { count: 30, feedback: 'instant', variants: true, fixed: false, xp: 'practice', key: mode.setId };
-    case 'pastTopic': return { count: Infinity, feedback: 'submit', variants: false, fixed: false, xp: 'practice', key: `topic-${mode.topicId}` };
+    case 'pastTopic': return { count: mode.count ?? Infinity, feedback: 'submit', variants: false, fixed: false, xp: 'practice', key: `topic-${mode.topicId}` };
     case 'lesson': return { count: Infinity, feedback: 'instant', variants: true, fixed: false, xp: 'practice', key: mode.lessonId };
     default: return { count: 20, feedback: 'instant', variants: true, fixed: false, xp: 'practice', key: 'all' };
   }

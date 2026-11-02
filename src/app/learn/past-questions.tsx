@@ -15,7 +15,7 @@ import { readClassSelection } from '@/data/class-curriculum';
 import { HB2_COURSES, type LocalCourse } from '@/data/hb2-study';
 import { LEGACY_COURSES, type LegacyCourse, loadCourseSets, loadLegacyBank } from '@/data/legacy-study';
 import { PAST_TOPICS } from '@/data/past-question-topics';
-import { setKind } from '@/data/practice-modes';
+import { PAST_TOPIC_COUNTS, setKind } from '@/data/practice-modes';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { routes } from '@/lib/routes';
@@ -95,6 +95,8 @@ export default function PastQuestionsScreen() {
   // Past questions are sorted by topic too: HB2 (scripts/sort-past-questions-by-topic.mjs)
   // and HB1 (scripts/sort-hb1-past-questions-by-topic.mjs).
   const [view, setView] = useState<View_>('paper');
+  // "By topic": how many questions to sit (0 = all; some topics have about 400).
+  const [topicCount, setTopicCount] = useState(30);
   const byTopic = view === 'topic';
   const [topicList, setTopicList] = useState<CourseTopics[] | null>(null);
 
@@ -157,7 +159,15 @@ export default function PastQuestionsScreen() {
           <LoadingState label="Sorting the questions by topic…" />
         ) : (
           <>
-            <Text style={styles.summary}>Every past question on a topic, from all the papers. Sit them as an exam: the answers are shown at the end.</Text>
+            <Text style={styles.summary}>Past questions on a topic, from all the papers, drawn at random. Sit them as an exam: the answers are shown at the end.</Text>
+            <View style={styles.switch}>
+              <SegmentedControl
+                label="How many questions?"
+                options={[...PAST_TOPIC_COUNTS.map((count) => ({ value: String(count), label: String(count) })), { value: '0', label: 'All' }]}
+                value={String(topicCount)}
+                onChange={(value) => setTopicCount(Number(value))}
+              />
+            </View>
             <View style={styles.list}>
               {topicList.filter((item) => item.topics.length > 0).map(({ course, topics }) => (
                 <Card key={course.id} style={styles.course}>
@@ -171,10 +181,10 @@ export default function PastQuestionsScreen() {
                   {topics.map((topic) => {
                     const saved = findPractice(drafts, course.id, `topic-${topic.id}`);
                     return (
-                      <Interactive key={topic.id} onPress={() => router.push(saved ? resumeHref(saved) : routes.legacyPractice({ course: course.id, pastTopic: topic.id }))} accessibilityRole="button" accessibilityLabel={`${topic.title}, ${topic.count} past questions`} style={({ hovered }) => [styles.paper, hovered && styles.paperHover]}>
+                      <Interactive key={topic.id} onPress={() => router.push(saved ? resumeHref(saved) : routes.legacyPractice({ course: course.id, pastTopic: topic.id, pastTopicCount: topicCount }))} accessibilityRole="button" accessibilityLabel={`${topic.title}, ${topic.count} past questions`} style={({ hovered }) => [styles.paper, hovered && styles.paperHover]}>
                         <Icon name="book" size={16} color={colors.accentText} />
                         <Text style={styles.paperName}>{topic.title}</Text>
-                        <Text style={styles.meta}>{saved ? `Resume · ${resumeLabel(saved)}` : `${topic.count} questions`}</Text>
+                        <Text style={styles.meta}>{saved ? `Resume · ${resumeLabel(saved)}` : topicCount && topicCount < topic.count ? `${topicCount} of ${topic.count} questions` : `${topic.count} questions`}</Text>
                         <Icon name="chevronRight" size={16} color={colors.textTertiary} />
                       </Interactive>
                     );

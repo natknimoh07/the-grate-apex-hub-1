@@ -37,3 +37,11 @@ test('a seeded shuffle gives the same paper every time', () => {
   assert.notDeepEqual(shuffleSeeded(items, 'mock:anatomy:1'), shuffleSeeded(items, 'mock:anatomy:2'));
   assert.deepEqual([...shuffleSeeded(items, 'x')].sort((a, b) => a - b), items);
 });
+
+// "By topic" past questions ask how many (owner, 2026-11-02: choosing 30 gave about 400).
+test('a past-question topic sits the chosen number, or all of them', () => {
+  assert.equal(modeSettings(parsePracticeMode(from('course=anatomy&ptopic=heart&pcount=30'))).count, 30);
+  assert.equal(modeSettings(parsePracticeMode(from('course=anatomy&ptopic=heart&pcount=50'))).count, 50);
+  assert.equal(modeSettings(parsePracticeMode(from('course=anatomy&ptopic=heart'))).count, Infinity);
+  assert.equal(modeSettings(parsePracticeMode(from('course=anatomy&ptopic=heart&pcount=400'))).count, Infinity);
+});
