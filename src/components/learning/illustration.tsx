@@ -35,7 +35,16 @@ export function IllustrationFigure({ item, side = false }: { item: Illustration;
           <Image source={{ uri: uriOf(item.src) }} style={StyleSheet.absoluteFill} contentFit="contain" transition={150} accessibilityIgnoresInvertColors />
         </View>
       </Interactive>
-      <Text style={styles.caption}>{item.caption}</Text>
+      <Text style={styles.caption}>
+        {item.label ? <Text style={styles.label}>{`${item.label}  `}</Text> : null}
+        {item.caption}
+      </Text>
+      {item.note ? (
+        <View style={styles.note}>
+          <Text style={styles.noteTitle}>What to notice</Text>
+          <Text style={styles.noteText}>{item.note}</Text>
+        </View>
+      ) : null}
       <Interactive onPress={() => void Linking.openURL(item.sourceUrl).catch(() => undefined)} accessibilityRole="link">
         <Text style={styles.credit}>{`Image: ${item.credit}`}</Text>
       </Interactive>
@@ -43,7 +52,8 @@ export function IllustrationFigure({ item, side = false }: { item: Illustration;
         <View style={[styles.big, { aspectRatio: ratio }]}>
           <Image source={{ uri: uriOf(item.src) }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityLabel={item.caption} />
         </View>
-        <Text style={styles.bigCaption}>{item.caption}</Text>
+        <Text style={styles.bigCaption}>{item.label ? `${item.label}. ` : ''}{item.caption}</Text>
+        {item.note ? <Text style={styles.bigNote}>{item.note}</Text> : null}
       </Sheet>
     </View>
   );
@@ -86,6 +96,11 @@ function createStyles(colors: ThemeColors) {
     frame: { borderRadius: Radius.md, overflow: 'hidden' },
     box: { width: '100%', alignSelf: 'center', borderRadius: Radius.md, overflow: 'hidden', backgroundColor: Paper, borderWidth: 1, borderColor: colors.border },
     caption: { ...Type.caption, color: colors.textSecondary, lineHeight: 18 },
+    label: { fontWeight: '700', color: colors.text },
+    note: { gap: 3, marginTop: 4, paddingVertical: 8, paddingHorizontal: 10, borderLeftWidth: 3, borderLeftColor: colors.accentText, backgroundColor: colors.surfaceMuted, borderRadius: Radius.sm },
+    noteTitle: { fontSize: 11, fontWeight: '700', letterSpacing: 0.6, color: colors.accentText, textTransform: 'uppercase' },
+    noteText: { fontSize: 13, lineHeight: 20, color: colors.text },
+    bigNote: { ...Type.callout, color: colors.text, marginTop: 8 },
     credit: { fontSize: 11, color: colors.textTertiary, textDecorationLine: 'underline' },
     big: { width: '100%', backgroundColor: Paper, borderRadius: Radius.md, overflow: 'hidden' },
     bigCaption: { ...Type.callout, color: colors.textSecondary, marginTop: 10 },

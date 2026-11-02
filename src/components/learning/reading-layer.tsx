@@ -118,7 +118,7 @@ function ReadingSection({ lessonId, chunk, index, total }: { lessonId: string; c
 
       {/* The section's teaching, with any pictures beside it (data/illustrations.ts). */}
       <WithIllustrations
-        items={illustrationsFor(lessonId, chunk.title)}
+        items={illustrationsFor(lessonId, chunk.title, index + 1)}
         lead={chunk.teach?.slice(0, 1).map((paragraph, i) => (
           <Text key={`teach-${i}`} style={[styles.paragraph, serif]}>
             {paragraph}

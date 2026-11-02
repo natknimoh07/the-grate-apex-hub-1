@@ -13,6 +13,8 @@
 // the Read tab (reading-layer.tsx) and on HB2 lesson pages (hb2-study.ts).
 // tests/illustrations.test.mjs checks every picture and section exists.
 
+import { ILLUSTRATION_NOTES } from '@/data/illustration-notes';
+
 export type Illustration = {
   src: string; // path under public/
   width: number;
@@ -20,6 +22,10 @@ export type Illustration = {
   caption: string;
   credit: string;
   sourceUrl: string;
+  /** "Figure 3.1": section 3, first picture (set by illustrationsFor when the section number is given). */
+  label?: string;
+  /** What to notice in the picture (data/illustration-notes.ts). */
+  note?: string;
 };
 
 const CREDIT = 'OpenStax, Anatomy and Physiology · CC BY 4.0';
@@ -375,6 +381,11 @@ export const ILLUSTRATIONS: Record<string, Record<string, Illustration[]>> = {
 };
 
 /** The pictures for one reading section of a lesson (none for most). */
-export function illustrationsFor(lessonId: string, sectionTitle: string): Illustration[] {
-  return ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? [];
+/** A section's pictures, each with its note and, given the section's number (1, 2, …), its figure number. */
+export function illustrationsFor(lessonId: string, sectionTitle: string, sectionNumber?: number): Illustration[] {
+  return (ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? []).map((item, index) => ({
+    ...item,
+    note: ILLUSTRATION_NOTES[item.src.split('/').pop() ?? ''],
+    ...(sectionNumber ? { label: `Figure ${sectionNumber}.${index + 1}` } : {}),
+  }));
 }

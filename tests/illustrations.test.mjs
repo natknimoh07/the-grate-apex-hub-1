@@ -36,4 +36,19 @@ describe('reading illustrations', () => {
     }
     assert.ok(count >= 100, `only ${count} pictures`);
   });
+
+  // "What to notice" notes and figure numbers (owner, 2026-11-02).
+  it('every picture has a note and a figure number', async () => {
+    const { illustrationsFor } = await import('@/data/illustrations');
+    for (const [lessonId, sections] of Object.entries(ILLUSTRATIONS)) {
+      const lesson = lessons.get(lessonId);
+      for (const title of Object.keys(sections)) {
+        const number = lesson.chunks.findIndex((chunk) => chunk.title === title) + 1;
+        illustrationsFor(lessonId, title, number).forEach((item, index) => {
+          assert.ok(item.note && item.note.length >= 60 && item.note.length <= 600, `${item.src}: note missing or the wrong length`);
+          assert.equal(item.label, `Figure ${number}.${index + 1}`);
+        });
+      }
+    }
+  });
 });
