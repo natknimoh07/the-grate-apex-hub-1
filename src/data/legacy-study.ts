@@ -20,6 +20,7 @@ import { auth, db } from '@/lib/firebase';
 import { isOffline, offlineSupported, readOffline, readSavedFile, writeOffline } from '@/lib/offline-study';
 import { type BankQuestion } from '@/data/legacy-questions';
 import { HB2_COURSES, hb2Course, hb2LessonById, hb2Lessons, hb2Sets, lessonBody } from '@/data/hb2-study';
+import { HB1_LOCAL_LESSONS, hb1LessonBody, hb1LessonMeta, hb1LocalLesson } from '@/data/hb1-lessons';
 import type { SubjectId } from '@/data/lesson-types';
 
 export { buildPractice, parseRich, plainText, toQuestion, type BankQuestion, type Run } from '@/data/legacy-questions';
@@ -62,6 +63,8 @@ export type LegacyLessonMeta = {
   group?: string; subject?: SubjectId; xp?: number;
   /** HB2 only: the part of the subject the topic belongs to (e.g. Gross Anatomy). */
   section?: string;
+  /** HB1 lessons written in the app: past-question topics (`tp`) practised with the lesson. */
+  ptopics?: string[];
 };
 export type Rich = string;
 export type Block =
@@ -97,12 +100,18 @@ export function loadLegacyLessonList(): Promise<LegacyLessonMeta[]> {
     lessonList = (isOffline()
       ? saved(new Error('You are offline and the lessons have not been saved on this device yet.'))
       : getDocs(collection(db, 'lessons'))
-        .then((snap) => snap.docs.map((item) => ({ ...(item.data() as Omit<LegacyLessonMeta, 'id'>), id: item.id, course: item.id.split('-')[0] })).sort((a, b) => a.order - b.order))
+        .then((snap) => snap.docs.map((item) => ({ ...(item.data() as Omit<LegacyLessonMeta, 'id'>), id: item.id, course: item.id.split('-')[0] })))
         .then((list) => {
           void writeOffline('lesson-list', list);
           return list;
         })
         .catch(saved))
+      // HB1 lessons written in the app (data/hb1-lessons/) join their course, in lecture order.
+      .then((list) => {
+        const local = HB1_LOCAL_LESSONS.map(hb1LessonMeta);
+        const ids = new Set(local.map((lesson) => lesson.id));
+        return [...list.filter((lesson) => !ids.has(lesson.id)), ...local].sort((a, b) => a.order - b.order);
+      })
       .catch((error) => {
         lessonList = null;
         throw error;
@@ -129,6 +138,9 @@ export async function loadLegacyLessonMeta(id: string): Promise<LegacyLessonMeta
 export async function loadLegacyLessonBody(id: string): Promise<LegacyLessonBody> {
   const local = hb2LessonById(id);
   if (local) return lessonBody(local.lesson) as LegacyLessonBody;
+  // HB1 lessons written in the app (data/hb1-lessons/), not in the database.
+  const hb1 = hb1LocalLesson(id);
+  if (hb1) return hb1LessonBody(hb1);
   const hit = bodyCache.get(id);
   if (hit) return hit;
   const key = `grateapex_legacy_lesson_${id}`;

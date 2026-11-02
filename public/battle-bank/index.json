@@ -1446,7 +1446,7 @@
   {
    "id": "bmc",
    "name": "Basic Medical Chemistry",
-   "total": 719,
+   "total": 802,
    "topics": [
     {
      "id": "Acidity & Salts",
@@ -1455,6 +1455,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Addition",
+     "title": "Addition",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Alcohols, Phenols, Ethers & Thiols",
@@ -1471,6 +1479,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 69
+    },
+    {
+     "id": "Alkane family",
+     "title": "Alkane family",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Alkanes in medicine",
+     "title": "Alkanes in medicine",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Alkene Addition Reactions",
@@ -1561,6 +1585,14 @@
      "unrated": 9
     },
     {
+     "id": "Biological activity",
+     "title": "Biological activity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Biological Importance",
      "title": "Biological Importance",
      "easy": 0,
@@ -1575,6 +1607,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "Carbonyl group",
+     "title": "Carbonyl group",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Carboxylic Acids & Derivatives",
@@ -1593,6 +1633,22 @@
      "unrated": 70
     },
     {
+     "id": "Chemical properties",
+     "title": "Chemical properties",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Chirality",
+     "title": "Chirality",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Classification",
      "title": "Classification",
      "easy": 0,
@@ -1609,6 +1665,22 @@
      "unrated": 9
     },
     {
+     "id": "Classification of carbons",
+     "title": "Classification of carbons",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Configuration",
+     "title": "Configuration",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Derivatives",
      "title": "Derivatives",
      "easy": 0,
@@ -1623,6 +1695,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 14
+    },
+    {
+     "id": "Enantiomers",
+     "title": "Enantiomers",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Friedel-Crafts Reactions",
@@ -1654,7 +1734,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 57
+     "unrated": 60
     },
     {
      "id": "Importance & Applications",
@@ -1665,12 +1745,36 @@
      "unrated": 8
     },
     {
+     "id": "Introduction",
+     "title": "Introduction",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Isomerism",
+     "title": "Isomerism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Nomenclature",
      "title": "Nomenclature",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 40
+     "unrated": 54
+    },
+    {
+     "id": "Optical activity",
+     "title": "Optical activity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Organohalogen Compounds",
@@ -1689,6 +1793,22 @@
      "unrated": 7
     },
     {
+     "id": "Oxidation",
+     "title": "Oxidation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Physical properties",
+     "title": "Physical properties",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Physical Properties",
      "title": "Physical Properties",
      "easy": 0,
@@ -1697,12 +1817,20 @@
      "unrated": 11
     },
     {
+     "id": "Racemic mixtures",
+     "title": "Racemic mixtures",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Reactions",
      "title": "Reactions",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 16
+     "unrated": 21
     },
     {
      "id": "Reactions of Benzene & EAS",
@@ -1711,6 +1839,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "Reduction",
+     "title": "Reduction",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "ROH Classification & Naming",
