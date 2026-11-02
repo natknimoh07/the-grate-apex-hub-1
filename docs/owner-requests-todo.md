@@ -33,3 +33,11 @@ Still to do:
 
 - Post visibility: the writer chooses "Everyone" or "Friends" for each post. To be truly private this must be enforced by the Firestore rules (a `visibility` field the read rule checks against mutual follows), so it needs a rules addition the owner pastes.
 - Stories like WhatsApp: choose who can view (everyone / friends / hand-picked people, needs the same kind of rule), hide someone's stories (mute, device only, no rules needed), and archive your own stories after 24 hours (needs the rules to let the owner keep and read old stories).
+
+## Requests of 2026-11-02 (8-point list)
+
+Done and live: (1) typed answers accept other forms (units, number words, spelling, ranges, list order — `src/data/typed-answer-forms.ts`); (2) course practice ends on the full results page; (3) study aids spaced out with bullets and numbers; (4) past questions "By topic" ask how many (20/30/50/all); (5) figure numbers and "What to notice" notes on all 142 reading pictures (`src/data/illustration-notes.ts`); (6) References at the end of every lesson (`src/data/lesson-references.ts`); (8, first topic) Free Radicals now 30 questions per lesson.
+
+Still to do, in this order (owner's choices):
+- **8. More questions — thinnest topics first, to about 30 per lesson**, from the lesson's own lecture text, citing slides, wrong options as long as the right one (`tests/question-option-lengths.test.mjs`), then rebuild the battle bank. Next: Amino Acid Metabolism (9 lessons, ~13 each), Nucleic Acids (14, ~13), Immunology (10, ~14), Reproductive Physiology (10, ~14), Special Senses (10, ~13); then Endocrinology, GI Physiology, CNS (~18–22).
+- **7. HB1 lessons** (live database `lessonContent`, read by every HB1 student): one course at a time. Save a backup of the current lessons first, write the improved version from `C:\Users\User\OneDrive\Desktop\HUMAN BIOLOGY\HB1`, show it to the owner, publish only after the owner's OK. The service account is in `.env` (`FIREBASE_SERVICE_ACCOUNT`). Ask which course first.
