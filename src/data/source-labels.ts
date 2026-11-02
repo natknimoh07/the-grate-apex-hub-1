@@ -1,7 +1,7 @@
 import { getSourceFile } from '@/data/content-catalog';
 import type { SourceFile, SourceReference } from '@/data/lesson-types';
 
-function fileName(file: SourceFile) {
+export function fileName(file: SourceFile) {
   return (file.member ?? file.path).split('/').pop() ?? file.path;
 }
 

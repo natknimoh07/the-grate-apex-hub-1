@@ -6,6 +6,8 @@ import { type ScrollView, StyleSheet, View } from 'react-native';
 
 import { useLayoutWidth } from '@/components/side-panel-store';
 import { QuizInProgressCard } from '@/components/learning/quiz-in-progress-card';
+import { LessonReferences } from '@/components/learning/lesson-references';
+import { findLesson } from '@/data/curriculum';
 import { LegacyBlocks, Rich, TermContext } from '@/components/learning/legacy-blocks';
 import { BackLink } from '@/components/learning/nav-bits';
 import { AidsPanel, FlashcardsPanel, GlossaryPanel, LessonToolTabs, StepsPanel, type ToolTab, type ToolTabInfo } from '@/components/learning/lesson-tools';
@@ -159,6 +161,9 @@ function LegacyLessonScreen() {
     </>
   );
 
+  // HB2 lessons are this app's own lessons: they list their references at the end.
+  const localLesson = findLesson(meta.id)?.lesson;
+
   const reader = finished ? (
     <Card style={styles.finished}>
       <Text style={styles.finishedEmoji}>🎉</Text>
@@ -179,6 +184,7 @@ function LegacyLessonScreen() {
         <LegacyBlocks blocks={section?.blocks ?? []} />
       </TermContext.Provider>
       {isLast ? <StudyAids body={body} /> : null}
+      {isLast && localLesson ? <LessonReferences lesson={localLesson} /> : null}
       <View style={styles.nav}>
         <Button label="Previous" variant="secondary" disabled={index === 0} onPress={() => go(index - 1)} />
         <Button label={isLast ? (done ? 'Finish' : 'Finish the lesson') : 'Next section'} trailing="→" onPress={() => void next()} />

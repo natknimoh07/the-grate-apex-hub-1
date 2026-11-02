@@ -3,6 +3,7 @@ import { Text } from '@/components/ui/text';
 
 import { FigureExplorer } from '@/components/learning/figure-view';
 import { WithIllustrations } from '@/components/learning/illustration';
+import { LessonReferences } from '@/components/learning/lesson-references';
 import { RelatedLessons } from '@/components/learning/related-lessons';
 import { PathwaySteps } from '@/components/pathway-steps';
 import { Icon, type IconName } from '@/components/ui/icon';
@@ -90,6 +91,7 @@ export function ReadingLayer({ lesson }: { lesson: Lesson }) {
       ) : null}
 
       <RelatedLessons lesson={lesson} />
+      <LessonReferences lesson={lesson} />
     </View>
   );
 }
