@@ -22,6 +22,30 @@ const lesson1: Q[] = [
   mcq('q1-10', 'radical-sources', 'Free transition metals that behave as radicals include…', 'Fe²⁺ and Cu⁺', ['Na⁺ and K⁺', 'Ca²⁺ and Mg²⁺', 'Zn²⁺ only'], { explanation: 'HB slide 14.' }),
   mcq('q1-11', 'ischaemia-reperfusion', 'In the respiratory burst, what share of the oxygen consumed becomes superoxide?', '70–90%', ['1–2%', '20–30%', '100%'], { explanation: 'HB slide 16.' }),
   multi('q1-12', 'ischaemia-reperfusion', 'What happens during ischaemia? Select all that apply.', ['Xanthine and xanthine oxidase rise', 'SOD is lost', 'Glutathione peroxidase is lost'], ['Catalase rises'], { explanation: 'HB slide 10.' }),
+  // More questions (owner, 2026-11-02: a bigger bank per lesson), from the same slides.
+  mcq('q1-13', 'free-radical-definition', 'A free radical has…', 'One or more unpaired electrons', ['Only paired electrons in its outer shell', 'An extra proton in its nucleus', 'A full outer shell of eight electrons'], { explanation: 'HB slide 5.' }),
+  mcq('q1-14', 'free-radical-definition', 'How does a free radical try to become stable?', 'By accepting or donating an electron', ['By splitting into two smaller molecules', 'By binding a second proton to itself', 'By losing a neutron from its nucleus'], { explanation: 'HB slides 5–6.' }),
+  tf({ id: 'q1-15', conceptId: 'free-radical-definition', statement: 'Free radicals drive autocatalytic chain reactions that propagate damage.', answer: true, explanation: 'HB slide 5; Fay slide 7.' }),
+  mcq('q1-16', 'ros-terms', 'Reactive oxygen species (ROS) is a collective term for…', 'Oxygen-centred radicals and some non-radical oxygen derivatives', ['Only the oxygen-centred free radicals, and never any non-radical species', 'Antioxidant enzymes that contain oxygen atoms', 'Oxygen molecules bound to haemoglobin in the blood'], { explanation: 'HB slide 6.', skill: 'terminology' }),
+  mcq('q1-17', 'ros-terms', 'The half-lives of ROS are…', 'Very short', ['Several days in plasma', 'Longer than those of antioxidants', 'Equal to the 120-day life of red cells'], { explanation: 'HB slide 11.' }),
+  tf({ id: 'q1-18', conceptId: 'ros-terms', statement: 'ROS arise only in disease and have no role in normal cell signalling.', answer: false, explanation: 'HB slide 11: they arise normally from oxygen metabolism and have roles in cell signalling.', skill: 'misconception' }),
+  mcq('q1-19', 'ros-terms', 'ROS levels rise sharply during…', 'Environmental stress', ['Sleep', 'An overnight fast only', 'Normal quiet breathing at rest'], { explanation: 'HB slide 11.' }),
+  multi('q1-20', 'radical-sources', 'Which are potential cellular sources of free radicals? Select all that apply.', ['Mitochondria', 'Peroxisomes', 'Endoplasmic reticulum', 'Lysosomes'], ['Collagen fibres'], { explanation: 'HB slide 7.' }),
+  multi('q1-21', 'radical-sources', 'Which are internal sources of free radicals? Select all that apply.', ['Phagocytes', 'Xanthine oxidase', 'Exercise', 'Inflammation'], ['Ozone', 'Cigarette smoke'], { explanation: 'HB slide 9.' }),
+  mcq('q1-22', 'radical-sources', 'Which drug is listed as an external source of free radicals?', 'Methotrexate', ['Allopurinol', 'Deferoxamine', 'Vitamin C'], { explanation: 'HB slide 9.' }),
+  multi('q1-23', 'radical-sources', 'Which enzymes make radicals by enzymatic oxidation? Select all that apply.', ['Xanthine oxidase', 'Prostaglandin synthase', 'Lipoxygenase', 'Aldehyde oxidase'], ['Catalase'], { explanation: 'HB slide 16.' }),
+  multi('q1-24', 'radical-sources', 'Which does normal respiration produce? Select all that apply.', ['Superoxide', 'Hydrogen peroxide', 'HOCl', 'Nitric oxide'], ['Malondialdehyde'], { explanation: 'HB slide 14.' }),
+  mcq('q1-25', 'radical-sources', 'Which body states are listed as external sources of free radicals?', 'Fever, stress and hyperthyroidism', ['Sleep, rest and hypothyroidism', 'Hypothermia, fasting and anaemia', 'Dehydration, thirst and polyuria'], { explanation: 'HB slide 9.' }),
+  mcq('q1-26', 'ischaemia-reperfusion', 'Why do radicals flood a tissue when blood returns after ischaemia?', 'Xanthine oxidase has risen while SOD and glutathione peroxidase were lost', ['Catalase and SOD both rose during ischaemia and now make more radicals', 'Glutathione built up during ischaemia and is turned into radicals', 'Iron was removed from the tissue, so the Fenton reaction now runs faster'], { explanation: 'HB slide 10.' }),
+  mcq('q1-27', 'ischaemia-reperfusion', 'The respiratory burst happens in…', 'Phagocytes during phagocytosis', ['Red cells as they pass the lungs', 'Neurons during an action potential', 'Hepatocytes while making bile salts'], { explanation: 'HB slide 16.' }),
+  tf({ id: 'q1-28', conceptId: 'radical-sources', statement: 'Peroxisomes are an internal source of free radicals.', answer: true, explanation: 'HB slide 9.' }),
+  fill('q1-29', 'radical-sources', 'Radicals also form by ____ of catecholamines, haemoglobin and myoglobin.', ['autoxidation', 'auto-oxidation', 'autooxidation'], { explanation: 'HB slide 16.' }),
+  match('q1-30', 'ros-terms', 'Match each term to its meaning.', [
+    ['Free radical', 'Has one or more unpaired electrons'],
+    ['Oxidative stress', 'Tissue injury or disease from oxidative species'],
+    ['Oxygen toxicity', 'Toxic effect of oxidative radicals at cellular level'],
+    ['ROS', 'Oxygen radicals plus some non-radical derivatives'],
+  ], { explanation: 'HB slides 5–6.' }),
 ];
 
 const lesson2: Q[] = [
@@ -42,6 +66,30 @@ const lesson2: Q[] = [
   mcq('q2-10', 'fenton-haber-weiss', 'The Haber–Weiss reaction combines…', 'Superoxide and hydrogen peroxide', ['Hydrogen peroxide and Fe²⁺', 'Two superoxide radicals and a proton', 'Oxygen and water'], { explanation: 'HB slide 37.' }),
   fill('q2-11', 'fenton-haber-weiss', 'The Fenton reaction: H₂O₂ + ____ → ·OH + OH⁻ + Fe³⁺.', ['Fe2+', 'Fe²⁺', 'ferrous iron', 'Fe++'], { explanation: 'HB slide 37.' }),
   mcq('q2-12', 'fenton-haber-weiss', 'How many electrons reduce one O₂ to water?', 'Four, added one at a time', ['Two, added together at once', 'One, in a single step', 'Six, two at a time'], { explanation: 'HB slide 69.' }),
+  // More questions (owner, 2026-11-02), from the same slides.
+  mcq('q2-13', 'radical-reactions', 'When two radicals meet, they can…', 'Pair their electrons into a covalent bond', ['Release two new radicals every time they meet', 'Split into four oxygen atoms in the process', 'Turn into antioxidant enzymes such as SOD'], { explanation: 'HB slide 15; Fay slide 9.' }),
+  mcq('q2-14', 'radical-reactions', 'Superoxide reacting with nitrogen dioxide gives…', 'Peroxynitrite (ONOO⁻)', ['Hydrogen peroxide (H₂O₂)', 'Hypochlorous acid (HOCl)', 'Singlet oxygen (¹O₂)'], { explanation: 'HB slide 15.' }),
+  mcq('q2-15', 'radical-reactions', 'Radical attack on membranes or lipoproteins starts…', 'Lipid peroxidation', ['DNA mutation', 'Haemolysis by complement', 'Protein synthesis'], { explanation: 'HB slide 21.' }),
+  tf({ id: 'q2-16', conceptId: 'radical-reactions', statement: 'How reactive a radical is depends on the radical and on the molecule it meets.', answer: true, explanation: 'HB slide 15; Fay slide 9.' }),
+  multi('q2-17', 'major-ros', 'Which are among the biologically significant species? Select all that apply.', ['Peroxyl radical (ROO·)', 'Thiyl radical (RS·)', 'Hypochlorous acid (HOCl)'], ['Malondialdehyde (MDA)'], { explanation: 'HB slide 34.' }),
+  match('q2-18', 'major-ros', 'Match each symbol to its name.', [
+    ['ROO·', 'Peroxyl radical'],
+    ['RS·', 'Thiyl radical'],
+    ['HOCl', 'Hypochlorous acid'],
+    ['H₂O₂', 'Hydrogen peroxide'],
+  ], { explanation: 'HB slide 34.' }),
+  mcq('q2-19', 'major-ros', 'Superoxide is oxygen that has been…', 'Reduced by one electron', ['Reduced by four electrons', 'Oxidised by two electrons', 'Bound to two protons'], { explanation: 'HB slide 35.' }),
+  mcq('q2-20', 'major-ros', 'Why is superoxide central, though it is not very damaging itself?', 'Other reactive species form from it', ['It is the most reactive radical of all', 'It is the only radical cells cannot remove', 'It breaks DNA strands directly on contact'], { explanation: 'HB slide 35.' }),
+  mcq('q2-21', 'major-ros', 'Dismutation of superoxide (2O₂·⁻ + 2H⁺ → ? + O₂) makes…', 'Hydrogen peroxide', ['Hydroxyl radical', 'Peroxynitrite', 'Water only, with no peroxide'], { explanation: 'HB slide 35.' }),
+  multi('q2-22', 'major-ros', 'Singlet oxygen is involved in which of these? Select all that apply.', ['Photo-oxygenation', 'Red cell damage in G6PD deficiency', 'Photoageing', 'Lens ageing'], ['Bile acid synthesis'], { explanation: 'HB slide 36.' }),
+  tf({ id: 'q2-23', conceptId: 'major-ros', statement: 'Hydrogen peroxide is not very reactive by itself.', answer: true, explanation: 'HB slide 35.' }),
+  mcq('q2-24', 'major-ros', 'Which is given as a further example of a free radical?', 'Trichloromethyl (CCl₃·)', ['Reduced glutathione (GSH)', 'Uric acid (urate)', 'Caeruloplasmin'], { explanation: 'Fay slide 8.' }),
+  order('q2-25', 'fenton-haber-weiss', 'Put the one-electron steps in the reduction of oxygen to water in order.', ['Oxygen', 'Superoxide', 'Hydrogen peroxide', 'Hydroxyl radical', 'Water'], { explanation: 'HB slide 69.' }),
+  mcq('q2-26', 'fenton-haber-weiss', 'In the Fenton reaction, the iron is…', 'Oxidised from Fe²⁺ to Fe³⁺', ['Reduced back from Fe³⁺ to Fe²⁺', 'Released unchanged as Fe²⁺', 'Bound to H₂O₂ as Fe⁴⁺'], { explanation: 'HB slide 37.' }),
+  multi('q2-27', 'fenton-haber-weiss', 'What does the Haber–Weiss reaction produce? Select all that apply.', ['Oxygen', 'Hydroxyl radical', 'Hydroxide ion'], ['Ferric iron'], { explanation: 'HB slide 37.' }),
+  tf({ id: 'q2-28', conceptId: 'fenton-haber-weiss', statement: 'Wherever there is aerobic life there are oxidants, because the oxygen we breathe is reduced to water one electron at a time.', answer: true, explanation: 'HB slide 69.' }),
+  mcq('q2-29', 'fenton-haber-weiss', 'Which species comes just before the hydroxyl radical in the stepwise reduction of oxygen?', 'Hydrogen peroxide', ['Superoxide radical (O₂·⁻)', 'Water', 'Singlet oxygen'], { explanation: 'HB slide 69.' }),
+  mcq('q2-30', 'radical-reactions', 'Why do radical reactions in the body usually become chain reactions?', 'The radical reacts with a non-radical, making a new radical', ['Two radicals always combine and then release two more radicals', 'Antioxidants turn each radical into two radicals', 'Enzymes copy each radical before it decays'], { explanation: 'HB slide 21; Fay slide 10.' }),
 ];
 
 const lesson3: Q[] = [
@@ -58,6 +106,24 @@ const lesson3: Q[] = [
   mcq('q3-11', 'dna-damage', 'Ring-opened guanine…', 'Halts DNA replication', ['Repairs the damaged DNA', 'Acts as an antioxidant', 'Speeds up replication'], { explanation: 'Fay slide 14.' }),
   multi('q3-12', 'oxidised-ldl', 'How is oxidised LDL atherogenic? Select all that apply.', ['Chemotactic for monocytes and T cells', 'Cytotoxic', 'Induces tissue factor', 'Immunogenic'], ['Raises HDL'], { explanation: 'HB slides 32–33.' }),
   tf({ id: 'q3-13', conceptId: 'oxidised-ldl', statement: 'Oxidised LDL inhibits the motility of tissue macrophages.', answer: true, explanation: 'HB slide 32.' }),
+  // More questions (owner, 2026-11-02), from the same slides.
+  mcq('q3-14', 'lipid-peroxidation', 'Why are PUFAs especially open to lipid peroxidation?', 'The –CH₂– groups between their double bonds have very reactive hydrogens', ['Their single bonds hold extra electrons that radicals can pull off', 'They carry bound iron, which feeds the Fenton reaction inside the membrane', 'They have no carbon–hydrogen bonds, so radicals bind to oxygen'], { explanation: 'HB slides 22, 29.' }),
+  tf({ id: 'q3-15', conceptId: 'lipid-peroxidation', statement: 'A double bond weakens the C–H bonds next to it.', answer: true, explanation: 'HB slide 29.' }),
+  order('q3-16', 'lipid-peroxidation', 'Put the stages of lipid peroxidation in order.', ['Initiation', 'Propagation', 'Accumulation of lipid peroxides', 'Termination'], { explanation: 'HB slides 22–25.' }),
+  mcq('q3-17', 'lipid-peroxidation', 'In propagation, a peroxyl radical (LOO·) attacks another fatty acid side-chain, giving…', 'A lipid hydroperoxide (LOOH) and a new carbon radical (L·)', ['Two stable dimers, with no new radical formed at all', 'Water and a molecule of oxygen, ending the chain', 'Malondialdehyde and hydrogen peroxide released from the membrane'], { explanation: 'HB slide 23.' }),
+  mcq('q3-18', 'lipid-peroxidation', 'How does lipid peroxidation end?', 'Radicals combine into non-radical products', ['Oxygen runs out in the cell membrane', 'Each peroxide splits into two new radicals', 'The membrane PUFAs turn into cholesterol'], { explanation: 'HB slide 25.' }),
+  fill('q3-19', 'lipid-peroxidation', 'Lipid peroxidation is the oxidative degradation of lipids that have carbon–carbon ____ bonds.', ['double', 'C=C', 'double bond', 'double bonds'], { explanation: 'HB slide 22.' }),
+  multi('q3-20', 'lipid-peroxidation', 'Malondialdehyde forms DNA adducts with which nucleosides? Select all that apply.', ['Deoxyadenosine', 'Deoxyguanosine'], ['Deoxythymidine', 'Deoxycytidine'], { explanation: 'HB slide 24.' }),
+  tf({ id: 'q3-21', conceptId: 'lipid-peroxidation', statement: 'Lipid peroxidation is an indicator of oxidative stress.', answer: true, explanation: 'HB slide 24.' }),
+  mcq('q3-22', 'toxicity-mechanisms', 'Compared with PUFAs, proteins and nucleic acids are…', 'Less susceptible to free radical damage', ['More susceptible to free radical damage', 'Completely resistant to free radicals', 'Damaged only when iron is absent'], { explanation: 'HB slide 13; Fay slide 11.' }),
+  multi('q3-23', 'toxicity-mechanisms', 'What do free radicals do to proteins? Select all that apply.', ['Cross-linking', 'Fragmentation', 'Altered enzymes and receptors'], ['Faster ribosomal synthesis'], { explanation: 'HB slides 13, 18.' }),
+  mcq('q3-24', 'toxicity-mechanisms', 'Sublethal DNA injury may lead to…', 'Increased permeability, toxicity and mutation', ['Immediate removal of the whole cell by phagocytes', 'Cell death and clearance by macrophages', 'Faster repair, with no change at all'], { explanation: 'HB slide 18.' }),
+  multi('q3-25', 'toxicity-mechanisms', 'NF-κB transcription factors control which processes? Select all that apply.', ['Immunity', 'Inflammation', 'Apoptosis', 'Proliferation'], ['Bile secretion'], { explanation: 'HB slide 19.' }),
+  tf({ id: 'q3-26', conceptId: 'toxicity-mechanisms', statement: 'Free radicals are also called oxidants.', answer: true, explanation: 'HB slide 17.' }),
+  mcq('q3-27', 'dna-damage', '8-Hydroxyguanine is…', 'A mutagenic lesion', ['A DNA repair enzyme', 'An antioxidant base', 'A lipid peroxide'], { explanation: 'Fay slide 14.' }),
+  mcq('q3-28', 'dna-damage', 'In the estradiol catechol study, the DNA damage seemed to come from…', 'Localised singlet oxygen or a bound reactive species', ['Free hydroxyl radicals diffusing through the nucleus', 'Malondialdehyde formed from membrane PUFAs', 'Xanthine oxidase released during reperfusion'], { explanation: 'HB slides 26–27; Fay slide 15.' }),
+  mcq('q3-29', 'dna-damage', 'The oxidation of estradiol catechols that produced ROS depended on…', 'Copper', ['Selenium', 'Manganese', 'Zinc'], { explanation: 'HB slide 26.' }),
+  multi('q3-30', 'oxidised-ldl', 'Oxidised LDL induces which of these? Select all that apply.', ['MCP-1', 'IL-1', 'Endothelial adhesion molecules'], ['Insulin'], { explanation: 'HB slides 32–33.' }),
 ];
 
 const lesson4: Q[] = [
@@ -74,6 +140,29 @@ const lesson4: Q[] = [
   mcq('q4-11', 'antioxidant-vitamins', 'Which antioxidant prevents oxidation of vitamin A and binds transition metals?', 'β-Carotene', ['Vitamin C', 'Uric acid (urate)', 'Catalase'], { explanation: 'HB slide 41.' }),
   mcq('q4-12', 'antioxidant-vitamins', 'Deferoxamine acts as an antioxidant by…', 'Inhibiting iron redox cycling', ['Blocking xanthine oxidase like allopurinol', 'Scavenging superoxide', 'Making glutathione'], { explanation: 'HB slide 45.' }),
   multi('q4-13', 'antioxidant-sources', 'Which foods contain polyphenolic flavonoids? Select all that apply.', ['Berries', 'Green tea', 'Red grapes'], ['White sugar'], { explanation: 'HB slide 49.' }),
+  // More questions (owner, 2026-11-02), from the same slides.
+  mcq('q4-14', 'antioxidant-action', 'Which antioxidant works by reducing ROS?', 'Glutathione', ['α-Tocopherol', 'Transferrin', 'Caeruloplasmin'], { explanation: 'HB slide 39.' }),
+  mcq('q4-15', 'antioxidant-action', 'SOD acts as an antioxidant by…', 'Scavenging initiating radicals in the aqueous phase', ['Breaking the radical chains inside the lipid phase of membranes', 'Chelating copper ions held in the plasma', 'Reducing lipid peroxides using selenium'], { explanation: 'HB slide 39.' }),
+  match('q4-16', 'antioxidant-action', 'Match each antioxidant to how it works.', [
+    ['α-Tocopherol', 'Chain breaking'],
+    ['Glutathione', 'Reducing ROS'],
+    ['SOD', 'Scavenging initiating radicals'],
+    ['Transferrin', 'Chelating transition metals'],
+  ], { explanation: 'HB slide 39.' }),
+  mcq('q4-17', 'antioxidant-action', 'Preventive antioxidants work by…', 'Keeping free metal ions bound', ['Breaking the radical chain once it starts', 'Donating electrons to lipid radicals', 'Converting H₂O₂ into water'], { explanation: 'HB slide 43.' }),
+  multi('q4-18', 'antioxidant-action', 'Which react with radicals directly and non-catalytically? Select all that apply.', ['GSH', 'Urate', 'α-Tocopherol', 'Ascorbate'], ['Catalase'], { explanation: 'HB slide 47.' }),
+  tf({ id: 'q4-19', conceptId: 'antioxidant-action', statement: 'α-Tocopherol works both inside and outside cells.', answer: true, explanation: 'HB slide 47.' }),
+  multi('q4-20', 'antioxidant-action', 'Which proteins hold iron? Select all that apply.', ['Transferrin', 'Lactoferrin', 'Ferritin'], ['Caeruloplasmin', 'Albumin'], { explanation: 'HB slide 39.' }),
+  mcq('q4-21', 'antioxidant-enzymes', 'Which SOD is extracellular?', 'CuSOD', ['MnSOD', 'CuZnSOD', 'FeSOD'], { explanation: 'HB slide 40.' }),
+  mcq('q4-22', 'antioxidant-enzymes', 'Glutathione peroxidase removes…', 'Both H₂O₂ and lipid peroxides', ['Only superoxide, never H₂O₂', 'Only free iron and free copper', 'Malondialdehyde stuck to DNA'], { explanation: 'HB slide 40.' }),
+  multi('q4-23', 'antioxidant-enzymes', 'Where is catalase found? Select all that apply.', ['Blood', 'Bone marrow', 'Kidney', 'Liver'], ['Tooth enamel'], { explanation: 'HB slide 40.' }),
+  mcq('q4-24', 'antioxidant-enzymes', 'Why can a diet short of selenium, copper, manganese and zinc weaken antioxidant defence?', 'The antioxidant enzymes need these minerals', ['These minerals are themselves free radicals', 'They are needed to make vitamin C in the body', 'They block absorption of fat-soluble vitamins'], { explanation: 'HB slide 48; Fay slide 25.' }),
+  mcq('q4-25', 'antioxidant-vitamins', 'Which antioxidant vitamin is water-soluble?', 'Ascorbic acid (vitamin C)', ['α-Tocopherol (vitamin E)', 'β-Carotene (the provitamin A)', 'Vitamin A'], { explanation: 'HB slide 41.' }),
+  mcq('q4-26', 'antioxidant-vitamins', 'Vitamin C helps regenerate…', 'Vitamin E', ['Vitamin K', 'Vitamin D', 'Vitamin B₁₂'], { explanation: 'HB slide 41.' }),
+  multi('q4-27', 'antioxidant-vitamins', 'Which are other antioxidants named in the lecture? Select all that apply.', ['Glutathione', 'CoQ10', 'Uric acid', 'Albumin'], ['Malondialdehyde'], { explanation: 'HB slide 45.' }),
+  mcq('q4-28', 'antioxidant-vitamins', 'Allopurinol is an antioxidant drug because it…', 'Inhibits xanthine oxidase', ['Chelates free copper', 'Scavenges hydroxyl radicals', 'Regenerates vitamin E'], { explanation: 'HB slide 45.' }),
+  multi('q4-29', 'antioxidant-sources', 'Which foods contain carotenoids? Select all that apply.', ['Carrots', 'Tomatoes', 'Mangoes', 'Spinach'], ['Table salt'], { explanation: 'HB slide 49.' }),
+  multi('q4-30', 'antioxidant-sources', 'Which antioxidants are given as medicines? Select all that apply.', ['Vitamins A, C and E', 'Selenium', 'Zinc', 'Glutathione'], ['Iron'], { explanation: 'HB slide 42.' }),
 ];
 
 const lesson5: Q[] = [
@@ -90,6 +179,25 @@ const lesson5: Q[] = [
   mcq('q5-11', 'ros-transplant', 'Which enzyme triggers post-ischaemic injury in transplanted organs?', 'Xanthine oxidase', ['Catalase', 'SOD', 'Glutathione peroxidase'], { explanation: 'HB slide 65.' }),
   multi('q5-12', 'ros-transplant', 'Which preserved organ function when subjected to ischaemia? Select all that apply.', ['SOD', 'Catalase', 'Allopurinol'], ['Ozone'], { explanation: 'HB slides 66–67.' }),
   multi('q5-13', 'ros-transplant', 'Which are antioxidant biomarkers? Select all that apply.', ['Superoxide dismutase', 'GSH/GSSG ratio', 'Catalase'], ['Malondialdehyde'], { explanation: 'HB slide 64.' }),
+  // More questions (owner, 2026-11-02), from the same slides.
+  mcq('q5-14', 'ros-disease', 'Cells badly damaged by excess radicals can die by…', 'Necrosis or apoptosis', ['Mitosis or meiosis', 'Hypertrophy only', 'Fibrosis only'], { explanation: 'HB slide 52.' }),
+  multi('q5-15', 'ros-disease', 'Which degenerative diseases does oxidative stress make more likely? Select all that apply.', ['Cancer', 'Atherosclerosis', 'Alzheimer’s disease', 'Arthritis'], ['Cleft palate'], { explanation: 'HB slide 52.' }),
+  mcq('q5-16', 'ros-disease', 'Radical reactions of dietary lipids in the artery wall may cause atherosclerosis by producing…', 'Peroxides that injure the endothelium', ['Antioxidants that protect the endothelium', 'Bile salts that dissolve the plaque', 'Haem groups that carry more oxygen'], { explanation: 'HB slide 53; Fay slide 19.' }),
+  multi('q5-17', 'ros-disease', 'Fat and oil intake correlates with deaths over 55 from which cancers? Select all that apply.', ['Leukaemia', 'Breast cancer', 'Ovarian cancer', 'Rectal cancer'], ['Skin cancer'], { explanation: 'HB slide 53.' }),
+  mcq('q5-18', 'ros-cancer', 'In initiation, radicals damage DNA and…', 'Activate proto-oncogenes and inactivate tumour suppressor genes', ['Inactivate proto-oncogenes and activate tumour suppressor genes', 'Repair proto-oncogenes and copy tumour suppressor genes', 'Remove all of the oncogenes and add extra tumour suppressor genes'], { explanation: 'HB slides 58–59.' }),
+  mcq('q5-19', 'ros-cancer', 'In which stage does the premalignant cell arise?', 'Promotion', ['Initiation', 'Progression', 'Remission'], { explanation: 'HB slide 59.' }),
+  mcq('q5-20', 'ros-cancer', 'Progression to clinical cancer involves…', 'Greater autonomy and less dependence on growth factors', ['More dependence on growth factors and less autonomy of the cell', 'Return of the cell to normal by the immune system', 'Repair of the DNA by antioxidants and vitamins'], { explanation: 'HB slide 59.' }),
+  multi('q5-21', 'ros-cancer', 'How do antioxidants protect in carcinogenesis? Select all that apply.', ['Slowing radical generation', 'Deactivating genotoxins and tumour promoters', 'Maintaining gap junctions and membrane stability'], ['Activating proto-oncogenes'], { explanation: 'HB slides 61–63.' }),
+  tf({ id: 'q5-22', conceptId: 'ros-hiv-pregnancy', statement: 'Hydrogen peroxide crosses membranes easily and promotes viral gene expression.', answer: true, explanation: 'HB slide 54.' }),
+  mcq('q5-23', 'ros-hiv-pregnancy', 'At the HIV infection site, ROS induce pro-inflammatory cytokines, and the cytokines in turn…', 'Release more ROS and activate HIV', ['Remove the ROS and switch the virus off', 'Raise glutathione and block HIV', 'Make antibodies against the ROS'], { explanation: 'HB slide 54; Fay slides 20–21.' }),
+  multi('q5-24', 'ros-hiv-pregnancy', 'Oral vitamin C has helped in which infections? Select all that apply.', ['HIV', 'Hepatitis', 'Influenza', 'Infectious mononucleosis'], ['Tetanus'], { explanation: 'HB slide 55.' }),
+  multi('q5-25', 'ros-hiv-pregnancy', 'Which are lower in people living with HIV? Select all that apply.', ['Glutathione', 'SOD', 'Glutathione peroxidase'], ['NF-κB activation'], { explanation: 'HB slide 55.' }),
+  mcq('q5-26', 'ros-hiv-pregnancy', 'Why does pregnancy increase radical production?', 'Stress and rapid fetal growth', ['Lower oxygen use by the mother', 'Loss of all antioxidant enzymes', 'Less iron in the maternal blood'], { explanation: 'HB slide 51.' }),
+  multi('q5-27', 'ros-hiv-pregnancy', 'In poorly controlled diabetes, swings in which may contribute to fetal malformations? Select all that apply.', ['Glucose', 'Ketone bodies', 'Branched-chain amino acids'], ['Vitamin C'], { explanation: 'HB slide 56.' }),
+  tf({ id: 'q5-28', conceptId: 'ros-hiv-pregnancy', statement: 'Radicals increase with maternal age and may play a role in Down syndrome.', answer: true, explanation: 'HB slide 58.' }),
+  multi('q5-29', 'ros-transplant', 'In which transplanted organs can ischaemia–reperfusion injury occur? Select all that apply.', ['Liver', 'Kidney', 'Heart'], ['Cornea'], { explanation: 'HB slide 65.' }),
+  mcq('q5-30', 'ros-transplant', 'Allopurinol improves myocardial contractility in…', 'Cardiopulmonary bypass', ['Renal transplant surgery', 'Liver transplants', 'Normal pregnancy'], { explanation: 'HB slide 66.' }),
+  multi('q5-31', 'ros-transplant', 'Which are oxidative (not antioxidant) biomarkers? Select all that apply.', ['Malondialdehyde', 'Hydrogen peroxide', 'Total nitric oxide'], ['Catalase'], { explanation: 'HB slide 64.' }),
 ];
 
 export const questions: Q[] = [...lesson1, ...lesson2, ...lesson3, ...lesson4, ...lesson5];
