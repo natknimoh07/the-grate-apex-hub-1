@@ -29,7 +29,8 @@ import { legacyQuestionMemory, legacyReviewFor } from '@/data/legacy-review';
 import { useQuestionHistory } from '@/data/question-history';
 import { getLessonQuizBank } from '@/data/curriculum';
 import { awardXp } from '@/data/progress';
-import { isAnswerCorrect, type Question } from '@/data/questions';
+import { isAnswerComplete, isAnswerCorrect, type Question } from '@/data/questions';
+import { recordQuizAttempt } from '@/data/quiz-history';
 import { useThemedStyles } from '@/hooks/use-theme';
 import { param, routes } from '@/lib/routes';
 import { friendlyError } from '@/lib/errors';
@@ -379,6 +380,38 @@ function LegacyPracticeAttempt() {
       label: title,
     });
     if (xp > 0) setPendingXpReward({ amount: xp, message: `${title} · ${correct}/${total}` });
+    // Every practice except the pre/post-test ends on the full results page (owner, 2026-11-02:
+    // "sometimes the full results page does not show, just the XP"), like the lesson quizzes.
+    if (practice.kind !== 'prepost') {
+      const again = new URLSearchParams(
+        Object.entries(params)
+          .filter(([key]) => key !== 'attempt' && key !== 'continue')
+          .map(([key, value]) => [key, String(param(value) ?? '')])
+      );
+      const saved = await recordQuizAttempt({
+        kind: 'practice',
+        lessonId: lessonId ?? '',
+        topicId: '',
+        courseId: course!.id,
+        score: correct,
+        total,
+        answered: asked.filter((question) => isAnswerComplete(question, session.answers[question.id])).length,
+        percentage: Math.round(percent),
+        timeSeconds: Math.max(0, Math.round(session.timeSeconds)),
+        wrongConcepts: Array.from(new Set(missed.map((question) => question.concept))),
+        wrongQuestionIds: missed.map((question) => question.id),
+        questionIds: asked.map((question) => question.id),
+        answers: session.answers,
+        ...(Object.keys(session.confidence).length ? { confidence: session.confidence } : {}),
+        feedbackMode: mode,
+        practice: false,
+        xp: { net: xp, lines: xp > 0 ? [{ label: title, amount: xp }] : [] },
+        questions: asked,
+        coursePractice: { title, retake: `/learn/hb-practice?${again.toString()}`, back: routes.legacyCourse(course!.id) as string, backLabel: 'Back to the course' },
+      });
+      router.replace(routes.results(saved.id));
+      return;
+    }
     let pre: number | null | undefined;
     if (practice.kind === 'prepost') {
       const saved = await loadPrePost(course!.id);

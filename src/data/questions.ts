@@ -7,6 +7,7 @@
 // concept names stable and unique within a lesson.
 
 import type { DifficultyLevel, SourceReference, SubjectId } from '@/data/lesson-types';
+import { typedAnswerSaysSame } from '@/data/typed-answer-forms';
 
 // The thinking skill a question practises (independent of its format).
 // Lets quizzes mix skills and lets later features (Apex Challenge,
@@ -170,17 +171,27 @@ export function typedAnswerMatches(input: string, accept: string[]) {
     if (expectedSet && typedSet && expectedSet.length === typedSet.length && expectedSet.every((item, index) => item === typedSet[index])) {
       return true;
     }
-    const expected = normalizeAnswer(option);
-
-    if (typed === expected) {
-      return true;
-    }
-
-    const allowed =
-      expected.length >= 14 ? 2 : expected.length >= 8 ? 1 : 0;
-
-    return allowed > 0 && editDistance(typed, expected) <= allowed;
+    // The same answer written another way: units, number words, spelling, ranges, list order.
+    return typedAnswerSaysSame(input, option, closeEnough);
   });
+}
+
+function closeEnough(input: string, option: string) {
+  const typed = normalizeAnswer(input);
+  const expected = normalizeAnswer(option);
+
+  if (!typed) {
+    return false;
+  }
+
+  if (typed === expected) {
+    return true;
+  }
+
+  const allowed =
+    expected.length >= 14 ? 2 : expected.length >= 8 ? 1 : 0;
+
+  return allowed > 0 && editDistance(typed, expected) <= allowed;
 }
 
 // Has the learner given a full answer yet?

@@ -29,6 +29,7 @@ import {
   getConceptEntry,
   getQuestionsByIds,
   getTopic,
+  registerExtraQuestions,
 } from '@/data/curriculum';
 import type { ConceptMemory } from '@/data/learning/memory';
 import { describeDue, formatDuration } from '@/data/learning/time';
@@ -146,8 +147,9 @@ function ResultsView({ attempt }: { attempt: QuizAttempt }) {
 
   const found = findLesson(attempt.lessonId);
   const topic = found?.topic ?? getTopic(attempt.topicId) ?? getTopic(attempt.courseId);
-  const title =
-    attempt.kind === 'review'
+  const title = attempt.coursePractice
+    ? attempt.coursePractice.title
+    : attempt.kind === 'review'
       ? 'Review session'
       : attempt.kind === 'apex'
         ? 'Apex Challenge'
@@ -165,7 +167,11 @@ function ResultsView({ attempt }: { attempt: QuizAttempt }) {
   // Past questions (custom quizzes) are found once their course has loaded.
   const pastReady = usePastQuestions(attempt.questionIds.map(pastCourseOf).filter((id): id is string => Boolean(id)));
   // eslint-disable-next-line react-hooks/exhaustive-deps -- look the questions up again once past questions have loaded
-  const questions = useMemo(() => getQuestionsByIds(attempt.questionIds), [attempt.questionIds, pastReady]);
+  const questions = useMemo(() => {
+    // Course practice keeps its own questions (original banks, true/false and typed versions).
+    if (attempt.questions?.length) registerExtraQuestions(attempt.questions);
+    return getQuestionsByIds(attempt.questionIds);
+  }, [attempt.questionIds, attempt.questions, pastReady]);
   const rows: Row[] = useMemo(
     () =>
       questions.map((question) => {
@@ -255,7 +261,9 @@ function ResultsView({ attempt }: { attempt: QuizAttempt }) {
   );
 
   function retake() {
-    if (exam) {
+    if (attempt.coursePractice) {
+      router.replace(`${attempt.coursePractice.retake}&attempt=${Date.now()}` as never);
+    } else if (exam) {
       router.replace(exam.kind === 'weakest' || exam.kind === 'daily' || exam.kind === 'pairs' ? routes.learn() : routes.exam(exam));
     } else if (attempt.customQuiz) {
       router.replace(
@@ -500,7 +508,9 @@ function ResultsView({ attempt }: { attempt: QuizAttempt }) {
         {nextLesson && attempt.percentage >= XP_RULES.passPercent ? (
           <Button label={`Next: ${nextLesson.title}`} variant="secondary" onPress={() => router.push(routes.lesson(nextLesson.id))} fullWidth />
         ) : null}
-        {topic ? (
+        {attempt.coursePractice ? (
+          <Button label={attempt.coursePractice.backLabel} variant="ghost" onPress={() => router.push(attempt.coursePractice!.back as never)} fullWidth />
+        ) : topic ? (
           <Button label="Back to topic" variant="ghost" onPress={() => router.push(routes.topic(topic.id))} fullWidth />
         ) : (
           <Button label="Back to Study" variant="ghost" onPress={() => router.push(routes.learn())} fullWidth />

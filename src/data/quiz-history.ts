@@ -1,7 +1,7 @@
 import type { ExamSettings } from '@/data/exam-practice-rules';
 import { useSyncExternalStore } from 'react';
 
-import type { Answer } from '@/data/questions';
+import type { Answer, Question } from '@/data/questions';
 import {
   type CloudQuizAttempt,
   type CloudQuizKind,
@@ -52,6 +52,11 @@ export type QuizAttempt = {
   customQuiz?: CustomQuizSettings; // local-only settings used to retake a custom quiz
   practice: boolean; // true for "Practice Wrong Answers" runs
   xp?: { net: number; lines: { label: string; amount: number }[] };
+  // Course practice (HB1/HB2, /learn/hb-practice): local only. Its questions are not all in the
+  // curriculum (original banks, true/false and typed versions), so the attempt keeps the ones it
+  // asked (newest attempts only, see KEEP_QUESTIONS) and its own Retake / Back links.
+  questions?: Question[];
+  coursePractice?: { title: string; retake: string; back: string; backLabel: string };
   completedAt: number;
 };
 
@@ -174,9 +179,13 @@ async function loadHistory() {
   void hydrateQuizHistory().catch((error) => console.log('Could not sync quiz history:', error));
 }
 
+// Only the newest attempts keep their questions, so the saved history stays small.
+const KEEP_QUESTIONS = 15;
+
 async function saveLocalHistory() {
   try {
-    await writeLearningCache(STORAGE_KEY, JSON.stringify(attempts));
+    const kept = attempts.map((attempt, index) => (index < KEEP_QUESTIONS || !attempt.questions ? attempt : { ...attempt, questions: undefined }));
+    await writeLearningCache(STORAGE_KEY, JSON.stringify(kept));
   } catch (error) {
     console.log('Could not save quiz history:', error);
   }

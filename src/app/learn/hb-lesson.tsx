@@ -281,20 +281,56 @@ function StudyAids({ body }: { body: LegacyLessonBody }) {
         <View key={i} style={styles.aid}>
           <Text style={styles.aidKind}>{group.kind.toUpperCase()}</Text>
           <Rich x={group.h} style={styles.aidHead} />
-          {group.lines.map((line, j) => <Rich key={j} x={line} style={styles.aidLine} />)}
+          <View style={styles.aidList}>
+            {group.lines.map((line, j) => <AidLine key={j} line={line} mnemonic={group.kind === 'Mnemonic'} />)}
+          </View>
         </View>
       ))}
       {steps ? (
         <View style={styles.aid}>
           <Text style={styles.aidKind}>STEPS</Text>
           <Text style={styles.aidHead}>{steps.title}</Text>
-          {steps.items.map((item, j) => (
-            <Text key={j} style={styles.aidLine}>
-              <Rich x={`<b>${item.t}</b> — ${item.d}`} />
-            </Text>
-          ))}
+          <View style={styles.aidList}>
+            {steps.items.map((item, j) => (
+              <View key={j} style={styles.aidRow}>
+                <View style={styles.aidNumber}><Text style={styles.aidNumberText}>{j + 1}</Text></View>
+                <View style={styles.flex}>
+                  <Rich x={item.t} style={styles.aidLineTitle} />
+                  <Rich x={item.d} style={styles.aidLine} />
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
       ) : null}
+    </View>
+  );
+}
+
+// One study-aid line as a bullet (or its own number when it starts with one). A line written
+// "<b>Term</b> — explanation" (common confusions) shows the term on top, the explanation under it.
+function AidLine({ line, mnemonic }: { line: string; mnemonic: boolean }) {
+  const styles = useThemedStyles(createStyles);
+  const numbered = /^\s*(\d+)[.)]\s+/.exec(line);
+  const text = line.replace(/^\s*(?:[•·▪◦‣*-]|\d+[.)])\s+/, '');
+  const split = /^<b>([\s\S]+?)<\/b>\s*[—–:-]\s*([\s\S]+)$/.exec(text);
+  return (
+    <View style={styles.aidRow}>
+      {numbered ? (
+        <View style={styles.aidNumber}><Text style={styles.aidNumberText}>{numbered[1]}</Text></View>
+      ) : mnemonic ? null : (
+        <View style={styles.aidBullet} />
+      )}
+      <View style={styles.flex}>
+        {split ? (
+          <>
+            <Rich x={split[1]} style={styles.aidLineTitle} />
+            <Rich x={split[2]} style={styles.aidLine} />
+          </>
+        ) : (
+          <Rich x={text} style={styles.aidLine} />
+        )}
+      </View>
     </View>
   );
 }
@@ -336,12 +372,18 @@ function createStyles(colors: ThemeColors) {
     finishedTitle: { ...Type.title2, color: colors.text },
     finishedText: { fontSize: 15, color: colors.textSecondary, textAlign: 'center' },
     finishedActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginTop: 6 },
-    aids: { gap: 10, marginTop: 18, alignSelf: 'stretch' },
+    aids: { gap: 14, marginTop: 22, alignSelf: 'stretch' },
     aidsTitle: { ...Type.title3, color: colors.text },
-    aid: { gap: 4, padding: 14, borderRadius: 14, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surfaceMuted },
+    aid: { gap: 6, paddingVertical: 16, paddingHorizontal: 18, borderRadius: 14, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surfaceMuted },
     aidKind: { ...Type.overline, color: colors.accentText },
-    aidHead: { fontSize: 15, fontWeight: '700', color: colors.text },
-    aidLine: { fontSize: 14, lineHeight: 21, color: colors.text },
+    aidHead: { fontSize: 16, fontWeight: '700', color: colors.text, marginBottom: 4 },
+    aidList: { gap: 12 },
+    aidRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
+    aidBullet: { width: 6, height: 6, borderRadius: 3, marginTop: 9, backgroundColor: colors.accentText },
+    aidNumber: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.accentSubtle, marginTop: 1 },
+    aidNumberText: { fontSize: 12, fontWeight: '700', color: colors.accentText },
+    aidLineTitle: { fontSize: 14.5, lineHeight: 21, fontWeight: '700', color: colors.text, marginBottom: 2 },
+    aidLine: { fontSize: 14.5, lineHeight: 23, color: colors.text },
     termMeaning: { fontSize: 15, lineHeight: 23, color: colors.text },
   });
 }
