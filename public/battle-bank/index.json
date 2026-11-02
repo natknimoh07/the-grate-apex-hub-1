@@ -4832,7 +4832,7 @@
   {
    "id": "physiology",
    "name": "Physiology",
-   "total": 579,
+   "total": 600,
    "topics": [
     {
      "id": "Action Potential",
@@ -5059,6 +5059,14 @@
      "unrated": 10
     },
     {
+     "id": "Innervation",
+     "title": "Innervation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Integration",
      "title": "Integration",
      "easy": 0,
@@ -5168,7 +5176,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 9
     },
     {
      "id": "Pacemaker & Regulation",
@@ -5177,6 +5185,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Parasympathetic",
+     "title": "Parasympathetic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Passive Transport",
@@ -5240,7 +5256,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 13
+     "unrated": 15
     },
     {
      "id": "Refractory & Accommodation",
@@ -5315,6 +5331,14 @@
      "unrated": 25
     },
     {
+     "id": "Sympathetic",
+     "title": "Sympathetic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Synapse",
      "title": "Synapse",
      "easy": 0,
@@ -5337,6 +5361,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Transmitters",
+     "title": "Transmitters",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Types",

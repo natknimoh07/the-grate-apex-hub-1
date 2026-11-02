@@ -65,6 +65,8 @@ export type LegacyLessonMeta = {
   section?: string;
   /** HB1 lessons written in the app: past-question topics (`tp`) practised with the lesson. */
   ptopics?: string[];
+  /** …and whole sets of the course bank (ids) practised with it. */
+  psets?: string[];
 };
 export type Rich = string;
 export type Block =

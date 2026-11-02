@@ -21,6 +21,7 @@ import { behaviouralLearning } from '@/data/hb1-lessons/behavioural-learning';
 import { behaviouralMemory } from '@/data/hb1-lessons/behavioural-memory';
 import { behaviouralPersonality } from '@/data/hb1-lessons/behavioural-personality';
 import { behaviouralStress } from '@/data/hb1-lessons/behavioural-stress';
+import { physiologyAns } from '@/data/hb1-lessons/physiology-ans';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -42,11 +43,14 @@ export type Hb1Lesson = {
   quiz: Hb1QuizItem[];
   /** Past-question topics (`tp` in the bank) practised with this lesson. */
   pastTopics?: string[];
+  /** Whole sets of the course bank (ids) practised with this lesson, e.g. a topic review written earlier. */
+  pastSets?: string[];
 };
 
 export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   bmcAlkanes, bmcAldehydesKetones, bmcStereochemistry,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
+  physiologyAns,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
@@ -74,6 +78,7 @@ export function hb1LessonMeta(lesson: Hb1Lesson): LegacyLessonMeta {
     sections: lesson.sections.map((section) => ({ id: section.id, title: section.title })),
     qids: hb1QuizQuestions(lesson).map((question) => question.id),
     ptopics: lesson.pastTopics,
+    psets: lesson.pastSets,
   };
 }
 

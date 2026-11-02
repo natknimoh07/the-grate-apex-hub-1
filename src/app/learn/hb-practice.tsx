@@ -124,7 +124,8 @@ function LegacyPracticeAttempt() {
         const ids = new Set(lesson?.qids ?? []);
         // Lessons written in the app also practise the course's past questions on their topic.
         const topics = new Set(lesson?.ptopics ?? []);
-        source = all.filter((q) => ids.has(q.id) || (q.tp !== undefined && topics.has(q.tp)));
+        const sets = new Set(lesson?.psets ?? []);
+        source = all.filter((q) => ids.has(q.id) || (q.tp !== undefined && topics.has(q.tp)) || sets.has(q.set));
       } else if (setId) {
         source = all.filter((q) => q.set === setId);
       } else if (practice.kind === 'pastTopic') {
