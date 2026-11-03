@@ -157,7 +157,24 @@ function setElements(text: string): string[] | null {
   return match[1].split(',').map(normalizeAnswer).filter(Boolean).sort();
 }
 
+// "x = -5/8", "-5/8" and "x = -0.625" are one answer; "x = 5/8" is not (the sign matters).
+// Only plain numbers, fractions and decimals, with an optional "x =" in front, are compared this way
+// (question report, 2026-11-03: normalizeAnswer drops "-" and "/", so 5/8 was accepted for -5/8).
+function signedNumber(text: string): number | null {
+  const match = /^\s*(?:[a-z]\s*=\s*)?([-+−]?)\s*(\d+(?:\.\d+)?)(?:\s*\/\s*(\d+(?:\.\d+)?))?\s*$/i.exec(text);
+  if (!match) return null;
+  const top = Number(match[2]);
+  const bottom = match[3] === undefined ? 1 : Number(match[3]);
+  if (!bottom) return null;
+  return (match[1] === '-' || match[1] === '−' ? -1 : 1) * (top / bottom);
+}
+
 export function typedAnswerMatches(input: string, accept: string[]) {
+  const typedNumber = signedNumber(input);
+  if (typedNumber !== null) {
+    const numbers = accept.map(signedNumber);
+    if (numbers.some((value) => value !== null)) return numbers.some((value) => value !== null && Math.abs(value - typedNumber) < 1e-9);
+  }
   const typed = normalizeAnswer(input);
 
   if (!typed) {
