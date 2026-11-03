@@ -6,7 +6,7 @@ import type { Hb1Lesson } from '@/data/hb1-lessons';
 
 export const bmcAlkanes: Hb1Lesson = {
   id: 'bmc-alkanes',
-  order: 0.5, // the course starts with hydrocarbons, before the functional groups
+  order: 1, // Basic Medical Chemistry in teaching order (owner, 2026-11-03): simplest first
   title: 'Hydrocarbons & Alkanes',
   summary: 'SMS 151 · Prof. Isaac Ayensu · What hydrocarbons are, the alkane family, isomers, naming, properties, reactions, and alkanes in medicine',
   minutes: 18,

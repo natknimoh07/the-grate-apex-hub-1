@@ -9,6 +9,7 @@ import { describe, it } from 'node:test';
 
 const { HB1_LOCAL_LESSONS, hb1QuizQuestions, hb1LessonMeta } = await import('@/data/hb1-lessons');
 const { LEGACY_COURSES } = await import('@/data/legacy-study');
+const { HB1_PRACTICE_IDS } = await import('@/data/hb1-lessons/practice-ids');
 const { parseRich } = await import('@/data/legacy-questions');
 
 const bank = (course) => JSON.parse(readFileSync(new URL(`../public/curriculum/${course}.json`, import.meta.url), 'utf8'));
@@ -24,7 +25,10 @@ describe('HB1 lessons written in the app', () => {
       ids.add(lesson.id);
       const sections = lesson.sections.map((section) => section.id);
       assert.equal(new Set(sections).size, sections.length, `${lesson.id}: repeated section id`);
-      assert.ok(lesson.quiz.length >= 20, `${lesson.id}: only ${lesson.quiz.length} quiz questions`);
+      // At least 20 questions to practise: its own quiz, or with earlier sets of the bank (rewritten lessons).
+      const practised = HB1_PRACTICE_IDS[lesson.id] ?? [];
+      assert.ok(lesson.quiz.length >= 8 && practised.length >= 20, `${lesson.id}: ${lesson.quiz.length} quiz questions, ${practised.length} to practise`);
+      for (const question of hb1QuizQuestions(lesson)) assert.ok(practised.includes(question.id), `${lesson.id}: practice-ids.ts out of date — run scripts/hb1-review/lesson-sets.mjs`);
     }
   });
 

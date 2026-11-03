@@ -15,8 +15,14 @@ import type { BankQuestion } from '@/data/legacy-questions';
 import type { LegacyExtras, LegacyLessonBody, LegacyLessonMeta, LegacySection } from '@/data/legacy-study';
 
 import { bmcAlkanes } from '@/data/hb1-lessons/bmc-alkanes';
-import { bmcAldehydesKetones } from '@/data/hb1-lessons/bmc-aldehydes-ketones';
+import { bmcAldehydes, bmcKetones } from '@/data/hb1-lessons/bmc-aldehydes-ketones';
 import { bmcStereochemistry } from '@/data/hb1-lessons/bmc-stereochemistry';
+import { bmcAlkenes, bmcAlkynes } from '@/data/hb1-lessons/bmc-alkenes-alkynes';
+import { bmcAlkylHalides } from '@/data/hb1-lessons/bmc-alkyl-halides';
+import { bmcAlcohols } from '@/data/hb1-lessons/bmc-alcohols';
+import { bmcAromatics } from '@/data/hb1-lessons/bmc-aromatics';
+import { bmcAcidDerivatives, bmcCarboxylicAcids } from '@/data/hb1-lessons/bmc-carboxylic-acids';
+import { bmcAmines } from '@/data/hb1-lessons/bmc-amines';
 import { behaviouralLearning } from '@/data/hb1-lessons/behavioural-learning';
 import { behaviouralMemory } from '@/data/hb1-lessons/behavioural-memory';
 import { behaviouralPersonality } from '@/data/hb1-lessons/behavioural-personality';
@@ -26,6 +32,7 @@ import { entomologyBlackflies } from '@/data/hb1-lessons/entomology-blackflies';
 import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
 import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
 import { entomologyVectorControl } from '@/data/hb1-lessons/entomology-vector-control';
+import { HB1_PRACTICE_IDS } from '@/data/hb1-lessons/practice-ids';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -49,10 +56,15 @@ export type Hb1Lesson = {
   pastTopics?: string[];
   /** Whole sets of the course bank (ids) practised with this lesson, e.g. a topic review written earlier. */
   pastSets?: string[];
+  /** Bank questions with these topic labels (`t`) are practised with this lesson too; "<set id>:<label>" limits a label to one set. */
+  bankTopics?: string[];
 };
 
 export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
-  bmcAlkanes, bmcAldehydesKetones, bmcStereochemistry,
+  // Basic Medical Chemistry in teaching order, one functional group per lesson (owner, 2026-11-03);
+  // bmc-01 to bmc-05 rewrite the database lessons with the same ids.
+  bmcAlkanes, bmcAlkenes, bmcAlkynes, bmcAromatics, bmcAlkylHalides, bmcAlcohols,
+  bmcAldehydes, bmcKetones, bmcCarboxylicAcids, bmcAcidDerivatives, bmcAmines, bmcStereochemistry,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyAns,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
@@ -81,7 +93,7 @@ export function hb1LessonMeta(lesson: Hb1Lesson): LegacyLessonMeta {
     summary: lesson.summary,
     minutes: lesson.minutes,
     sections: lesson.sections.map((section) => ({ id: section.id, title: section.title })),
-    qids: hb1QuizQuestions(lesson).map((question) => question.id),
+    qids: HB1_PRACTICE_IDS[lesson.id] ?? hb1QuizQuestions(lesson).map((question) => question.id),
     ptopics: lesson.pastTopics,
     psets: lesson.pastSets,
   };

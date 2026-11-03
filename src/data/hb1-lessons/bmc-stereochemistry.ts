@@ -6,7 +6,7 @@ import type { Hb1Lesson } from '@/data/hb1-lessons';
 
 export const bmcStereochemistry: Hb1Lesson = {
   id: 'bmc-stereochemistry',
-  order: 5.5, // after alkenes and alkynes, at the end of the course
+  order: 12, // the end of the course
   title: 'Stereochemistry',
   summary: 'SMS 151 · Samuel O. Bekoe · Isomerism, chirality, enantiomers and optical activity, racemic mixtures, and why a drug’s 3D shape decides its action',
   minutes: 12,

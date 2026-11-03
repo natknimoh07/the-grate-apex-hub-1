@@ -1446,8 +1446,24 @@
   {
    "id": "bmc",
    "name": "Basic Medical Chemistry",
-   "total": 802,
+   "total": 900,
    "topics": [
+    {
+     "id": "Acid chlorides",
+     "title": "Acid chlorides",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Acidity",
+     "title": "Acidity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
     {
      "id": "Acidity & Salts",
      "title": "Acidity & Salts",
@@ -1462,7 +1478,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 10
     },
     {
      "id": "Alcohols, Phenols, Ethers & Thiols",
@@ -1513,6 +1529,14 @@
      "unrated": 13
     },
     {
+     "id": "Alkenes",
+     "title": "Alkenes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Alkenes & Alkynes",
      "title": "Alkenes & Alkynes",
      "easy": 0,
@@ -1553,12 +1577,44 @@
      "unrated": 12
     },
     {
+     "id": "Alkynes",
+     "title": "Alkynes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Alkynes in nature",
+     "title": "Alkynes in nature",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Amides",
+     "title": "Amides",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Amines",
      "title": "Amines",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 7
+    },
+    {
+     "id": "Anhydrides",
+     "title": "Anhydrides",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Aromatic Compounds",
@@ -1569,12 +1625,28 @@
      "unrated": 6
     },
     {
+     "id": "Aromaticity",
+     "title": "Aromaticity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Basicity",
      "title": "Basicity",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 14
+     "unrated": 17
+    },
+    {
+     "id": "Benzene",
+     "title": "Benzene",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Benzene Structure & Resonance",
@@ -1601,6 +1673,14 @@
      "unrated": 5
     },
     {
+     "id": "Bonding",
+     "title": "Bonding",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Bonding & Hybridization",
      "title": "Bonding & Hybridization",
      "easy": 0,
@@ -1614,7 +1694,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 2
     },
     {
      "id": "Carboxylic Acids & Derivatives",
@@ -1649,12 +1729,20 @@
      "unrated": 6
     },
     {
+     "id": "Classes",
+     "title": "Classes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Classification",
      "title": "Classification",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 13
     },
     {
      "id": "Classification of Aromatics",
@@ -1686,7 +1774,15 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 22
+     "unrated": 23
+    },
+    {
+     "id": "Directing effects",
+     "title": "Directing effects",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Directing Effects & Activation",
@@ -1697,6 +1793,30 @@
      "unrated": 14
     },
     {
+     "id": "Drugs",
+     "title": "Drugs",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "EAS",
+     "title": "EAS",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Elimination",
+     "title": "Elimination",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Enantiomers",
      "title": "Enantiomers",
      "easy": 0,
@@ -1705,12 +1825,36 @@
      "unrated": 4
     },
     {
+     "id": "Esters",
+     "title": "Esters",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Friedel-Crafts Reactions",
      "title": "Friedel-Crafts Reactions",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Heterocyclic amines",
+     "title": "Heterocyclic amines",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Heterocyclic aromatics",
+     "title": "Heterocyclic aromatics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Heterocyclic Aromatics",
@@ -1761,12 +1905,36 @@
      "unrated": 6
     },
     {
+     "id": "Isomers",
+     "title": "Isomers",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Ketones",
+     "title": "Ketones",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Naming",
+     "title": "Naming",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 20
+    },
+    {
      "id": "Nomenclature",
      "title": "Nomenclature",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 54
+     "unrated": 46
     },
     {
      "id": "Optical activity",
@@ -1798,7 +1966,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 8
     },
     {
      "id": "Physical properties",
@@ -1806,11 +1974,19 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 2
     },
     {
      "id": "Physical Properties",
      "title": "Physical Properties",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 11
+    },
+    {
+     "id": "Properties",
+     "title": "Properties",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -1830,7 +2006,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 21
+     "unrated": 28
     },
     {
      "id": "Reactions of Benzene & EAS",
@@ -1839,6 +2015,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "Reactivity",
+     "title": "Reactivity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Reduction",
@@ -1905,6 +2089,22 @@
      "unrated": 16
     },
     {
+     "id": "SN1 and SN2",
+     "title": "SN1 and SN2",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Structure",
+     "title": "Structure",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Structure & Terminology",
      "title": "Structure & Terminology",
      "easy": 0,
@@ -1918,7 +2118,15 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 11
+     "unrated": 17
+    },
+    {
+     "id": "Uses",
+     "title": "Uses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     }
    ]
   },
