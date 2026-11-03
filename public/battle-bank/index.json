@@ -5040,8 +5040,16 @@
   {
    "id": "physiology",
    "name": "Physiology",
-   "total": 671,
+   "total": 709,
    "topics": [
+    {
+     "id": "Action potential",
+     "title": "Action potential",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
     {
      "id": "Action Potential",
      "title": "Action Potential",
@@ -5155,6 +5163,14 @@
      "unrated": 3
     },
     {
+     "id": "Classification",
+     "title": "Classification",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Clotting Cascade",
      "title": "Clotting Cascade",
      "easy": 0,
@@ -5243,6 +5259,14 @@
      "unrated": 3
     },
     {
+     "id": "Excitable tissues",
+     "title": "Excitable tissues",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Excitation–Contraction",
      "title": "Excitation–Contraction",
      "easy": 0,
@@ -5313,6 +5337,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 85
+    },
+    {
+     "id": "Glia",
+     "title": "Glia",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Graded potentials",
+     "title": "Graded potentials",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Hemoglobin",
@@ -5435,6 +5475,14 @@
      "unrated": 3
     },
     {
+     "id": "Neuron",
+     "title": "Neuron",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Neurons & Glia",
      "title": "Neurons & Glia",
      "easy": 0,
@@ -5544,7 +5592,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 11
     },
     {
      "id": "RBC Indices",
@@ -5587,12 +5635,28 @@
      "unrated": 5
     },
     {
+     "id": "Refractory periods",
+     "title": "Refractory periods",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Relaxation",
      "title": "Relaxation",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Resting potential",
+     "title": "Resting potential",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
     },
     {
      "id": "Resting Potential",
@@ -5627,12 +5691,28 @@
      "unrated": 10
     },
     {
+     "id": "Sensory physiology",
+     "title": "Sensory physiology",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Sensory Physiology",
      "title": "Sensory Physiology",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 16
+    },
+    {
+     "id": "Sensory receptors",
+     "title": "Sensory receptors",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Signal transduction",
