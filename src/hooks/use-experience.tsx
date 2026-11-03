@@ -11,7 +11,7 @@ import { DEFAULT_EXPERIENCE, EXPERIENCES_ENABLED, type ExperienceId, heldExperie
 // from the first frame instead of a flash of another one.
 //
 // Until a choice is known (signed out, or not chosen yet) the interface is
-// drawn as The Originals, the default experience (owner decision, 2026-10-10).
+// drawn in the default experience, OrigiNate (owner, 2026-11-03; it was The Originals before).
 
 const DEVICE_KEY = 'grateapex_experience';
 

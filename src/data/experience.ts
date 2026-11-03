@@ -21,8 +21,8 @@ export const EXPERIENCE_INFO: Record<ExperienceId, { name: string; summary: stri
   originate: { name: 'OrigiNate', summary: 'The new GrAte Apex Hub design: its themes, layouts, icons and sidebar, in a clean, simple style.' },
 };
 
-/** The default experience: shown until a learner chooses, and preselected in the chooser. */
-export const DEFAULT_EXPERIENCE: ExperienceId = 'originals';
+/** The default experience: shown until a learner chooses, and preselected in the chooser (OrigiNate since 2026-11-03, owner). */
+export const DEFAULT_EXPERIENCE: ExperienceId = 'originate';
 
 export function isExperience(value: unknown): value is ExperienceId {
   return typeof value === 'string' && (EXPERIENCES as readonly string[]).includes(value);
