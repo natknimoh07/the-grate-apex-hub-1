@@ -115,7 +115,7 @@ export const physiologyBlood: Hb1Lesson = {
           { c: ['<b>Excessive destruction</b> (haemolytic)', 'Sickle cell disease, hereditary spherocytosis, malaria, incompatible transfusion (reticulocytes rise as the marrow compensates)'] },
         ] },
         { k: 'p', x: 'The circulation compensates by working harder: heart rate and cardiac output rise (blood is thinner, so it flows more easily, and tissues dilate their vessels). Severe chronic anaemia can therefore strain the heart into failure.' },
-        { k: 'term', t: 'Polycythaemia', d: 'Too many red cells. <b>Secondary</b> polycythaemia is a response to low tissue O<sub>2</sub> (altitude, lung disease) through EPO; <b>polycythaemia vera</b> is a marrow tumour. Either way the blood is thicker, flow is slower, and the risk of clotting rises.' },
+        { k: 'term', name: 'Polycythaemia', def: 'Too many red cells. <b>Secondary</b> polycythaemia is a response to low tissue O<sub>2</sub> (altitude, lung disease) through EPO; <b>polycythaemia vera</b> is a marrow tumour. Either way the blood is thicker, flow is slower, and the risk of clotting rises.' },
       ],
     },
     {
@@ -132,8 +132,8 @@ export const physiologyBlood: Hb1Lesson = {
           { c: ['<b>Monocytes</b>', 'Circulate about <b>72 hours</b>, then enter tissues as <b>macrophages</b> (e.g. <b>Kupffer cells</b> in the liver), the <b>tissue macrophage system</b>', 'Chronic infection'] },
           { c: ['<b>Lymphocytes</b>', 'Specific immunity with <b>memory</b>', 'Viral infection'] },
         ] },
-        { k: 'term', t: 'Diapedesis and chemotaxis', d: '<b>Diapedesis</b>: squeezing between endothelial cells to leave the blood. <b>Chemotaxis</b>: moving toward chemicals released by tissue damage or bacteria.' },
-        { k: 'term', t: 'Opsonisation', d: 'Coating bacteria with <b>IgG antibody</b> or complement, which marks them for more efficient phagocytosis.' },
+        { k: 'term', name: 'Diapedesis and chemotaxis', def: '<b>Diapedesis</b>: squeezing between endothelial cells to leave the blood. <b>Chemotaxis</b>: moving toward chemicals released by tissue damage or bacteria.' },
+        { k: 'term', name: 'Opsonisation', def: 'Coating bacteria with <b>IgG antibody</b> or complement, which marks them for more efficient phagocytosis.' },
         { k: 'h', x: 'T and B lymphocytes', l: 3 },
         { k: 'cards', items: [
           { title: 'T lymphocytes (mature in the Thymus)', blocks: [{ k: 'p', x: '<b>Cell-mediated</b> immunity: attack infected cells directly and coordinate the response; responsible for <b>transplant rejection</b> and <b>delayed allergic reactions</b>.' }] },

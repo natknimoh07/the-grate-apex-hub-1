@@ -260,14 +260,14 @@ export const physiologyExcitable: Hb1Lesson = {
       kicker: 'Transduction, adaptation and coding',
       blocks: [
         { k: 'p', x: '<b>Sensory transduction</b>: the stimulus opens or closes ion channels in the receptor, changing its membrane potential. This <b>receptor (generator) potential</b> is a <b>graded potential</b>, and it can be depolarising or hyperpolarising. If it reaches threshold, APs are fired in the sensory nerve.' },
-        { k: 'term', t: 'Adequate stimulus', d: 'The type of stimulus a receptor is <b>most sensitive</b> to: light for cones, sound vibration for hair cells.' },
-        { k: 'term', t: 'Adaptation', d: 'A <b>decrease in responsiveness</b> to a maintained stimulus of constant intensity: AP frequency in the sensory nerve <b>declines with time</b> and the stimulus feels progressively weaker.' },
+        { k: 'term', name: 'Adequate stimulus', def: 'The type of stimulus a receptor is <b>most sensitive</b> to: light for cones, sound vibration for hair cells.' },
+        { k: 'term', name: 'Adaptation', def: 'A <b>decrease in responsiveness</b> to a maintained stimulus of constant intensity: AP frequency in the sensory nerve <b>declines with time</b> and the stimulus feels progressively weaker.' },
         { k: 'cards', items: [
           { title: 'Phasic receptors: adapt quickly', blocks: [{ k: 'p', x: 'Touch, odour, temperature, pressure; e.g. the <b>Pacinian corpuscle</b>. You stop feeling your clothes.' }] },
           { title: 'Tonic receptors: adapt slowly', blocks: [{ k: 'p', x: '<b>Proprioceptors, blood-pressure receptors, pain receptors</b>: these must keep reporting.' }] },
         ] },
         { k: 'p', x: 'Adaptation may be due to a <b>change in the receptor</b>, a change in a <b>structure associated</b> with it (the capsule of a Pacinian corpuscle), or <b>inhibitory feedback from the brain</b>.' },
-        { k: 'term', t: 'Modality', d: 'Each kind of sensation (pain, touch, pressure…). It is encoded by <b>labelled lines</b>: specific fibres carry specific modalities, and what you feel depends on <b>where in the CNS the tract ends</b>.' },
+        { k: 'term', name: 'Modality', def: 'Each kind of sensation (pain, touch, pressure…). It is encoded by <b>labelled lines</b>: specific fibres carry specific modalities, and what you feel depends on <b>where in the CNS the tract ends</b>.' },
         { k: 'h', x: 'Intensity coding', l: 3 },
         { k: 'p', x: 'Stimulus <b>intensity</b> is coded in three ways:' },
         { k: 'ul', items: [

@@ -43,7 +43,7 @@ export const physiologyBodyFluids: Hb1Lesson = {
         { k: 'box', title: 'The constant that explains the rest', tone: 'gold', blocks: [
           { k: 'p', x: 'The water content of <b>fat-free tissue (“lean body mass”) is remarkably constant at 73%</b>. Fat holds almost none. So the differences between people in TBW are really differences in how much fat they carry. An infant has little fat and lots of water; an older adult has lost muscle and gained fat.' },
         ] },
-        { k: 'term', t: 'Worked example', d: 'A 70 kg adult man with TBW 60% of body weight holds about 0.6 × 70 = <b>42 L</b> of water (1 kg of water ≈ 1 L).' },
+        { k: 'term', name: 'Worked example', def: 'A 70 kg adult man with TBW 60% of body weight holds about 0.6 × 70 = <b>42 L</b> of water (1 kg of water ≈ 1 L).' },
       ],
     },
     {
@@ -102,9 +102,9 @@ export const physiologyBodyFluids: Hb1Lesson = {
           { title: 'Extracellular fluid (ECF)', blocks: [{ k: 'p', x: 'Found outside the cells. <b>Low</b> in K<sup>+</sup> and Mg<sup>2+</sup>; <b>high</b> in Na<sup>+</sup>, Cl<sup>−</sup> and HCO<sub>3</sub><sup>−</sup>.' }] },
         ] },
         { k: 'h', x: 'The three subcompartments of the ECF', l: 3 },
-        { k: 'term', t: 'Interstitial fluid (ISF)', d: 'Surrounds the cells and <b>does not circulate</b>; about <b>3/4 of the ECF</b>; the <b>only compartment that declines with age</b>.' },
-        { k: 'term', t: 'Plasma', d: 'The extracellular part of blood, which <b>circulates</b>; about <b>1/4 of the ECF</b>.' },
-        { k: 'term', t: 'Transcellular fluid', d: 'A very small part of TBW (<b>0.5–2 L</b>) held in <b>epithelium-lined spaces</b> outside the normal compartments: <b>CSF</b>, gastrointestinal fluids, serous fluid, <b>aqueous humour</b>, joint (synovial) fluid, peritoneal and pericardial fluids.' },
+        { k: 'term', name: 'Interstitial fluid (ISF)', def: 'Surrounds the cells and <b>does not circulate</b>; about <b>3/4 of the ECF</b>; the <b>only compartment that declines with age</b>.' },
+        { k: 'term', name: 'Plasma', def: 'The extracellular part of blood, which <b>circulates</b>; about <b>1/4 of the ECF</b>.' },
+        { k: 'term', name: 'Transcellular fluid', def: 'A very small part of TBW (<b>0.5–2 L</b>) held in <b>epithelium-lined spaces</b> outside the normal compartments: <b>CSF</b>, gastrointestinal fluids, serous fluid, <b>aqueous humour</b>, joint (synovial) fluid, peritoneal and pericardial fluids.' },
         { k: 'h', x: 'Composition of plasma and ICF', l: 3 },
         { k: 'table', head: ['Ion', 'Plasma (mmol/L)', 'ICF (mmol/L)'], rows: [
           { c: ['Na<sup>+</sup>', '<b>143</b>', '9'] },
@@ -363,7 +363,7 @@ export const physiologyBodyFluids: Hb1Lesson = {
       blocks: [
         { k: 'p', x: '<b>Osmosis</b> is the passive diffusion of <b>water</b> across a semipermeable membrane from a region of <b>low solute concentration</b> to one of <b>high solute concentration</b>; in other words, from high water concentration to low water concentration. Solute lowers the chemical potential of water, so water moves toward it.' },
         ostx('0307-osmosis.jpg', 544, 308, 'Osmosis: water crosses a semipermeable membrane toward the side with more solute.', 'The solute particles cannot cross the membrane, but water can. Water moves into the side with more solute, and its level rises until the extra hydrostatic pressure of the taller column stops the flow: that pressure is the osmotic pressure.'),
-        { k: 'term', t: 'Osmotic pressure', d: 'The <b>hydrostatic pressure needed to stop the flow of water</b>. If the pressure in the compartment receiving water is raised to it, osmosis stops. It depends on the <b>number of particles</b> in solution, not their size or kind (so 1 mol of NaCl, which gives 2 particles, has about twice the effect of 1 mol of glucose).' },
+        { k: 'term', name: 'Osmotic pressure', def: 'The <b>hydrostatic pressure needed to stop the flow of water</b>. If the pressure in the compartment receiving water is raised to it, osmosis stops. It depends on the <b>number of particles</b> in solution, not their size or kind (so 1 mol of NaCl, which gives 2 particles, has about twice the effect of 1 mol of glucose).' },
         { k: 'table', head: ['Term', 'Meaning (solution A compared with B)'], rows: [
           { c: ['<b>Isotonic</b>', 'Equal total osmotic pressure'] },
           { c: ['<b>Hypertonic</b>', 'A has a greater osmotic pressure than B'] },

@@ -32,7 +32,7 @@ export const physiologySynapses: Hb1Lesson = {
           '<b>Describe</b> neuromuscular transmission and how blockers and myasthenia gravis disturb it.',
           '<b>Describe</b> the autonomic neuroeffector junction, its cholinergic and adrenergic mechanisms, and denervation hypersensitivity.',
         ] },
-        { k: 'term', t: 'Synapse', d: 'The site where information passes between cells. A typical synapse has a <b>presynaptic cell</b> and a <b>postsynaptic cell</b>.' },
+        { k: 'term', name: 'Synapse', def: 'The site where information passes between cells. A typical synapse has a <b>presynaptic cell</b> and a <b>postsynaptic cell</b>.' },
         { k: 'p', x: 'There are two categories: <b>chemical synapses</b>, at a <b>synaptic cleft</b>, where a transmitter carries the message across; and <b>electrical synapses</b>, at <b>gap junctions</b>, where current flows straight through. Almost all synapses are chemical. Turning electricity into chemistry and back looks wasteful, but it buys three things a wire cannot: <b>one-way traffic</b>, the option to <b>inhibit</b>, and connections whose <b>strength can be adjusted</b>.' },
       ],
     },

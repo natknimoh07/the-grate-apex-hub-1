@@ -164,7 +164,7 @@ export const physiologySkeletalMuscle: Hb1Lesson = {
       blocks: [
         { k: 'p', x: '<b>Relaxation</b> happens when Ca<sup>2+</sup> is <b>actively pumped back into the SR by the Ca<sup>2+</sup>-ATPase</b>. When Ca<sup>2+</sup> around the myofibrils falls <b>below 10<sup>−7</sup> M</b>, it comes off troponin, tropomyosin moves back to <b>block the myosin-binding sites</b>, and contraction ceases.' },
         ostx('1010b-relaxation-new.jpg', 750, 914, 'Relaxation: Ca²⁺ is pumped back into the SR and tropomyosin re-covers the binding sites on actin.', 'Relaxation also needs ATP, for the SR calcium pump. Without ATP, calcium cannot be put away and heads cannot let go.'),
-        { k: 'term', t: 'Rigor', d: 'Depletion of ATP and creatine phosphate leaves the cross-bridges <b>locked to actin</b> (ATP is needed for detachment), giving extreme rigidity. After death it is <b>rigor mortis</b>.' },
+        { k: 'term', name: 'Rigor', def: 'Depletion of ATP and creatine phosphate leaves the cross-bridges <b>locked to actin</b> (ATP is needed for detachment), giving extreme rigidity. After death it is <b>rigor mortis</b>.' },
       ],
     },
     {
