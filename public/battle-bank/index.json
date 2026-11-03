@@ -5040,7 +5040,7 @@
   {
    "id": "physiology",
    "name": "Physiology",
-   "total": 795,
+   "total": 827,
    "topics": [
     {
      "id": "Action potential",
@@ -5115,6 +5115,14 @@
      "unrated": 26
     },
     {
+     "id": "Blockers",
+     "title": "Blockers",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Blood Composition",
      "title": "Blood Composition",
      "easy": 0,
@@ -5161,6 +5169,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Chemical synapse",
+     "title": "Chemical synapse",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Classification",
@@ -5249,6 +5265,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Electrical synapses",
+     "title": "Electrical synapses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Energy",
@@ -5472,7 +5496,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 13
     },
     {
      "id": "Iron Metabolism",
@@ -5571,12 +5595,28 @@
      "unrated": 2
     },
     {
+     "id": "Myasthenia",
+     "title": "Myasthenia",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Myasthenia Gravis",
      "title": "Myasthenia Gravis",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Neuroeffector",
+     "title": "Neuroeffector",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Neuron",
@@ -5608,7 +5648,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 4
     },
     {
      "id": "NMBAs",
@@ -5624,7 +5664,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 17
     },
     {
      "id": "Osmosis",
@@ -5905,6 +5945,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 11
+    },
+    {
+     "id": "Synapses",
+     "title": "Synapses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Synaptic Sequence",
