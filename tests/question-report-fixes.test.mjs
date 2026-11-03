@@ -119,3 +119,9 @@ describe('report 2026-11-02: legacy:cellstruct:1yhpue3:type', () => {
     assert.ok(seen > 0, 'a typed version was never made');
   });
 });
+
+it('typed signed numbers keep their sign (report on legacy:algebra:eme29e:type, 2026-11-03)', () => {
+  const accept = typedAcceptVariants('x = -5/8');
+  for (const input of ['x = -5/8', '-5/8', 'x=-5/8', 'x = −5/8', '-0.625', 'x = -0.625', '-5 / 8']) assert.ok(typedAnswerMatches(input, accept), input);
+  for (const input of ['5/8', 'x = 5/8', '-8/5', '0.625']) assert.ok(!typedAnswerMatches(input, accept), input);
+});
