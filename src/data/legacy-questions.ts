@@ -3,6 +3,12 @@
 import type { Question } from '@/data/questions';
 import { trueFalseStatement, typedAcceptVariants, wrongIsPartOfAnswer } from '@/data/true-false';
 
+// Other correct answers a learner reported (by question id), e.g. the calculated value behind a rounded answer.
+const EXTRA_TYPED_ANSWERS: Record<string, string[]> = {
+  // 0.61 x 560 / 1.4 = 244 nm, which the bank rounds to 240nm (its own explanation shows 244 nm).
+  'legacy:cellstruct:1yhpue3': ['244 nm', '0.244 µm', '0.24 µm'],
+};
+
 export type BankQuestion = { id: string; q: string; o: string[]; a: number; e: string; t: string; p?: string[]; kind?: 'input'; ans?: string; img?: string; tp?: string };
 
 // ── Rich text (the original mini-markup: <b> <i> <sub> <sup> <term d="…">) ──
@@ -98,7 +104,7 @@ export function buildPractice(source: readonly (BankQuestion & { setName?: strin
     if (original.type === 'choice' && !q.img && q.o.length >= 3 &&!/\bexcept\b|\bnot\b/i.test(q.q)) {
       const answer = plainText(q.o[q.a]);
       if (roll < 0.15 && short(answer) && !/which of the following/i.test(q.q)) {
-        out.push({ ...original, id: `${original.id}:type`, type: 'type', accept: typedAcceptVariants(answer), label: 'Type the answer' } as Question);
+        out.push({ ...original, id: `${original.id}:type`, type: 'type', accept: [...typedAcceptVariants(answer), ...(EXTRA_TYPED_ANSWERS[original.id] ?? [])], label: 'Type the answer' } as Question);
         continue;
       }
       if (roll < 0.3) {

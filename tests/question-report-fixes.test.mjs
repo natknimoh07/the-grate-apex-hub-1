@@ -100,3 +100,22 @@ it('the Windows file-name question keeps "<" and explains the older-Windows list
   assert.match(q.e, /older Windows/);
   assert.match(q.e, /allows ' and !/);
 });
+
+describe('report 2026-11-02: legacy:cellstruct:1yhpue3:type', () => {
+  it('the calculated 244 nm (or 0.24 µm) is accepted as well as 240nm', () => {
+    const bank = JSON.parse(readFileSync('public/curriculum/cellstruct.json', 'utf8')).sets.flatMap((set) => set.questions);
+    const target = bank.filter((q) => q.id === '1yhpue3');
+    assert.equal(target.length, 1);
+    let seen = 0;
+    for (let i = 0; i < 400 && seen < 3; i++) {
+      for (const q of buildPractice(target, { course: 'cellstruct' }, 1, `seed-${i}`)) {
+        if (!q.id.endsWith(':type')) continue;
+        seen++;
+        for (const input of ['240nm', '240 nm', '244 nm', '244', '0.24 µm', '0.24 um']) assert.ok(typedAnswerMatches(input, q.accept), input);
+        assert.ok(!typedAnswerMatches('120 nm', q.accept));
+        assert.ok(!typedAnswerMatches('244 um', q.accept));
+      }
+    }
+    assert.ok(seen > 0, 'a typed version was never made');
+  });
+});
