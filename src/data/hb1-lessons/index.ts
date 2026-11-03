@@ -31,6 +31,7 @@ import { physiologyAns } from '@/data/hb1-lessons/physiology-ans';
 import { physiologyBodyFluids } from '@/data/hb1-lessons/physiology-body-fluids';
 import { physiologyHomeostasis } from '@/data/hb1-lessons/physiology-homeostasis';
 import { physiologyExcitable } from '@/data/hb1-lessons/physiology-excitable';
+import { physiologySkeletalMuscle } from '@/data/hb1-lessons/physiology-skeletal-muscle';
 import { entomologyBlackflies } from '@/data/hb1-lessons/entomology-blackflies';
 import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
 import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
@@ -69,7 +70,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   bmcAlkanes, bmcAlkenes, bmcAlkynes, bmcAromatics, bmcAlkylHalides, bmcAlcohols,
   bmcAldehydes, bmcKetones, bmcCarboxylicAcids, bmcAcidDerivatives, bmcAmines, bmcStereochemistry,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
-  physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologyAns,
+  physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyAns,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 

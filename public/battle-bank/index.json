@@ -5040,7 +5040,7 @@
   {
    "id": "physiology",
    "name": "Physiology",
-   "total": 709,
+   "total": 748,
    "topics": [
     {
      "id": "Action potential",
@@ -5219,6 +5219,14 @@
      "unrated": 13
     },
     {
+     "id": "Cross-bridge cycle",
+     "title": "Cross-bridge cycle",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Diffusion",
      "title": "Diffusion",
      "easy": 0,
@@ -5227,12 +5235,28 @@
      "unrated": 3
     },
     {
+     "id": "E–C coupling",
+     "title": "E–C coupling",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Electrical Activity",
      "title": "Electrical Activity",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Energy",
+     "title": "Energy",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "EPSP/IPSP",
@@ -5261,6 +5285,14 @@
     {
      "id": "Excitable tissues",
      "title": "Excitable tissues",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Excitation",
+     "title": "Excitation",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -5297,6 +5329,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Fibre types",
+     "title": "Fibre types",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Filaments",
+     "title": "Filaments",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Filtration",
@@ -5419,6 +5467,14 @@
      "unrated": 3
     },
     {
+     "id": "Length–tension",
+     "title": "Length–tension",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Leucocytes",
      "title": "Leucocytes",
      "easy": 0,
@@ -5443,6 +5499,14 @@
      "unrated": 9
     },
     {
+     "id": "Mechanics",
+     "title": "Mechanics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Membrane",
      "title": "Membrane",
      "easy": 0,
@@ -5459,8 +5523,24 @@
      "unrated": 15
     },
     {
+     "id": "Motor units",
+     "title": "Motor units",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Muscle Physiology",
      "title": "Muscle Physiology",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Muscle tissue",
+     "title": "Muscle tissue",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -5648,7 +5728,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 10
     },
     {
      "id": "Resting potential",
@@ -5665,6 +5745,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 11
+    },
+    {
+     "id": "Sarcomere",
+     "title": "Sarcomere",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Scope Note",
@@ -5739,12 +5827,28 @@
      "unrated": 5
     },
     {
+     "id": "Sliding filaments",
+     "title": "Sliding filaments",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Structure",
      "title": "Structure",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 25
+     "unrated": 29
+    },
+    {
+     "id": "Summation",
+     "title": "Summation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Sympathetic",
@@ -5793,6 +5897,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Twitch",
+     "title": "Twitch",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Types",
