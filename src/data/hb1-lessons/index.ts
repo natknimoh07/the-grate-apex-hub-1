@@ -117,6 +117,7 @@ import { algebraFunctions } from '@/data/hb1-lessons/algebra-functions';
 import { algebraDerivatives } from '@/data/hb1-lessons/algebra-derivatives';
 import { algebraDiffApps } from '@/data/hb1-lessons/algebra-diff-apps';
 import { algebraDiffBusiness } from '@/data/hb1-lessons/algebra-diff-business';
+import { algebraIntegration } from '@/data/hb1-lessons/algebra-integration';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -163,7 +164,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
 
   statsIntro, statsData, statsDescriptive, statsProbability, statsDiscrete, statsContinuous,
 
-  algebraSets, algebraEquations, algebraLogs, algebraNumbers, algebraSequences, algebraBinomial, algebraLines, algebraTrig, algebraMatrices, algebraFunctions, algebraDerivatives, algebraDiffApps, algebraDiffBusiness,
+  algebraSets, algebraEquations, algebraLogs, algebraNumbers, algebraSequences, algebraBinomial, algebraLines, algebraTrig, algebraMatrices, algebraFunctions, algebraDerivatives, algebraDiffApps, algebraDiffBusiness, algebraIntegration,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];

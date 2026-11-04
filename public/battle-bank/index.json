@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 1095,
+   "total": 1120,
    "topics": [
     {
      "id": "Absolute value",
@@ -3709,7 +3709,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 18
     },
     {
      "id": "Binomial",
@@ -3822,6 +3822,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 17
+    },
+    {
+     "id": "Definite",
+     "title": "Definite",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Definition",
@@ -3989,7 +3997,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 5
     },
     {
      "id": "Factorials",
@@ -4333,7 +4341,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 15
     },
     {
      "id": "Matrices",
@@ -4453,7 +4461,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 7
     },
     {
      "id": "Partial Fractions",
@@ -4789,7 +4797,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 11
     },
     {
      "id": "Summation",
@@ -4853,7 +4861,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 6
     },
     {
      "id": "Trig Equations",

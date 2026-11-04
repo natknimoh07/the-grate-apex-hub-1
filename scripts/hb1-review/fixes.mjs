@@ -24,6 +24,8 @@ export const FIXES = {
     { id: '30ss5v', o: { 0: '(x² − 3)⁴/8 + c', 1: '(x² − 3)⁵/5 + c', 2: '(x² − 3)⁵ + c', 3: '(x² − 3)⁵/10 + c' }, why: 'the bracket (x² − 3) had been lost from every option' },
     { id: '1d0i418', o: { 0: '−1/[8(4x + 5)²] + c', 1: '1/[8(4x + 5)²] + c', 2: '−4/[8(4x + 5)²] + c', 3: '−1/[2(4x + 5)²] + c' }, why: 'the bracket (4x + 5) had been lost from every option' },
     { id: '52v9ci', o: { 0: '−√(1 − 2x) + c', 1: '√(1 − 2x) + c', 2: '2√(1 − 2x) + c', 3: '−½√(1 − 2x) + c' }, why: 'the bracket under the root had been lost from every option' },
+    { id: '1gsbwze', o: { 1: '(2/3)x³ + 1/x + x²/2 + c' }, why: 'the keyed option said x³ for ∫2x² dx; it is (2/3)x³, as the explanation already worked out' },
+    { id: 'hhjvax', o: { 1: 'y⁴ = (4/3)x³ + c' }, why: 'the keyed option dropped the 4/3; y⁴/4 = x³/3 + k gives y⁴ = (4/3)x³ + c' },
     { id: 'gbqkwd', q: 'Which equation describes a parabola that opens downwards with its vertex at (h, k), to the right of the y-axis and above the x-axis? (a, h and k are positive real numbers.)', why: 'referred to a graph that is not in the app' },
   ],
   biolchem: [
