@@ -13,6 +13,7 @@ export const algebraNumbers: Hb1Lesson = {
   source: 'MATH 157 Past Questions 1 and 2 (no lecture deck)',
   quizId: 'alnm',
   quizName: 'Quiz · Numbers, Intervals and Inequalities (lesson)',
+  pastSets: ['s12', 's13'],
   pastTopics: ['numbers-sets-radicals', 'absolute-value-inequalities'],
   sections: [
     {
