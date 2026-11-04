@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 
+import { Hb1CustomQuiz } from '@/components/learning/hb1-custom-quiz';
 import { BackLink } from '@/components/learning/nav-bits';
 import { SavedQuizList } from '@/components/learning/quiz-in-progress-card';
 import { Button } from '@/components/ui/button';
@@ -13,9 +14,11 @@ import { PageHeader, Screen } from '@/components/ui/screen';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { InlineNotice } from '@/components/ui/state-views';
 import { Type, type ThemeColors } from '@/constants/theme';
+import { readClassSelection } from '@/data/class-curriculum';
 import { courseCatalog, getLessonQuestions, publishedTopics } from '@/data/curriculum';
 import { pastCourseForSubject } from '@/data/past-question-topics';
 import { pastQuestionsFor, usePastQuestions } from '@/data/past-questions';
+import { useAuth } from '@/hooks/use-auth';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { routes } from '@/lib/routes';
 
@@ -42,9 +45,17 @@ const COURSE_GROUPS = courseCatalog
   .map((course) => ({ course, topics: publishedTopics.filter((topic) => topic.subject === course.subject) }))
   .filter((group) => group.topics.length > 0);
 
+type Level = 'HB1' | 'HB2';
+
 export default function CustomQuizBuilderScreen() {
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
+  // HB1 learners see HB1; everyone else sees HB2 and HB1, which HB2 learners have done and revise (owner, 2026-11-04).
+  const { user } = useAuth();
+  const ownClass = readClassSelection(user?.user_metadata)?.classId;
+  const levels: Level[] = ownClass === 'HB1' ? ['HB1'] : ['HB2', 'HB1'];
+  const [chosenLevel, setLevel] = useState<Level | null>(null);
+  const level = chosenLevel && levels.includes(chosenLevel) ? chosenLevel : levels[0];
   const pastReady = usePastQuestions(PAST_COURSES);
   const [selectedLessonIds, setSelectedLessonIds] = useState<string[]>([]);
   const [selectedPastTopicIds, setSelectedPastTopicIds] = useState<string[]>([]);
@@ -113,10 +124,26 @@ export default function CustomQuizBuilderScreen() {
       <PageHeader
         eyebrow="Study"
         title="Custom quiz"
-        subtitle="Build a quiz from the lecture questions in the lessons you choose, and from real past questions on each topic."
+        subtitle="Choose a class, then a semester, a course and its topics. Quizzes come from the lecture questions and real past questions."
       />
+      {levels.length > 1 ? (
+        <View style={styles.levelSwitch}>
+          <SegmentedControl
+            label="Class"
+            options={levels.map((value) => ({ value, label: value === 'HB1' && ownClass === 'HB2' ? 'HB1 · revision' : value }))}
+            value={level}
+            onChange={(value) => setLevel(value as Level)}
+          />
+        </View>
+      ) : null}
+
+      {level === 'HB1' ? (
+        <Hb1CustomQuiz />
+      ) : (
+      <>
       <SavedQuizList match={(draft) => draft.key.startsWith('custom:')} />
 
+      <Text style={styles.semesterTitle}>Semester 1</Text>
       <View style={styles.sectionHeader}>
         <View style={styles.sectionCopy}>
           <Text style={styles.sectionTitle}>Choose lessons</Text>
@@ -244,6 +271,8 @@ export default function CustomQuizBuilderScreen() {
         />
       </View>
       <Text style={styles.previewNote}>Your answers count toward your quiz history and spaced review.</Text>
+      </>
+      )}
     </Screen>
   );
 }
@@ -254,6 +283,8 @@ function createStyles(colors: ThemeColors) {
     sectionCopy: { flex: 1, minWidth: 0 },
     sectionTitle: { ...Type.title3, color: colors.text },
     sectionDetail: { fontSize: 13, lineHeight: 18, color: colors.textSecondary, marginTop: 3 },
+    levelSwitch: { maxWidth: 360, marginBottom: 16 },
+    semesterTitle: { ...Type.overline, color: colors.textSecondary, marginBottom: 6 },
     courseGroup: { marginBottom: 14 },
     courseHeader: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 6, marginBottom: 8 },
     courseTitle: { ...Type.title3, color: colors.text },

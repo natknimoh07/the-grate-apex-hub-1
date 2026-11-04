@@ -19,7 +19,7 @@ import { Type, type ThemeColors } from '@/constants/theme';
 import { APEX } from '@/data/learning/apex';
 import { dayKey } from '@/data/learning/time';
 import { XP_RULES } from '@/data/learning/xp-rules';
-import { bankQuestions, buildPractice, legacyCourse, loadLegacyBank, loadLegacyLessonList, toQuestion } from '@/data/legacy-study';
+import { bankQuestions, buildPractice, legacyCourse, lessonQuestionTest, loadLegacyBank, loadLegacyLessonList, toQuestion } from '@/data/legacy-study';
 import { shuffleSeeded } from '@/data/legacy-questions';
 import { modeSettings, modeTitle, parsePracticeMode } from '@/data/practice-modes';
 import { pastTopicTitle } from '@/data/past-question-topics';
@@ -121,11 +121,8 @@ function LegacyPracticeAttempt() {
       const set = setId ? bank.sets.find((item) => item.id === setId) : undefined;
       const lesson = lessonId ? lessons.find((item) => item.id === lessonId) : undefined;
       if (lessonId) {
-        const ids = new Set(lesson?.qids ?? []);
         // Lessons written in the app also practise the course's past questions on their topic.
-        const topics = new Set(lesson?.ptopics ?? []);
-        const sets = new Set(lesson?.psets ?? []);
-        source = all.filter((q) => ids.has(q.id) || (q.tp !== undefined && topics.has(q.tp)) || sets.has(q.set));
+        source = all.filter(lessonQuestionTest(lesson ?? {}));
       } else if (setId) {
         source = all.filter((q) => q.set === setId);
       } else if (practice.kind === 'pastTopic') {
@@ -137,9 +134,14 @@ function LegacyPracticeAttempt() {
         // Spaced review of the original questions (data/legacy-review.ts).
         source = all.filter((q) => reviewIds.has(q.id));
       } else if (practice.kind === 'custom') {
-        const lessonQids = new Set(lessons.filter((item) => practice.custom.lessons.includes(item.id)).flatMap((item) => item.qids ?? []));
+        const inLessons = lessons.filter((item) => practice.custom.lessons.includes(item.id)).map(lessonQuestionTest);
         const setIds = new Set(practice.custom.sets);
-        const chosen = all.filter((q) => lessonQids.has(q.id) || setIds.has(q.set));
+        const topicIds = new Set(practice.custom.topics ?? []);
+        // Each question once (a past question can be in more than one paper).
+        const seen = new Set<string>();
+        const chosen = all.filter(
+          (q) => (setIds.has(q.set) || (q.tp !== undefined && topicIds.has(q.tp)) || inLessons.some((test) => test(q))) && !seen.has(q.id) && Boolean(seen.add(q.id))
+        );
         if (chosen.length) source = chosen;
       }
       if (before) source = source.filter((q) => !before.has(`legacy:${course.id}:${q.id}`));

@@ -61,13 +61,14 @@ export const routes = {
   legacyPractice: (options: {
     course: string; lesson?: string; set?: string; pastTopic?: string; pastTopicCount?: number; apex?: boolean; review?: 'due' | 'missed';
     exam?: boolean; mock?: number; drill?: boolean; prepost?: 'pre' | 'post';
-    custom?: { lessons: string[]; sets: string[]; count: number; seconds?: number; feedback: 'instant' | 'submit' };
+    custom?: { lessons: string[]; sets: string[]; topics?: string[]; count: number; seconds?: number; feedback: 'instant' | 'submit' };
   }) =>
     valid(options.course)
       ? (`/learn/hb-practice${query({
           course: options.course, lesson: options.lesson, set: options.set, ptopic: options.pastTopic, pcount: options.pastTopicCount || undefined, apex: options.apex ? 1 : undefined, review: options.review,
           exam: options.exam ? 1 : undefined, mock: options.mock, drill: options.drill ? 1 : undefined, prepost: options.prepost,
           custom: options.custom ? 1 : undefined, lessons: options.custom?.lessons.join(',') || undefined, sets: options.custom?.sets.join(',') || undefined,
+          ptopics: options.custom?.topics?.join(',') || undefined,
           count: options.custom?.count, seconds: options.custom?.seconds, feedback: options.custom ? options.custom.feedback : undefined,
           attempt: Date.now(),
         })}` as Href)

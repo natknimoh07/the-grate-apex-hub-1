@@ -12,7 +12,8 @@
 // Pure, for tests.
 import { APEX } from '@/data/learning/apex';
 
-export type CustomSettings = { lessons: string[]; sets: string[]; count: number; seconds?: number; feedback: 'instant' | 'submit' };
+/** `topics`: past-question topics (`tp`) of the course (Study → Custom quiz, owner 2026-11-04). */
+export type CustomSettings = { lessons: string[]; sets: string[]; topics?: string[]; count: number; seconds?: number; feedback: 'instant' | 'submit' };
 export type PracticeMode =
   | { kind: 'practice' }
   | { kind: 'lesson'; lessonId: string }
@@ -54,6 +55,7 @@ export function parsePracticeMode(get: (key: string) => string | undefined): Pra
       custom: {
         lessons: list(get('lessons')),
         sets: list(get('sets')),
+        ...(list(get('ptopics')).length ? { topics: list(get('ptopics')) } : {}),
         count: (CUSTOM_COUNTS as readonly number[]).includes(count) ? count : 20,
         seconds: (CUSTOM_SECONDS as readonly number[]).includes(seconds) && seconds > 0 ? seconds : undefined,
         feedback: get('feedback') === 'submit' ? 'submit' : 'instant',

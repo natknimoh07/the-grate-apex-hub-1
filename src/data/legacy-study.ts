@@ -246,6 +246,14 @@ export async function loadCourseSets(courseId: string): Promise<{ id: string; na
 
 export const bankQuestions = (bank: LegacyBank) => bank.sets.flatMap((set) => set.questions.map((q) => ({ ...q, set: set.id, setName: set.name })));
 
+/** Is a bank question one of the lesson's? Its own questions, plus (lessons written in the app) the course's past questions on its topics and whole sets. */
+export function lessonQuestionTest(lesson: Pick<LegacyLessonMeta, 'qids' | 'ptopics' | 'psets'>) {
+  const ids = new Set(lesson.qids ?? []);
+  const topics = new Set(lesson.ptopics ?? []);
+  const sets = new Set(lesson.psets ?? []);
+  return (q: { id: string; tp?: string; set: string }) => ids.has(q.id) || (q.tp !== undefined && topics.has(q.tp)) || sets.has(q.set);
+}
+
 // ── Progress ────────────────────────────────────────────────────────
 
 const SECTIONS_KEY = 'grateapex_legacy_sections';

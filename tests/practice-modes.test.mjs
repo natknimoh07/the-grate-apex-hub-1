@@ -15,6 +15,8 @@ test('practice links pick the right mode', () => {
   const custom = parsePracticeMode(from('custom=1&lessons=a,b&sets=s1&count=30&seconds=20&feedback=submit'));
   assert.deepEqual(custom, { kind: 'custom', custom: { lessons: ['a', 'b'], sets: ['s1'], count: 30, seconds: 20, feedback: 'submit' } });
   assert.equal(parsePracticeMode(from('custom=1&count=999&seconds=7')).custom.count, 20);
+  // Study → Custom quiz for HB1: past-question topics of the course.
+  assert.deepEqual(parsePracticeMode(from('custom=1&ptopics=t1,t2')).custom.topics, ['t1', 't2']);
 });
 
 test('exams show answers at the end and keep questions as written; drills are timed', () => {
