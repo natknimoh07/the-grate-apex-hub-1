@@ -30,8 +30,8 @@ export const sectionQuestions: Q[] = [
   mcq('s1-2-3', 'steroid-nucleus', 'Which ring of the steroid nucleus has five members?', 'Ring D', ['Ring A', 'Ring B', 'Ring C'], {
     explanation: 'Ring D is the five-membered ring.',
   }),
-  mcq('s1-2-4', 'steroid-nucleus', 'Why could cholesterol’s nucleus not be a benzene ring?', 'Animals cannot synthesise a benzene ring', ['Benzene rings are too small to hold carbon 17', 'Benzene rings dissolve too easily in water', 'Benzene rings are found only in bile acids'], {
-    explanation: 'The lecture’s reason: animals cannot make a benzene ring.',
+  mcq('s1-2-4', 'steroid-nucleus', 'How are the four rings of the steroid nucleus arranged?', 'All fused together', ['Joined by short chains', 'Linked in a straight line', 'Separate, side by side'], {
+    explanation: 'Rings A–D are fused together into one four-ring nucleus.',
   }),
   mcq('s1-2-5', 'steroid-nucleus', 'Which description of the steroid nucleus is correct?', 'Four fused rings: three six-membered and one five-membered', ['Four separate rings joined by a long side chain', 'Three fused rings: two six-membered and one larger five-membered', 'Five fused rings, all of them six-membered'], {
     explanation: 'Cyclopentanoperhydrophenanthrene: rings A–C (six-membered) fused to ring D (five-membered).',
@@ -59,7 +59,7 @@ export const sectionQuestions: Q[] = [
   mcq('s1-4-2', 'synthesis-sites', 'Which of these is NOT named as a site with a high rate of cholesterol synthesis?', 'The skeletal muscles', ['The intestines', 'The adrenal glands', 'The reproductive organs'], {
     explanation: 'The lecture names the intestines, adrenal glands and reproductive organs.',
   }),
-  tf({ id: 's1-4-3', conceptId: 'synthesis-sites', statement: 'Cholesterol is found in all cells.', answer: true, explanation: 'The lecture notes cholesterol is found in all cells.' }),
+  tf({ id: 's1-4-3', conceptId: 'synthesis-sites', statement: 'The liver makes most of the body’s daily cholesterol.', answer: false, explanation: 'About 20% of daily production is in the liver; the intestines, adrenals and reproductive organs also make a lot.' }),
   mcq('s1-4-4', 'synthesis-sites', 'In animal tissue, cholesterol is synthesised from which acid?', 'Acetic acid', ['Citric acid', 'Lactic acid', 'Malonic acid'], {
     explanation: 'Cholesterol is synthesised in animal tissue from acetic acid.',
   }),
@@ -108,8 +108,8 @@ export const sectionQuestions: Q[] = [
   mcq('s2-1-4', 'five-stages', 'How many stages does the lecture divide cholesterol synthesis into?', 'Five', ['Three', 'Four', 'Seven'], {
     explanation: 'Slide 7 lists five stages, from acetyl-CoA to cholesterol.',
   }),
-  fill('s2-1-5', 'five-stages', 'Stage 2 of the pathway converts HMG-CoA into ____.', ['mevalonate'], {
-    explanation: 'HMG-CoA → mevalonate is stage 2.',
+  fill('s2-1-5', 'five-stages', 'The last stage of cholesterol synthesis turns ____ into cholesterol.', ['squalene'], {
+    explanation: 'Stage 5: squalene → cholesterol.',
   }),
 
   // ─── Lesson 2 · S2 Stage 1: building HMG-CoA ───────────────────────
@@ -209,7 +209,7 @@ export const sectionQuestions: Q[] = [
   mcq('s3-4-2', 'pathway-branches', 'Which product is made from farnesyl pyrophosphate, not from cholesterol?', 'Ubiquinone', ['Bile salts', 'Steroid hormones', 'Cholyl-CoA'], {
     explanation: 'Farnesyl PP branches to heme a, dolichol and ubiquinone.',
   }),
-  tf({ id: 's3-4-3', conceptId: 'pathway-branches', statement: 'In the liver, cholesterol is used to make bile salts.', answer: true, explanation: 'Slide 12: cholesterol in the liver → bile salts (Lesson 5).' }),
+  tf({ id: 's3-4-3', conceptId: 'pathway-branches', statement: 'Heme a is one of the branch products made from farnesyl pyrophosphate.', answer: true, explanation: 'Slide 12: farnesyl PP branches to heme a, dolichol and ubiquinone.' }),
   mcq('s3-4-4', 'pathway-branches', 'Which branch product is NOT made from farnesyl pyrophosphate?', 'Bile salts', ['Heme a', 'Dolichol', 'Ubiquinone'], {
     explanation: 'Bile salts are made from cholesterol itself, in the liver.',
   }),
@@ -320,8 +320,8 @@ export const sectionQuestions: Q[] = [
   mcq('s5-2-4', 'bile-acid-conjugation', 'Which side-chain end belongs to glycocholic acid?', '–CO–NH–CH₂–COOH', ['–CO–NH–(CH₂)₂–SO₃H', '–CO–S-CoA', '–CH₂–OH'], {
     explanation: 'Glycine gives –CO–NH–CH₂–COOH.',
   }),
-  fill('s5-2-5', 'bile-acid-conjugation', 'Glycocholic acid is a bile acid conjugated with ____.', ['glycine'], {
-    explanation: 'Glyco- means glycine.',
+  mcq('s5-2-5', 'bile-acid-conjugation', 'Which bile acid’s side chain ends in –COOH?', 'Glycocholic acid', ['Taurocholic acid', 'Cholyl-CoA', 'Chenodeoxycholyl-CoA'], {
+    explanation: 'Glycine gives –COOH; taurine gives –SO₃H.',
   }),
 
   // ─── Lesson 5 · S3 Why bile acids matter ───────────────────────────

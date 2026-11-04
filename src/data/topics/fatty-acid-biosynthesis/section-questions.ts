@@ -13,7 +13,7 @@ export const sectionQuestions: Q[] = [
   mcq('s1-1-1', 'beta-oxidation-product', 'How much of the chain does each round of β-oxidation remove?', 'Two carbons, as one acetyl-CoA', ['One carbon, as carbon dioxide', 'Three carbons, as malonyl-CoA', 'Four carbons, as acetoacetyl-CoA'], {
     explanation: 'β-Oxidation removes the chain two carbons at a time; each piece leaves as acetyl-CoA.',
   }),
-  tf({ id: 's1-1-2', conceptId: 'beta-oxidation-product', statement: 'Fatty acid biosynthesis starts from acetyl-CoA and builds the chain up two carbons at a time.', answer: true, explanation: 'Synthesis runs the opposite way to β-oxidation, adding two carbons at a time from acetyl-CoA.' }),
+  tf({ id: 's1-1-2', conceptId: 'beta-oxidation-product', statement: 'Fatty acid synthesis and β-oxidation share acetyl-CoA but run in opposite directions.', answer: true, explanation: 'One breaks chains down to acetyl-CoA; the other builds them up from it.' }),
   mcq('s1-1-3', 'beta-oxidation-product', 'In which directions do the two pathways run?', 'β-Oxidation breaks chains down; synthesis builds them up', ['Both break fatty acid chains down, at different rates', 'Both build fatty acid chains up, in different organelles', 'β-Oxidation builds chains up; synthesis breaks them down'], {
     explanation: 'β-Oxidation breaks fatty acids down; biosynthesis builds them up from acetyl-CoA.',
   }),
@@ -95,8 +95,8 @@ export const sectionQuestions: Q[] = [
   mcq('s2-1-4', 'citrate-shunt', 'In the fed liver, what carries acetyl groups out of the mitochondria?', 'Citrate', ['Malonyl-CoA', 'Palmitate', 'Pyruvate'], {
     explanation: 'Excess citrate leaves via the citrate shunt, carrying acetyl groups to the cytosol.',
   }),
-  fill('s2-1-5', 'synthesis-location-state', 'Fatty acid biosynthesis takes place in the ____ of the cell.', ['cytosol', 'cytoplasm'], {
-    explanation: 'Synthesis takes place in the cytosol, so acetyl groups must be carried there.',
+  fill('s2-1-5', 'synthesis-location-state', 'After a meal, fuel the body cannot use right away is stored as ____.', ['fat', 'fats', 'triacylglycerol', 'triglyceride'], {
+    explanation: 'Under fed conditions the extra fuel is stored as fat — which is why synthesis runs then.',
   }),
 
   // ─── Lesson 2 · S2 Is synthesis just β-oxidation in reverse? ──────
@@ -137,7 +137,7 @@ export const sectionQuestions: Q[] = [
   mcq('s3-1-2', 'acetyl-coa-carboxylase', 'Why is the enzyme of the first step called a carboxylase?', 'It adds a carboxyl group to its substrate', ['It removes a carboxyl group from its substrate', 'It splits its substrate without using water', 'It transfers a phosphate group onto its substrate'], {
     explanation: 'A carboxylase adds a carboxyl group; acetyl-CoA carboxylase adds CO₂ to acetyl-CoA.',
   }),
-  tf({ id: 's3-1-3', conceptId: 'malonyl-coa', statement: 'Malonyl-CoA is the activated two-carbon donor used to build the chain.', answer: true, explanation: 'The lecture calls malonyl-CoA the activated form used for synthesis.' }),
+  tf({ id: 's3-1-3', conceptId: 'malonyl-coa', statement: 'The acyl part of malonyl-CoA has one more carbon than that of acetyl-CoA.', answer: true, explanation: 'The added carboxyl group gives three carbons instead of two.' }),
   mcq('s3-1-4', 'acetyl-coa-carboxylase', 'Which are the starting materials of the first step?', 'Acetyl-CoA and carbon dioxide', ['Malonyl-CoA and water', 'Palmitate and coenzyme A', 'Citrate and mitochondrial oxaloacetate'], {
     explanation: 'Acetyl-CoA carboxylase joins acetyl-CoA and CO₂ to give malonyl-CoA.',
   }),
@@ -240,8 +240,8 @@ export const sectionQuestions: Q[] = [
   }),
 
   // ─── Lesson 5 · S2 The three steps (first round) ───────────────────
-  mcq('s5-2-1', 'dehydration-step', 'What kind of double bond does the dehydratase form?', 'A trans double bond', ['A cis C=C double bond', 'A C=O double bond', 'A C=S double bond'], {
-    explanation: 'Dehydration forms a trans double bond — an enoyl group.',
+  mcq('s5-2-1', 'dehydration-step', 'Which first-round intermediate does the dehydratase act on?', 'D-β-Hydroxybutyryl-ACP', ['Acetoacetyl-ACP', 'Crotonyl-ACP', 'L-3-Hydroxybutyryl-CoA chain'], {
+    explanation: 'DH removes water from D-β-hydroxybutyryl-ACP, giving crotonyl-ACP.',
   }),
   mcq('s5-2-2', 'keto-reduction', 'Which enzyme turns acetoacetyl-ACP into D-β-hydroxybutyryl-ACP?', 'β-Ketoacyl-ACP reductase', ['β-Hydroxyacyl-ACP dehydratase', 'Enoyl-ACP reductase', 'Ketoacyl-ACP synthase'], {
     explanation: 'KR reduces the keto group to an alcohol, using NADPH.',
@@ -290,8 +290,8 @@ export const sectionQuestions: Q[] = [
   mcq('s5-5-1', 'cycle-accounting', 'How many cycles in total make one palmitate?', '7', ['6', '8', '16'], {
     explanation: 'One cycle to butyryl-ACP plus 6 more to palmitoyl-ACP: 7 cycles.',
   }),
-  mcq('s5-5-2', 'cycle-accounting', 'How many NADPH are needed to make one palmitate?', '14', ['7', '16', '28'], {
-    explanation: '7 cycles × 2 NADPH per cycle = 14 NADPH.',
+  mcq('s5-5-2', 'cycle-accounting', 'How many of palmitate’s 16 carbons come from its single acetyl-CoA primer?', '2', ['16', '14', '3'], {
+    explanation: 'The primer gives 2 carbons; the 7 malonyl-CoA give the other 14.',
   }),
   mcq('s5-5-3', 'cycle-accounting', 'How many malonyl-CoA and acetyl-CoA go into one palmitate?', '7 malonyl-CoA and 1 acetyl-CoA', ['8 malonyl-CoA and no acetyl-CoA', '7 acetyl-CoA and 1 malonyl-CoA', '6 malonyl-CoA and 2 acetyl-CoA'], {
     explanation: 'One acetyl-CoA primes the chain; seven malonyl-CoA donate two carbons each.',
