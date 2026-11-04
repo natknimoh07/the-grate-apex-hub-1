@@ -297,7 +297,7 @@
   {
    "id": "biolchem",
    "name": "Biological Chemistry",
-   "total": 1006,
+   "total": 1036,
    "topics": [
     {
      "id": "Acid-Base Chemistry",
@@ -412,6 +412,14 @@
      "unrated": 14
     },
     {
+     "id": "Chemical evolution",
+     "title": "Chemical evolution",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Chemical Evolution & Prebiotic Soup",
      "title": "Chemical Evolution & Prebiotic Soup",
      "easy": 0,
@@ -516,6 +524,14 @@
      "unrated": 12
     },
     {
+     "id": "First cells",
+     "title": "First cells",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Functional Groups",
      "title": "Functional Groups",
      "easy": 0,
@@ -612,6 +628,14 @@
      "unrated": 12
     },
     {
+     "id": "Life",
+     "title": "Life",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Lipid Fundamentals",
      "title": "Lipid Fundamentals",
      "easy": 0,
@@ -650,6 +674,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 24
+    },
+    {
+     "id": "Metabolism",
+     "title": "Metabolism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Miller–Urey",
+     "title": "Miller–Urey",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Minerals & Major Elements",
@@ -756,12 +796,28 @@
      "unrated": 11
     },
     {
+     "id": "Polymerisation",
+     "title": "Polymerisation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Polysaccharides",
      "title": "Polysaccharides",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 12
+    },
+    {
+     "id": "Prebiotic synthesis",
+     "title": "Prebiotic synthesis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Prebiotic Synthesis & Polymerisation",
@@ -852,6 +908,14 @@
      "unrated": 11
     },
     {
+     "id": "Spontaneous generation",
+     "title": "Spontaneous generation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Stellar Fusion & Synthesis",
      "title": "Stellar Fusion & Synthesis",
      "easy": 0,
@@ -890,6 +954,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 14
+    },
+    {
+     "id": "Theories",
+     "title": "Theories",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Views on the Origin of Life",
