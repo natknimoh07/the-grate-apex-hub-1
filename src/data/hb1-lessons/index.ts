@@ -45,6 +45,7 @@ import { biochemistryGlycogen } from '@/data/hb1-lessons/biochemistry-glycogen';
 import { biochemistryEtc } from '@/data/hb1-lessons/biochemistry-etc';
 import { biochemistryLipidOxidation } from '@/data/hb1-lessons/biochemistry-lipid-oxidation';
 import { biochemistryMetabolism } from '@/data/hb1-lessons/biochemistry-metabolism';
+import { biochemistryEnzymes } from '@/data/hb1-lessons/biochemistry-enzymes';
 import { entomologyBlackflies } from '@/data/hb1-lessons/entomology-blackflies';
 import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
 import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
@@ -84,7 +85,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   bmcAldehydes, bmcKetones, bmcCarboxylicAcids, bmcAcidDerivatives, bmcAmines, bmcStereochemistry,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
-  biochemistryMetabolism, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
+  biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
