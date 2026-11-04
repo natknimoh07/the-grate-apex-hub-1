@@ -58,6 +58,7 @@ import { anatomyEpithelium } from '@/data/hb1-lessons/anatomy-epithelium';
 import { anatomyConnectiveTissue } from '@/data/hb1-lessons/anatomy-connective-tissue';
 import { anatomyMuscleTissue } from '@/data/hb1-lessons/anatomy-muscle-tissue';
 import { anatomyNervousTissue } from '@/data/hb1-lessons/anatomy-nervous-tissue';
+import { anatomyFemaleReproductive } from '@/data/hb1-lessons/anatomy-female-reproductive';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -93,7 +94,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
-  anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyMuscleTissue, anatomyNervousTissue,
+  anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyMuscleTissue, anatomyNervousTissue, anatomyFemaleReproductive,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
