@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 921,
+   "total": 947,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6195,6 +6195,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Basics",
+     "title": "Basics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Centering & Merging",
@@ -6314,7 +6322,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 8
     },
     {
      "id": "Dates, Times & AutoComplete",
@@ -6346,7 +6354,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 6
     },
     {
      "id": "Entering Formulas",
@@ -6435,6 +6443,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Financial",
+     "title": "Financial",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Financial Functions",
@@ -6541,12 +6557,28 @@
      "unrated": 7
     },
     {
+     "id": "Logical",
+     "title": "Logical",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Logical Functions",
      "title": "Logical Functions",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Lookup",
+     "title": "Lookup",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Lookup & Reference Functions",
@@ -6583,6 +6615,14 @@
     {
      "id": "Math & Trigonometric Functions",
      "title": "Math & Trigonometric Functions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Maths",
+     "title": "Maths",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -6901,12 +6941,28 @@
      "unrated": 4
     },
     {
+     "id": "Statistics",
+     "title": "Statistics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Tables",
      "title": "Tables",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Text",
+     "title": "Text",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Text Boxes & Lists",
