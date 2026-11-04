@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 947,
+   "total": 971,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6155,6 +6155,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Alignment",
+     "title": "Alignment",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Animations",
@@ -6179,6 +6187,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "AutoFormat",
+     "title": "AutoFormat",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "AutoFormat & Format Painter",
@@ -6219,6 +6235,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Characters",
+     "title": "Characters",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Chart Behavior, Saving & Printing",
@@ -6275,6 +6299,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Columns",
+     "title": "Columns",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Comparison, Text & Reference Ops",
@@ -6469,6 +6501,14 @@
      "unrated": 5
     },
     {
+     "id": "Format Painter",
+     "title": "Format Painter",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Formatting Worksheets",
      "title": "Formatting Worksheets",
      "easy": 0,
@@ -6539,6 +6579,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Groups",
+     "title": "Groups",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Headers & Footers",
@@ -6675,6 +6723,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Numbers",
+     "title": "Numbers",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
     },
     {
      "id": "Office",
