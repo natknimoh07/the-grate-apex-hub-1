@@ -1488,7 +1488,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1863,
+   "total": 1897,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1595,6 +1595,14 @@
      "unrated": 2
     },
     {
+     "id": "Conjugation",
+     "title": "Conjugation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Control",
      "title": "Control",
      "easy": 0,
@@ -1699,6 +1707,14 @@
      "unrated": 6
     },
     {
+     "id": "Gene transfer",
+     "title": "Gene transfer",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Genome",
      "title": "Genome",
      "easy": 0,
@@ -1755,6 +1771,14 @@
      "unrated": 5
     },
     {
+     "id": "Lambda",
+     "title": "Lambda",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Landmarks",
      "title": "Landmarks",
      "easy": 0,
@@ -1777,6 +1801,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Life cycles",
+     "title": "Life cycles",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Linkage",
@@ -1841,6 +1873,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Model phages",
+     "title": "Model phages",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Molecular Genetics: Gene Structure & Mutation",
@@ -1923,12 +1963,28 @@
      "unrated": 1
     },
     {
+     "id": "Phages",
+     "title": "Phages",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Phases",
      "title": "Phases",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Plasmids",
+     "title": "Plasmids",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Polygenic",
@@ -2041,6 +2097,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Transduction",
+     "title": "Transduction",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Variation",
