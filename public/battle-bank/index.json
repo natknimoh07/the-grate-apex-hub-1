@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1138,
+   "total": 1163,
    "topics": [
     {
      "id": "Active Site",
@@ -4892,6 +4892,14 @@
      "unrated": 1
     },
     {
+     "id": "G6PD deficiency",
+     "title": "G6PD deficiency",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Galactosaemia",
      "title": "Galactosaemia",
      "easy": 0,
@@ -4922,6 +4930,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Glutathione",
+     "title": "Glutathione",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Glycolysis",
@@ -5036,6 +5052,14 @@
      "unrated": 2
     },
     {
+     "id": "Non-oxidative phase",
+     "title": "Non-oxidative phase",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Non-Protein Enzymes",
      "title": "Non-Protein Enzymes",
      "easy": 0,
@@ -5049,7 +5073,15 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 10
+    },
+    {
+     "id": "Oxidative phase",
+     "title": "Oxidative phase",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Past Questions",
@@ -5129,7 +5161,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 14
+     "unrated": 16
     },
     {
      "id": "Regulation of Glycolysis",
