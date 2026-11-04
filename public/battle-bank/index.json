@@ -297,7 +297,7 @@
   {
    "id": "biolchem",
    "name": "Biological Chemistry",
-   "total": 1036,
+   "total": 1067,
    "topics": [
     {
      "id": "Acid-Base Chemistry",
@@ -434,6 +434,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 12
+    },
+    {
+     "id": "Configuration",
+     "title": "Configuration",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Denaturation & Genetic Storage",
@@ -700,6 +708,14 @@
      "unrated": 12
     },
     {
+     "id": "Models",
+     "title": "Models",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Monosaccharides",
      "title": "Monosaccharides",
      "easy": 0,
@@ -788,6 +804,14 @@
      "unrated": 14
     },
     {
+     "id": "Periodic table",
+     "title": "Periodic table",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Polarity & Forces",
      "title": "Polarity & Forces",
      "easy": 0,
@@ -850,6 +874,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Quantum numbers",
+     "title": "Quantum numbers",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Quantum Numbers",
@@ -961,7 +993,15 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 6
+    },
+    {
+     "id": "Trends",
+     "title": "Trends",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
     },
     {
      "id": "Views on the Origin of Life",
