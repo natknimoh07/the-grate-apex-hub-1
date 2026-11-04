@@ -28,7 +28,7 @@ HB2 Biochemistry
 - [x] heme-metabolism — 33 sections, 165 questions
 - [x] oxygen-carriers — 19 sections, 95 questions
 - [x] blood-coagulation-and-fibrinolysis — 19 sections, 95 questions
-- [ ] hormones-endocrine-biochemistry
+- [x] hormones-endocrine-biochemistry — 12 sections, 60 questions
 - [ ] inborn-errors-of-metabolism
 - [ ] collagen-synthesis
 - [ ] free-radicals-and-oxygen-toxicity

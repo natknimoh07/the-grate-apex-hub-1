@@ -3,6 +3,7 @@
 //   lessons.ts      — the three lessons (reading layer)
 //   interactive.ts  — each lesson's interactive layer + reading extras
 //   questions.ts    — the topic question bank (quiz layer)
+import { sectionQuestions } from '@/data/topics/hormones-endocrine-biochemistry/section-questions';
 import { contentTopics } from '@/data/content-catalog';
 import { buildTopic } from '@/data/topics/build';
 import { assertionReasonQuestions } from '@/data/topics/hormones-endocrine-biochemistry/assertion-reason';
@@ -29,7 +30,7 @@ export const hormones = buildTopic({
   contentVersion: 1,
   concepts,
   lessons,
-  questions: [...questions, ...assertionReasonQuestions],
+  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions],
   discrepancies,
   diagrams,
 });

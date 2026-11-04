@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 3041,
+   "total": 3095,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -231,7 +231,7 @@
     {
      "id": "hormones-endocrine-biochemistry",
      "title": "Endocrine System: Hormones",
-     "easy": 52,
+     "easy": 106,
      "medium": 21,
      "hard": 1,
      "unrated": 102
