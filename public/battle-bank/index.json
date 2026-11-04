@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1083,
+   "total": 1110,
    "topics": [
     {
      "id": "Active Site",
@@ -4698,6 +4698,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Disorders",
+     "title": "Disorders",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Effect of pH",
@@ -4820,6 +4828,22 @@
      "unrated": 1
     },
     {
+     "id": "Fructolysis",
+     "title": "Fructolysis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Fructose",
+     "title": "Fructose",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Fructose & Galactose",
      "title": "Fructose & Galactose",
      "easy": 0,
@@ -4850,6 +4874,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Galactosaemia",
+     "title": "Galactosaemia",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Galactose",
+     "title": "Galactose",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Gluconeogenesis",
@@ -5010,6 +5050,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Polyol pathway",
+     "title": "Polyol pathway",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Precursors",
