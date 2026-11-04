@@ -9109,7 +9109,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 785,
+   "total": 814,
    "topics": [
     {
      "id": "Adaptations",
@@ -9168,6 +9168,14 @@
      "unrated": 3
     },
     {
+     "id": "Bed bugs",
+     "title": "Bed bugs",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
+    },
+    {
      "id": "Bed nets",
      "title": "Bed nets",
      "easy": 0,
@@ -9190,6 +9198,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Body louse",
+     "title": "Body louse",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Burden",
@@ -9248,12 +9264,28 @@
      "unrated": 2
     },
     {
+     "id": "Diagnosis",
+     "title": "Diagnosis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Direct harm",
      "title": "Direct harm",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Diseases",
+     "title": "Diseases",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Filariasis",
@@ -9318,6 +9350,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Lice",
+     "title": "Lice",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Lice & Bed Bugs",
@@ -9434,6 +9474,14 @@
     {
      "id": "Phobias",
      "title": "Phobias",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Pubic louse",
+     "title": "Pubic louse",
      "easy": 0,
      "medium": 0,
      "hard": 0,
