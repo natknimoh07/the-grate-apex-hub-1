@@ -991,7 +991,7 @@
   {
    "id": "cellstruct",
    "name": "Cell Structure",
-   "total": 478,
+   "total": 505,
    "topics": [
     {
      "id": "Aberrations",
@@ -1024,6 +1024,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Cell",
+     "title": "Cell",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Cell Biology Basics",
@@ -1066,6 +1074,14 @@
      "unrated": 4
     },
     {
+     "id": "Cell theory",
+     "title": "Cell theory",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Cell Theory",
      "title": "Cell Theory",
      "easy": 0,
@@ -1104,6 +1120,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Comparison",
+     "title": "Comparison",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Compound microscope",
@@ -1162,6 +1186,14 @@
      "unrated": 3
     },
     {
+     "id": "Diversity",
+     "title": "Diversity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Electron microscopy",
      "title": "Electron microscopy",
      "easy": 0,
@@ -1216,6 +1248,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Functions",
+     "title": "Functions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Gradients",
@@ -1402,6 +1442,14 @@
      "unrated": 5
     },
     {
+     "id": "Prokaryotes",
+     "title": "Prokaryotes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Prokaryotes vs Eukaryotes",
      "title": "Prokaryotes vs Eukaryotes",
      "easy": 0,
@@ -1416,6 +1464,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "SA:V",
+     "title": "SA:V",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "SA:V Ratio",
@@ -1440,6 +1496,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Shape",
+     "title": "Shape",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Simple microscope",
