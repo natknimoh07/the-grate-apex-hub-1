@@ -3637,8 +3637,16 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 846,
+   "total": 867,
    "topics": [
+    {
+     "id": "Absolute value",
+     "title": "Absolute value",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
     {
      "id": "Absolute Value & Inequalities",
      "title": "Absolute Value & Inequalities",
@@ -3992,6 +4000,14 @@
      "unrated": 6
     },
     {
+     "id": "Inequalities",
+     "title": "Inequalities",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Integration",
      "title": "Integration",
      "easy": 0,
@@ -4006,6 +4022,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Intervals",
+     "title": "Intervals",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Intervals of Continuity",
@@ -4192,6 +4216,14 @@
      "unrated": 7
     },
     {
+     "id": "Numbers",
+     "title": "Numbers",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Operations",
      "title": "Operations",
      "easy": 0,
@@ -4366,6 +4398,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Radicals",
+     "title": "Radicals",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Sequences & Factorials",

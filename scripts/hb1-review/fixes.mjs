@@ -11,6 +11,8 @@ export const FIXES = {
   // pedigree", "Fig. 1", "the following graph") were reworded so the words
   // describe what the picture showed; the answer is unchanged.
   algebra: [
+    { id: '1mm4nvt', q: 'The solution to 2x² + 5x − 3 ≤ 0 expressed in interval notation is', o: { 1: '[-3, 1/2]' }, e: '(2x − 1)(x + 3) ≤ 0: the parabola opens upward, so it is ≤ 0 between and at the roots: −3 ≤ x ≤ 1/2, i.e. [−3, 1/2]. Both ends are included because of “≤”.', why: 'the keyed option (-3, 1/2] wrongly left out x = −3; the question also began with an unrelated phrase' },
+    { id: '15m6dki', o: { 4: '[-7, 1) ∪ [3, ∞)' }, why: 'the correct option said “— the correct solution”, which gave the answer away' },
     { id: 'gbqkwd', q: 'Which equation describes a parabola that opens downwards with its vertex at (h, k), to the right of the y-axis and above the x-axis? (a, h and k are positive real numbers.)', why: 'referred to a graph that is not in the app' },
   ],
   biolchem: [
