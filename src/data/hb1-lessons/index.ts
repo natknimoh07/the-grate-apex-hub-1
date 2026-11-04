@@ -65,6 +65,9 @@ import { behaviouralOverview } from '@/data/hb1-lessons/behavioural-overview';
 import { behaviouralParadigms } from '@/data/hb1-lessons/behavioural-paradigms';
 import { behaviouralBiological } from '@/data/hb1-lessons/behavioural-biological';
 import { behaviouralMotivation } from '@/data/hb1-lessons/behavioural-motivation';
+import { entomologyIntroduction } from '@/data/hb1-lessons/entomology-introduction';
+import { entomologyMosquitoes } from '@/data/hb1-lessons/entomology-mosquitoes';
+import { entomologyAnophelineCulicine } from '@/data/hb1-lessons/entomology-anopheline-culicine';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -102,6 +105,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
   anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyMuscleTissue, anatomyNervousTissue, anatomyFemaleReproductive, anatomyMaleReproductive, anatomyEmbryology,
+  entomologyIntroduction, entomologyMosquitoes, entomologyAnophelineCulicine,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 

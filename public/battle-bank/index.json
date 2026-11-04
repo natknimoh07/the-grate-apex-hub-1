@@ -9109,8 +9109,16 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 698,
+   "total": 785,
    "topics": [
+    {
+     "id": "Adaptations",
+     "title": "Adaptations",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
     {
      "id": "Adult",
      "title": "Adult",
@@ -9128,12 +9136,36 @@
      "unrated": 4
     },
     {
+     "id": "Anopheles",
+     "title": "Anopheles",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Anopheline & Culicine Mosquitoes",
      "title": "Anopheline & Culicine Mosquitoes",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 23
+    },
+    {
+     "id": "Arboviruses",
+     "title": "Arboviruses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Arthropods",
+     "title": "Arthropods",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Bed nets",
@@ -9144,12 +9176,36 @@
      "unrated": 3
     },
     {
+     "id": "Behaviour",
+     "title": "Behaviour",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Blackflies",
      "title": "Blackflies",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Burden",
+     "title": "Burden",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Classification",
+     "title": "Classification",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Common fleas",
@@ -9173,7 +9229,39 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 8
+    },
+    {
+     "id": "Culicines",
+     "title": "Culicines",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
+     "id": "Definition",
+     "title": "Definition",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Direct harm",
+     "title": "Direct harm",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Filariasis",
+     "title": "Filariasis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Fleas",
@@ -9182,6 +9270,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "Growth",
+     "title": "Growth",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Insecticides",
+     "title": "Insecticides",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Introduction to Entomology",
@@ -9229,11 +9333,35 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 15
+     "unrated": 20
+    },
+    {
+     "id": "Malaria",
+     "title": "Malaria",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Medical importance",
      "title": "Medical importance",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Metamorphosis",
+     "title": "Metamorphosis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Morphology",
+     "title": "Morphology",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -9256,6 +9384,14 @@
      "unrated": 24
     },
     {
+     "id": "Mouthparts",
+     "title": "Mouthparts",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Nuisance",
      "title": "Nuisance",
      "easy": 0,
@@ -9270,6 +9406,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Orders",
+     "title": "Orders",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Past Exam (General/Mosquito)",
@@ -9296,6 +9440,14 @@
      "unrated": 2
     },
     {
+     "id": "Reproduction",
+     "title": "Reproduction",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Roll Back Malaria",
      "title": "Roll Back Malaria",
      "easy": 0,
@@ -9310,6 +9462,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Systems",
+     "title": "Systems",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Tissue invasion",
@@ -9328,6 +9488,14 @@
      "unrated": 5
     },
     {
+     "id": "Transmission",
+     "title": "Transmission",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Tunga",
      "title": "Tunga",
      "easy": 0,
@@ -9342,6 +9510,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "Yellow fever",
+     "title": "Yellow fever",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "general",

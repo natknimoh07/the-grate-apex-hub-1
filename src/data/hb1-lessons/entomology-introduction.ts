@@ -1,0 +1,190 @@
+// Entomology → Introduction to Medical Entomology and Insect Biology. From "1. MEDICAL ENTOMOLOGY
+// (INTRO).pptx" (R. C. Brenyah) and "9. Intro & Adaptations.ppt" (SMS 164), with the insect
+// biology of the original database lesson entomology-01 (its deck is not in the HB1 folder).
+// Rewrites entomology-01 with the same id, so progress is kept; practises Topic Quiz 1 and the
+// past questions on insect biology. Checked against the decks 2026-11-04; teaching text in our
+// own words.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+import { numberFigures, ostxBio } from '@/data/hb1-lessons/pictures';
+
+export const entomologyIntroduction: Hb1Lesson = {
+  id: 'entomology-01',
+  order: 1,
+  title: 'Introduction to Medical Entomology and Insect Biology',
+  summary: 'What medical entomology is and why it matters; the ways arthropods harm health (phobia, annoyance, dermatoses, myiasis, venoms) and transmit disease (mechanical and cyclical: cyclopropagative, cyclodevelopmental, propagative); arthropod classes and insect orders; metamorphosis; insect body systems; morphological, behavioural and physiological adaptations for parasitism',
+  minutes: 36,
+  source: '1. MEDICAL ENTOMOLOGY (INTRO).pptx; 9. Intro & Adaptations.ppt',
+  quizId: 'eint',
+  quizName: 'Quiz · Introduction to Medical Entomology (lesson)',
+  pastSets: ['s7'],
+  pastTopics: ['insect-biology'],
+  sections: numberFigures([
+    {
+      id: 'int-what',
+      title: 'What medical entomology is',
+      kicker: 'Insects, arachnids and human disease',
+      blocks: [
+        { k: 'term', name: 'Medical entomology', def: 'The science of the relationship of <b>insects, arachnids and other arthropods</b> to the <b>causation</b> of disease in man, or to the <b>transmission</b> of the organisms that cause it.' },
+        { k: 'p', x: 'An arthropod may be the <b>causal agent</b> itself (e.g. <b>mites</b> in scabies), an <b>intermediate host</b> (e.g. beetles) or a <b>vector</b> (e.g. mosquitoes). Most of the world’s worst infections are vector-borne: malaria, filariasis, onchocerciasis, sleeping sickness, dengue, yellow fever, plague, typhus. The field draws on bacteriology, virology, parasitology and chemistry.' },
+        { k: 'p', x: 'Health workers need to know a vector’s <b>adult longevity, feeding behaviour, seasonal abundance</b> and <b>preference for human blood</b>, and its taxonomy, biology and ecology, in order to <b>devise control</b>, <b>break transmission</b> and understand the <b>epidemiology</b>. With that you can advise, raise public awareness, research, monitor and reduce insect populations and keep areas insect-free.' },
+        { k: 'cards', items: [
+          { title: 'Objectives of control', blocks: [{ k: 'p', x: '<b>Prevention</b>; <b>eradication</b>; or, where eradication is impossible, <b>control</b>: reducing populations to acceptable levels.' }] },
+          { title: 'Why vector-borne disease is so severe in Africa', blocks: [{ k: 'p', x: 'Rural environments hostile to man but kind to insects, inadequate sanitation, behaviour patterns and climate change. Warm tropics without winter let vectors breed fast all year; people wear fewer clothes, live close to animals and in poor housing. WHO: about <b>1000 million</b> cases and over <b>1 million deaths</b> a year.' }] },
+          { title: 'Who needs entomologists', blocks: [{ k: 'p', x: 'Scientists, farmers, pest-control industry, customs (quarantine), the military, police (<b>forensic entomology</b>: blowflies on a corpse date the death), homeowners, doctors and vets. Insect resistance to insecticides means there is always work.' }] },
+        ] },
+      ],
+    },
+    {
+      id: 'int-harm',
+      title: 'How arthropods affect health',
+      kicker: 'Direct harm and disease transmission',
+      blocks: [
+        { k: 'table', head: ['A · Direct agents of disease or discomfort', 'Detail'], rows: [
+          { c: ['<b>Entomophobia / arachnophobia</b>', 'Irrational, persistent fear of insects or arachnids; phases: anxiety, panic, motor response (flee or freeze). With no real arthropod present it is <b>delusory parasitosis</b>. Spiders and scorpions are the most feared'] },
+          { c: ['<b>Annoyance and blood loss</b>', 'Hard to measure; blood loss matters more for livestock than for people'] },
+          { c: ['<b>Injury to sense organs</b>', 'E.g. <b>eye moths</b> feeding on tears: inflammation, bacterial contamination'] },
+          { c: ['<b>Dermatoses / ectoparasitoses</b>', 'Skin irritation from bites or burrowing'] },
+          { c: ['<b>Endoparasitoses</b>', 'Invasion of tissues, e.g. <b>myiasis</b> (fly larvae), the <b>jigger flea</b>; often secondary infection'] },
+          { c: ['<b>Envenomisation and allergy</b>', 'Toxins in saliva, venom, body fluids and faeces; stings (bees, wasps), bites (spiders, ticks, ants). Venoms cause <b>neurotoxicity</b> and <b>necrosis</b>. Hymenoptera (bees, wasps, ants); Lepidoptera (<b>urticating hairs</b>); Coleoptera (<b>blister beetles</b>, <b>cantharidin</b>); centipedes bite; millipede fluids burn. Risks: <b>anaphylaxis</b>, asthma'] },
+        ] },
+        { k: 'h', x: 'B · Arthropods as vectors', l: 3 },
+        { k: 'p', x: 'An insect is a <b>vector</b> when it carries pathogens or parasites from one animal or person to another.' },
+        { k: 'table', head: ['Transmission', 'What happens in the vector', 'Example'], rows: [
+          { c: ['<b>Mechanical</b>', '<b>No</b> development or multiplication; transfer is accidental and the pathogen does not depend on that insect', 'Houseflies, cockroaches carrying enteric bacteria'] },
+          { c: ['<b>Cyclopropagative</b> (biological)', 'Cyclical <b>change and multiplication</b>', '<b>Plasmodium</b> in mosquitoes; trypanosomes in tsetse'] },
+          { c: ['<b>Cyclodevelopmental</b>', 'Cyclical change (development) but <b>no multiplication</b>', '<b>Filarial worms</b>: Onchocerca in blackflies'] },
+          { c: ['<b>Propagative</b>', '<b>Multiplication only</b>, no cyclical change', '<b>Plague</b> bacteria in fleas; <b>yellow fever</b> virus in mosquitoes'] },
+        ] },
+        { k: 'p', x: 'In obligate (cyclical) transmission the vector is essential to the pathogen’s life cycle; the agent travels mainly in the <b>haemolymph</b>; the vector rarely gets ill; the relationship lasts the vector’s life; vectors widen the pathogen’s range, bridge species and act as <b>reservoirs</b> through bad seasons. An <b>intermediate host</b> carries a pathogen for part of its life cycle but not to sexual maturity.' },
+        { k: 'box', title: 'Memory hook', tone: 'recall', blocks: [{ k: 'p', x: '<b>Cyclo-</b> = it changes form; <b>-propagative</b> = it multiplies. Malaria does both (cyclopropagative); filarial worms only change (cyclodevelopmental); plague only multiplies (propagative).' }] },
+        { k: 'box', title: 'Successes and uses', tone: 'life', blocks: [{ k: 'p', x: 'Programmes like the <b>Onchocerciasis Control Programme (OCP)</b> succeeded, but gains are short-lived as vectors become resistant, and stopping control lets transmission rebound. Lasting success comes from changing the environment so vectors cannot breed. Insects also help: forensic entomology and <b>maggot therapy</b> (cleaning wounds).' }] },
+      ],
+    },
+    {
+      id: 'int-arthropods',
+      title: 'Arthropods and insect orders',
+      kicker: 'The most successful animals on Earth',
+      blocks: [
+        { k: 'p', x: 'Arthropods make up about <b>85% of known animal species</b> (over a million). All have a tough <b>exoskeleton (cuticle)</b> and <b>jointed appendages</b>.' },
+        { k: 'table', head: ['Class', 'Members', 'Medical role'], rows: [
+          { c: ['<b>Insecta</b>', 'Flies, mosquitoes, lice, fleas, beetles', 'Most vectors'] },
+          { c: ['<b>Arachnida</b>', 'Ticks, mites, spiders, scorpions', 'Vectors, venoms, scabies'] },
+          { c: ['<b>Crustacea</b>', 'Cyclops, crabs, lobsters', 'Intermediate hosts (Cyclops: guinea worm)'] },
+          { c: ['<b>Chilopoda</b> / <b>Diplopoda</b>', 'Centipedes / millipedes', 'Bites / burning fluids'] },
+        ] },
+        { k: 'table', head: ['', 'Insect', 'Arachnid'], rows: [
+          { c: ['Legs', '<b>3 pairs</b> (6)', '<b>4 pairs</b> (8)'] },
+          { c: ['Body regions', '<b>Head, thorax, abdomen</b>', '<b>Cephalothorax (prosoma) + abdomen (opisthosoma)</b>'] },
+          { c: ['Wings, antennae', 'Usually 2 pairs of wings; 1 pair of antennae', '<b>None</b>'] },
+          { c: ['Breathing', 'Tracheae', 'Book lungs or tracheae (spiracles)'] },
+        ] },
+        ostxBio('figure-28-04-06.jpg', 716, 407, 'The basic anatomy of an insect: head, thorax and abdomen with digestive, respiratory (tracheal), circulatory and nervous systems.', 'Six legs on the thorax; spiracles along the abdomen.'),
+        { k: 'p', x: 'Insects owe their success to a <b>short life cycle</b> (fast adaptation), <b>flight</b>, <b>small size</b>, <b>high reproductive capacity</b> and <b>sophisticated senses</b>.' },
+        { k: 'table', head: ['Order', 'Examples', 'Importance'], rows: [
+          { c: ['<b>Diptera</b> (two-winged flies)', 'Mosquitoes, blackflies, sandflies, tsetse, houseflies', 'Malaria, filariasis, onchocerciasis, sleeping sickness, leishmaniasis'] },
+          { c: ['<b>Anoplura</b> (Phthiraptera)', 'Sucking lice', 'Epidemic typhus, relapsing fever, trench fever'] },
+          { c: ['<b>Siphonaptera</b>', 'Fleas', 'Plague, murine typhus, tungiasis'] },
+          { c: ['<b>Hemiptera</b>', 'Bed bugs, kissing bugs', 'Nuisance; Chagas disease'] },
+          { c: ['<b>Dictyoptera</b> (Blattodea)', 'Cockroaches', 'Mechanical spread of enteric pathogens'] },
+          { c: ['<b>Hymenoptera</b>', 'Bees, wasps, ants', 'Stings, allergy, anaphylaxis'] },
+        ] },
+      ],
+    },
+    {
+      id: 'int-growth',
+      title: 'Growth and metamorphosis',
+      kicker: 'Complete or incomplete',
+      blocks: [
+        { k: 'p', x: 'Only immature stages grow; adults do not. The rigid cuticle is shed periodically by <b>ecdysis (moulting)</b>, under hormones (<b>ecdysone</b>, <b>juvenile hormone</b>): moulting fluid digests the old cuticle, which splits along the ecdysial line and is shed as the <b>exuviae</b>. The insect then swallows air or water to expand the soft new cuticle before it hardens.' },
+        { k: 'table', head: ['Term', 'Meaning'], rows: [
+          { c: ['<b>Instar</b>', 'Each stage between moults (most larvae have 3–4)'] },
+          { c: ['<b>Stadium</b>', 'The time spent in one instar'] },
+          { c: ['<b>Eclosion</b>', 'Hatching from the egg (or emergence from the pupa)'] },
+          { c: ['<b>Imago</b>', 'The reproductive adult; no further growth'] },
+        ] },
+        { k: 'table', head: ['', 'Exopterygota (incomplete, hemimetabolous)', 'Endopterygota (complete, holometabolous)'], rows: [
+          { c: ['Stages', '<b>Egg → nymph → adult</b>', '<b>Egg → larva → pupa → adult</b>'] },
+          { c: ['Wings', 'Develop <b>outside</b>, visible in nymphs', 'Develop <b>inside</b> the larva'] },
+          { c: ['Young', '<b>Nymph</b>, looks like a small adult, same habitat and food', '<b>Larva</b>, very different (often aquatic) from the adult'] },
+          { c: ['Examples', '<b>Lice, bed bugs, cockroaches</b>, grasshoppers', '<b>Mosquitoes, flies, fleas</b>, beetles'] },
+        ] },
+        { k: 'box', title: 'Why it matters for control', tone: 'life', blocks: [{ k: 'p', x: 'In holometabolous vectors such as mosquitoes the <b>aquatic larvae</b> and <b>flying adults</b> live in different places, so larval control (draining water, larvicides) and adult control (nets, sprays) are two separate jobs.' }] },
+        { k: 'p', x: 'Insects also differ in how they reproduce: <b>oviparous</b> (lay eggs: most, e.g. mosquitoes), <b>ovoviviparous</b> (eggs hatch inside, larvae laid: some flesh flies), <b>viviparous</b> (live larva nourished inside: <b>tsetse fly</b>) and <b>parthenogenetic</b> (from unfertilised eggs: drone bees).' },
+      ],
+    },
+    {
+      id: 'int-systems',
+      title: 'Insect body systems',
+      kicker: 'Open circulation and air tubes',
+      blocks: [
+        { k: 'table', head: ['System', 'Key features'], rows: [
+          { c: ['<b>Circulation</b>', '<b>Open</b>: the body cavity (<b>haemocoel</b>) is filled with colourless <b>haemolymph</b> (blood + lymph), which carries nutrients, hormones and wastes, holds phagocytic <b>haemocytes</b>, clots wounds and gives <b>hydraulic pressure</b> (wing expansion, eclosion). The only vessel is the <b>dorsal vessel</b>: a posterior <b>heart</b> with valved <b>ostia</b> and an anterior <b>aorta</b>'] },
+          { c: ['<b>Respiration</b>', '<b>Tracheal system</b>, no haemoglobin: <b>spiracles</b> (on the thorax and abdominal segments 1–8) → <b>tracheae</b> (with spiral thickenings) → <b>tracheoles</b> that end in the cells. Spiracle valves limit water loss'] },
+          { c: ['<b>Nervous</b>', 'Brain from fused head ganglia; a <b>ventral nerve cord</b>; mechanoreceptors, chemoreceptors (antennae, palps), ocelli and compound eyes, humidity and temperature receptors'] },
+          { c: ['<b>Digestion</b>', '<b>Foregut</b> (pharynx, oesophagus, <b>crop</b> for storage, proventriculus); <b>midgut</b> (digestion and absorption, lined by the <b>peritrophic membrane</b>); <b>hindgut</b> (ileum, rectum; rectal papillae reabsorb up to 90% of water). Saliva of blood-feeders contains <b>anticoagulants</b> and allergens (the itch of a bite)'] },
+          { c: ['<b>Excretion</b>', '<b>Malpighian tubules</b> at the mid/hindgut junction keep haemolymph pH and osmotic balance; most insects excrete <b>uric acid</b> to save water'] },
+          { c: ['<b>Reproduction</b>', 'Separate sexes, pheromones, internal fertilisation; females store sperm in a <b>spermatheca</b>; males pass a <b>spermatophore</b>'] },
+        ] },
+        ostxBio('figure-41-02-03.jpg', 1000, 462, 'Malpighian tubules remove nitrogenous waste from the haemolymph; the rectum reabsorbs water and salts.', 'The insect equivalent of kidneys, emptying into the gut.'),
+      ],
+    },
+    {
+      id: 'int-adaptations',
+      title: 'Adaptations for parasitism',
+      kicker: 'Morphological, behavioural and physiological',
+      blocks: [
+        { k: 'p', x: 'Parasitic arthropods injure hosts by <b>biting, stinging or burrowing</b>, and are <b>endoparasites</b> (in the body) or <b>ectoparasites</b> (on the surface), as immatures or adults. Their success comes from <b>morphological</b>, <b>behavioural</b> and <b>physiological</b> adaptations that let them feed on blood, cling to hosts and reach new ones.' },
+        { k: 'table', head: ['Morphological feature', 'Adaptation'], rows: [
+          { c: ['<b>Body shape</b>', 'Flattened <b>laterally</b> (fleas) or <b>dorsoventrally</b> (ticks, bed bugs, lice): moving through hair, hiding in cracks, resisting grooming'] },
+          { c: ['<b>Mouthparts</b>', '<b>Chewing</b> (on skin, hair, scales); <b>styletiform piercing–sucking</b> straight from capillaries (<b>solenophages</b>: mosquitoes, bed bugs, kissing bugs, sucking lice); <b>lacerating</b>, feeding from a pool of blood (<b>telmophages</b>: blackflies, biting midges, horse and deer flies); <b>sponging</b> (houseflies)'] },
+          { c: ['<b>Legs</b>', 'Strong claws and spines to grip; stout muscular legs (the flea’s jumping hindleg)'] },
+          { c: ['<b>Wings</b>', 'Normal in those with brief host contact; <b>reduced or lost</b> in those that stay on the host (<b>fleas, lice, bed bugs</b>)'] },
+          { c: ['<b>Sense organs</b>', 'Detect motion, heat, moisture, CO<sub>2</sub> and host chemicals. Those that rarely leave the host need few: <b>lice 10–20</b> antennal receptors, <b>fleas about 50</b>; the host-seeking kissing bug <i>Triatoma infestans</i> about <b>2900</b>'] },
+          { c: ['<b>Integument</b>', 'Fine setae on ants, flies and cockroaches pick up bacteria and parasite eggs'] },
+        ] },
+        { k: 'cards', items: [
+          { title: 'Behavioural adaptations', blocks: [{ k: 'ul', items: ['<b>Synanthropy</b>: wild species living close to and benefiting from people (flies, cockroaches, bed bugs, fleas, ants).', '<b>Regurgitation</b>: houseflies (Musca) cannot eat solids without vomiting enzyme-rich saliva onto food; cockroaches can regurgitate <i>Vibrio cholerae</i>.', '<b>Defecation while feeding</b>: filth flies (breeding in dung, food waste, garbage: houseflies, bottle flies) and cockroaches.'] }] },
+          { title: 'Physiological adaptations', blocks: [{ k: 'ul', items: ['<b>Exoenzymes</b> released outside the body to digest food.', '<b>Anticoagulants</b> in saliva keep blood liquid in the gut.', 'Hormonal control of growth, moulting and <b>diapause</b> (dormancy in bad seasons).'] }] },
+        ] },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Arthropods: causal agents (mites), intermediate hosts (beetles, Cyclops), vectors (mosquitoes).',
+          'Mechanical vs cyclical; cyclopropagative (malaria), cyclodevelopmental (filariae), propagative (plague, yellow fever).',
+          'Insects 6 legs, 3 parts, antennae, wings; arachnids 8 legs, 2 parts, none.',
+          'Incomplete (egg, nymph, adult: lice, bugs, cockroaches) vs complete (egg, larva, pupa, adult: mosquitoes, flies, fleas).',
+          'Open circulation (haemolymph, dorsal vessel); tracheae and spiracles; Malpighian tubules.',
+          'Solenophages (vessel feeders) vs telmophages (pool feeders); lice 10–20, fleas 50, Triatoma 2900 receptors.',
+        ] }] },
+      ],
+    },
+  ]),
+  quiz: [
+    ['Medical entomology is the study of arthropods in relation to', 'Causing or transmitting human disease', ['Damaging crops and stored food', 'Pollinating flowering food plants', 'The evolution of the insect orders'], 'Insects, arachnids and other arthropods.', 'Definition'],
+    ['Which arthropod is itself the causal agent of a disease?', 'Mites (scabies)', ['Mosquitoes (malaria)', 'Beetles (as intermediate hosts)', 'Tsetse (sleeping sickness)'], 'Mosquitoes and tsetse are vectors.', 'Definition'],
+    ['Irrational fear of insects when no insect is present is called', 'Delusory parasitosis', ['Entomophobia', 'Arachnophobia', 'Tungiasis infestation'], 'With a real insect it is entomophobia.', 'Direct harm'],
+    ['Invasion of living tissue by fly larvae is', 'Myiasis', ['Tungiasis', 'Pediculosis', 'Scabies'], 'An endoparasitosis.', 'Direct harm'],
+    ['Blister beetles cause skin blisters with', 'Cantharidin', ['Histamine', 'Formic acid', 'Urticating hairs'], 'Coleoptera.', 'Direct harm'],
+    ['In mechanical transmission the pathogen', 'Does not develop or multiply in the insect', ['Multiplies but does not change its form', 'Changes form but does not multiply in it', 'Changes form and multiplies in the insect'], 'E.g. houseflies carrying enteric bacteria.', 'Transmission'],
+    ['Plasmodium in the mosquito is an example of', 'Cyclopropagative transmission', ['Cyclodevelopmental transmission', 'Propagative transmission', 'Mechanical transmission'], 'It changes form and multiplies.', 'Transmission'],
+    ['Filarial worms in blackflies show', 'Cyclodevelopmental transmission', ['Cyclopropagative transmission', 'Propagative transmission', 'Mechanical transmission'], 'They develop but do not multiply.', 'Transmission'],
+    ['Plague bacteria in fleas show', 'Propagative transmission', ['Cyclodevelopmental transmission', 'Cyclopropagative transmission', 'Mechanical transmission'], 'Multiplication without cyclical change.', 'Transmission'],
+    ['According to WHO, vector-borne diseases cause each year about', '1000 million cases and over 1 million deaths', ['10 million cases and 1000 deaths', '100 000 cases and 100 deaths', '1 million cases and 10 deaths'], 'Mostly in the tropics.', 'Burden'],
+    ['Arthropods make up about what share of known animal species?', '85%', ['15%', '50%', '99%'], 'Over a million species.', 'Arthropods'],
+    ['An arachnid has', 'Four pairs of legs and no antennae', ['Three pairs of legs and antennae', 'Two pairs of wings and antennae', 'Three body regions and wings'], 'Body: cephalothorax and abdomen.', 'Arthropods'],
+    ['Cyclops, the intermediate host of guinea worm, is a', 'Crustacean', ['Insect', 'Arachnid', 'Millipede (myriapod)'], 'Class Crustacea.', 'Arthropods'],
+    ['Mosquitoes, blackflies and tsetse flies belong to the order', 'Diptera', ['Anoplura', 'Siphonaptera', 'Hymenoptera'], 'Two-winged flies.', 'Orders'],
+    ['Fleas belong to the order', 'Siphonaptera', ['Anoplura', 'Hemiptera', 'Dictyoptera'], 'Wingless, laterally flattened.', 'Orders'],
+    ['Insects with incomplete metamorphosis pass through', 'Egg, nymph and adult', ['Egg, larva, pupa and adult', 'Egg and adult only', 'Larva, pupa and adult only'], 'Exopterygota: lice, bugs, cockroaches.', 'Metamorphosis'],
+    ['Which undergoes complete metamorphosis?', 'Flea', ['Louse', 'Bed bug', 'Cockroach'], 'Egg, larva, pupa, adult.', 'Metamorphosis'],
+    ['The stage between two moults is an', 'Instar', ['Imago', 'Exuviae', 'Eclosion'], 'The stadium is the time spent in it.', 'Growth'],
+    ['The shed old cuticle is called the', 'Exuviae', ['Imago', 'Instar', 'Spermatheca'], 'Shed by ecdysis.', 'Growth'],
+    ['The tsetse fly reproduces by', 'Viviparity, giving birth to a larva', ['Laying egg rafts on water', 'Parthenogenesis from unfertilised eggs', 'Laying eggs singly in dung'], 'One larva at a time, nourished inside.', 'Reproduction'],
+    ['Insect blood is called', 'Haemolymph', ['Plasma', 'Lymph', 'Coelomic fluid'], 'It fills the haemocoel.', 'Systems'],
+    ['Insects breathe through', 'Spiracles and tracheae', ['Lungs and alveoli', 'Gills and lamellae', 'Haemoglobin in haemolymph'], 'Tracheoles end in the cells.', 'Systems'],
+    ['Excretion in insects is mainly by the', 'Malpighian tubules', ['Dorsal vessel', 'Spermatheca', 'Peritrophic membrane'], 'At the mid/hindgut junction.', 'Systems'],
+    ['Blood-feeders that suck directly from capillaries are called', 'Solenophages', ['Telmophages', 'Saprophages', 'Coprophagous insects'], 'Mosquitoes, bed bugs, lice.', 'Adaptations'],
+    ['Blackflies and biting midges, which feed from a pool of blood, are', 'Telmophages', ['Solenophages', 'Ectophages', 'Hematophores'], 'They lacerate the skin.', 'Adaptations'],
+    ['Wings are lost in parasites that', 'Stay on the host for long periods', ['Visit the host only briefly', 'Feed only on plant sap', 'Breed in running water'], 'Fleas, lice, bed bugs.', 'Adaptations'],
+    ['How many antennal receptors does a louse have, compared with Triatoma’s 2900?', '10–20', ['500', '2000', '50 000'], 'Fleas about 50.', 'Adaptations'],
+    ['Undomesticated species living closely with and benefiting from people show', 'Synanthropy', ['Anthropophily only', 'Diapause', 'Parthenogenesis'], 'Flies, cockroaches, bed bugs, fleas.', 'Adaptations'],
+  ],
+};
