@@ -4452,7 +4452,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 445,
+   "total": 470,
    "topics": [
     {
      "id": "Addition Rule",
@@ -4679,6 +4679,14 @@
      "unrated": 7
     },
     {
+     "id": "Ethics",
+     "title": "Ethics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Expectation & Variance",
      "title": "Expectation & Variance",
      "easy": 0,
@@ -4717,6 +4725,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 22
+    },
+    {
+     "id": "Methods",
+     "title": "Methods",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Multinomial Distribution",
@@ -4871,6 +4887,14 @@
      "unrated": 2
     },
     {
+     "id": "Questionnaire",
+     "title": "Questionnaire",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Questionnaire Design",
      "title": "Questionnaire Design",
      "easy": 0,
@@ -4917,6 +4941,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Sources",
+     "title": "Sources",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
+     "id": "Stages",
+     "title": "Stages",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Stages of Investigation",
