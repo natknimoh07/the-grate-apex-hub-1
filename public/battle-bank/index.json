@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 769,
+   "total": 794,
    "topics": [
     {
      "id": "Absolute Value & Inequalities",
@@ -4000,6 +4000,14 @@
      "unrated": 16
     },
     {
+     "id": "Laws",
+     "title": "Laws",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Laws & Properties of Logarithms",
      "title": "Laws & Properties of Logarithms",
      "easy": 0,
@@ -4136,6 +4144,14 @@
      "unrated": 7
     },
     {
+     "id": "Operations",
+     "title": "Operations",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Parallel & Perpendicular Lines",
      "title": "Parallel & Perpendicular Lines",
      "easy": 0,
@@ -4206,6 +4222,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Power set",
+     "title": "Power set",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Properties & Duality",
@@ -4344,6 +4368,14 @@
      "unrated": 7
     },
     {
+     "id": "Sets",
+     "title": "Sets",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Sets & Indices",
      "title": "Sets & Indices",
      "easy": 0,
@@ -4382,6 +4414,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Summation",
+     "title": "Summation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
     },
     {
      "id": "Summation Notation & Set Theory",
@@ -4438,6 +4478,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Venn",
+     "title": "Venn",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Word Problems",

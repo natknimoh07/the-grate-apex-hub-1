@@ -104,6 +104,7 @@ import { statsDescriptive } from '@/data/hb1-lessons/stats-descriptive';
 import { statsProbability } from '@/data/hb1-lessons/stats-probability';
 import { statsDiscrete } from '@/data/hb1-lessons/stats-discrete';
 import { statsContinuous } from '@/data/hb1-lessons/stats-continuous';
+import { algebraSets } from '@/data/hb1-lessons/algebra-sets';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -149,6 +150,8 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   medgenCell, medgenChromosomes, medgenCellCycle, medgenMendel, medgenSex, medgenMolecular, medgenBacterial, medgenRegulation,
 
   statsIntro, statsData, statsDescriptive, statsProbability, statsDiscrete, statsContinuous,
+
+  algebraSets,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
