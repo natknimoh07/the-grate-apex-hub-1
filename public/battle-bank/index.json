@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 1065,
+   "total": 1115,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6147,6 +6147,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "Advancing",
+     "title": "Advancing",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Align",
+     "title": "Align",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Aligning Objects",
@@ -6170,7 +6186,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 17
+     "unrated": 23
     },
     {
      "id": "Arithmetic Operators",
@@ -6621,6 +6637,14 @@
      "unrated": 4
     },
     {
+     "id": "Group",
+     "title": "Group",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Grouping Objects",
      "title": "Grouping Objects",
      "easy": 0,
@@ -6757,6 +6781,14 @@
      "unrated": 5
     },
     {
+     "id": "Media",
+     "title": "Media",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Movies",
      "title": "Movies",
      "easy": 0,
@@ -6853,6 +6885,14 @@
      "unrated": 5
     },
     {
+     "id": "Order",
+     "title": "Order",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Page Layout Order",
      "title": "Page Layout Order",
      "easy": 0,
@@ -6890,7 +6930,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 15
+     "unrated": 23
     },
     {
      "id": "PowerPoint",
@@ -6955,6 +6995,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Printing",
+     "title": "Printing",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
     },
     {
      "id": "Printing Slides",
@@ -7098,7 +7146,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 10
+     "unrated": 14
     },
     {
      "id": "Sorting",
@@ -7245,6 +7293,14 @@
      "unrated": 8
     },
     {
+     "id": "Transitions",
+     "title": "Transitions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Transitions & Slide Timing",
      "title": "Transitions & Slide Timing",
      "easy": 0,
@@ -7274,7 +7330,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 7
     },
     {
      "id": "Workbook Basics",

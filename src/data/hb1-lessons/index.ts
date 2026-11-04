@@ -128,6 +128,8 @@ import { compappPrinting } from '@/data/hb1-lessons/compapp-printing';
 import { compappFiles } from '@/data/hb1-lessons/compapp-files';
 import { compappCharts } from '@/data/hb1-lessons/compapp-charts';
 import { compappPptBasics } from '@/data/hb1-lessons/compapp-ppt-basics';
+import { compappPptMedia } from '@/data/hb1-lessons/compapp-ppt-media';
+import { compappPptShow } from '@/data/hb1-lessons/compapp-ppt-show';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -176,7 +178,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
 
   algebraSets, algebraEquations, algebraLogs, algebraNumbers, algebraSequences, algebraBinomial, algebraLines, algebraTrig, algebraMatrices, algebraFunctions, algebraDerivatives, algebraDiffApps, algebraDiffBusiness, algebraIntegration, algebraIntApps, algebraDiffEq,
 
-  compappExcelStart, compappFormulas, compappFunctions, compappFormatting, compappPrinting, compappFiles, compappCharts, compappPptBasics,
+  compappExcelStart, compappFormulas, compappFunctions, compappFormatting, compappPrinting, compappFiles, compappCharts, compappPptBasics, compappPptMedia, compappPptShow,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
