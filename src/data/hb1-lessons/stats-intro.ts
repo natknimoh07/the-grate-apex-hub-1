@@ -1,0 +1,110 @@
+// Statistical Methods → Introduction and Basic Concepts. From "Statistical_Methods_1 (Med Sch)"
+// (Dr E. O. Owiredu, STAT 153). Rewrites the original database lesson stats-01 (same id, so
+// progress is kept). Checked 2026-11-04; teaching text in our own words. Practises Quiz 1.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+
+export const statsIntro: Hb1Lesson = {
+  id: 'stats-01',
+  order: 1,
+  title: 'Introduction to Statistics and Basic Concepts',
+  summary: 'What statistics is and who uses it (with medical applications) and the main software packages; descriptive and inferential statistics; the six IVPPSS terms (individual, variable, population, parameter, sample, statistic) with worked examples; quantitative (discrete, continuous) and qualitative (nominal, ordinal) variables; the four scales of measurement and the charts that suit them',
+  minutes: 18,
+  source: 'Statistical_Methods_1__Med_Sch__.pdf',
+  quizId: 'stin',
+  quizName: 'Quiz · Introduction to Statistics (lesson)',
+  pastSets: ['s1'],
+  sections: [
+    {
+      id: 'in-what',
+      title: 'What statistics is',
+      kicker: 'Learning from data',
+      blocks: [
+        { k: 'term', name: 'Statistics', def: 'A scientific method of <b>collecting, compiling, analysing, presenting, publishing and disseminating</b> numerical facts (data) in order to make <b>informed decisions</b>.' },
+        { k: 'p', x: 'Statisticians <b>design</b> experiments and surveys, <b>collect and manage</b> data, choose the best method of <b>analysis and inference</b>, and <b>measure how good</b> an inference is. Major users: <b>government, businesses, researchers, health professionals, economists and policy makers</b> (e.g. investment decisions, opinion polls, the EPA’s water-quality sampling).' },
+        { k: 'table', head: ['In medicine', 'Use'], rows: [
+          { c: ['<b>Clinical trials</b>', 'Design and analysis to test the safety and effectiveness of drugs, vaccines and devices'] },
+          { c: ['<b>Diagnosis and treatment</b>', 'Comparing outcomes (surgery vs therapy) to find the best intervention'] },
+          { c: ['<b>Epidemiology</b>', 'Distribution, causes and spread of disease, to guide prevention'] },
+          { c: ['<b>Quality improvement</b>', 'Monitoring hospital performance, outcomes and safety'] },
+        ] },
+        { k: 'p', x: 'Software packages: <b>Microsoft Excel, R, STATA, SAS, Python, BMDP</b> (Biomedical Statistics Packages).' },
+        { k: 'cards', items: [
+          { title: 'Descriptive statistics', blocks: [{ k: 'p', x: '<b>Describe and summarise</b> data: “the average age of patients admitted to this hospital is 62”.' }] },
+          { title: 'Inferential statistics', blocks: [{ k: 'p', x: '<b>Generalise</b> about a population from a <b>random sample</b> drawn from it.' }] },
+        ] },
+      ],
+    },
+    {
+      id: 'in-ivppss',
+      title: 'The six IVPPSS terms',
+      kicker: 'Identify these before any analysis',
+      blocks: [
+        { k: 'table', head: ['Term', 'Meaning'], rows: [
+          { c: ['<b>I</b>ndividual', 'The unit on which data are recorded'] },
+          { c: ['<b>V</b>ariable', 'A <b>characteristic</b> of interest measured on each individual'] },
+          { c: ['<b>P</b>opulation', '<b>All</b> possible individuals whose characteristics are to be studied'] },
+          { c: ['<b>P</b>arameter', 'A number describing a characteristic of the <b>population</b>'] },
+          { c: ['<b>S</b>ample', 'A <b>subset</b> of the population studied to make inferences about it'] },
+          { c: ['<b>S</b>tatistic', 'A number describing a characteristic of the <b>sample</b>'] },
+        ] },
+        { k: 'box', title: 'Memory hook', tone: 'recall', blocks: [{ k: 'p', x: '<b>P</b>arameter ↔ <b>P</b>opulation; <b>S</b>tatistic ↔ <b>S</b>ample. Inference uses the statistic to estimate the parameter. Order of work: individuals → variables → population → parameter → sample → statistic.' }] },
+        { k: 'step', n: '1', title: 'Worked example: antenatal visits', blocks: [{ k: 'p', x: 'Officers estimate the average number of antenatal visits by pregnant women in a municipality, from a random sample of 165. <b>Individual</b>: a pregnant woman. <b>Variable</b>: number of antenatal visits. <b>Population</b>: all pregnant women in the municipality. <b>Parameter</b>: their mean number of visits. <b>Sample</b>: the 165 women. <b>Statistic</b>: the mean of the 165.' }] },
+        { k: 'step', n: '2', title: 'Try it: blood pressure', blocks: [{ k: 'p', x: 'A doctor records the systolic BP of 120 randomly chosen hypertensive adults to estimate the average for all such patients at the hospital. Individual: a hypertensive adult patient; variable: systolic BP; population: all hypertensive adults at the hospital; parameter: their mean systolic BP; sample: the 120; statistic: the mean of the 120.' }] },
+      ],
+    },
+    {
+      id: 'in-var',
+      title: 'Variables and scales of measurement',
+      kicker: 'The type of variable decides the analysis',
+      blocks: [
+        { k: 'p', x: 'A <b>variable</b> takes different values within a range (its <b>domain</b>): height, IQ, weight, temperature. The type of variable decides the type of data.' },
+        { k: 'table', head: ['Type', 'Subtype', 'Meaning', 'Examples'], rows: [
+          { c: ['<b>Quantitative</b> (measurable)', '<b>Discrete</b>', '<b>Countable</b> values', 'Number of patients, number of children vaccinated'] },
+          { c: ['', '<b>Continuous</b>', 'Uncountable: a value exists <b>between any two</b> values', 'Blood pressure (mmHg), cholesterol (mg/dL), temperature (°C)'] },
+          { c: ['<b>Qualitative</b> (categorical, attribute)', '<b>Nominal</b>', 'Categories with <b>no order</b>', 'Gender, blood group, religion, sickle-cell status'] },
+          { c: ['', '<b>Ordinal</b>', 'Categories with a <b>natural order</b>', 'Cancer stage I–IV, disease severity low/medium/high'] },
+        ] },
+        { k: 'p', x: '<b>Measurement</b> is applying mathematics to things or events in a meaningful, consistent way. The <b>scale of measurement</b> sets how much information the data contain and which summaries and analyses are appropriate.' },
+        { k: 'table', head: ['Scale', 'Order', 'Equal intervals', 'True zero', 'Examples'], rows: [
+          { c: ['<b>Nominal</b>', '—', '—', '—', 'Blood group, treatment type, marital status; arithmetic meaningless'] },
+          { c: ['<b>Ordinal</b>', '✓', '—', '—', 'Cancer stage, injury severity, taste rating, grades; arithmetic still meaningless'] },
+          { c: ['<b>Interval</b>', '✓', '✓', '—', '<b>Temperature (°C)</b>, <b>IQ</b>: 0 does not mean “none”'] },
+          { c: ['<b>Ratio</b>', '✓', '✓', '<b>✓</b>', 'Tumour size, ulcer area, number of visits, <b>lung capacity</b>: 0 means none'] },
+        ] },
+        { k: 'box', title: 'Choosing a chart', tone: 'formula', blocks: [{ k: 'ul', items: ['Nominal or ordinal data: <b>bar charts</b> (simple, multiple, compound) or <b>pie charts</b>.', 'Interval or ratio data: <b>histogram</b>, frequency <b>polygon</b>, <b>ogive</b>.'] }] },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Statistics: collect, compile, analyse, present, publish and disseminate data to decide.',
+          'Descriptive (summarise) vs inferential (generalise from a sample).',
+          'IVPPSS: parameter ↔ population, statistic ↔ sample.',
+          'Quantitative: discrete (count) or continuous; qualitative: nominal (no order) or ordinal (order).',
+          'Nominal &lt; ordinal &lt; interval (equal steps, no true zero: °C, IQ) &lt; ratio (true zero). Bars/pies vs histograms/ogives.',
+        ] }] },
+      ],
+    },
+  ],
+  quiz: [
+    ['Statistics is used ultimately to', 'Make informed decisions', ['Store numbers safely', 'Avoid using data', 'Replace all experiments'], 'From collected data.', 'Basics'],
+    ['Summarising data, e.g. an average age of 62, is', 'Descriptive statistics', ['Inferential statistics', 'A parameter', 'A population'], 'Describes the data.', 'Basics'],
+    ['Generalising from a random sample to a population is', 'Inferential statistics', ['Descriptive statistics', 'Data cleaning', 'Measurement'], 'Inference.', 'Basics'],
+    ['Which is a statistical package named in the course?', 'STATA', ['PowerPoint', 'Photoshop', 'AutoCAD'], 'Also R, SAS, Excel, Python, BMDP.', 'Basics'],
+    ['A characteristic measured on each individual is a', 'Variable', ['Parameter', 'Statistic', 'Sample'], 'E.g. blood pressure.', 'IVPPSS'],
+    ['All the individuals of interest form the', 'Population', ['Sample', 'Statistic', 'Parameter'], 'Sample is a subset.', 'IVPPSS'],
+    ['A number describing a population is a', 'Parameter', ['Statistic', 'Variable', 'Sample'], 'Parameter ↔ population.', 'IVPPSS'],
+    ['A number describing a sample is a', 'Statistic', ['Parameter', 'Population', 'Individual'], 'Statistic ↔ sample.', 'IVPPSS'],
+    ['In the antenatal study, the 165 women are the', 'Sample', ['Population', 'Parameter', 'Variable'], 'A subset.', 'IVPPSS'],
+    ['In the antenatal study, the number of visits is the', 'Variable', ['Individual', 'Parameter', 'Population'], 'Recorded on each woman.', 'IVPPSS'],
+    ['The mean visits of all pregnant women in the municipality is the', 'Parameter', ['Statistic', 'Sample', 'Variable'], 'Population value.', 'IVPPSS'],
+    ['Number of children vaccinated is a', 'Discrete variable', ['Continuous variable', 'Nominal variable', 'Ordinal variable'], 'Countable.', 'Variables'],
+    ['Blood pressure in mmHg is a', 'Continuous variable', ['Discrete variable', 'Nominal variable', 'Ordinal variable'], 'Values between any two.', 'Variables'],
+    ['Blood group (A, B, AB, O) is a', 'Nominal variable', ['Ordinal variable', 'Discrete variable', 'Ratio variable'], 'No order.', 'Variables'],
+    ['Cancer stage I–IV is a', 'Ordinal variable', ['Nominal variable', 'Ratio variable', 'Continuous variable'], 'Natural order.', 'Variables'],
+    ['Another word for qualitative is', 'Categorical', ['Numerical', 'Continuous', 'Ratio'], 'Or attribute.', 'Variables'],
+    ['How many scales of measurement are there?', 'Four', ['Two', 'Three', 'Six'], 'Nominal, ordinal, interval, ratio.', 'Scales'],
+    ['Temperature in °C is measured on the', 'Interval scale', ['Ratio scale', 'Ordinal scale', 'Nominal scale'], '0 °C is not “no temperature”.', 'Scales'],
+    ['Lung capacity is measured on the', 'Ratio scale', ['Interval scale', 'Ordinal scale', 'Nominal scale'], 'True zero.', 'Scales'],
+    ['The scale with order but no equal intervals is', 'Ordinal', ['Nominal', 'Interval', 'Ratio'], 'E.g. injury severity.', 'Scales'],
+    ['The only scale with a true zero is the', 'Ratio scale', ['Interval scale', 'Ordinal scale', 'Nominal scale'], 'Zero means none.', 'Scales'],
+    ['Nominal data are best shown with', 'Bar or pie charts', ['Histograms', 'Ogives', 'Frequency polygons'], 'Histograms suit interval/ratio.', 'Scales'],
+    ['An IQ of zero not meaning “no intelligence” shows IQ is', 'Interval', ['Ratio', 'Nominal', 'Discrete'], 'No true zero.', 'Scales'],
+  ],
+};

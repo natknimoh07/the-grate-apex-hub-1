@@ -4452,7 +4452,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 422,
+   "total": 445,
    "topics": [
     {
      "id": "Addition Rule",
@@ -4461,6 +4461,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Basics",
+     "title": "Basics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Bernoulli Distribution",
@@ -4708,7 +4716,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 15
+     "unrated": 22
     },
     {
      "id": "Multinomial Distribution",
@@ -4887,6 +4895,14 @@
      "unrated": 9
     },
     {
+     "id": "Scales",
+     "title": "Scales",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Scales of Measurement",
      "title": "Scales of Measurement",
      "easy": 0,
@@ -4941,6 +4957,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 14
+    },
+    {
+     "id": "Variables",
+     "title": "Variables",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     }
    ]
   },
