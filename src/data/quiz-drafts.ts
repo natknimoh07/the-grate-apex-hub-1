@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, deleteDoc, doc, getDoc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocFromCache, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 
 import { auth, db } from '@/lib/firebase';
 
@@ -53,16 +53,27 @@ export async function saveQuizDraft(input: Omit<QuizDraft, 'savedAt'>): Promise<
   const draft: QuizDraft = { ...input, savedAt: Date.now() };
   const data = JSON.stringify(draft);
   if (data.length > MAX_DATA) throw new Error('This quiz is too long to save.');
-  await setDoc(draftRef(owner, draft.key), {
+  const write = setDoc(draftRef(owner, draft.key), {
     lessonId: draft.lessonId,
     title: draft.title.slice(0, 200),
     data,
     savedAt: serverTimestamp(),
   });
+  // Firebase keeps the write on the device at once and sends it when it can, but only
+  // answers once the server has it: with no connection (or the free daily quota used up)
+  // "Save & exit" waited for ever (owner, 2026-11-04). After a few seconds the saved copy
+  // on the device is enough; a refused write still shows as an error.
+  const outcome = await Promise.race([write.then(() => 'saved' as const), wait(SERVER_WAIT_MS).then(() => 'queued' as const)]);
+  if (outcome === 'queued') write.catch((problem: unknown) => console.warn('Could not save quiz progress:', problem));
 }
 
+const SERVER_WAIT_MS = 4000;
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export async function getQuizDraft(key: string): Promise<QuizDraft | null> {
-  const snap = await getDoc(draftRef(uid(), key));
+  const ref = draftRef(uid(), key);
+  // The copy on the device when the server does not answer, so "Resume" still works offline.
+  const snap = await Promise.race([getDoc(ref), wait(SERVER_WAIT_MS).then(() => getDocFromCache(ref))]).catch(() => getDocFromCache(ref));
   return snap.exists() ? parse(snap.data().data) : null;
 }
 

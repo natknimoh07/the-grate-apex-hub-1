@@ -9,7 +9,9 @@
 //   • the same number written differently: 171.30 / 171.3, and a number inside a range
 //     answer such as "6.775-6.785"
 //   • British and American spelling: haemoglobin / hemoglobin, oedema / edema, centre / center
-//   • a leading "the", "an" or "about" (not "a": "A band"), and lists in any order: "Na+ and K+" / "K+ and Na+"
+//   • a leading "the", "a", "an" or "about" ("a ketone" / "ketone"; not a label: "A band", "A and B"),
+//     and lists in any order: "Na+ and K+" / "K+ and Na+"
+//   • one or more: "ketone" / "ketones", "ketone body" / "ketone bodies" (owner, 2026-11-04)
 // A number never matches a different unit (15 s is not 15 min).
 
 const NUMBER_WORDS: Record<string, number> = {
@@ -87,6 +89,9 @@ const SPELLINGS: [RegExp, string][] = [
   [/\baluminium\b/g, 'aluminum'],
 ];
 
+// "A" is a label, not "a", before these words: A band, A site, A and B, A or C.
+const A_LABEL = /^a\s+(bands?|sites?|rings?|lines?|chains?|waves?|zones?|dis[ck]s?|fib(?:re|er)s?|antigens?|and|or|only)\b/;
+
 const ROMAN_AFTER = /\b(type|complex|class|phase|factor|stage|grade|layer|lamina|group|cn|nerve|lead|degree|order|zone)\s+(i{1,3}|iv|v|vi{1,3}|ix|x|xi{1,2})\b/g;
 
 function readNumber(word: string): number | null {
@@ -106,6 +111,7 @@ export function canonicalText(text: string): string {
     .replace(/&/g, ' and ')
     .trim();
   out = out.replace(/^(the|an|about|approximately|approx\.?|around|roughly|~|≈)\s+/, '').replace(/^[~≈]\s*/, '');
+  if (!A_LABEL.test(out)) out = out.replace(/^a\s+(?=[a-z0-9])/, '');
   out = out.replace(/[.!]+$/, '').trim();
   out = out.replace(/\b([a-z]+)[- ]([a-z]+)\b/g, (whole, tens: string, unit: string) =>
     NUMBER_WORDS[tens] >= 20 && NUMBER_WORDS[unit] > 0 && NUMBER_WORDS[unit] < 10 ? String(NUMBER_WORDS[tens] + NUMBER_WORDS[unit]) : whole
@@ -127,6 +133,17 @@ export function canonicalText(text: string): string {
 function unitName(text: string): string | null {
   for (const [pattern, name] of UNITS) if (pattern.test(text)) return name;
   return null;
+}
+
+// The last word in the singular: "ketones" → "ketone", "bodies" → "body", "processes" → "process".
+// Words already singular are kept ("process", "sinus", "mitosis"), and so are short ones ("ms").
+function singularOf(canonical: string): string {
+  return canonical.replace(/([a-z]{2,}?)(ies|sses|xes|ches|shes|s)$/, (whole, stem: string, ending: string) => {
+    if (/(ss|us|is)$/.test(whole)) return whole;
+    if (ending === 'ies') return `${stem}y`;
+    if (ending === 's') return stem.length >= 3 ? stem : whole;
+    return `${stem}${ending.slice(0, -2)}`;
+  });
 }
 
 type Amount = { low: number; high: number; unit: string };
@@ -172,6 +189,8 @@ export function typedAnswerSaysSame(input: string, expected: string, same: (a: s
   if (typedAmount && wantedAmount) return amountsMatch(typedAmount, wantedAmount);
 
   if (same(input, expected) || same(typed, wanted)) return true;
+
+  if (same(singularOf(typed), singularOf(wanted))) return true;
 
   const typedList = listItems(typed);
   const wantedList = listItems(wanted);

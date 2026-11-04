@@ -318,6 +318,8 @@ export function QuestionSession({
       console.warn('Could not submit:', problem);
       setError('Your answers could not be submitted. Nothing is lost — please try again.');
       setSubmitting(false);
+      // The message is at the top; on a phone the learner is down at the Finish button.
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
     }
   }
 
@@ -342,6 +344,7 @@ export function QuestionSession({
       console.warn('Could not save and exit:', problem);
       setError('Your quiz could not be saved. Check your connection and try again.');
       setLeaving(false);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
     }
   }
 
@@ -538,6 +541,7 @@ export function QuestionSession({
           <Text style={styles.finishText}>
             {answeredCount} of {total} answered. {unanswered > 0 ? 'Unanswered questions count as not correct.' : 'Everything is answered.'}
           </Text>
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
           <View style={styles.actionsWrap}>
             {unanswered > 0 ? <Button label="Answer the rest" variant="secondary" onPress={resumeAnswering} /> : null}
             <Button label={submitLabel} onPress={() => void finish()} loading={submitting} />

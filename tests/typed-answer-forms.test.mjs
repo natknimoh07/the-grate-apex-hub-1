@@ -82,6 +82,23 @@ describe('spelling, articles and order', () => {
     right('the sternal angle', 'sternal angle');
     right('about 30x', '30x');
     wrong('band', 'A band');
+    // "a" is an article (owner, 2026-11-04: "a ketone" was marked wrong for "ketone").
+    right('a ketone', 'ketone');
+    right('ketone', 'A ketone');
+    right('a secondary alcohol', 'Secondary alcohol');
+    right('A band', 'A band');
+    wrong('B and C', 'A and B');
+  });
+  it('one or more of the same thing', () => {
+    right('ketones', 'ketone');
+    right('ketone', 'Ketones');
+    right('ketone bodies', 'ketone body');
+    right('processes', 'process');
+    right('boxes', 'box');
+    right('a phosphate groups', 'Phosphate group');
+    wrong('sinu', 'sinus');
+    wrong('ilium', 'ileum');
+    wrong('ketose', 'ketone');
   });
   it('lists in any order', () => {
     right('K+ and Na+', 'Na+ and K+');

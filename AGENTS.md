@@ -260,6 +260,13 @@ Details and rules: `docs/study-boosts.md`; pure rules checked by `tests/learning
 
 `src/lib/web-scrolling.ts` (web only, started in `_layout.tsx`): page content ignores the mouse while scrolling (hover redraws caused 200–790 ms freezes), keyboard keys scroll the page without clicking first, and wide windows show a thin scrollbar (`Screen` passes `showsVerticalScrollIndicator` on desktop).
 
+## Start-up, saving and finishing without a connection (owner, 2026-11-04)
+
+* **Blue start-up screen:** the app is one ~12.6 MB script (3.6 MB downloaded, again after every update; most of it is course content). `bootWatch` in `src/app/+html.tsx` (plain script, independent of the app) says "Loading…" after 8 s, offers Try again / Repair the app after 45 s or when the download fails (Repair removes the service worker and `grateapex-pwa-*` caches, never the offline study cache), and tells a too-old browser to update. `_layout.tsx` calls `window.__grateapexBooted()` to remove it.
+* **Broken browser storage:** when Firebase's IndexedDB copy fails (full, blocked, "INTERNAL ASSERTION FAILED"), `src/lib/firebase.ts` keeps Firestore in memory for a week (`grateapex_firestore_memory_until`), reloading once only on `/` or `/login`.
+* **Never wait for the server when finishing or leaving:** Save & exit (`saveQuizDraft`, `getQuizDraft` fall back to the device copy after 4 s), handing in (Apex coins, topic-completed events and the learning-event cloud merge run in the background). A failed hand-in shows its message where the learner is (finish card, scrolled to the top).
+* **Typed answers:** a leading "a" is an article like "the"/"an" except in labels ("A band", "A and B": `A_LABEL`), and singular/plural match ("ketone"/"ketones"; `singularOf` in `typed-answer-forms.ts`).
+
 ## Ask AI and AI Flashcards (every lesson)
 
 Every lesson has an "Ask AI" tab (questions answered from the lesson's own text) and an "AI Flashcards" tab (question-and-answer cards the AI writes from the lesson, studied with the same spaced repetition as the normal flashcards). Both are on `src/app/learn/lesson.tsx` and `src/app/learn/hb-lesson.tsx`.

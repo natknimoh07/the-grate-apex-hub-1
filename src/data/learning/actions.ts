@@ -141,7 +141,7 @@ async function awardTopicMilestone(topicId: string): Promise<MilestoneAward | nu
     amount: milestoneXp('topicCompleted'),
     label: `Topic completed · ${topic.title}`,
   });
-  await logLearningEvent('TOPIC_COMPLETED', { topicId, refId: topicId });
+  void logLearningEvent('TOPIC_COMPLETED', { topicId, refId: topicId });
   void awardApexCoins('topic_completion', topicId).catch((error) => {
     if (typeof __DEV__ !== 'undefined' && __DEV__) console.warn('Could not award Apex Coins for topic completion.', error);
   });
@@ -358,13 +358,15 @@ export async function submitQuiz(submission: QuizSubmission): Promise<QuizOutcom
     data: { kind: attempt.kind, score: attempt.score, total, percentage, xp: xp.net },
   });
 
+  // In the background: the coins need the attempt on the server first, and waiting for
+  // that (no connection, or the free daily reads used up) kept the results from opening.
   if (attempt.kind === 'apex' && !attempt.practice) {
-    try {
+    void (async () => {
       const attemptSynced = await syncQuizAttemptToCloud(attempt);
       if (attemptSynced) await awardApexCoins('apex_challenge', attempt.id);
-    } catch (error) {
+    })().catch((error) => {
       if (typeof __DEV__ !== 'undefined' && __DEV__) console.warn('Could not award Apex Coins for Apex Challenge completion.', error);
-    }
+    });
   }
 
   touchClock();

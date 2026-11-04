@@ -80,7 +80,12 @@ async function load() {
   } catch (error) {
     console.log('Could not load learning events:', error);
   }
+  // The cloud merge runs in the background, as for quiz history: a slow or absent
+  // connection must never hold up recording an event (finishing a topic waited on it).
+  void mergeCloudEvents().catch((error) => console.log('Could not sync learning events:', error));
+}
 
+async function mergeCloudEvents() {
   const remote = await loadCloudLearningEvents();
   const localIds = new Set(events.map((event) => event.id));
   const remoteIds = new Set(remote.map((event) => event.id));
@@ -103,7 +108,7 @@ export function ensureEventsLoaded() {
 /** Retry uploading this device's learning timeline after reconnecting. */
 export async function syncLearningEvents() {
   await ensureEventsLoaded();
-  await load();
+  await mergeCloudEvents();
 }
 
 export function getLearningEvents() {
@@ -146,7 +151,8 @@ export async function logLearningEvent(
   events = [event, ...events].slice(0, LIMIT);
   notify();
   await save();
-  await saveCloudLearningEvents([event]);
+  // Not waited for: finishing a topic waited on this server write and could hang offline.
+  void saveCloudLearningEvents([event]);
   return event;
 }
 

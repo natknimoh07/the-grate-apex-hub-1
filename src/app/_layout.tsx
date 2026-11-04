@@ -181,6 +181,8 @@ export default function TabLayout() {
   // Web: fetch the display font once the app is running (never blocks paint),
   // and start usage analytics (lib/analytics.ts).
   useEffect(() => {
+    // The app is running: the start-up screen's "still loading?" note is no longer needed (+html.tsx).
+    if (Platform.OS === 'web') (window as Window & { __grateapexBooted?: () => void }).__grateapexBooted?.();
     loadWebFonts();
     initAnalytics();
     installWebScrolling();

@@ -26,10 +26,11 @@ export const db = makeFirestore();
  * can't be reached — no connection, or the free plan's daily reads used up — learners
  * still see what they had already opened, and what they do is kept and sent once
  * Firebase answers again. Shared by all open tabs. If the browser refuses storage
- * (e.g. some private windows), Firebase keeps working in memory as before.
+ * (e.g. some private windows) or its copy breaks, Firebase keeps working in memory.
  */
 function makeFirestore(): Firestore {
-  if (Platform.OS === 'web' && typeof indexedDB !== 'undefined') {
+  if (Platform.OS === 'web' && typeof indexedDB !== 'undefined' && !browserCacheBroken()) {
+    watchBrowserCache();
     try {
       return initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
     } catch {
@@ -37,6 +38,45 @@ function makeFirestore(): Firestore {
     }
   }
   return getFirestore(app);
+}
+
+// When the browser's copy fails — storage full ("not enough space"), blocked, or damaged
+// (Firebase then stops with "INTERNAL ASSERTION FAILED") — the app keeps Firebase in memory
+// for a week instead, so it still signs in and loads (crash reports, 2026-10-26 to 11-02).
+const MEMORY_UNTIL_KEY = 'grateapex_firestore_memory_until';
+const BROKEN_CACHE = /INTERNAL ASSERTION FAILED|IndexedDbTransactionError|PutOrAdd|not enough space|Database deleted/i;
+
+function browserCacheBroken() {
+  try {
+    return Number(localStorage.getItem(MEMORY_UNTIL_KEY)) > Date.now();
+  } catch {
+    return true; // storage blocked for this site: the browser's database will be too
+  }
+}
+
+function watchBrowserCache() {
+  const onProblem = (reason: unknown) => {
+    const message = reason instanceof Error ? reason.message : String(reason ?? '');
+    if (!BROKEN_CACHE.test(message)) return;
+    try {
+      localStorage.setItem(MEMORY_UNTIL_KEY, String(Date.now() + 7 * 24 * 3600_000));
+    } catch {
+      return;
+    }
+    // A stopped Firebase never recovers: on the sign-in or start page (nothing to lose) open
+    // again straight away, at most once a visit; elsewhere the next open uses memory.
+    const atStart = /^\/(login)?$/.test(location.pathname);
+    try {
+      if (atStart && /INTERNAL ASSERTION FAILED/i.test(message) && !sessionStorage.getItem(MEMORY_UNTIL_KEY)) {
+        sessionStorage.setItem(MEMORY_UNTIL_KEY, '1');
+        location.reload();
+      }
+    } catch {
+      // no session storage: wait for the next open
+    }
+  };
+  window.addEventListener('unhandledrejection', (event) => onProblem(event.reason));
+  window.addEventListener('error', (event) => onProblem(event.error ?? event.message));
 }
 
 // Local checks only: a web build made with EXPO_PUBLIC_FIREBASE_EMULATOR=1 talks to
