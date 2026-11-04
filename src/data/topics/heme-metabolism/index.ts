@@ -3,6 +3,7 @@
 //   lessons.ts      — the seven lessons (reading layer)
 //   interactive.ts  — each lesson's interactive layer + reading extras
 //   questions.ts    — the topic question bank (quiz layer)
+import { sectionQuestions } from '@/data/topics/heme-metabolism/section-questions';
 import { contentTopics } from '@/data/content-catalog';
 import { buildTopic } from '@/data/topics/build';
 import { assertionReasonQuestions } from '@/data/topics/heme-metabolism/assertion-reason';
@@ -29,7 +30,7 @@ export const hemeMetabolism = buildTopic({
   contentVersion: 1,
   concepts,
   lessons,
-  questions: [...questions, ...assertionReasonQuestions],
+  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions],
   discrepancies,
   diagrams,
 });

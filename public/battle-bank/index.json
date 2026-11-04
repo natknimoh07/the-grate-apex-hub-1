@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 2715,
+   "total": 2867,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -207,9 +207,9 @@
     {
      "id": "heme-metabolism",
      "title": "Haem and Haem Metabolism",
-     "easy": 123,
-     "medium": 72,
-     "hard": 10,
+     "easy": 271,
+     "medium": 75,
+     "hard": 11,
      "unrated": 55
     },
     {

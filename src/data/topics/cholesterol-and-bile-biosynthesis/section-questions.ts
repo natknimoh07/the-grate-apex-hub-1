@@ -14,7 +14,7 @@ export const sectionQuestions: Q[] = [
   mcq('s1-1-2', 'acetate-origin', 'What is the first reaction of the mevalonate pathway?', 'Two acetyl-CoA condense to form acetoacetyl-CoA', ['Acetyl-CoA is carboxylated to form malonyl-CoA', 'HMG-CoA is reduced to mevalonate by two NADPH', 'Squalene closes up into the four rings of the steroid nucleus'], {
     explanation: 'Synthesis starts when two molecules of acetyl-CoA condense to acetoacetyl-CoA.',
   }),
-  tf({ id: 's1-1-3', conceptId: 'acetate-origin', statement: 'The lecture groups bile salts, lipoproteins and cholesterol together.', answer: true, explanation: 'This topic follows cholesterol from its synthesis to bile acids.' }),
+  tf({ id: 's1-1-3', conceptId: 'acetate-origin', statement: 'Cholesterol synthesis begins with two acetyl-CoA condensing, not with a carboxylation step.', answer: true, explanation: 'Two acetyl-CoA condense to acetoacetyl-CoA; no malonyl-CoA is made.' }),
   mcq('s1-1-4', 'acetate-origin', 'What does the liver finally turn cholesterol into, at the end of this topic?', 'Bile acids', ['Ketone bodies', 'Fatty acids', 'Glycogen'], {
     explanation: 'Lesson 5 shows how the liver turns cholesterol into bile acids.',
   }),
@@ -26,7 +26,7 @@ export const sectionQuestions: Q[] = [
   mcq('s1-2-1', 'steroid-nucleus', 'How many of the steroid nucleus rings are six-membered?', 'Three — rings A, B and C', ['Two — rings A and D, at each end', 'Four — rings A to D', 'One — ring D only'], {
     explanation: 'Three six-membered rings (A, B, C) are fused to one five-membered ring (D).',
   }),
-  tf({ id: 's1-2-2', conceptId: 'steroid-nucleus', statement: 'The steroid nucleus of cholesterol contains a benzene ring.', answer: false, explanation: 'It is not a benzene ring — animals cannot synthesise one.' }),
+  tf({ id: 's1-2-2', conceptId: 'steroid-nucleus', statement: 'Ring D of cholesterol is a six-membered ring.', answer: false, explanation: 'Ring D is the five-membered ring; A, B and C are six-membered.' }),
   mcq('s1-2-3', 'steroid-nucleus', 'Which ring of the steroid nucleus has five members?', 'Ring D', ['Ring A', 'Ring B', 'Ring C'], {
     explanation: 'Ring D is the five-membered ring.',
   }),
@@ -254,7 +254,7 @@ export const sectionQuestions: Q[] = [
   mcq('s4-3-2', 'flux-ssd-statins', 'When flux through the mevalonate pathway is LOW, what happens to HMGR degradation?', 'It slows down', ['It speeds up', 'It stops the pathway', 'It is unchanged'], {
     explanation: 'High flux → faster degradation; low flux → slower.',
   }),
-  tf({ id: 's4-3-3', conceptId: 'flux-ssd-statins', statement: 'A statin lowers flux through the pathway, so less HMGR is degraded.', answer: true, explanation: 'Slide 15: the statin example shows degradation following flux.' }),
+  tf({ id: 's4-3-3', conceptId: 'flux-ssd-statins', statement: 'The sterol-sensing domain is part of the HMGR enzyme itself.', answer: true, explanation: 'HMGR, in the ER, contains a sterol-sensing domain (SSD).' }),
   mcq('s4-3-4', 'flux-ssd-statins', 'In which organelle does HMGR, with its sterol-sensing domain, sit?', 'Endoplasmic reticulum', ['The mitochondrial matrix', 'Golgi apparatus', 'Nucleus'], {
     explanation: 'HMGR sits in the ER and contains a sterol-sensing domain.',
   }),

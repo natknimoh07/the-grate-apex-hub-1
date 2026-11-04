@@ -60,7 +60,7 @@ export const sectionQuestions: Q[] = [
   mcq('s1-4-2', 'hydratase-vs-dehydratase', 'A hydratase acts on a C=C double bond. What group does it leave behind?', 'An –OH group', ['A keto C=O group', 'A carboxyl group', 'A thioester bond'], {
     explanation: 'A hydratase adds water across the double bond, giving an –OH group.',
   }),
-  tf({ id: 's1-4-3', conceptId: 'hydratase-vs-dehydratase', statement: 'A dehydratase creates a C=C double bond by removing water.', answer: true, explanation: 'Removing water from a hydroxyl intermediate forms a C=C double bond.' }),
+  tf({ id: 's1-4-3', conceptId: 'hydratase-vs-dehydratase', statement: 'Dehydrogenases and dehydratases both remove something from their substrate.', answer: true, explanation: '“De-” means removal: hydrogen for one, water for the other.' }),
   mcq('s1-4-4', 'hydratase-vs-dehydratase', 'Which pairing of example enzyme and pathway is correct?', 'β-Hydroxyacyl-ACP dehydratase — fatty acid synthesis', ['Enoyl-CoA hydratase — fatty acid synthesis', 'β-Hydroxyacyl-ACP dehydratase — mitochondrial β-oxidation', 'Enoyl-CoA dehydratase — the citrate shunt'], {
     explanation: 'The dehydratase acts in synthesis; enoyl-CoA hydratase acts in β-oxidation.',
     difficulty: 'intermediate',
@@ -92,8 +92,8 @@ export const sectionQuestions: Q[] = [
     explanation: 'Synthesis runs under fed conditions, when there is more fuel than is needed right now.',
   }),
   tf({ id: 's2-1-3', conceptId: 'synthesis-location-state', statement: 'After a meal, more glucose gives more acetyl-CoA and more citrate in the mitochondria.', answer: true, explanation: 'Flux through the TCA cycle increases, so more citrate is made in the mitochondria.' }),
-  mcq('s2-1-4', 'citrate-shunt', 'In the fed liver, what carries acetyl groups out of the mitochondria?', 'Citrate', ['Malonyl-CoA', 'Palmitate', 'Pyruvate'], {
-    explanation: 'Excess citrate leaves via the citrate shunt, carrying acetyl groups to the cytosol.',
+  mcq('s2-1-4', 'citrate-shunt', 'After a meal, which organ takes up the glucose that drives fatty acid synthesis?', 'The liver', ['The brain', 'The kidney', 'Skeletal muscle'], {
+    explanation: 'Glucose is taken up by the liver under fed conditions.',
   }),
   fill('s2-1-5', 'synthesis-location-state', 'After a meal, fuel the body cannot use right away is stored as ____.', ['fat', 'fats', 'triacylglycerol', 'triglyceride'], {
     explanation: 'Under fed conditions the extra fuel is stored as fat — which is why synthesis runs then.',
@@ -152,7 +152,7 @@ export const sectionQuestions: Q[] = [
   mcq('s3-2-2', 'acc-energy', 'What happens in the second half of the acetyl-CoA carboxylase reaction?', 'Biotin hands the CO₂ on to acetyl-CoA', ['ATP is made from the carbon dioxide', 'Biotin is released into the cytosol', 'Malonyl-CoA is split back to acetyl-CoA'], {
     explanation: 'Biotin passes its CO₂ on to acetyl-CoA, giving malonyl-CoA.',
   }),
-  tf({ id: 's3-2-3', conceptId: 'acc-energy', statement: 'The acetyl-CoA carboxylase reaction is irreversible.', answer: true, explanation: 'The lecture describes the carboxylation as irreversible.' }),
+  tf({ id: 's3-2-3', conceptId: 'acc-energy', statement: 'Biotin carries the CO₂ between the two halves of the carboxylase reaction.', answer: true, explanation: 'CO₂ is attached to biotin, then handed on to acetyl-CoA.' }),
   mcq('s3-2-4', 'acc-energy', 'Which half of the reaction uses the energy of ATP?', 'Attaching CO₂ to biotin', ['Passing CO₂ to acetyl-CoA', 'Releasing malonyl-CoA', 'Loading biotin onto the enzyme'], {
     explanation: 'ATP energy is used in the first half, when CO₂ is attached to biotin.',
     difficulty: 'intermediate',
@@ -166,8 +166,8 @@ export const sectionQuestions: Q[] = [
     explanation: 'The cell carboxylates now to decarboxylate later: the CO₂ is a temporary handle.',
   }),
   tf({ id: 's3-3-2', conceptId: 'co2-fate', statement: 'The cell carboxylates acetyl-CoA so that it can decarboxylate it later.', answer: true, explanation: 'Losing the CO₂ at condensation drives the joining reaction.' }),
-  mcq('s3-3-3', 'co2-fate', 'In the first round, which product forms as the added CO₂ leaves?', 'Acetoacetyl-ACP', ['Butyryl-ACP', 'Crotonyl-ACP', 'β-Hydroxybutyryl-ACP'], {
-    explanation: 'Decarboxylation during the first condensation gives acetoacetyl-ACP.',
+  mcq('s3-3-3', 'co2-fate', 'Which bond does the cell pay for by adding and then losing CO₂?', 'The new carbon–carbon bond of the chain', ['The thioester bond to coenzyme A', 'The bond between biotin and enzyme', 'The trans double bond made later by the dehydratase'], {
+    explanation: 'Losing the CO₂ drives the condensation that makes the new C–C bond.',
   }),
   mcq('s3-3-4', 'co2-fate', 'Put in order: what happens to the malonyl group after carboxylation?', 'Loaded onto the synthase, then decarboxylated at condensation', ['Decarboxylated in the cytosol, then loaded onto the synthase', 'Reduced twice by NADPH, then loaded onto the synthase complex', 'Released as palmitate, then decarboxylated'], {
     explanation: 'Carboxylation → loading onto the synthase → decarboxylation during condensation.',
@@ -240,8 +240,8 @@ export const sectionQuestions: Q[] = [
   }),
 
   // ─── Lesson 5 · S2 The three steps (first round) ───────────────────
-  mcq('s5-2-1', 'dehydration-step', 'Which first-round intermediate does the dehydratase act on?', 'D-β-Hydroxybutyryl-ACP', ['Acetoacetyl-ACP', 'Crotonyl-ACP', 'L-3-Hydroxybutyryl-CoA chain'], {
-    explanation: 'DH removes water from D-β-hydroxybutyryl-ACP, giving crotonyl-ACP.',
+  mcq('s5-2-1', 'dehydration-step', 'In the first round, which step turns D-β-hydroxybutyryl-ACP into crotonyl-ACP?', 'Dehydration by DH', ['Reduction by KR', 'Reduction by ER', 'Condensation by KS'], {
+    explanation: 'The dehydratase removes water, forming the trans double bond of crotonyl-ACP.',
   }),
   mcq('s5-2-2', 'keto-reduction', 'Which enzyme turns acetoacetyl-ACP into D-β-hydroxybutyryl-ACP?', 'β-Ketoacyl-ACP reductase', ['β-Hydroxyacyl-ACP dehydratase', 'Enoyl-ACP reductase', 'Ketoacyl-ACP synthase'], {
     explanation: 'KR reduces the keto group to an alcohol, using NADPH.',
@@ -426,9 +426,7 @@ export const sectionQuestions: Q[] = [
   }),
 
   // ─── Lesson 7 · S4 A second system in the mitochondria ────────────
-  mcq('s7-4-1', 'mitochondrial-elongation', 'Which cofactor does the mitochondrial enoyl-CoA reductase depend on?', 'NADPH', ['FAD', 'NAD⁺', 'Biotin'], {
-    explanation: 'An NADPH-dependent enoyl-CoA reductase replaces the FAD-dependent dehydrogenase.',
-  }),
+  tf({ id: 's7-4-1', conceptId: 'mitochondrial-elongation', statement: 'The second elongation system works in the cytosol, next to the fatty acid synthase.', answer: false, explanation: 'It is in the mitosol (mitochondrial matrix).' }),
   mcq('s7-4-2', 'mitochondrial-elongation', 'Which β-oxidation enzyme is replaced in mitochondrial elongation?', 'The FAD-dependent dehydrogenase', ['The enoyl-CoA hydratase', 'The NAD⁺-dependent dehydrogenase', 'The acetyl-CoA acyltransferase'], {
     explanation: 'The FAD-dependent dehydrogenase is replaced by an NADPH-dependent enoyl-CoA reductase.',
   }),
