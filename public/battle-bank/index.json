@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 1015,
+   "total": 1040,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6277,6 +6277,14 @@
      "unrated": 14
     },
     {
+     "id": "Charts",
+     "title": "Charts",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Charts, Sorting & Filtering",
      "title": "Charts, Sorting & Filtering",
      "easy": 0,
@@ -6355,6 +6363,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Creating",
+     "title": "Creating",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Creating & Saving Charts",
@@ -6491,6 +6507,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 15
+    },
+    {
+     "id": "Filtering",
+     "title": "Filtering",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Filtering Data",
@@ -7061,6 +7085,14 @@
      "unrated": 10
     },
     {
+     "id": "Sorting",
+     "title": "Sorting",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Sorting Data",
      "title": "Sorting Data",
      "easy": 0,
@@ -7133,6 +7165,14 @@
      "unrated": 7
     },
     {
+     "id": "Terms",
+     "title": "Terms",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Text",
      "title": "Text",
      "easy": 0,
@@ -7179,6 +7219,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 16
+    },
+    {
+     "id": "Types",
+     "title": "Types",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Viewing, Printing, Animating & Transitioning",
