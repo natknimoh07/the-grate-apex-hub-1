@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 1049,
+   "total": 1075,
    "topics": [
     {
      "id": "Absolute value",
@@ -4360,6 +4360,22 @@
      "unrated": 14
     },
     {
+     "id": "Maxima",
+     "title": "Maxima",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Motion",
+     "title": "Motion",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Number Classification",
      "title": "Number Classification",
      "easy": 0,
@@ -4382,6 +4398,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Optimisation",
+     "title": "Optimisation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Parallel",
@@ -4592,6 +4616,14 @@
      "unrated": 3
     },
     {
+     "id": "Rates",
+     "title": "Rates",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Ratios",
      "title": "Ratios",
      "easy": 0,
@@ -4704,6 +4736,22 @@
      "unrated": 10
     },
     {
+     "id": "Sketching",
+     "title": "Sketching",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Small changes",
+     "title": "Small changes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Special",
      "title": "Special",
      "easy": 0,
@@ -4746,6 +4794,14 @@
     {
      "id": "Systems",
      "title": "Systems",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Tangents",
+     "title": "Tangents",
      "easy": 0,
      "medium": 0,
      "hard": 0,
