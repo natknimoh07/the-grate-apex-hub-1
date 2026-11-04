@@ -29,7 +29,7 @@ HB2 Biochemistry
 - [x] oxygen-carriers — 19 sections, 95 questions
 - [x] blood-coagulation-and-fibrinolysis — 19 sections, 95 questions
 - [x] hormones-endocrine-biochemistry — 12 sections, 60 questions
-- [ ] inborn-errors-of-metabolism
+- [x] inborn-errors-of-metabolism — 30 sections, 150 questions
 - [ ] collagen-synthesis
 - [ ] free-radicals-and-oxygen-toxicity
 - [ ] amino-acid-metabolism

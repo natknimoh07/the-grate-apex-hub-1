@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 3095,
+   "total": 3238,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -239,8 +239,8 @@
     {
      "id": "inborn-errors-of-metabolism",
      "title": "Inborn Errors of Metabolism",
-     "easy": 136,
-     "medium": 37,
+     "easy": 274,
+     "medium": 42,
      "hard": 0,
      "unrated": 0
     },
