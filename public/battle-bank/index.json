@@ -5715,7 +5715,7 @@
   {
    "id": "commskills",
    "name": "Communication Skills",
-   "total": 527,
+   "total": 577,
    "topics": [
     {
      "id": "'And' & Correlative Conjunctions",
@@ -5731,7 +5731,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 9
     },
     {
      "id": "Adverbs",
@@ -5739,7 +5739,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 8
     },
     {
      "id": "Ambiguity in Communication",
@@ -5748,6 +5748,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 12
+    },
+    {
+     "id": "Basics",
+     "title": "Basics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
     },
     {
      "id": "Concord in English",
@@ -5771,7 +5779,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 4
     },
     {
      "id": "Correcting & Exceptions",
@@ -5795,7 +5803,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 4
     },
     {
      "id": "Ellipsis & Capitalization",
@@ -5822,12 +5830,28 @@
      "unrated": 53
     },
     {
+     "id": "Exceptions",
+     "title": "Exceptions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Exclamatory Sentences",
      "title": "Exclamatory Sentences",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Exercise",
+     "title": "Exercise",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Forms of Concord",
@@ -5867,7 +5891,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 4
     },
     {
      "id": "Interrogative Sentences",
@@ -5878,12 +5902,28 @@
      "unrated": 15
     },
     {
+     "id": "Lexical",
+     "title": "Lexical",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Lexical Ambiguity",
      "title": "Lexical Ambiguity",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 11
+    },
+    {
+     "id": "Misrelated",
+     "title": "Misrelated",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Misrelated Constructions",
@@ -5899,7 +5939,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 18
     },
     {
      "id": "Overview",
@@ -5931,7 +5971,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 8
     },
     {
      "id": "Pronouns",
@@ -5939,7 +5979,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 7
     },
     {
      "id": "Punctuation Marks in English",
@@ -6014,6 +6054,14 @@
      "unrated": 5
     },
     {
+     "id": "Structural",
+     "title": "Structural",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
+    },
+    {
      "id": "Structural Ambiguity",
      "title": "Structural Ambiguity",
      "easy": 0,
@@ -6086,6 +6134,14 @@
      "unrated": 34
     },
     {
+     "id": "Types",
+     "title": "Types",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Underlining & Quotation Marks",
      "title": "Underlining & Quotation Marks",
      "easy": 0,
@@ -6107,7 +6163,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 17
     },
     {
      "id": "What Is a Sentence",
