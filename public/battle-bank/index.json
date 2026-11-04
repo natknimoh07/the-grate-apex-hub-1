@@ -9109,7 +9109,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 957,
+   "total": 984,
    "topics": [
     {
      "id": "Adaptations",
@@ -9197,7 +9197,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 6
     },
     {
      "id": "Blackflies",
@@ -9304,6 +9304,14 @@
      "unrated": 10
     },
     {
+     "id": "Equipment",
+     "title": "Equipment",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Feeding",
      "title": "Feeding",
      "easy": 0,
@@ -9350,6 +9358,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Groups",
+     "title": "Groups",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Growth",
@@ -9480,6 +9496,14 @@
      "unrated": 2
     },
     {
+     "id": "Methods",
+     "title": "Methods",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
+    },
+    {
      "id": "Midges",
      "title": "Midges",
      "easy": 0,
@@ -9576,6 +9600,22 @@
      "unrated": 2
     },
     {
+     "id": "Pinning",
+     "title": "Pinning",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Preserving",
+     "title": "Preserving",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Pubic louse",
      "title": "Pubic louse",
      "easy": 0,
@@ -9646,6 +9686,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Surveys",
+     "title": "Surveys",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Systems",
