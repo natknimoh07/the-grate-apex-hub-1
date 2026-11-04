@@ -149,7 +149,7 @@ export const entomologyLiceBedbugs: Hb1Lesson = {
     ['Bed bugs mate by', 'Traumatic insemination', ['Spermatophore transfer', 'External fertilisation', 'Parthenogenesis'], 'Through the female’s body wall.', 'Bed bugs'],
     ['Bed bug nymphs must take a blood meal', 'Before each moult', ['Only as adults', 'Once in their whole life', 'Never, they feed on debris'], 'Five nymphal instars.', 'Bed bugs'],
     ['Adult bed bugs can survive without food for over', '500 days', ['5 days', '50 hours', '5 years'], 'Low metabolic rate.', 'Bed bugs'],
-    ['A heavy bed bug infestation smells like', 'Rotting raspberries', ['Ammonia', 'Rotten eggs', 'Vinegar'], 'From their stink glands.', 'Bed bugs'],
+    ['A heavy bed bug infestation smells like', 'Rotting raspberries', ['Strong ammonia', 'Rotten eggs', 'Sour vinegar'], 'From their stink glands.', 'Bed bugs'],
     ['Bed bugs are', 'Not natural vectors of human disease', ['Vectors of epidemic typhus', 'Vectors of relapsing fever', 'The main vectors of plague'], 'Possible mechanical spread of hepatitis B.', 'Bed bugs'],
     ['Heavy bed bug infestation in children may cause', 'Iron-deficiency anaemia', ['Epidemic typhus', 'Lymphatic elephantiasis', 'Sleeping sickness'], 'From repeated blood loss.', 'Bed bugs'],
     ['A residual insecticide used for bed bugs is', 'Pirimiphos-methyl', ['Ivermectin', 'Chloroquine', 'Diethylcarbamazine'], 'Also bendiocarb, propoxur.', 'Bed bugs'],
