@@ -24,7 +24,7 @@ lessons written in the app.
 
 HB2 Biochemistry
 - [x] fatty-acid-biosynthesis — 33 sections, 165 questions (L7 S5 annotation skipped)
-- [ ] cholesterol-and-bile-biosynthesis
+- [x] cholesterol-and-bile-biosynthesis — 22 sections, 110 questions
 - [ ] heme-metabolism
 - [ ] oxygen-carriers
 - [ ] blood-coagulation-and-fibrinolysis

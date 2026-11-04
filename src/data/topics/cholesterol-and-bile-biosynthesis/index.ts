@@ -8,6 +8,7 @@ import { buildTopic } from '@/data/topics/build';
 import { assertionReasonQuestions } from '@/data/topics/cholesterol-and-bile-biosynthesis/assertion-reason';
 import { lessons } from '@/data/topics/cholesterol-and-bile-biosynthesis/lessons';
 import { questions } from '@/data/topics/cholesterol-and-bile-biosynthesis/questions';
+import { sectionQuestions } from '@/data/topics/cholesterol-and-bile-biosynthesis/section-questions';
 import {
   concepts,
   diagrams,
@@ -29,7 +30,7 @@ export const cholesterolAndBileBiosynthesis = buildTopic({
   contentVersion: 1,
   concepts,
   lessons,
-  questions: [...questions, ...assertionReasonQuestions],
+  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions],
   discrepancies,
   diagrams,
 });

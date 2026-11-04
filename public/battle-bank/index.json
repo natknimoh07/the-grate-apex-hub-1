@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 2616,
+   "total": 2714,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -199,8 +199,8 @@
     {
      "id": "cholesterol-and-bile-biosynthesis",
      "title": "Cholesterol and Bile Biosynthesis",
-     "easy": 84,
-     "medium": 49,
+     "easy": 180,
+     "medium": 51,
      "hard": 6,
      "unrated": 0
     },
