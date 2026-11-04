@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 1040,
+   "total": 1065,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6218,7 +6218,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 9
     },
     {
      "id": "Breaks",
@@ -6669,6 +6669,14 @@
      "unrated": 7
     },
     {
+     "id": "Lists",
+     "title": "Lists",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Logical",
      "title": "Logical",
      "easy": 0,
@@ -7018,7 +7026,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 9
     },
     {
      "id": "Saving & File Formats",
@@ -7075,6 +7083,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Slides",
+     "title": "Slides",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "SmartArt",
@@ -7162,7 +7178,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 9
     },
     {
      "id": "Terms",
@@ -7178,7 +7194,15 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 5
+    },
+    {
+     "id": "Text boxes",
+     "title": "Text boxes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Text Boxes & Lists",
@@ -7203,6 +7227,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Themes",
+     "title": "Themes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Themes & Backgrounds",
@@ -7235,6 +7267,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Views",
+     "title": "Views",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Workbook Basics",
