@@ -1488,7 +1488,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1694,
+   "total": 1728,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1505,6 +1505,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 54
+    },
+    {
+     "id": "Banding",
+     "title": "Banding",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Cancer",
@@ -1547,6 +1555,14 @@
      "unrated": 2
     },
     {
+     "id": "Chromatin",
+     "title": "Chromatin",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Chromatin, Chromosome Structure & Karyotype",
      "title": "Chromatin, Chromosome Structure & Karyotype",
      "easy": 0,
@@ -1569,6 +1585,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "DNA content",
+     "title": "DNA content",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "DNA Structure, Replication & Repair",
@@ -1595,6 +1619,22 @@
      "unrated": 129
     },
     {
+     "id": "Genome",
+     "title": "Genome",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Histones",
+     "title": "Histones",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Human Genome Project & Genomics",
      "title": "Human Genome Project & Genomics",
      "easy": 0,
@@ -1617,6 +1657,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Karyotype",
+     "title": "Karyotype",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Landmarks",
+     "title": "Landmarks",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Lysosomes",
@@ -1659,12 +1715,28 @@
      "unrated": 209
     },
     {
+     "id": "Notation",
+     "title": "Notation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Nucleus",
      "title": "Nucleus",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Packing",
+     "title": "Packing",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Peroxisomes",
@@ -1691,6 +1763,14 @@
      "unrated": 61
     },
     {
+     "id": "Repeats",
+     "title": "Repeats",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Ribosomes",
      "title": "Ribosomes",
      "easy": 0,
@@ -1705,6 +1785,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 193
+    },
+    {
+     "id": "Techniques",
+     "title": "Techniques",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Telomeres",
+     "title": "Telomeres",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     }
    ]
   },
