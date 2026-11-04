@@ -9109,7 +9109,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 841,
+   "total": 866,
    "topics": [
     {
      "id": "Adaptations",
@@ -9245,7 +9245,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 9
     },
     {
      "id": "Culicines",
@@ -9416,6 +9416,14 @@
      "unrated": 2
     },
     {
+     "id": "Midges",
+     "title": "Midges",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
+    },
+    {
      "id": "Morphology",
      "title": "Morphology",
      "easy": 0,
@@ -9582,6 +9590,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Trypanosomiasis",
+     "title": "Trypanosomiasis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Tsetse",
+     "title": "Tsetse",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
     },
     {
      "id": "Tunga",
