@@ -125,3 +125,22 @@ it('typed signed numbers keep their sign (report on legacy:algebra:eme29e:type, 
   for (const input of ['x = -5/8', '-5/8', 'x=-5/8', 'x = −5/8', '-0.625', 'x = -0.625', '-5 / 8']) assert.ok(typedAnswerMatches(input, accept), input);
   for (const input of ['5/8', 'x = 5/8', '-8/5', '0.625']) assert.ok(!typedAnswerMatches(input, accept), input);
 });
+
+it('a heart-skeleton pin sits on its own leader line (report on cardiovascular-system-gross:pic-heart-skeleton-right-fibrous-trigone, 2026-11-04)', () => {
+  const src = readFileSync('src/data/figures/pictures/cardiovascular-system-gross.ts', 'utf8');
+  const spot = (id) => {
+    const m = new RegExp(`id: "${id}", label: "[^"]+", x: ([0-9.]+), y: ([0-9.]+)`).exec(src);
+    return { x: Number(m[1]), y: Number(m[2]) };
+  };
+  const trigone = spot('right-fibrous-trigone');
+  const septal = spot('septal-cusp-of-tricuspid-valve');
+  // On the slide the right trigone's line is left of the septal cusp's line, and the two were swapped.
+  assert.ok(trigone.x < septal.x - 0.03, 'pins are too close or swapped');
+  assert.ok(trigone.y < 0.96 && septal.y < 0.96);
+});
+
+it('picture questions are never put in a matching round (report on match:cardiovascular-physiology:fig-…, 2026-11-04)', () => {
+  const src = readFileSync('src/data/hb2-study.ts', 'utf8');
+  assert.match(src, /matchable\.push/);
+  assert.match(src, /!question\.figure/);
+});

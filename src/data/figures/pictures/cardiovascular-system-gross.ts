@@ -166,8 +166,8 @@ export const heartSkeleton: LessonFigure = {
     { id: "posterior-cusp-of-mitral-valve", label: "Posterior cusp of mitral valve", x: 0.222, y: 0.773, boxes: [[0.021, 0.754, 0.183, 0.037]] },
     { id: "coronary-sinus", label: "Coronary sinus", x: 0.261, y: 0.865, boxes: [[0.145, 0.85, 0.097, 0.03]] },
     { id: "posterior-cusp-of-tricuspid-valve", label: "Posterior cusp of tricuspid valve", x: 0.725, y: 0.893, boxes: [[0.743, 0.875, 0.2, 0.036]] },
-    { id: "right-fibrous-trigone", label: "Right fibrous trigone", x: 0.52, y: 0.969, boxes: [[0.37, 0.954, 0.132, 0.03]] },
-    { id: "septal-cusp-of-tricuspid-valve", label: "Septal cusp of tricuspid valve", x: 0.5, y: 0.969, boxes: [[0.518, 0.954, 0.192, 0.03]] },
+    { id: "right-fibrous-trigone", label: "Right fibrous trigone", x: 0.49, y: 0.945, boxes: [[0.37, 0.954, 0.132, 0.03]] },
+    { id: "septal-cusp-of-tricuspid-valve", label: "Septal cusp of tricuspid valve", x: 0.539, y: 0.945, boxes: [[0.518, 0.954, 0.192, 0.03]] },
   ],
 };
 
