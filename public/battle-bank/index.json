@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1242,
+   "total": 1263,
    "topics": [
     {
      "id": "Active Site",
@@ -4668,6 +4668,14 @@
      "unrated": 6
     },
     {
+     "id": "Catabolism and anabolism",
+     "title": "Catabolism and anabolism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Characteristics of Enzymes",
      "title": "Characteristics of Enzymes",
      "easy": 0,
@@ -4690,6 +4698,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Common pathways",
+     "title": "Common pathways",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Complexes",
@@ -4788,6 +4804,14 @@
      "unrated": 3
     },
     {
+     "id": "Energy currency",
+     "title": "Energy currency",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Enzyme Cofactors",
      "title": "Enzyme Cofactors",
      "easy": 0,
@@ -4882,6 +4906,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Free energy",
+     "title": "Free energy",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Fructolysis",
@@ -5012,6 +5044,14 @@
      "unrated": 1
     },
     {
+     "id": "History",
+     "title": "History",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Homeostasis",
      "title": "Homeostasis",
      "easy": 0,
@@ -5108,6 +5148,14 @@
      "unrated": 4
     },
     {
+     "id": "Metabolism",
+     "title": "Metabolism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Mitochondrial disease",
      "title": "Mitochondrial disease",
      "easy": 0,
@@ -5170,6 +5218,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Organisation",
+     "title": "Organisation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Overview",
@@ -5265,7 +5321,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 23
+     "unrated": 25
     },
     {
      "id": "Regulation of Glycolysis",
