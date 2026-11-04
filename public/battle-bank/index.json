@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 997,
+   "total": 1023,
    "topics": [
     {
      "id": "Absolute value",
@@ -3750,6 +3750,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Continuity",
+     "title": "Continuity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Continuity at a Point",
@@ -3968,6 +3976,14 @@
      "unrated": 6
     },
     {
+     "id": "Functions",
+     "title": "Functions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Functions and Limits",
      "title": "Functions and Limits",
      "easy": 0,
@@ -4085,7 +4101,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 6
     },
     {
      "id": "Integration",
@@ -4166,6 +4182,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Limits",
+     "title": "Limits",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Limits at Infinity",
@@ -4702,6 +4726,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 18
+    },
+    {
+     "id": "Trig limits",
+     "title": "Trig limits",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Trigonometric",
