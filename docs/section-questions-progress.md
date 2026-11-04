@@ -26,7 +26,7 @@ HB2 Biochemistry
 - [x] fatty-acid-biosynthesis — 33 sections, 165 questions (L7 S5 annotation skipped)
 - [x] cholesterol-and-bile-biosynthesis — 22 sections, 110 questions
 - [x] heme-metabolism — 33 sections, 165 questions
-- [ ] oxygen-carriers
+- [x] oxygen-carriers — 19 sections, 95 questions
 - [ ] blood-coagulation-and-fibrinolysis
 - [ ] hormones-endocrine-biochemistry
 - [ ] inborn-errors-of-metabolism

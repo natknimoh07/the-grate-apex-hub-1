@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 2867,
+   "total": 2953,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -215,9 +215,9 @@
     {
      "id": "oxygen-carriers",
      "title": "Oxygen Carriers: Myoglobin and Haemoglobin",
-     "easy": 83,
+     "easy": 168,
      "medium": 38,
-     "hard": 7,
+     "hard": 8,
      "unrated": 103
     },
     {
