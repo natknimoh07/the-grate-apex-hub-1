@@ -52,7 +52,8 @@ export default function CustomQuizBuilderScreen() {
   const colors = useTheme();
   // HB1 learners see HB1; everyone else sees HB2 and HB1, which HB2 learners have done and revise (owner, 2026-11-04).
   const { user } = useAuth();
-  const ownClass = readClassSelection(user?.user_metadata)?.classId;
+  const ownSelection = readClassSelection(user?.user_metadata);
+  const ownClass = ownSelection?.classId;
   const levels: Level[] = ownClass === 'HB1' ? ['HB1'] : ['HB2', 'HB1'];
   const [chosenLevel, setLevel] = useState<Level | null>(null);
   const level = chosenLevel && levels.includes(chosenLevel) ? chosenLevel : levels[0];
@@ -62,6 +63,9 @@ export default function CustomQuizBuilderScreen() {
   const [questionCount, setQuestionCount] = useState<string>('10');
   const [feedback, setFeedback] = useState<'instant' | 'submit'>('instant');
   const [timer, setTimer] = useState('off');
+  // One course on screen at a time, Biochemistry first; buttons switch (owner, 2026-11-04: less scrolling).
+  // What is ticked in the others is kept, so a quiz can still mix courses.
+  const [courseTab, setCourseTab] = useState(COURSE_GROUPS[0]?.course.id ?? '');
 
   const selected = useMemo(() => new Set(selectedLessonIds), [selectedLessonIds]);
   const selectedPast = useMemo(() => new Set(selectedPastTopicIds), [selectedPastTopicIds]);
@@ -138,7 +142,7 @@ export default function CustomQuizBuilderScreen() {
       ) : null}
 
       {level === 'HB1' ? (
-        <Hb1CustomQuiz />
+        <Hb1CustomQuiz initialSemester={ownSelection?.classId === 'HB1' ? ownSelection.semester : 1} />
       ) : (
       <>
       <SavedQuizList match={(draft) => draft.key.startsWith('custom:')} />
@@ -152,7 +156,19 @@ export default function CustomQuizBuilderScreen() {
         <Pill label={`${availableQuestionIds.length} questions`} tone={availableQuestionIds.length ? 'primary' : 'neutral'} />
       </View>
 
-      {COURSE_GROUPS.map(({ course, topics }) => (
+      <View style={styles.courseTabs}>
+        <SegmentedControl
+          label="Course"
+          options={COURSE_GROUPS.map(({ course, topics }) => {
+            const picked = topics.filter((topic) => selectedPast.has(topic.id) || topic.lessons.some((lesson) => selected.has(lesson.id))).length;
+            return { value: course.id, label: picked ? `${course.title} · ${picked}` : course.title };
+          })}
+          value={courseTab}
+          onChange={setCourseTab}
+        />
+      </View>
+
+      {COURSE_GROUPS.filter(({ course }) => course.id === courseTab).map(({ course, topics }) => (
         <View key={course.id} style={styles.courseGroup}>
           <View style={styles.courseHeader}>
             <Text style={styles.courseTitle}>{course.title}</Text>
@@ -284,6 +300,7 @@ function createStyles(colors: ThemeColors) {
     sectionTitle: { ...Type.title3, color: colors.text },
     sectionDetail: { fontSize: 13, lineHeight: 18, color: colors.textSecondary, marginTop: 3 },
     levelSwitch: { maxWidth: 360, marginBottom: 16 },
+    courseTabs: { maxWidth: 520, marginBottom: 12 },
     semesterTitle: { ...Type.overline, color: colors.textSecondary, marginBottom: 6 },
     courseGroup: { marginBottom: 14 },
     courseHeader: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 6, marginBottom: 8 },

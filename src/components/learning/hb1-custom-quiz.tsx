@@ -52,9 +52,11 @@ async function loadCourseTopics(course: LegacyCourse): Promise<CourseTopics> {
   return { lessons, past: pastTopics, ids: { lesson, past } };
 }
 
-export function Hb1CustomQuiz() {
+export function Hb1CustomQuiz({ initialSemester = 1 }: { initialSemester?: 1 | 2 }) {
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
+  // One semester on screen at a time; buttons switch (owner, 2026-11-04: less scrolling).
+  const [semester, setSemester] = useState<1 | 2>(initialSemester);
   const [openId, setOpenId] = useState<string | null>(null);
   const [topics, setTopics] = useState<CourseTopics | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -126,61 +128,71 @@ export function Hb1CustomQuiz() {
   return (
     <View>
       <SavedQuizList match={(draft) => LEGACY_COURSES.some((course) => draft.key === `hb:${course.id}:custom`)} />
-      {([1, 2] as const).map((semester) => (
-        <View key={semester} style={styles.semester}>
-          <Text style={styles.semesterTitle}>{SEMESTER_TITLE[semester]}</Text>
-          {LEGACY_COURSES.filter((course) => course.semester === semester).map((course) => {
-            const isOpen = course.id === openId;
-            return (
-              <Card key={course.id} style={styles.courseCard}>
-                <Interactive
-                  onPress={() => toggleCourse(course.id)}
-                  accessibilityRole="button"
-                  accessibilityState={{ expanded: isOpen }}
-                  accessibilityLabel={`${course.name}: ${isOpen ? 'hide' : 'choose'} topics`}
-                  style={styles.courseHeader}
-                >
-                  <View style={styles.flex}>
-                    <Text style={styles.courseTitle}>{course.name}</Text>
-                    <Text style={styles.courseDetail} numberOfLines={isOpen ? undefined : 1}>{course.desc}</Text>
+      <View style={styles.semesterTabs}>
+        <SegmentedControl
+          label="Semester"
+          options={([1, 2] as const).map((value) => ({ value: String(value), label: SEMESTER_TITLE[value] }))}
+          value={String(semester)}
+          onChange={(value) => {
+            setSemester(Number(value) as 1 | 2);
+            setOpenId(null);
+            setPickedLessons([]);
+            setPickedPast([]);
+          }}
+        />
+      </View>
+      <View style={styles.semester}>
+        {LEGACY_COURSES.filter((course) => course.semester === semester).map((course) => {
+          const isOpen = course.id === openId;
+          return (
+            <Card key={course.id} style={styles.courseCard}>
+              <Interactive
+                onPress={() => toggleCourse(course.id)}
+                accessibilityRole="button"
+                accessibilityState={{ expanded: isOpen }}
+                accessibilityLabel={`${course.name}: ${isOpen ? 'hide' : 'choose'} topics`}
+                style={styles.courseHeader}
+              >
+                <View style={styles.flex}>
+                  <Text style={styles.courseTitle}>{course.name}</Text>
+                  <Text style={styles.courseDetail} numberOfLines={isOpen ? undefined : 1}>{course.desc}</Text>
+                </View>
+                <Icon name={isOpen ? 'chevronUp' : 'chevronDown'} size={18} color={colors.textTertiary} />
+              </Interactive>
+              {isOpen ? (
+                error ? (
+                  <InlineNotice tone="warning" title="Topics unavailable" message={error} />
+                ) : !topics ? (
+                  <LoadingState label="Loading the topics…" />
+                ) : topics.lessons.length === 0 && topics.past.length === 0 ? (
+                  <Text style={styles.courseDetail}>This course has no quiz questions yet.</Text>
+                ) : (
+                  <View style={styles.topics}>
+                    {topics.lessons.length ? (
+                      <>
+                        <View style={styles.groupHeader}>
+                          <Text style={styles.groupTitle}>Lessons</Text>
+                          {selectAll(topics.lessons, pickedLessons, setPickedLessons)}
+                        </View>
+                        {topics.lessons.map((choice) => checkRow(choice, pickedLessons.includes(choice.id), () => setPickedLessons((list) => toggle(list, choice.id))))}
+                      </>
+                    ) : null}
+                    {topics.past.length ? (
+                      <>
+                        <View style={styles.groupHeader}>
+                          <Text style={styles.groupTitle}>Past questions by topic</Text>
+                          {selectAll(topics.past, pickedPast, setPickedPast)}
+                        </View>
+                        {topics.past.map((choice) => checkRow(choice, pickedPast.includes(choice.id), () => setPickedPast((list) => toggle(list, choice.id)), true))}
+                      </>
+                    ) : null}
                   </View>
-                  <Icon name={isOpen ? 'chevronUp' : 'chevronDown'} size={18} color={colors.textTertiary} />
-                </Interactive>
-                {isOpen ? (
-                  error ? (
-                    <InlineNotice tone="warning" title="Topics unavailable" message={error} />
-                  ) : !topics ? (
-                    <LoadingState label="Loading the topics…" />
-                  ) : topics.lessons.length === 0 && topics.past.length === 0 ? (
-                    <Text style={styles.courseDetail}>This course has no quiz questions yet.</Text>
-                  ) : (
-                    <View style={styles.topics}>
-                      {topics.lessons.length ? (
-                        <>
-                          <View style={styles.groupHeader}>
-                            <Text style={styles.groupTitle}>Lessons</Text>
-                            {selectAll(topics.lessons, pickedLessons, setPickedLessons)}
-                          </View>
-                          {topics.lessons.map((choice) => checkRow(choice, pickedLessons.includes(choice.id), () => setPickedLessons((list) => toggle(list, choice.id))))}
-                        </>
-                      ) : null}
-                      {topics.past.length ? (
-                        <>
-                          <View style={styles.groupHeader}>
-                            <Text style={styles.groupTitle}>Past questions by topic</Text>
-                            {selectAll(topics.past, pickedPast, setPickedPast)}
-                          </View>
-                          {topics.past.map((choice) => checkRow(choice, pickedPast.includes(choice.id), () => setPickedPast((list) => toggle(list, choice.id)), true))}
-                        </>
-                      ) : null}
-                    </View>
-                  )
-                ) : null}
-              </Card>
-            );
-          })}
-        </View>
-      ))}
+                )
+              ) : null}
+            </Card>
+          );
+        })}
+      </View>
 
       {open && topics ? (
         <>
@@ -213,7 +225,7 @@ function createStyles(colors: ThemeColors) {
   return StyleSheet.create({
     flex: { flex: 1, minWidth: 0 },
     semester: { marginBottom: 14 },
-    semesterTitle: { ...Type.title3, color: colors.text, marginTop: 6, marginBottom: 8 },
+    semesterTabs: { maxWidth: 360, marginBottom: 12 },
     courseCard: { gap: 10, marginBottom: 10 },
     courseHeader: { flexDirection: 'row', alignItems: 'center', gap: 10 },
     courseTitle: { fontSize: 15, fontWeight: '800', color: colors.text },
