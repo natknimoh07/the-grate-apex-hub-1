@@ -53,6 +53,7 @@ import { entomologyVectorControl } from '@/data/hb1-lessons/entomology-vector-co
 import { HB1_PRACTICE_IDS } from '@/data/hb1-lessons/practice-ids';
 import { anatomyIntroduction } from '@/data/hb1-lessons/anatomy-introduction';
 import { anatomyJoints } from '@/data/hb1-lessons/anatomy-joints';
+import { anatomyNervousTissue } from '@/data/hb1-lessons/anatomy-nervous-tissue';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -88,7 +89,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
-  anatomyIntroduction, anatomyJoints,
+  anatomyIntroduction, anatomyJoints, anatomyNervousTissue,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
