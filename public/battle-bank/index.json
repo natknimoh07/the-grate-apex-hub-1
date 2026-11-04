@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1213,
+   "total": 1242,
    "topics": [
     {
      "id": "Active Site",
@@ -4698,6 +4698,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Control",
+     "title": "Control",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Cori cycle",
@@ -4866,6 +4874,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Fatty acids",
+     "title": "Fatty acids",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Fructolysis",
@@ -5044,6 +5060,14 @@
      "unrated": 1
     },
     {
+     "id": "Ketone bodies",
+     "title": "Ketone bodies",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Ketosis",
      "title": "Ketosis",
      "easy": 0,
@@ -5058,6 +5082,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 14
+    },
+    {
+     "id": "Lipids",
+     "title": "Lipids",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Liver vs muscle",
@@ -5090,6 +5122,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Mobilisation",
+     "title": "Mobilisation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Multiple Completion — Gluconeogenesis, Glycolysis & Galactose Metabolism",
@@ -5260,6 +5300,14 @@
      "unrated": 1
     },
     {
+     "id": "Special fatty acids",
+     "title": "Special fatty acids",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Step 1",
      "title": "Step 1",
      "easy": 0,
@@ -5394,6 +5442,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Yield",
+     "title": "Yield",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "β-oxidation",
+     "title": "β-oxidation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "general",
