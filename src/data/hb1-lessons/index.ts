@@ -39,6 +39,7 @@ import { physiologyBlood } from '@/data/hb1-lessons/physiology-blood';
 import { biochemistryGlycolysis } from '@/data/hb1-lessons/biochemistry-glycolysis';
 import { biochemistryGluconeogenesis } from '@/data/hb1-lessons/biochemistry-gluconeogenesis';
 import { biochemistryFructoseGalactose } from '@/data/hb1-lessons/biochemistry-fructose-galactose';
+import { biochemistryKrebs } from '@/data/hb1-lessons/biochemistry-krebs';
 import { entomologyBlackflies } from '@/data/hb1-lessons/entomology-blackflies';
 import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
 import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
@@ -78,7 +79,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   bmcAldehydes, bmcKetones, bmcCarboxylicAcids, bmcAcidDerivatives, bmcAmines, bmcStereochemistry,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
-  biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose,
+  biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 

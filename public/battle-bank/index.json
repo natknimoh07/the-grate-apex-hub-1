@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1110,
+   "total": 1138,
    "topics": [
     {
      "id": "Active Site",
@@ -4614,6 +4614,22 @@
     {
      "id": "Allosteric Modification",
      "title": "Allosteric Modification",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Amphibolic",
+     "title": "Amphibolic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Anaplerotic",
+     "title": "Anaplerotic",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -4737,7 +4753,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 3
     },
     {
      "id": "Enzyme Cofactors",
@@ -4940,6 +4956,14 @@
      "unrated": 2
     },
     {
+     "id": "Inhibitors",
+     "title": "Inhibitors",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Introduction",
      "title": "Introduction",
      "easy": 0,
@@ -5025,7 +5049,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 5
     },
     {
      "id": "Past Questions",
@@ -5034,6 +5058,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 77
+    },
+    {
+     "id": "PDH complex",
+     "title": "PDH complex",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Pentose Phosphate Pathway",
@@ -5084,12 +5116,20 @@
      "unrated": 1
     },
     {
+     "id": "Reactions",
+     "title": "Reactions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Regulation",
      "title": "Regulation",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 11
+     "unrated": 14
     },
     {
      "id": "Regulation of Glycolysis",
