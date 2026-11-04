@@ -19,8 +19,19 @@ export const statsIntro: Hb1Lesson = {
       title: 'What statistics is',
       kicker: 'Learning from data',
       blocks: [
+        { k: 'box', title: 'The STAT 153 course at a glance', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Nature and uses of statistics; basic concepts (this lesson).',
+          'Data collection and descriptive analysis of data (lessons 2–3).',
+          'Probability: random experiments, definitions, notation and probability measures, laws for compound events, counting techniques and decision problems (lesson 4).',
+          'Random variables and the discrete and continuous distributions (lessons 5–6).',
+        ] }] },
         { k: 'term', name: 'Statistics', def: 'A scientific method of <b>collecting, compiling, analysing, presenting, publishing and disseminating</b> numerical facts (data) in order to make <b>informed decisions</b>.' },
-        { k: 'p', x: 'Statisticians <b>design</b> experiments and surveys, <b>collect and manage</b> data, choose the best method of <b>analysis and inference</b>, and <b>measure how good</b> an inference is. Major users: <b>government, businesses, researchers, health professionals, economists and policy makers</b> (e.g. investment decisions, opinion polls, the EPA’s water-quality sampling).' },
+        { k: 'p', x: 'Statisticians <b>design</b> experiments and surveys, <b>collect and manage</b> data, choose the best method of <b>analysis and inference</b>, and <b>measure how good</b> an inference is. Anyone in the field needs its basic concepts and also its <b>strengths and limitations</b>. Major users: <b>government, businesses, researchers, health professionals, economists and policy makers</b>.' },
+        { k: 'table', head: ['Everyday application', 'How statistics is used'], rows: [
+          { c: ['<b>Investment decisions</b>', 'Financial planners study recent trends in stock-market prices before investing'] },
+          { c: ['<b>Opinion polls</b>', 'Politicians use poll data to shape legislation and plan campaigns around their chances of winning'] },
+          { c: ['<b>Water quality</b>', 'The Environmental Protection Agency (EPA) samples rivers and lakes periodically to measure contamination and keep quality up'] },
+        ] },
         { k: 'table', head: ['In medicine', 'Use'], rows: [
           { c: ['<b>Clinical trials</b>', 'Design and analysis to test the safety and effectiveness of drugs, vaccines and devices'] },
           { c: ['<b>Diagnosis and treatment</b>', 'Comparing outcomes (surgery vs therapy) to find the best intervention'] },
@@ -32,6 +43,12 @@ export const statsIntro: Hb1Lesson = {
           { title: 'Descriptive statistics', blocks: [{ k: 'p', x: '<b>Describe and summarise</b> data: “the average age of patients admitted to this hospital is 62”.' }] },
           { title: 'Inferential statistics', blocks: [{ k: 'p', x: '<b>Generalise</b> about a population from a <b>random sample</b> drawn from it.' }] },
         ] },
+        { k: 'box', title: 'Strictly speaking: what statistics cannot do', tone: 'gold', blocks: [{ k: 'ul', items: [
+          'It describes <b>groups</b>, not individuals: “the average stay is 5 days” does not say how long one patient will stay.',
+          'Its results are true <b>on average and with a margin of error</b>, never with certainty; a sample may by chance be unlike its population.',
+          'It needs <b>good data</b>: a biased sample or a leading question gives a precise-looking but wrong answer (“garbage in, garbage out”).',
+          'It can be <b>misused</b>: choosing only favourable results or a misleading chart. Association found in data is not proof of cause.',
+        ] }] },
       ],
     },
     {
@@ -66,11 +83,13 @@ export const statsIntro: Hb1Lesson = {
         ] },
         { k: 'p', x: '<b>Measurement</b> is applying mathematics to things or events in a meaningful, consistent way. The <b>scale of measurement</b> sets how much information the data contain and which summaries and analyses are appropriate.' },
         { k: 'table', head: ['Scale', 'Order', 'Equal intervals', 'True zero', 'Examples'], rows: [
-          { c: ['<b>Nominal</b>', '—', '—', '—', 'Blood group, treatment type, marital status; arithmetic meaningless'] },
-          { c: ['<b>Ordinal</b>', '✓', '—', '—', 'Cancer stage, injury severity, taste rating, grades; arithmetic still meaningless'] },
-          { c: ['<b>Interval</b>', '✓', '✓', '—', '<b>Temperature (°C)</b>, <b>IQ</b>: 0 does not mean “none”'] },
-          { c: ['<b>Ratio</b>', '✓', '✓', '<b>✓</b>', 'Tumour size, ulcer area, number of visits, <b>lung capacity</b>: 0 means none'] },
+          { c: ['<b>Nominal</b>: names or labels only', '—', '—', '—', 'Blood group; type of treatment (surgery, medication, therapy); gender; marital status (single, married, divorced); employment status (employed, unemployed). Arithmetic is <b>inappropriate</b>'] },
+          { c: ['<b>Ordinal</b>: nominal plus ranking', '✓', '—', '—', 'Severity of injury (fatal, serious, minor, no injury); taste of food (good, moderate, bad); academic performance (excellent, very good, poor); cancer stage I–IV. Arithmetic still makes no sense'] },
+          { c: ['<b>Interval</b>: ranked, with exact differences', '✓', '✓', '—', '<b>Temperature (°C)</b>: 500° is warmer than 100°, but 0° is not “no temperature”. <b>IQ</b>: 110 is above 50, but IQ 0 is not “no intelligence”'] },
+          { c: ['<b>Ratio</b>: interval plus a true zero', '✓', '✓', '<b>✓</b>', 'Tumour size or volume, area of an ulcer or lesion, number of hospital visits, <b>lung capacity</b>: 0 means none'] },
         ] },
+        { k: 'box', title: 'Strictly speaking: why the true zero matters', tone: 'gold', blocks: [{ k: 'p', x: 'Only a ratio scale lets you say “twice as much”. A 4 cm tumour is twice the size of a 2 cm one, but 40 °C is not twice as hot as 20 °C: in kelvin (which has a true zero) they are 313 K and 293 K. Ordinal gaps are not equal either: stage II to III is not “the same step” as I to II. Order of information: nominal &lt; ordinal &lt; interval &lt; ratio, and a higher scale can always be reduced to a lower one (ages grouped into “young, middle, old”), never the reverse.' }] },
+        { k: 'p', x: 'The slides end with a reading assignment on data and its sources, forms and types of data, data collection methods and questionnaire design: all of it is taught in the next lesson.' },
         { k: 'box', title: 'Choosing a chart', tone: 'formula', blocks: [{ k: 'ul', items: ['Nominal or ordinal data: <b>bar charts</b> (simple, multiple, compound) or <b>pie charts</b>.', 'Interval or ratio data: <b>histogram</b>, frequency <b>polygon</b>, <b>ogive</b>.'] }] },
         { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
           'Statistics: collect, compile, analyse, present, publish and disseminate data to decide.',
@@ -106,5 +125,8 @@ export const statsIntro: Hb1Lesson = {
     ['The only scale with a true zero is the', 'Ratio scale', ['Interval scale', 'Ordinal scale', 'Nominal scale'], 'Zero means none.', 'Scales'],
     ['Nominal data are best shown with', 'Bar or pie charts', ['Histograms', 'Ogives', 'Frequency polygons'], 'Histograms suit interval/ratio.', 'Scales'],
     ['An IQ of zero not meaning “no intelligence” shows IQ is', 'Interval', ['Ratio', 'Nominal', 'Discrete'], 'No true zero.', 'Scales'],
+    ['Severity of injury (fatal, serious, minor) is measured on the', 'Ordinal scale', ['Nominal scale', 'Interval scale', 'Ratio scale'], 'Ranked, unequal gaps.', 'Scales'],
+    ['Employment status (employed, unemployed) is', 'Nominal', ['Ordinal', 'Interval', 'Ratio'], 'Labels only.', 'Scales'],
+    ['The EPA sampling rivers to check contamination is an example of', 'Statistics in water quality', ['An opinion poll', 'An investment decision', 'A clinical trial'], 'Application slide.', 'Basics'],
   ],
 };

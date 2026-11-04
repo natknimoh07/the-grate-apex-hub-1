@@ -4452,7 +4452,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 584,
+   "total": 587,
    "topics": [
     {
      "id": "Addition Rule",
@@ -4484,7 +4484,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 10
     },
     {
      "id": "Bayes",
@@ -5060,7 +5060,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 9
     },
     {
      "id": "Scales of Measurement",

@@ -21,7 +21,8 @@ export const statsProbability: Hb1Lesson = {
       title: 'The language of probability',
       kicker: 'Chance, measured from 0 to 1',
       blocks: [
-        { k: 'p', x: '<b>Probability</b> is the chance of an event occurring: the <b>long-run proportion</b> of times an outcome occurs when there is short-term uncertainty. Near 1 is likely, near 0 unlikely. It is the basis of <b>inferential statistics</b>.' },
+        { k: 'p', x: '“The only two sure things are death and taxes”: almost everything else involves <b>chance</b>. Should you carry an umbrella today? Will your phone battery last until tomorrow? Every such decision weighs how likely something is.' },
+        { k: 'p', x: '<b>Probability</b> is the chance of an event occurring: the <b>long-run proportion</b> of times an outcome occurs when there is short-term uncertainty. Near 1 is likely, near 0 unlikely. It is the basis of <b>inferential statistics</b>: when something with a <b>low</b> probability happens, we investigate why (an unusually high infection rate on one ward, say).' },
         { k: 'table', head: ['Term', 'Meaning', 'Example'], rows: [
           { c: ['<b>Experiment</b>', 'Any process giving well-defined outcomes: <b>deterministic</b> (no chance) or <b>random</b> (cannot be predicted)', 'Antibiotic: cured or not cured'] },
           { c: ['<b>Trial</b>', 'One performance of the experiment', 'One toss'] },
@@ -53,6 +54,7 @@ export const statsProbability: Hb1Lesson = {
           { c: ['A.3', 'Mutually exclusive A, B: P(A ∪ B) = P(A) + P(B)'] },
           { c: ['A.4', 'Extends A.3 to any number of mutually exclusive events'] },
         ] },
+        { k: 'p', x: 'Classical probability <b>assumes</b> equal likelihood (a fair die); empirical probability <b>observes</b>: roll the die 6000 times and use the frequencies. With enough trials the two agree (the law of large numbers).' },
         { k: 'box', title: 'The complement', tone: 'formula', blocks: [{ k: 'p', x: 'P(A′) = 1 − P(A). Its main use: <b>“at least one”</b> = 1 − P(none), far simpler than adding every case.' }] },
       ],
     },
@@ -69,7 +71,8 @@ export const statsProbability: Hb1Lesson = {
           { c: ['<b>Conditional</b>', 'A given B has occurred', 'P(A|B) = P(A ∩ B) / P(B), P(B) &gt; 0'] },
           { c: ['<b>Multiplication rule</b>', 'Both occur', 'P(A ∩ B) = P(A)P(B|A) = P(B)P(A|B)'] },
         ] },
-        { k: 'p', x: 'Three events: P(A ∪ B ∪ C) = ΣP − P(A∩B) − P(A∩C) − P(B∩C) + P(A∩B∩C), and P(A ∩ B ∩ C) = P(A)P(B|A)P(C|A ∩ B).' },
+        { k: 'p', x: 'P(A|B) is <b>undefined if P(B) = 0</b>. In a finite sample space with equally likely outcomes it is simply <b>n(A ∩ B) / n(B)</b>: shrink the sample space to B and count. A conditional probability obeys the axioms too: P(A|B) ≥ 0, P(B|B) = 1, and for mutually exclusive A₁, A₂, … the P(Aᵢ|B) add.' },
+        { k: 'p', x: 'Three events: P(A ∪ B ∪ C) = ΣP − P(A∩B) − P(A∩C) − P(B∩C) + P(A∩B∩C), and P(A ∩ B ∩ C) = P(A)P(B|A)P(C|A ∩ B); by induction, P(A₁ ∩ … ∩ Aₙ) = P(A₁)P(A₂|A₁)…P(Aₙ|A₁ ∩ … ∩ Aₙ₋₁). Independence can be checked three equivalent ways: P(A|B) = P(A), P(B|A) = P(B), or P(A ∩ B) = P(A)P(B).' },
         { k: 'box', title: 'Strictly speaking', tone: 'gold', blocks: [{ k: 'p', x: 'Mutually exclusive events with non-zero probabilities can <b>never</b> be independent: if one happens the other’s chance drops to 0. Slide 17 calls P(A ∩ B) = P(A)P(B|A) “conditionally independent”; that equation is simply the multiplication rule, true for <b>any</b> two events.' }] },
         { k: 'step', n: '2', title: 'Worked examples from the slides', blocks: [{ k: 'ul', items: [
           'Breast cancer 0.40, smokers 0.20, both 0.13: cancer or smoking = 0.4 + 0.2 − 0.13 = <b>0.47</b>.',

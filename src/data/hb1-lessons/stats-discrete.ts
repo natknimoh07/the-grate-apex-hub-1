@@ -59,8 +59,8 @@ export const statsDiscrete: Hb1Lesson = {
         { k: 'p', x: 'A <b>probability distribution</b> lists the possible values of X with their probabilities. Distributions used often have their own formulas and tables; they are <b>discrete</b> or <b>continuous</b>.' },
         { k: 'term', name: 'Discrete uniform on {a, …, b}', def: 'Every one of the n = b − a + 1 integers is equally likely: P(X = k) = 1/(b − a + 1). <b>Mean</b> (a + b)/2; <b>variance</b> [(b − a + 1)² − 1]/12. For {1, …, n}: (n + 1)/2 and (n² − 1)/12.' },
         { k: 'step', n: '3', title: 'Worked example', blocks: [{ k: 'p', x: 'X uniform on {1, …, 5}: E(X) = 3, Var(X) = (25 − 1)/12 = <b>2</b>. A fair die (n = 6): Var = 35/12 ≈ 2.92.' }] },
-        { k: 'p', x: 'A <b>Bernoulli trial</b> has two mutually exclusive outcomes (head or tail, alive or dead after surgery, male or female). A sequence of them is a <b>Bernoulli process</b> if: two outcomes each time; <b>p constant</b> from trial to trial (q = 1 − p); trials <b>independent</b>; X binary (0 or 1).' },
-        { k: 'box', title: 'Bernoulli(p)', tone: 'formula', blocks: [{ k: 'p', x: 'p(x) = pˣ(1 − p)¹⁻ˣ, x = 0, 1. <b>Mean p</b>, <b>variance p(1 − p)</b> (since E(X²) = p), MGF M(t) = peᵗ + q. It is the binomial with <b>n = 1</b>.' }] },
+        { k: 'p', x: 'A <b>Bernoulli trial</b> has two mutually exclusive outcomes (head or tail, yes or no in an election, alive or dead after surgery, male or female at birth). A sequence of them is a <b>Bernoulli process</b> if: two outcomes each time; <b>p constant</b> from trial to trial (q = 1 − p); trials <b>independent</b>; X binary (0 or 1).' },
+        { k: 'box', title: 'Bernoulli(p)', tone: 'formula', blocks: [{ k: 'p', x: 'p(x) = pˣ(1 − p)¹⁻ˣ, x = 0, 1. <b>Mean p</b>, <b>variance p(1 − p)</b>, MGF M(t) = peᵗ + q. Proof: E(X) = 0(1 − p) + 1(p) = p; E(X²) = 0²(1 − p) + 1²(p) = p; Var = p − p²; M(t) = E(e<sup>tX</sup>) = (1 − p)e⁰ + peᵗ. It is the binomial with <b>n = 1</b>.' }] },
       ],
     },
     {
