@@ -13,7 +13,7 @@ import { PageHeader, Screen } from '@/components/ui/screen';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { InlineNotice } from '@/components/ui/state-views';
 import { Type, type ThemeColors } from '@/constants/theme';
-import { getLessonQuestions, publishedTopics } from '@/data/curriculum';
+import { courseCatalog, getLessonQuestions, publishedTopics } from '@/data/curriculum';
 import { pastCourseForSubject } from '@/data/past-question-topics';
 import { pastQuestionsFor, usePastQuestions } from '@/data/past-questions';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -35,6 +35,12 @@ const TIMER_OPTIONS = [
 // Every topic's HB2 past questions can be added too ("Past questions on this topic").
 const PAST_COURSES = [...new Set(publishedTopics.map((topic) => pastCourseForSubject(topic.subject)))];
 const topicPastQuestions = (topic: (typeof publishedTopics)[number]) => pastQuestionsFor(pastCourseForSubject(topic.subject), topic.id);
+
+// Topics under their course (owner, 2026-11-04: "Biochemistry, then under it Fatty Acid
+// Biosynthesis"), courses and topics in the app's usual order.
+const COURSE_GROUPS = courseCatalog
+  .map((course) => ({ course, topics: publishedTopics.filter((topic) => topic.subject === course.subject) }))
+  .filter((group) => group.topics.length > 0);
 
 export default function CustomQuizBuilderScreen() {
   const styles = useThemedStyles(createStyles);
@@ -119,68 +125,76 @@ export default function CustomQuizBuilderScreen() {
         <Pill label={`${availableQuestionIds.length} questions`} tone={availableQuestionIds.length ? 'primary' : 'neutral'} />
       </View>
 
-      {publishedTopics.map((topic) => {
-        const lessonIds = topic.lessons.map((lesson) => lesson.id);
-        const selectedCount = lessonIds.filter((lessonId) => selected.has(lessonId)).length;
-        const pastCount = topicPastQuestions(topic).length;
-        const pastSelected = selectedPast.has(topic.id);
-        const allSelected = lessonIds.length > 0 && selectedCount === lessonIds.length && (pastCount === 0 || pastSelected);
-        return (
-          <Card key={topic.id} style={styles.topicCard}>
-            <View style={styles.topicHeader}>
-              <View style={styles.topicCopy}>
-                <Text style={styles.topicTitle}>{topic.title}</Text>
-                <Text style={styles.topicCount}>
-                  {selectedCount} of {lessonIds.length} lessons selected{pastSelected ? ' · past questions' : ''}
-                </Text>
-              </View>
-              <Button
-                label={allSelected ? 'Clear' : 'Select all'}
-                size="sm"
-                variant="secondary"
-                onPress={() => toggleTopic(topic.id, lessonIds, pastCount > 0)}
-              />
-            </View>
-            <View style={styles.lessonList}>
-              {topic.lessons.map((lesson) => {
-                const isSelected = selected.has(lesson.id);
-                const questionCount = getLessonQuestions(lesson.id).filter((question) => question.usage !== 'learn').length;
-                return (
-                  <Interactive
-                    key={lesson.id}
-                    onPress={() => toggleLesson(lesson.id)}
-                    accessibilityRole="checkbox"
-                    accessibilityState={{ checked: isSelected }}
-                    accessibilityLabel={`${lesson.title}, ${questionCount} questions`}
-                    style={({ hovered }) => [styles.lessonRow, hovered && styles.lessonRowHover]}
-                  >
-                    <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-                      {isSelected ? <Icon name="check" size={13} color={colors.surfaceElevated} /> : null}
-                    </View>
-                    <Text style={styles.lessonName}>{lesson.title}</Text>
-                    <Text style={styles.lessonQuestionCount}>{questionCount}</Text>
-                  </Interactive>
-                );
-              })}
-              <Interactive
-                onPress={() => togglePast(topic.id)}
-                disabled={pastCount === 0}
-                accessibilityRole="checkbox"
-                accessibilityState={{ checked: pastSelected, disabled: pastCount === 0 }}
-                accessibilityLabel={`Past questions on ${topic.title}, ${pastCount} questions`}
-                style={({ hovered }) => [styles.lessonRow, hovered && pastCount > 0 && styles.lessonRowHover]}
-              >
-                <View style={[styles.checkbox, pastSelected && styles.checkboxSelected]}>
-                  {pastSelected ? <Icon name="check" size={13} color={colors.surfaceElevated} /> : null}
+      {COURSE_GROUPS.map(({ course, topics }) => (
+        <View key={course.id} style={styles.courseGroup}>
+          <View style={styles.courseHeader}>
+            <Text style={styles.courseTitle}>{course.title}</Text>
+            <Text style={styles.topicCount}>{topics.length} topic{topics.length === 1 ? '' : 's'}</Text>
+          </View>
+          {topics.map((topic) => {
+            const lessonIds = topic.lessons.map((lesson) => lesson.id);
+            const selectedCount = lessonIds.filter((lessonId) => selected.has(lessonId)).length;
+            const pastCount = topicPastQuestions(topic).length;
+            const pastSelected = selectedPast.has(topic.id);
+            const allSelected = lessonIds.length > 0 && selectedCount === lessonIds.length && (pastCount === 0 || pastSelected);
+            return (
+              <Card key={topic.id} style={styles.topicCard}>
+                <View style={styles.topicHeader}>
+                  <View style={styles.topicCopy}>
+                    <Text style={styles.topicTitle}>{topic.title}</Text>
+                    <Text style={styles.topicCount}>
+                      {selectedCount} of {lessonIds.length} lessons selected{pastSelected ? ' · past questions' : ''}
+                    </Text>
+                  </View>
+                  <Button
+                    label={allSelected ? 'Clear' : 'Select all'}
+                    size="sm"
+                    variant="secondary"
+                    onPress={() => toggleTopic(topic.id, lessonIds, pastCount > 0)}
+                  />
                 </View>
-                <Icon name="book" size={15} color={pastCount > 0 ? colors.accentText : colors.textTertiary} />
-                <Text style={[styles.lessonName, pastCount === 0 && styles.muted]}>Past questions on this topic</Text>
-                <Text style={styles.lessonQuestionCount}>{!pastReady ? '…' : pastCount > 0 ? pastCount : 'None yet'}</Text>
-              </Interactive>
-            </View>
-          </Card>
-        );
-      })}
+                <View style={styles.lessonList}>
+                  {topic.lessons.map((lesson) => {
+                    const isSelected = selected.has(lesson.id);
+                    const questionCount = getLessonQuestions(lesson.id).filter((question) => question.usage !== 'learn').length;
+                    return (
+                      <Interactive
+                        key={lesson.id}
+                        onPress={() => toggleLesson(lesson.id)}
+                        accessibilityRole="checkbox"
+                        accessibilityState={{ checked: isSelected }}
+                        accessibilityLabel={`${lesson.title}, ${questionCount} questions`}
+                        style={({ hovered }) => [styles.lessonRow, hovered && styles.lessonRowHover]}
+                      >
+                        <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                          {isSelected ? <Icon name="check" size={13} color={colors.surfaceElevated} /> : null}
+                        </View>
+                        <Text style={styles.lessonName}>{lesson.title}</Text>
+                        <Text style={styles.lessonQuestionCount}>{questionCount}</Text>
+                      </Interactive>
+                    );
+                  })}
+                  <Interactive
+                    onPress={() => togglePast(topic.id)}
+                    disabled={pastCount === 0}
+                    accessibilityRole="checkbox"
+                    accessibilityState={{ checked: pastSelected, disabled: pastCount === 0 }}
+                    accessibilityLabel={`Past questions on ${topic.title}, ${pastCount} questions`}
+                    style={({ hovered }) => [styles.lessonRow, hovered && pastCount > 0 && styles.lessonRowHover]}
+                  >
+                    <View style={[styles.checkbox, pastSelected && styles.checkboxSelected]}>
+                      {pastSelected ? <Icon name="check" size={13} color={colors.surfaceElevated} /> : null}
+                    </View>
+                    <Icon name="book" size={15} color={pastCount > 0 ? colors.accentText : colors.textTertiary} />
+                    <Text style={[styles.lessonName, pastCount === 0 && styles.muted]}>Past questions on this topic</Text>
+                    <Text style={styles.lessonQuestionCount}>{!pastReady ? '…' : pastCount > 0 ? pastCount : 'None yet'}</Text>
+                  </Interactive>
+                </View>
+              </Card>
+            );
+          })}
+        </View>
+      ))}
 
       <Card style={styles.optionsCard}>
         <Text style={styles.sectionTitle}>Quiz settings</Text>
@@ -240,6 +254,9 @@ function createStyles(colors: ThemeColors) {
     sectionCopy: { flex: 1, minWidth: 0 },
     sectionTitle: { ...Type.title3, color: colors.text },
     sectionDetail: { fontSize: 13, lineHeight: 18, color: colors.textSecondary, marginTop: 3 },
+    courseGroup: { marginBottom: 14 },
+    courseHeader: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginTop: 6, marginBottom: 8 },
+    courseTitle: { ...Type.title3, color: colors.text },
     topicCard: { gap: 10, marginBottom: 10 },
     topicHeader: { flexDirection: 'row', alignItems: 'center', gap: 10 },
     topicCopy: { flex: 1, minWidth: 0 },
