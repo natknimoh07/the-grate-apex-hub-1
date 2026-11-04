@@ -19,7 +19,7 @@ export const statsContinuous: Hb1Lesson = {
       title: 'The continuous uniform distribution',
       kicker: 'Every value between a and b equally likely',
       blocks: [
-        { k: 'p', x: 'Models a quantity that can take <b>any value between a and b</b>, none favoured: waiting time in an emergency department, time from symptom onset to admission, drug absorption over an interval, patients arriving evenly over an hour.' },
+        { k: 'p', x: 'Models a quantity that can take <b>any value between a and b</b>, none favoured: waiting time in an emergency department, time from symptom onset to admission, drug absorption over an interval, blood glucose during a controlled fast, patients arriving evenly over an hour. The variance measures how uncertain a predicted wait is.' },
         { k: 'box', title: 'X ~ U(a, b)', tone: 'formula', blocks: [{ k: 'ul', items: [
           'f(x) = 1/(b − a) for a ≤ x ≤ b, 0 elsewhere; F(x) = (x − a)/(b − a).',
           'E(X) = (a + b)/2; Var(X) = (b − a)²/12; MGF (e<sup>tb</sup> − e<sup>ta</sup>) / [(b − a)t].',
@@ -33,13 +33,13 @@ export const statsContinuous: Hb1Lesson = {
       title: 'The exponential distribution',
       kicker: 'Time between events',
       blocks: [
-        { k: 'p', x: 'Models the <b>time between events</b>: between arrivals, survival after diagnosis, time to equipment failure, hospital stay, time between contractions, drug elimination. Its main uses are <b>survival analysis</b> and reliability.' },
+        { k: 'p', x: 'Models the <b>time between events</b>: between arrivals, survival after diagnosis, time to equipment failure, hospital stay, time between contractions in labour, drug half-life in pharmacokinetics. Its main uses are <b>survival analysis</b> and reliability.' },
         { k: 'box', title: 'X ~ Exponential, mean θ, rate λ = 1/θ', tone: 'formula', blocks: [{ k: 'ul', items: [
           'f(x) = λe<sup>−λx</sup>, x &gt; 0; F(x) = 1 − e<sup>−x/θ</sup>, so <b>P(X &gt; x) = e<sup>−x/θ</sup></b>.',
           'E(X) = θ = 1/λ; Var(X) = θ² = 1/λ²; MGF 1/(1 − θt) = λ/(λ − t).',
           'Average 2 hours between admissions: θ = 2, λ = 0.5. Cardiac arrests every 48 hours: λ = 1/48 ≈ 0.0208 per hour.',
         ] }] },
-        { k: 'term', name: 'Memoryless property', def: 'P(X &gt; x + a | X &gt; x) = P(X &gt; a): what has already lasted does not change the chance of lasting longer. A device that has worked 100 hours is as reliable for the next 50 as a new one; a patient who survived a year has the same chance of another year as a newly diagnosed one.' },
+        { k: 'term', name: 'Memoryless property', def: 'P(X &gt; x + a | X &gt; x) = P(X &gt; a): what has already lasted does not change the chance of lasting longer. A drug that has stayed in the body 4 hours has the same chance of lasting 2 more as a fresh dose; a device that has worked 100 hours is as reliable for the next 50 as a new one; a patient who survived a year has the same chance of another year as a newly diagnosed one.' },
         { k: 'step', n: '2', title: 'Worked example: survival, mean 10 months', blocks: [{ k: 'ul', items: [
           'P(X &gt; 10) = e⁻¹ ≈ <b>0.3679</b>; P(X &gt; 30) = e⁻³ ≈ <b>0.0498</b>.',
           'The time only 5% outlive: e<sup>−x/10</sup> = 0.05, x = −10 ln 0.05 ≈ <b>29.96 months</b>.',
@@ -53,7 +53,7 @@ export const statsContinuous: Hb1Lesson = {
       title: 'The gamma distribution',
       kicker: 'Waiting for the k-th event',
       blocks: [
-        { k: 'p', x: 'Models the time until <b>several</b> events: the k-th adverse event in a trial, total radiation dose over treatments, time to complete wound healing, the k-th seizure. The exponential is the gamma with α = 1.' },
+        { k: 'p', x: 'Models the time until <b>several</b> events: the k-th adverse event in a trial, total radiation dose over treatments, time to complete wound healing, total medication dose accumulated, the k-th seizure in epilepsy. The exponential is the gamma with α = 1.' },
         { k: 'box', title: 'The gamma function', tone: 'formula', blocks: [{ k: 'p', x: 'Γ(a) = ∫₀<sup>∞</sup> x<sup>a−1</sup>e<sup>−x</sup> dx; Γ(1) = 1; Γ(a) = (a − 1)Γ(a − 1); <b>Γ(n) = (n − 1)!</b>; Γ(1/2) = √π.' }] },
         { k: 'box', title: 'X ~ Gamma(α, β)', tone: 'formula', blocks: [{ k: 'ul', items: [
           'f(x) = x<sup>α−1</sup>e<sup>−x/β</sup> / [Γ(α)β<sup>α</sup>], x ≥ 0.',
@@ -73,7 +73,7 @@ export const statsContinuous: Hb1Lesson = {
       title: 'The normal distribution and z-scores',
       kicker: 'The bell curve of biology',
       blocks: [
-        { k: 'p', x: 'The most important distribution: many <b>biological and laboratory measurements</b> are roughly normal (birth weight, blood pressure, cholesterol, white cell count), diagnostic ranges assume it, and <b>sample means become normal</b> (the central limit theorem), so inference relies on it.' },
+        { k: 'p', x: 'The most important distribution: many <b>biological and laboratory measurements</b> are roughly normal (birth weight of full-term infants, blood pressure, cholesterol, white cell count), diagnostic ranges assume it, and <b>sample means become normal</b> (the central limit theorem), so inference relies on it.' },
         { k: 'box', title: 'X ~ N(μ, σ²)', tone: 'formula', blocks: [{ k: 'ul', items: [
           'f(x) = [1/(σ√(2π))] e<sup>−(x − μ)²/(2σ²)</sup>, −∞ &lt; x &lt; ∞; symmetric about μ; mean = median = mode.',
           'E(X) = μ (the healthy reference), Var(X) = σ² (biological variability); MGF e<sup>μt + σ²t²/2</sup>.',
@@ -86,7 +86,8 @@ export const statsContinuous: Hb1Lesson = {
           { c: ['μ ± 2.58σ', '99%', '—'] },
           { c: ['μ ± 3σ', '<b>99.7%</b>', '45–135 mg/dL'] },
         ] },
-        { k: 'p', x: 'Interpretation: within ±2 SD “normal”; 2–3 SD borderline (monitor); beyond 3 SD likely abnormal (investigate). The larger |z|, the more abnormal.' },
+        { k: 'p', x: 'Interpretation: within ±2 SD “normal”; 2–3 SD borderline (monitor); beyond 3 SD likely abnormal (investigate). The larger |z|, the more abnormal; compare tail areas with clinical thresholds of 5%, 1% and 0.1%. Outside ±2 SD is 5% (potentially abnormal); outside ±3 SD is 0.3% (likely abnormal).' },
+        { k: 'step', n: '4a', title: 'The four-step method', blocks: [{ k: 'ul', items: ['Identify the measurement and its μ and σ.', 'Convert: z = (x − μ)/σ.', 'Look up Φ(z) in the standard normal table: Φ(z) is the share at or below x; 1 − Φ(z) the share above.', 'Interpret clinically against the thresholds. Uses: reference ranges, diagnostic tests, growth (percentile) charts, clinical trials and epidemiological models.'] }] },
         { k: 'step', n: '4', title: 'Worked examples from the slides', blocks: [{ k: 'ul', items: [
           'Test result 1.5 in N(0, 1): P(Z ≥ 1.5) = 1 − 0.9332 = <b>0.0668</b>.',
           'BP N(120, 20²): P(100 &lt; X &lt; 140) = P(−1 &lt; Z &lt; 1) ≈ <b>0.683</b>.',
@@ -105,7 +106,7 @@ export const statsContinuous: Hb1Lesson = {
         { k: 'p', x: 'For a <b>large n</b> and p <b>not near 0 or 1</b>, X ~ B(n, p) is close to <b>N(np, np(1 − p))</b>. Used in clinical trials, estimating proportions and study design.' },
         { k: 'step', n: '5', title: 'Worked example: vaccine trial', blocks: [{ k: 'p', x: '1000 participants, 85% protected: mean 850, variance 1000 × 0.85 × 0.15 = <b>127.5</b>, SD ≈ 11.29. 830 to 870 is z = ±20/11.29 = ±1.77: P ≈ 2Φ(1.77) − 1 = <b>0.9232</b>. For B(400, 0.5): mean 200, variance 100.' }] },
         { k: 'box', title: 'Strictly speaking', tone: 'gold', blocks: [{ k: 'p', x: 'Textbooks give the rule of thumb <b>np ≥ 5 and n(1 − p) ≥ 5</b> (some use 10), and add a <b>continuity correction</b> of ±0.5 because a discrete count is being treated as continuous: P(830 ≤ X ≤ 870) ≈ P(829.5 &lt; Y &lt; 870.5). Compare: when n is large but <b>p is small</b>, use the Poisson approximation instead.' }] },
-        { k: 'p', x: 'The deck ends with the <b>Welch–Satterthwaite</b> degrees of freedom, df = (s₁²/n₁ + s₂²/n₂)² / [s₁⁴/(n₁²(n₁ − 1)) + s₂⁴/(n₂²(n₂ − 1))], used by the t-test comparing two means with <b>unequal variances</b>.' },
+        { k: 'p', x: 'The deck ends with the <b>Welch–Satterthwaite</b> degrees of freedom, df = (s₁²/n₁ + s₂²/n₂)² / [s₁⁴/(n₁²(n₁ − 1)) + s₂⁴/(n₂²(n₂ − 1))], used by the t-test comparing two means with <b>unequal variances</b>, e.g. treatment effects in patient groups with different baseline characteristics.' },
         { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
           'Uniform U(a, b): 1/(b − a), mean (a + b)/2, variance (b − a)²/12.',
           'Exponential: P(X &gt; x) = e<sup>−x/θ</sup>, mean θ, variance θ², memoryless.',
