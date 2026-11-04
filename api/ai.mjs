@@ -37,7 +37,7 @@ const MAX_LESSON_CHARS = 60_000;
 const MAX_QUESTION_CHARS = 1_000;
 const MAX_HISTORY = 8;
 const MAX_CARDS = 20;
-const MAX_QUESTIONS = 15;
+const MAX_QUESTIONS = 20;
 const WINDOW_MS = 10 * 60_000;
 const MAX_REQUESTS = 40;
 

@@ -19,6 +19,9 @@ import { AI_CARDS_KEY, aiCards, mergeCards, parseSavedCards } from '@/data/ai-st
 import { newAiChatId } from '@/data/ai-chat-history';
 import { getTutorChat, listLessonChats, saveTutorChat, type TutorChatSummary } from '@/data/tutor-chats';
 import type { Flashcard } from '@/data/flashcards';
+import { aiQuestionsXp, XP_RULES } from '@/data/learning/xp-rules';
+import { dayKey } from '@/data/learning/time';
+import { awardXp, hasAward } from '@/data/progress';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { AiError, askLessonAi, type ChatTurn, type LessonQuestion, makeLessonCards, makeLessonQuestions } from '@/lib/ai-study-api';
 
@@ -451,7 +454,19 @@ export function AiFlashcardsPanel({ lesson }: { lesson: AiLesson }) {
 
 // ── AI Questions ────────────────────────────────────────────────────
 
-const QUESTION_COUNTS = [5, 10];
+const QUESTION_COUNTS = [5, 10, 15, 20];
+
+// Finishing a set pays XP (one per question), for up to 3 sets per lesson a day
+// (XP_RULES.aiQuestions); the ledger key keeps each one from being paid twice.
+async function payAiQuestions(lesson: AiLesson, size: number): Promise<number | null> {
+  const day = dayKey(Date.now());
+  for (let n = 1; n <= XP_RULES.aiQuestions.setsPerLessonPerDay; n += 1) {
+    const sourceId = `ai-questions:${lesson.id}:${day}:${n}`;
+    if (hasAward(`practice:${sourceId}`)) continue;
+    return awardXp({ sourceType: 'practice', sourceId, amount: aiQuestionsXp(size), label: `AI questions · ${lesson.title}` });
+  }
+  return null;
+}
 
 export function AiQuestionsPanel({ lesson }: { lesson: AiLesson }) {
   const styles = useThemedStyles(createStyles);
@@ -461,12 +476,31 @@ export function AiQuestionsPanel({ lesson }: { lesson: AiLesson }) {
   const [count, setCount] = useState(5);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reward, setReward] = useState<string | null>(null);
+  const paidSet = useRef<LessonQuestion[] | null>(null);
   const busyRef = useRef(false);
   const alive = useRef(true);
   useEffect(() => {
     alive.current = true;
     return () => { alive.current = false; };
   }, []);
+
+  function pick(index: number, option: number) {
+    const next = { ...picks, [index]: option };
+    setPicks(next);
+    // The last answer of a set: pay its XP once.
+    if (!questions || Object.keys(next).length < questions.length || paidSet.current === questions) return;
+    paidSet.current = questions;
+    const size = questions.length;
+    void payAiQuestions(lesson, size)
+      .then((xp) => {
+        if (!alive.current) return;
+        setReward(xp === null
+          ? `Set finished. This lesson has already paid XP for ${XP_RULES.aiQuestions.setsPerLessonPerDay} sets today; more sets are still good practice.`
+          : xp > 0 ? `Set finished: +${xp} XP.` : 'Set finished.');
+      })
+      .catch(() => alive.current && setReward('Set finished. The XP could not be added; please try another set.'));
+  }
 
   // Questions are made fresh each time and never saved: they are practice, not course content.
   async function generate() {
@@ -479,6 +513,7 @@ export function AiQuestionsPanel({ lesson }: { lesson: AiLesson }) {
       if (alive.current) {
         setQuestions(made);
         setPicks({});
+        setReward(null);
       }
     } catch (problem) {
       if (alive.current) setError(problemText(problem));
@@ -530,7 +565,7 @@ export function AiQuestionsPanel({ lesson }: { lesson: AiLesson }) {
                     key={optionIndex}
                     disabled={done}
                     accessibilityRole="button"
-                    onPress={() => setPicks((current) => ({ ...current, [index]: optionIndex }))}
+                    onPress={() => pick(index, optionIndex)}
                     style={({ hovered }) => [
                       styles.option,
                       done && isAnswer && styles.optionRight,
@@ -554,13 +589,15 @@ export function AiQuestionsPanel({ lesson }: { lesson: AiLesson }) {
         );
       })}
 
+      {reward ? <InlineNotice tone="success" message={reward} /> : null}
+
       <Card tone="muted" style={styles.more}>
         <Text style={styles.moreTitle}>New set</Text>
         {picker}
         {error ? <InlineNotice tone="error" message={error} /> : null}
         <View style={styles.moreActions}>
           <Button label={busy ? 'Writing…' : 'Make new questions'} variant="secondary" icon={<Icon name="sparkle" size={16} color={colors.text} />} onPress={() => void generate()} loading={busy} disabled={busy} />
-          <Button label="Clear questions" variant="ghost" onPress={() => { setQuestions(null); setPicks({}); setError(null); }} disabled={busy} />
+          <Button label="Clear questions" variant="ghost" onPress={() => { setQuestions(null); setPicks({}); setError(null); setReward(null); }} disabled={busy} />
         </View>
       </Card>
     </View>

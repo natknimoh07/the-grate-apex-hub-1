@@ -28,6 +28,9 @@ export const XP_RULES = {
   // 3D atlas quiz ("name the highlighted structure"): finishing a round pays once a day, so repeating
   // rounds can't be farmed; every round still counts as study for the streak. Practice, so no penalty.
   atlasQuiz: { completion: 10, bonusAt90: 10, bonusAt75: 5 },
+  // AI Questions in a lesson (owner, 2026-11-04): finishing a set of 5, 10, 15 or 20 pays that
+  // many XP. The AI writes new sets endlessly, so a lesson pays for at most 3 sets a day.
+  aiQuestions: { perQuestion: 1, setsPerLessonPerDay: 3 },
   passPercent: 70, // a lesson quiz "passed" (also the mastery-check bar is 80)
   masteryCheckPercent: 80,
 } as const;
@@ -104,6 +107,11 @@ export function atlasQuizXp(input: { correct: number; total: number; multiplier?
   if (percent >= 90) lines.push({ label: 'Score 90%+', amount: XP_RULES.atlasQuiz.bonusAt90 });
   else if (percent >= 75) lines.push({ label: 'Score 75%+', amount: XP_RULES.atlasQuiz.bonusAt75 });
   return finish(lines, multiplier);
+}
+
+/** A finished set of AI questions: one XP per question (5, 10, 15 or 20). */
+export function aiQuestionsXp(questions: number): number {
+  return Math.max(0, Math.round(questions)) * XP_RULES.aiQuestions.perQuestion;
 }
 
 export function reviewXp(input: { recalledDue: number; answered: number; multiplier?: number }): XpBreakdown {
