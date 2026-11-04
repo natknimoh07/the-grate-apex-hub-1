@@ -4452,7 +4452,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 496,
+   "total": 526,
    "topics": [
     {
      "id": "Addition Rule",
@@ -4463,12 +4463,28 @@
      "unrated": 5
     },
     {
+     "id": "Approaches",
+     "title": "Approaches",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Basics",
      "title": "Basics",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 9
+    },
+    {
+     "id": "Bayes",
+     "title": "Bayes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Bernoulli Distribution",
@@ -4581,6 +4597,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Counting",
+     "title": "Counting",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Data & Measurement",
@@ -4943,6 +4967,14 @@
      "unrated": 2
     },
     {
+     "id": "Rules",
+     "title": "Rules",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
+    },
+    {
      "id": "Sample Spaces & Counting Principle",
      "title": "Sample Spaces & Counting Principle",
      "easy": 0,
@@ -4965,6 +4997,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 14
+    },
+    {
+     "id": "Screening",
+     "title": "Screening",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Skewness & Dispersion",
