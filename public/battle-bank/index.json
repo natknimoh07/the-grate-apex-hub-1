@@ -8478,7 +8478,7 @@
   {
    "id": "behavioural",
    "name": "Behavioural Science",
-   "total": 581,
+   "total": 705,
    "topics": [
     {
      "id": "Amnesia",
@@ -8494,7 +8494,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 3
     },
     {
      "id": "Assessment",
@@ -8505,12 +8505,36 @@
      "unrated": 1
     },
     {
+     "id": "Behaviourism",
+     "title": "Behaviourism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Biological Foundations",
      "title": "Biological Foundations",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 63
+    },
+    {
+     "id": "Biopsychosocial",
+     "title": "Biopsychosocial",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Brain",
+     "title": "Brain",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Causes",
@@ -8529,12 +8553,44 @@
      "unrated": 9
     },
     {
+     "id": "Cognitive",
+     "title": "Cognitive",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Correlation",
+     "title": "Correlation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Defence mechanisms",
      "title": "Defence mechanisms",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Defences",
+     "title": "Defences",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Definition",
+     "title": "Definition",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Definitions",
@@ -8551,6 +8607,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Ethics",
+     "title": "Ethics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Experiments",
+     "title": "Experiments",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Forgetting",
@@ -8577,12 +8649,52 @@
      "unrated": 6
     },
     {
+     "id": "Goals",
+     "title": "Goals",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Heredity",
+     "title": "Heredity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "History",
+     "title": "History",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Hormones",
+     "title": "Hormones",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Humanistic",
      "title": "Humanistic",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 8
+    },
+    {
+     "id": "Hunger",
+     "title": "Hunger",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
     },
     {
      "id": "Improving memory",
@@ -8625,6 +8737,14 @@
      "unrated": 3
     },
     {
+     "id": "Lobes",
+     "title": "Lobes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Long-term memory",
      "title": "Long-term memory",
      "easy": 0,
@@ -8657,6 +8777,14 @@
      "unrated": 1
     },
     {
+     "id": "Methods",
+     "title": "Methods",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Mind–body",
      "title": "Mind–body",
      "easy": 0,
@@ -8681,6 +8809,38 @@
      "unrated": 4
     },
     {
+     "id": "Nervous system",
+     "title": "Nervous system",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Neurons",
+     "title": "Neurons",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Neurotransmitters",
+     "title": "Neurotransmitters",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
+     "id": "Non-experimental",
+     "title": "Non-experimental",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Operant conditioning",
      "title": "Operant conditioning",
      "easy": 0,
@@ -8689,12 +8849,36 @@
      "unrated": 3
     },
     {
+     "id": "Overview",
+     "title": "Overview",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Overview of Psychology",
      "title": "Overview of Psychology",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 66
+    },
+    {
+     "id": "Paradigms",
+     "title": "Paradigms",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Parapsychology",
+     "title": "Parapsychology",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Past Questions 01",
@@ -8729,6 +8913,30 @@
      "unrated": 30
     },
     {
+     "id": "Philosophical issues",
+     "title": "Philosophical issues",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Pseudo-psychology",
+     "title": "Pseudo-psychology",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Psychodynamic",
+     "title": "Psychodynamic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Psychosexual stages",
      "title": "Psychosexual stages",
      "easy": 0,
@@ -8739,6 +8947,14 @@
     {
      "id": "Punishment",
      "title": "Punishment",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Range",
+     "title": "Range",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -8777,6 +8993,14 @@
      "unrated": 3
     },
     {
+     "id": "Scientific method",
+     "title": "Scientific method",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Sensory memory",
      "title": "Sensory memory",
      "easy": 0,
@@ -8803,6 +9027,22 @@
     {
      "id": "Social-cognitive",
      "title": "Social-cognitive",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Specialisations",
+     "title": "Specialisations",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Split brain",
+     "title": "Split brain",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -8838,7 +9078,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 13
     },
     {
      "id": "Traits",
@@ -8847,6 +9087,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Types",
+     "title": "Types",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Who is prone",

@@ -61,6 +61,10 @@ import { anatomyNervousTissue } from '@/data/hb1-lessons/anatomy-nervous-tissue'
 import { anatomyFemaleReproductive } from '@/data/hb1-lessons/anatomy-female-reproductive';
 import { anatomyMaleReproductive } from '@/data/hb1-lessons/anatomy-male-reproductive';
 import { anatomyEmbryology } from '@/data/hb1-lessons/anatomy-embryology';
+import { behaviouralOverview } from '@/data/hb1-lessons/behavioural-overview';
+import { behaviouralParadigms } from '@/data/hb1-lessons/behavioural-paradigms';
+import { behaviouralBiological } from '@/data/hb1-lessons/behavioural-biological';
+import { behaviouralMotivation } from '@/data/hb1-lessons/behavioural-motivation';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -93,6 +97,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   // bmc-01 to bmc-05 rewrite the database lessons with the same ids.
   bmcAlkanes, bmcAlkenes, bmcAlkynes, bmcAromatics, bmcAlkylHalides, bmcAlcohols,
   bmcAldehydes, bmcKetones, bmcCarboxylicAcids, bmcAcidDerivatives, bmcAmines, bmcStereochemistry,
+  behaviouralOverview, behaviouralParadigms, behaviouralBiological, behaviouralMotivation,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
