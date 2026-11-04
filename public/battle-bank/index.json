@@ -1488,7 +1488,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1762,
+   "total": 1795,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1587,6 +1587,14 @@
      "unrated": 5
     },
     {
+     "id": "Crosses",
+     "title": "Crosses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Cytoplasmic (Extranuclear) Inheritance",
      "title": "Cytoplasmic (Extranuclear) Inheritance",
      "easy": 0,
@@ -1617,6 +1625,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 33
+    },
+    {
+     "id": "Dominance",
+     "title": "Dominance",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Epistasis",
+     "title": "Epistasis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "ER",
@@ -1699,6 +1723,30 @@
      "unrated": 3
     },
     {
+     "id": "Laws",
+     "title": "Laws",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Lethals",
+     "title": "Lethals",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Linkage",
+     "title": "Linkage",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Lysosomes",
      "title": "Lysosomes",
      "easy": 0,
@@ -1721,6 +1769,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Mendel",
+     "title": "Mendel",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Mendelian Genetics & Inheritance Patterns",
@@ -1779,6 +1835,22 @@
      "unrated": 1
     },
     {
+     "id": "Pedigrees",
+     "title": "Pedigrees",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Penetrance",
+     "title": "Penetrance",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Peroxisomes",
      "title": "Peroxisomes",
      "easy": 0,
@@ -1795,12 +1867,28 @@
      "unrated": 5
     },
     {
+     "id": "Polygenic",
+     "title": "Polygenic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Prions & Transmissible Spongiform Encephalopathies",
      "title": "Prions & Transmissible Spongiform Encephalopathies",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 76
+    },
+    {
+     "id": "Probability",
+     "title": "Probability",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Recombinant DNA & Molecular Techniques",
