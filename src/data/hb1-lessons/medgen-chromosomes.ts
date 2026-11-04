@@ -167,7 +167,7 @@ export const medgenChromosomes: Hb1Lesson = {
     ['Telomeres are stained selectively by', 'T-banding', ['C-banding', 'Q-banding', 'G-banding'], 'C stains centromeres.', 'Banding'],
     ['The first banding technique described was', 'Q-banding', ['G-banding', 'R-banding', 'C-banding'], 'Quinacrine.', 'Banding'],
     ['Light G-bands are', 'GC-rich and early-replicating', ['AT-rich and late-replicating', 'Centromeric heterochromatin', 'Found at telomeres only'], 'Dark bands are AT-rich.', 'Banding'],
-    ['C-banding stains', 'Centromeric heterochromatin', ['Telomeric repeats', 'Active euchromatin', 'Nucleolar RNA'], 'Centromeric regions.', 'Banding'],
+    ['C-banding stains', 'Centromeric heterochromatin', ['Telomeric TTAGGG repeats', 'Active, open euchromatin', 'Nucleolar ribosomal RNA'], 'Centromeric regions.', 'Banding'],
     ['The normal human chromosome number 46 was established by', 'Tjio and Levan', ['Watson and Crick', 'Barr and Bertram', 'Hershey and Chase'], 'Previously thought 48.', 'Karyotype'],
     ['Denver group D contains chromosomes', '13–15', ['16–18', '19–20', '4–5'], 'Acrocentric with satellites.', 'Karyotype'],
     ['The X chromosome is placed in group', 'C', ['A', 'E', 'G'], 'With 6–12.', 'Karyotype'],

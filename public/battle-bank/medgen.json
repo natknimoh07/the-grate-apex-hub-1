@@ -134,7 +134,7 @@
 {"id":"p:ls-mgch:mgch16","topic":"Banding","level":null,"prompt":"Telomeres are stained selectively by","options":["C-banding","T-banding","Q-banding","G-banding"],"answer":1},
 {"id":"p:ls-mgch:mgch17","topic":"Banding","level":null,"prompt":"The first banding technique described was","options":["Q-banding","G-banding","R-banding","C-banding"],"answer":0},
 {"id":"p:ls-mgch:mgch18","topic":"Banding","level":null,"prompt":"Light G-bands are","options":["AT-rich and late-replicating","Centromeric heterochromatin","GC-rich and early-replicating","Found at telomeres only"],"answer":2},
-{"id":"p:ls-mgch:mgch19","topic":"Banding","level":null,"prompt":"C-banding stains","options":["Telomeric repeats","Centromeric heterochromatin","Active euchromatin","Nucleolar RNA"],"answer":1},
+{"id":"p:ls-mgch:mgch19","topic":"Banding","level":null,"prompt":"C-banding stains","options":["Telomeric TTAGGG repeats","Centromeric heterochromatin","Active, open euchromatin","Nucleolar ribosomal RNA"],"answer":1},
 {"id":"p:ls-mgch:mgch20","topic":"Karyotype","level":null,"prompt":"The normal human chromosome number 46 was established by","options":["Watson and Crick","Barr and Bertram","Hershey and Chase","Tjio and Levan"],"answer":3},
 {"id":"p:ls-mgch:mgch21","topic":"Karyotype","level":null,"prompt":"Denver group D contains chromosomes","options":["16–18","13–15","19–20","4–5"],"answer":1},
 {"id":"p:ls-mgch:mgch22","topic":"Karyotype","level":null,"prompt":"The X chromosome is placed in group","options":["A","C","E","G"],"answer":1},
