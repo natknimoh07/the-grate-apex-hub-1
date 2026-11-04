@@ -9109,7 +9109,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 866,
+   "total": 897,
    "topics": [
     {
      "id": "Adaptations",
@@ -9245,7 +9245,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 12
     },
     {
      "id": "Culicines",
@@ -9285,6 +9285,14 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
+     "unrated": 10
+    },
+    {
+     "id": "Feeding",
+     "title": "Feeding",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
      "unrated": 5
     },
     {
@@ -9304,12 +9312,28 @@
      "unrated": 9
     },
     {
+     "id": "Ghana",
+     "title": "Ghana",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Growth",
      "title": "Growth",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Hard ticks",
+     "title": "Hard ticks",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Insecticides",
@@ -9389,7 +9413,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 20
+     "unrated": 24
     },
     {
      "id": "Malaria",
@@ -9552,12 +9576,28 @@
      "unrated": 4
     },
     {
+     "id": "Soft ticks",
+     "title": "Soft ticks",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Systems",
      "title": "Systems",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Ticks",
+     "title": "Ticks",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Tissue invasion",

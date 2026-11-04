@@ -71,6 +71,7 @@ import { entomologyAnophelineCulicine } from '@/data/hb1-lessons/entomology-anop
 import { entomologyLiceBedbugs } from '@/data/hb1-lessons/entomology-lice-bedbugs';
 import { entomologySandfliesScabies } from '@/data/hb1-lessons/entomology-sandflies-scabies';
 import { entomologyTsetseMidges } from '@/data/hb1-lessons/entomology-tsetse-midges';
+import { entomologyTicks } from '@/data/hb1-lessons/entomology-ticks';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -108,7 +109,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
   anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyMuscleTissue, anatomyNervousTissue, anatomyFemaleReproductive, anatomyMaleReproductive, anatomyEmbryology,
-  entomologyIntroduction, entomologyMosquitoes, entomologyAnophelineCulicine, entomologyLiceBedbugs, entomologySandfliesScabies, entomologyTsetseMidges,
+  entomologyIntroduction, entomologyMosquitoes, entomologyAnophelineCulicine, entomologyLiceBedbugs, entomologySandfliesScabies, entomologyTsetseMidges, entomologyTicks,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
