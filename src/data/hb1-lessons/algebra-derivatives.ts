@@ -1,0 +1,203 @@
+// Algebra → Differentiation: the derivative and its rules. From "MATH 157 – DIFFERENTIATION"
+// (deck 10, Dr Kwame Piesie, slides 1–40 of 90). The applications (slides 41–75) and the business
+// slides (76–90) are taught in two app lessons that follow. Rewrites the original database lesson
+// algebra-10 (same id, so progress is kept). Checked 2026-11-04; teaching text in our own words;
+// every slide example is worked. Practises Quiz 10.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+
+export const algebraDerivatives: Hb1Lesson = {
+  id: 'algebra-10',
+  order: 10,
+  title: 'Differentiation: First Principles and the Rules',
+  summary: 'The derivative as the limit of a chord’s gradient and what it means; differentiating from first principles; the constant, power, constant-multiple and sum rules; product and quotient rules; differentiability and continuity; the chain rule and generalised power rule; derivatives of logarithms (natural and any base), exponentials (eˣ and aˣ) and the six trigonometric functions; implicit, higher-order and parametric differentiation — with every slide example worked',
+  minutes: 36,
+  source: 'MATH 157, ALGEBRA 10.pdf',
+  quizId: 'aldv',
+  quizName: 'Quiz · Differentiation rules (lesson)',
+  pastSets: ['s10'],
+  sections: [
+    {
+      id: 'dv-def',
+      title: 'What the derivative is',
+      kicker: 'The gradient of a curve at a point',
+      blocks: [
+        { k: 'p', x: 'Take two points on y = f(x): A at x and B at x + h. The chord AB has gradient Δy/Δx = [f(x + h) − f(x)]/h. As B slides towards A (h → 0), the chord turns into the <b>tangent at A</b>. The limit, if it exists, is the <b>derivative</b>: <b>dy/dx = f′(x) = lim<sub>h→0</sub> [f(x + h) − f(x)]/h</b>. At a point: f′(a) = lim<sub>x→a</sub> [f(x) − f(a)]/(x − a). Finding it this way is <b>differentiating from first principles</b>.' },
+        { k: 'box', title: 'Three meanings of dy/dx', tone: 'recall', blocks: [{ k: 'ul', items: ['The <b>rate of change</b> of y caused by a change in x.', 'The <b>instantaneous</b> rate of change at x.', 'The <b>gradient function</b>: the slope of the curve (of its tangent) at each point.'] }] },
+        { k: 'step', n: '1', title: 'First principles, worked', blocks: [{ k: 'ul', items: [
+          'x²: [(x + h)² − x²]/h = (2xh + h²)/h = 2x + h → <b>2x</b>.',
+          'x² + x → <b>2x + 1</b>; 5x → <b>5</b>; 8 → [8 − 8]/h = <b>0</b>.',
+          '1/x²: [1/(x + h)² − 1/x²]/h = [x² − (x + h)²]/[h x²(x + h)²] = −(2x + h)/[x²(x + h)²] → <b>−2/x³</b>.',
+          '2x³ + 3 → <b>6x²</b> (use (x + h)³ = x³ + 3x²h + 3xh² + h³); 2x² + 4x − 3 → <b>4x + 4</b>; 3x² + 1 → <b>6x</b>.',
+          '√x: [√(x + h) − √x]/h; multiply top and bottom by √(x + h) + √x to get h/[h(√(x + h) + √x)] → <b>1/(2√x)</b>.',
+          '(2x + 3)² = 4x² + 12x + 9 → <b>8x + 12</b>.',
+        ] }] },
+      ],
+    },
+    {
+      id: 'dv-rules',
+      title: 'The basic rules, product and quotient',
+      kicker: 'No more limits needed',
+      blocks: [
+        { k: 'table', head: ['Rule', 'Statement'], rows: [
+          { c: ['Constant', 'd/dx (k) = 0'] },
+          { c: ['Power (any real n)', 'd/dx (xⁿ) = <b>nxⁿ⁻¹</b>'] },
+          { c: ['Constant multiple', 'd/dx [k g(x)] = k g′(x)'] },
+          { c: ['Sum and difference', '(f ± g)′ = f′ ± g′'] },
+          { c: ['<b>Product</b>', '(fg)′ = <b>f′g + fg′</b>'] },
+          { c: ['<b>Quotient</b>', '(f/g)′ = <b>(f′g − fg′)/g²</b>, g ≠ 0'] },
+        ] },
+        { k: 'step', n: '2', title: 'Product rule, worked', blocks: [{ k: 'ul', items: [
+          '3x³(x⁴ + 2): 9x²(x⁴ + 2) + 3x³(4x³) = <b>21x⁶ + 18x²</b>.',
+          '(2x² + 4x + 5)(5x − 4): (4x + 4)(5x − 4) + 5(2x² + 4x + 5) = <b>30x² + 24x + 9</b>.',
+          '√x(3x³ − 4x² + 8) = 3x<sup>7/2</sup> − 4x<sup>5/2</sup> + 8x<sup>1/2</sup>: <b>(21/2)x<sup>5/2</sup> − 10x<sup>3/2</sup> + 4x<sup>−1/2</sup></b>.',
+          '(6x<sup>4/3</sup> + 2x)(3x<sup>5/3</sup> + 4x − 1): (8x<sup>1/3</sup> + 2)(3x<sup>5/3</sup> + 4x − 1) + (6x<sup>4/3</sup> + 2x)(5x<sup>2/3</sup> + 4) = <b>54x² + 16x<sup>5/3</sup> + 56x<sup>4/3</sup> − 8x<sup>1/3</sup> + 16x − 2</b>.',
+        ] }] },
+        { k: 'step', n: '3', title: 'Quotient rule, worked (as we read the slide)', blocks: [{ k: 'ul', items: [
+          '(x + 3)/(x − 2): [(x − 2) − (x + 3)]/(x − 2)² = <b>−5/(x − 2)²</b>.',
+          'x/(1 + x²): [(1 + x²) − 2x²]/(1 + x²)² = <b>(1 − x²)/(1 + x²)²</b>.',
+          '(1 + x²)/(1 − x²): [2x(1 − x²) + 2x(1 + x²)]/(1 − x²)² = <b>4x/(1 − x²)²</b>.',
+          '(x² − 1)/(2x² + 1): [2x(2x² + 1) − 4x(x² − 1)]/(2x² + 1)² = <b>6x/(2x² + 1)²</b>.',
+          '(x − 3)²/(x² + 1): <b>2(x − 3)(3x + 1)/(x² + 1)²</b>.',
+          '(2x + 1)(3x − 2)/(x + 1) = (6x² − x − 2)/(x + 1): [(12x − 1)(x + 1) − (6x² − x − 2)]/(x + 1)² = <b>(6x² + 12x + 1)/(x + 1)²</b>.',
+          'Quiz-style: (2x − 1)/(x + 3) → 7/(x + 3)²; (x² + 1)/(x − 1) → (x² − 2x − 1)/(x − 1)².',
+        ] }] },
+      ],
+    },
+    {
+      id: 'dv-cont',
+      title: 'Differentiability and continuity',
+      kicker: 'Corners and vertical tangents',
+      blocks: [
+        { k: 'p', x: 'f(x) = |x| at 0: [f(h) − f(0)]/h = |h|/h is −1 from the left and +1 from the right, so the limit (and f′(0)) <b>does not exist</b>: |x| has a <b>corner</b> at 0. f(x) = x<sup>1/3</sup> has f′(x) = 1/(3x<sup>2/3</sup>), which is undefined at 0: a <b>vertical tangent</b>.' },
+        { k: 'box', title: 'Theorem: differentiable ⇒ continuous', tone: 'formula', blocks: [{ k: 'p', x: 'If f′(a) exists, then lim [f(x) − f(a)] = lim {[f(x) − f(a)]/(x − a)} × lim (x − a) = f′(a) × 0 = 0, so lim<sub>x→a</sub> f(x) = f(a). <b>Differentiability always implies continuity; continuity does not imply differentiability.</b>' }] },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'p', x: 'The slide concludes that |x| and x<sup>1/3</sup> fail “because the function is discontinuous”. Both are in fact <b>continuous</b> at 0; they are the standard examples of continuous functions that are <b>not differentiable</b> (a corner and a vertical tangent), exactly as the remark that follows says.' }] },
+      ],
+    },
+    {
+      id: 'dv-chain',
+      title: 'The chain rule',
+      kicker: 'Differentiate the outside, times the inside',
+      blocks: [
+        { k: 'box', title: 'Chain rule and generalised power rule', tone: 'formula', blocks: [{ k: 'ul', items: ['If y = f(u) and u = g(x): <b>dy/dx = (dy/du)(du/dx)</b>.', 'For y = [u(x)]ⁿ: <b>dy/dx = n uⁿ⁻¹ u′</b>; for (ax + b)ⁿ: n(ax + b)ⁿ⁻¹ × a.'] }] },
+        { k: 'step', n: '4', title: 'Worked', blocks: [{ k: 'ul', items: [
+          '(5x³ + 3x)⁴ → <b>4(5x³ + 3x)³(15x² + 3)</b>; (x² + 1)¹⁵ → <b>30x(x² + 1)¹⁴</b>.',
+          '∛(2x − 4) = (2x − 4)<sup>1/3</sup> → <b>(2/3)(2x − 4)<sup>−2/3</sup></b>; 5/(2x − 3)² = 5(2x − 3)⁻² → <b>−20/(2x − 3)³</b>.',
+          '(x + 3)⁵ → 5(x + 3)⁴; (2x² − 5x)⁴ → <b>4(2x² − 5x)³(4x − 5)</b>.',
+          '(x² + 2)⁵ → 10x(x² + 2)⁴; (3x⁴ − 5)⁷ → <b>84x³(3x⁴ − 5)⁶</b>; (2x − 5)⁻⁴ → <b>−8(2x − 5)⁻⁵</b>; (3x + 4)⁵ → 15(3x + 4)⁴; (3x² − 1)⁵ → 30x(3x² − 1)⁴.',
+        ] }] },
+      ],
+    },
+    {
+      id: 'dv-logexp',
+      title: 'Logarithms and exponentials',
+      kicker: 'ln x → 1/x; eˣ → eˣ',
+      blocks: [
+        { k: 'p', x: 'ln x = logₑ x (e ≈ 2.718), defined for x &gt; 0 (ln |x| for x ≠ 0). Properties: ln xy = ln x + ln y; ln(x/y) = ln x − ln y; ln xʸ = y ln x; ln 1 = 0; ln e = 1; e<sup>ln x</sup> = x; ln eˣ = x.' },
+        { k: 'table', head: ['Function', 'Derivative'], rows: [
+          { c: ['ln x', '1/x'] },
+          { c: ['ln f(x)', '<b>f′(x)/f(x)</b>'] },
+          { c: ['log<sub>b</sub> x = ln x/ln b', '1/(x ln b)'] },
+          { c: ['log<sub>b</sub> g(x)', 'g′(x)/[g(x) ln b]'] },
+          { c: ['e<sup>f(x)</sup>', '<b>e<sup>f(x)</sup> f′(x)</b>'] },
+          { c: ['aˣ', '<b>aˣ ln a</b> (take logs: ln y = x ln a, so y′/y = ln a)'] },
+          { c: ['a<sup>f(x)</sup>', 'a<sup>f(x)</sup> f′(x) ln a'] },
+        ] },
+        { k: 'step', n: '5', title: 'Logarithms, worked', blocks: [{ k: 'ul', items: [
+          '2 ln x → 2/x; ln x³ = 3 ln x → 3/x; 7 − 4 ln x → −4/x; ln(x⁴ − 2x) → <b>(4x³ − 2)/(x⁴ − 2x)</b>; ln√(6x − 1) = ½ ln(6x − 1) → <b>3/(6x − 1)</b>; (ln x)³ → <b>3(ln x)²/x</b>.',
+          '4x³ ln x → <b>12x² ln x + 4x²</b>; (ln x)² → 2 ln x/x; 3x⁵/ln x → (15x⁴ ln x − 3x⁴)/(ln x)²; 12x³ ln x² = 24x³ ln x → <b>72x² ln x + 24x²</b>.',
+          'log₆ x → 1/(x ln 6); log(x³ + 9) → 3x²/[(x³ + 9) ln 10]; log₅ x → 1/(x ln 5); 2x⁵ log<sub>b</sub> x → 10x⁴ log<sub>b</sub> x + 2x⁴/ln b; log₅(3x + 9) → 3/[(3x + 9) ln 5].',
+          'log₁₀[(x + 3)/(x² + 1)] → (1/ln 10)[1/(x + 3) − 2x/(x² + 1)]; log₂[x³/(2x − 1)] → (1/ln 2)[3/x − 2/(2x − 1)]: split with the log laws first.',
+        ] }] },
+        { k: 'step', n: '6', title: 'Exponentials, worked', blocks: [{ k: 'ul', items: [
+          'x²eˣ → <b>eˣ(x² + 2x)</b>; x e<sup>x²</sup> → e<sup>x²</sup>(1 + 2x²); logₑ eˣ = x → 1; e<sup>3x−3</sup> → 3e<sup>3x−3</sup>; e<sup>6x − ½x⁶</sup> → <b>(6 − 3x⁵)e<sup>6x − ½x⁶</sup></b>.',
+          '10ˣ → 10ˣ ln 10; (3/4)ˣ → (3/4)ˣ ln(3/4); 10<sup>x+3</sup> → 10<sup>x+3</sup> ln 10; 5<sup>x²</sup> → <b>2x·5<sup>x²</sup> ln 5</b>.',
+          '5<sup>9x−5</sup> → 9·5<sup>9x−5</sup> ln 5; 3<sup>ln x + 5</sup> → 3<sup>ln x + 5</sup> ln 3/x; 2<sup>9−x</sup> → −2<sup>9−x</sup> ln 2; 4<sup>√x</sup> → 4<sup>√x</sup> ln 4/(2√x); 4<sup>x−3</sup> → 4<sup>x−3</sup> ln 4.',
+        ] }] },
+      ],
+    },
+    {
+      id: 'dv-trig',
+      title: 'Trigonometric functions',
+      kicker: 'x in radians',
+      blocks: [
+        { k: 'table', head: ['f(x)', 'f′(x)', 'f(x)', 'f′(x)'], rows: [
+          { c: ['sin x', 'cos x', 'sec x', 'sec x tan x'] },
+          { c: ['cos x', '−sin x', 'cosec x', '−cosec x cot x'] },
+          { c: ['tan x', 'sec²x', 'cot x', '−cosec²x'] },
+        ] },
+        { k: 'p', x: 'With the chain rule: sin f(x) → f′(x) cos f(x); cos f(x) → −f′(x) sin f(x); sinⁿx → n sinⁿ⁻¹x cos x; cosⁿx → −n cosⁿ⁻¹x sin x. (tan x at π/4: sec²(π/4) = 2.)' },
+        { k: 'step', n: '7', title: 'Worked', blocks: [{ k: 'ul', items: [
+          'sin x² → 2x cos x²; sin(x² − 3x + 1) → (2x − 3) cos(x² − 3x + 1); cos(2x³ + x² − 1) → −(6x² + 2x) sin(2x³ + x² − 1); cos 4x³ → −12x² sin 4x³; sin(3x² + 1) → 6x cos(3x² + 1); tan 6x² → <b>12x sec² 6x²</b>.',
+          'tan²x → 2 tan x sec²x; 2cos²(x² + 1) → <b>−8x cos(x² + 1) sin(x² + 1)</b> (= −4x sin(2x² + 2)); sin³x → 3 sin²x cos x; 3tan⁴x → 12 tan³x sec²x.',
+          'x sin 3x → sin 3x + 3x cos 3x; x³ cos 2x → 3x² cos 2x − 2x³ sin 2x; cos x sin³x → 3 sin²x cos²x − sin⁴x; 2x³ cos 3x → 6x² cos 3x − 6x³ sin 3x; x⁴ cos x → 4x³ cos x − x⁴ sin x; cos(x² − x) → −(2x − 1) sin(x² − x).',
+        ] }] },
+      ],
+    },
+    {
+      id: 'dv-implicit',
+      title: 'Implicit, higher-order and parametric differentiation',
+      kicker: 'When y is not on its own',
+      blocks: [
+        { k: 'p', x: 'An <b>implicit</b> equation (x² + y² = 3xy, xy⁴ + y² − xy + 3x² − 5 = 0) cannot easily be solved for y. Differentiate <b>term by term</b>, treating y as a function of x, then make dy/dx the subject. d/dx(y) = y′; d/dx(y²) = 2y y′; d/dx(2y³) = 6y² y′; in general d/dx f(y) = f′(y) y′. Treat x²y, xy as <b>products</b> and x/y as quotients.' },
+        { k: 'step', n: '8', title: 'Implicit, worked', blocks: [{ k: 'ul', items: [
+          'y³ − 4x² − 7 = 0: 3y²y′ = 8x, <b>y′ = 8x/(3y²)</b>.',
+          'x<sup>1/3</sup> + y<sup>1/3</sup> = 10: <b>y′ = −(y/x)<sup>2/3</sup></b>.',
+          '4eʸ = x²: 4eʸy′ = 2x, <b>y′ = x/(2eʸ)</b>.',
+          '√(2x + 1) = 2 − y² (as we read it): 1/√(2x + 1) = −2y y′, y′ = −1/[2y√(2x + 1)].',
+          'x²y² − 7x³ − 5 = 0: 2xy² + 2x²y y′ − 21x² = 0, <b>y′ = (21x² − 2xy²)/(2x²y)</b>.',
+          'x² + y² = 25: <b>y′ = −x/y</b> (at (3, 4): −3/4). 3xy + 6y² = 15: 3y + 3xy′ + 12y y′ = 0, <b>y′ = −y/(x + 4y)</b>. y + xy + y² = 2: <b>y′ = −y/(1 + x + 2y)</b>.',
+        ] }] },
+        { k: 'p', x: '<b>Higher derivatives</b>: differentiate again. d²y/dx² = f″(x), d³y/dx³ = f‴(x), and so on.' },
+        { k: 'step', n: '9', title: 'Higher derivatives, worked', blocks: [{ k: 'ul', items: [
+          'x⁶ + 2x³ − 3x² + 4x + 1: 6x⁵ + 6x² − 6x + 4; 30x⁴ + 12x − 6; 120x³ + 12.',
+          'x⁴ − x³ + 4x − 1: 4x³ − 3x² + 4; <b>12x² − 6x</b>; <b>24x − 6</b>.',
+          '3x³(x² + 4)² = 3x⁷ + 24x⁵ + 48x³: 21x⁶ + 120x⁴ + 144x²; 126x⁵ + 480x³ + 288x; 630x⁴ + 1440x² + 288.',
+          '−5 cos 3x: 15 sin 3x; 45 cos 3x; −135 sin 3x.',
+          'x/(1 + x²): (1 − x²)/(1 + x²)²; (2x³ − 6x)/(1 + x²)³; (−6x⁴ + 36x² − 6)/(1 + x²)⁴.',
+        ] }] },
+        { k: 'p', x: '<b>Parametric</b> curves x = f(t), y = g(t): <b>dy/dx = (dy/dt)/(dx/dt)</b>, since dt/dx = 1/(dx/dt).' },
+        { k: 'step', n: '10', title: 'Parametric, worked', blocks: [{ k: 'ul', items: [
+          'x = t², y = t³: dy/dx = 3t²/2t = <b>3t/2</b>; t = √x, so y = x<sup>3/2</sup>.',
+          'x = at², y = 2at: dy/dx = 2a/(2at) = <b>1/t</b>; y² = 4a²t² = 4ax: the parabola <b>y² = 4ax</b>.',
+          'x = t²/(1 − t), y = t/(1 − t) (as we read it): dy/dx = 1/[t(2 − t)]; since x = t·y and t = y/(1 + y), the curve is <b>x(1 + y) = y²</b>.',
+          'x = 2t/(t + 2), y = 3t/(t + 3): dx/dt = 4/(t + 2)², dy/dt = 9/(t + 3)², so dy/dx = 9(t + 2)²/[4(t + 3)²]; eliminating t gives <b>y = 6x/(6 − x)</b>.',
+        ] }] },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'f′(x) = lim [f(x + h) − f(x)]/h; xⁿ → nxⁿ⁻¹; constants → 0.',
+          'Product f′g + fg′; quotient (f′g − fg′)/g²; chain: outside′ × inside′.',
+          'ln f → f′/f; e<sup>f</sup> → e<sup>f</sup> f′; aˣ → aˣ ln a; log<sub>b</sub> x → 1/(x ln b).',
+          'sin → cos, cos → −sin, tan → sec², sec → sec tan, cosec → −cosec cot, cot → −cosec².',
+          'Implicit: differentiate y as y′ times; parametric: (dy/dt)/(dx/dt). Differentiable ⇒ continuous, not the reverse.',
+        ] }] },
+      ],
+    },
+  ],
+  quiz: [
+    ['As h → 0, the gradient of the chord becomes the gradient of the', 'Tangent', ['Normal', 'Asymptote', 'Secant line'], 'Definition.', 'Definition'],
+    ['From first principles, d/dx (x²) =', '2x', ['x', '2', 'x²/2'], '2x + h → 2x.', 'Definition'],
+    ['d/dx (1/x²) =', '−2/x³', ['−1/x²', '2/x³', '−2/x'], 'Power −2.', 'Definition'],
+    ['d/dx (√x) =', '1/(2√x)', ['2√x', '√x/2', '−1/(2√x)'], 'x^(1/2).', 'Definition'],
+    ['d/dx (8) =', '0', ['8', '1', '8x'], 'Constant.', 'Rules'],
+    ['d/dx [3x³(x⁴ + 2)] =', '21x⁶ + 18x²', ['12x⁶ + 6x²', '21x⁶ + 6x', '36x⁶ + 18x²'], 'Product rule.', 'Rules'],
+    ['d/dx [(x + 3)/(x − 2)] =', '−5/(x − 2)²', ['5/(x − 2)²', '1/(x − 2)²', '−1/(x − 2)²'], 'Quotient rule.', 'Rules'],
+    ['The quotient rule numerator is', 'f′g − fg′', ['f′g + fg′', 'fg′ − f′g', 'f′g′'], 'Then over g².', 'Rules'],
+    ['|x| at x = 0 is', 'Continuous but not differentiable', ['Differentiable and continuous', 'Discontinuous only', 'Differentiable but discontinuous'], 'A corner.', 'Continuity'],
+    ['Differentiability implies', 'Continuity', ['Discontinuity', 'A turning point', 'A zero gradient'], 'Not the reverse.', 'Continuity'],
+    ['d/dx (x² + 1)¹⁵ =', '30x(x² + 1)¹⁴', ['15(x² + 1)¹⁴', '30(x² + 1)¹⁴', '15x(x² + 1)¹⁶'], 'Chain rule.', 'Chain'],
+    ['d/dx (2x − 5)⁻⁴ =', '−8(2x − 5)⁻⁵', ['−4(2x − 5)⁻⁵', '8(2x − 5)⁻³', '−8(2x − 5)⁻³'], 'n u⁻⁵ u′.', 'Chain'],
+    ['d/dx ln(x⁴ − 2x) =', '(4x³ − 2)/(x⁴ − 2x)', ['1/(x⁴ − 2x)', '4x³/(x⁴ − 2x)', '(x⁴ − 2x)/(4x³ − 2)'], 'f′/f.', 'Logs'],
+    ['d/dx ln√(6x − 1) =', '3/(6x − 1)', ['6/(6x − 1)', '1/(2√(6x − 1))', '3/√(6x − 1)'], '½ × 6/(6x − 1).', 'Logs'],
+    ['d/dx log₅(3x + 9) =', '3/[(3x + 9) ln 5]', ['3/(3x + 9)', '1/[(3x + 9) ln 5]', '3 ln 5/(3x + 9)'], 'Divide by ln b.', 'Logs'],
+    ['d/dx (x²eˣ) =', 'eˣ(x² + 2x)', ['2xeˣ', 'eˣ(x² + 1)', 'eˣ(2x + 1)'], 'Product rule.', 'Exponentials'],
+    ['d/dx (10ˣ) =', '10ˣ ln 10', ['x10ˣ⁻¹', '10ˣ', '10ˣ/ln 10'], 'aˣ ln a.', 'Exponentials'],
+    ['d/dx 5^(9x − 5) =', '9·5^(9x−5) ln 5', ['5^(9x−5) ln 5', '9·5^(9x−5)', '(9x − 5)5^(9x−6)'], 'Chain and ln a.', 'Exponentials'],
+    ['d/dx (cosec x) =', '−cosec x cot x', ['cosec x cot x', '−cosec²x', 'sec x tan x'], 'Table.', 'Trig'],
+    ['d/dx tan 6x² =', '12x sec² 6x²', ['sec² 6x²', '6 sec² 6x²', '12x tan 6x²'], 'Chain.', 'Trig'],
+    ['d/dx sin³x =', '3 sin²x cos x', ['3 cos³x', 'cos³x', '−3 sin²x cos x'], 'Power of sine.', 'Trig'],
+    ['For x² + y² = 25, dy/dx =', '−x/y', ['x/y', '−y/x', '2x + 2y'], 'Implicit.', 'Implicit'],
+    ['For 3xy + 6y² = 15, dy/dx =', '−y/(x + 4y)', ['y/(x + 4y)', '−x/(y + 4x)', '−3y/(12y)'], 'Product term.', 'Implicit'],
+    ['For y = x⁴ − x³ + 4x − 1, d³y/dx³ =', '24x − 6', ['12x² − 6x', '24x', '4x³ − 3x²'], 'Three times.', 'Higher'],
+    ['x = t², y = t³: dy/dx =', '3t/2', ['2t/3', '3t²', 't/2'], '3t² ÷ 2t.', 'Parametric'],
+    ['x = at², y = 2at describes the curve', 'y² = 4ax', ['x² = 4ay', 'y = 2ax²', 'xy = 2a'], 'Eliminate t.', 'Parametric'],
+  ],
+};

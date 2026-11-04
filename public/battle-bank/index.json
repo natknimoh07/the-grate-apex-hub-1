@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 1023,
+   "total": 1049,
    "topics": [
     {
      "id": "Absolute value",
@@ -3736,6 +3736,14 @@
      "unrated": 10
     },
     {
+     "id": "Chain",
+     "title": "Chain",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Combinations",
      "title": "Combinations",
      "easy": 0,
@@ -3757,7 +3765,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 6
     },
     {
      "id": "Continuity at a Point",
@@ -3806,6 +3814,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 17
+    },
+    {
+     "id": "Definition",
+     "title": "Definition",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "DEs & Partial Derivatives",
@@ -3952,6 +3968,14 @@
      "unrated": 10
     },
     {
+     "id": "Exponentials",
+     "title": "Exponentials",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Factorials",
      "title": "Factorials",
      "easy": 0,
@@ -4064,12 +4088,28 @@
      "unrated": 4
     },
     {
+     "id": "Higher",
+     "title": "Higher",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Identities",
      "title": "Identities",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 24
+    },
+    {
+     "id": "Implicit",
+     "title": "Implicit",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Implicit & Higher-Order",
@@ -4277,7 +4317,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 12
     },
     {
      "id": "Matrices",
@@ -4358,6 +4398,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 12
+    },
+    {
+     "id": "Parametric",
+     "title": "Parametric",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Partial fractions",
@@ -4552,6 +4600,14 @@
      "unrated": 1
     },
     {
+     "id": "Rules",
+     "title": "Rules",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Sequences & Factorials",
      "title": "Sequences & Factorials",
      "easy": 0,
@@ -4718,6 +4774,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Trig",
+     "title": "Trig",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Trig Equations",
