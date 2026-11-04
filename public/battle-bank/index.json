@@ -297,7 +297,7 @@
   {
    "id": "biolchem",
    "name": "Biological Chemistry",
-   "total": 1067,
+   "total": 1102,
    "topics": [
     {
      "id": "Acid-Base Chemistry",
@@ -362,6 +362,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Bonds",
+     "title": "Bonds",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Carbohydrate Tests",
@@ -540,6 +548,14 @@
      "unrated": 2
     },
     {
+     "id": "Forces",
+     "title": "Forces",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Functional Groups",
      "title": "Functional Groups",
      "easy": 0,
@@ -588,6 +604,14 @@
      "unrated": 12
     },
     {
+     "id": "Hybridisation",
+     "title": "Hybridisation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Hybridization & Shape",
      "title": "Hybridization & Shape",
      "easy": 0,
@@ -626,6 +650,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Isomerism",
+     "title": "Isomerism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Kinetics & Conditions",
@@ -756,6 +788,14 @@
      "unrated": 12
     },
     {
+     "id": "Optical",
+     "title": "Optical",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Origin",
      "title": "Origin",
      "easy": 0,
@@ -810,6 +850,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Polarity",
+     "title": "Polarity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Polarity & Forces",
@@ -916,12 +964,28 @@
      "unrated": 11
     },
     {
+     "id": "Shape",
+     "title": "Shape",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Soaps & Detergents",
      "title": "Soaps & Detergents",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 11
+    },
+    {
+     "id": "Solubility",
+     "title": "Solubility",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Specialised Controls",
