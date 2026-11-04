@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 971,
+   "total": 997,
    "topics": [
     {
      "id": "Absolute value",
@@ -3709,7 +3709,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 12
     },
     {
      "id": "Binomial",
@@ -3813,7 +3813,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 11
     },
     {
      "id": "Differentiation",
@@ -4120,6 +4120,14 @@
      "unrated": 13
     },
     {
+     "id": "Inverse",
+     "title": "Inverse",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Inverse Matrices",
      "title": "Inverse Matrices",
      "easy": 0,
@@ -4309,7 +4317,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 6
     },
     {
      "id": "Parallel",
@@ -4656,12 +4664,28 @@
      "unrated": 6
     },
     {
+     "id": "Systems",
+     "title": "Systems",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "The Straight Line",
      "title": "The Straight Line",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Transpose",
+     "title": "Transpose",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Trials",
