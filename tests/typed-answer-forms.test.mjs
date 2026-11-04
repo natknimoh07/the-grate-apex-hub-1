@@ -127,3 +127,19 @@ describe('every bank answer is still accepted as written', () => {
     }
   });
 });
+
+it('typed answers accept other correct ways of saying it (owner, 2026-11-04)', async () => {
+  const { typedAnswerMatches } = await import('../src/data/questions.ts');
+  const { typedAcceptVariants } = await import('../src/data/true-false.ts');
+  const yes = (answer, inputs) => inputs.forEach((i) => assert.ok(typedAnswerMatches(i, typedAcceptVariants(answer)), `${answer} ← ${i}`));
+  const no = (answer, inputs) => inputs.forEach((i) => assert.ok(!typedAnswerMatches(i, typedAcceptVariants(answer)), `${answer} ✗ ${i}`));
+  yes('Condyloid (ellipsoid)', ['condyloid', 'ellipsoid', 'Condyloid ellipsoid', 'condyloid (ellipsoid)']);
+  yes('Mesonephric (wolffian) ducts', ['mesonephric ducts', 'wolffian ducts', 'mesonephric wolffian ducts']);
+  yes('Leg (front side)', ['leg']);
+  yes('Gonadal/genital ridge', ['gonadal ridge', 'genital ridge', 'gonadal/genital ridge']);
+  yes('Tertiary or Graafian', ['tertiary', 'graafian']);
+  yes('Mitochondria', ['it is the mitochondria', 'The answer is mitochondria', 'its mitochondria', 'they are mitochondria']);
+  no('Condyloid (ellipsoid)', ['hinge']);
+  no('1 or 2 seconds', ['1', '2 seconds']);
+  no('Mitochondria', ['it is the nucleus']);
+});
