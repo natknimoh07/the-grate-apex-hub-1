@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 945,
+   "total": 971,
    "topics": [
     {
      "id": "Absolute value",
@@ -3677,7 +3677,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 4
     },
     {
      "id": "AP",
@@ -3869,7 +3869,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 11
     },
     {
      "id": "Equations & Coordinate Geometry",
@@ -4053,7 +4053,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 14
+     "unrated": 24
     },
     {
      "id": "Implicit & Higher-Order",
@@ -4496,12 +4496,28 @@
      "unrated": 13
     },
     {
+     "id": "Radians",
+     "title": "Radians",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Radicals",
      "title": "Radicals",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Ratios",
+     "title": "Ratios",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Sequences & Factorials",
@@ -4598,6 +4614,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Special",
+     "title": "Special",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Special Angles",
