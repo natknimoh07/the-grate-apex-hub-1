@@ -1,0 +1,163 @@
+// Medical Genetics → Gene Regulation and Biostatistics for Genetics. Built from the original
+// database lesson medgen-08 (same id, so progress is kept), written around the course past
+// questions, and checked against Pandey, "Cytology, Genetics and Molecular Genetics" (gene
+// regulation). Checked 2026-11-04; teaching text in our own words. Practises the past questions on
+// gene regulation and biostatistics.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+import { numberFigures, ostxBio } from '@/data/hb1-lessons/pictures';
+
+export const medgenRegulation: Hb1Lesson = {
+  id: 'medgen-08',
+  order: 8,
+  title: 'Gene Regulation and Biostatistics for Genetics',
+  summary: 'Why and where genes are regulated; the operon and its parts; the inducible lac operon, allolactose and catabolite repression by CAP–cAMP; the repressible trp operon, corepression and attenuation; eukaryotic regulation by transcription factors, enhancers, silencers, insulators and epigenetics; the Britten–Davidson model; mean, median, mode, skewness, variance, SD, SEM and geometric mean; the χ² goodness-of-fit test with worked Mendelian examples, degrees of freedom and Yates’ correction; the t-test; correlation, regression and the F-test',
+  minutes: 36,
+  source: 'Original lesson medgen-08 and Pandey, Cytology, Genetics and Molecular Genetics',
+  quizId: 'mgre',
+  quizName: 'Quiz · Gene Regulation and Biostatistics (lesson)',
+  pastTopics: ['gene-regulation'],
+  sections: numberFigures([
+    {
+      id: 're-why',
+      title: 'Regulating genes',
+      kicker: 'Same genome, different proteins',
+      blocks: [
+        { k: 'p', x: 'Every cell has essentially the same genome, yet cells make very different proteins. Gene regulation turns genes on, off, up or down: it drives <b>differentiation and morphogenesis</b> and lets bacteria adapt instantly. It can act at any step (transcription, RNA processing, mRNA stability, translation, protein modification), but the most direct and most important control point in <b>both prokaryotes and eukaryotes</b> is <b>initiation of transcription</b>.' },
+        { k: 'table', head: ['Part of an operon', 'Role'], rows: [
+          { c: ['<b>Structural genes</b>', 'Encode the enzymes (lacZ, lacY, lacA), transcribed together as one <b>polycistronic mRNA</b>'] },
+          { c: ['<b>Promoter</b>', 'Where RNA polymerase binds'] },
+          { c: ['<b>Operator</b>', '<b>Cis-acting</b> DNA site next to the promoter where the repressor binds; an operator mutation changes binding, not the repressor itself'] },
+          { c: ['<b>Regulator gene</b> (lacI)', 'Makes a diffusible, <b>trans-acting</b> repressor; an I mutation changes the repressor protein'] },
+          { c: ['<b>Inducer</b>', 'Binds the repressor (not the promoter) so it cannot bind the operator'] },
+        ] },
+        { k: 'h', x: 'The lac operon: inducible', l: 3 },
+        ostxBio('figure-16-02-03.jpg', 469, 829, 'The lac operon is transcribed strongly only when lactose is present (repressor removed) and glucose is absent (CAP–cAMP bound).', 'Negative control by the repressor, positive control by CAP.'),
+        { k: 'step', n: '1', title: 'No lactose', blocks: [{ k: 'p', x: 'The <b>lacI repressor</b> (an <b>allosteric homotetramer</b>) sits on the operator and blocks RNA polymerase: genes <b>off</b>.' }] },
+        { k: 'step', n: '2', title: 'Lactose present', blocks: [{ k: 'p', x: 'Some lactose becomes <b>allolactose</b>, the real <b>inducer</b>; it binds the repressor, which changes shape and leaves the operator: genes <b>on</b>. (Both the absence and presence of inducer matter.)' }] },
+        { k: 'step', n: '3', title: 'Catabolite repression', blocks: [{ k: 'p', x: 'If <b>glucose</b> is present, transcription stays weak. When glucose is scarce, <b>cAMP rises</b>, binds <b>CAP (CRP)</b>, and CAP–cAMP binds near the promoter and <b>activates</b> RNA polymerase: a <b>positive</b> regulator (like σ factor and λ’s N antiterminator). CAP can repress some other promoters; λ <b>Cro</b> only ever represses.' }] },
+        { k: 'h', x: 'The trp operon: repressible', l: 3 },
+        ostxBio('figure-16-02-01.jpg', 800, 523, 'The trp operon: when tryptophan is plentiful it binds the repressor, which then blocks the operator; when tryptophan is low the genes are transcribed.', 'The end product switches off its own synthesis.'),
+        { k: 'ul', items: [
+          'The trp repressor is made <b>inactive</b>. <b>Tryptophan</b> is the <b>corepressor</b>: it activates the repressor, which binds the operator and stops transcription.',
+          '<b>Attenuation</b>, a second layer: the leader mRNA encodes a short peptide with <b>two Trp codons</b>. Plenty of Trp-tRNA → the ribosome moves fast → a <b>terminator hairpin</b> forms and transcription stops early. Little Trp → the ribosome <b>stalls</b> → an <b>antiterminator</b> forms → transcription continues.',
+        ] },
+        { k: 'table', head: ['', 'Inducible (lac)', 'Repressible (trp)'], rows: [
+          { c: ['Default state', '<b>Off</b> (repressor active)', '<b>On</b> (repressor inactive)'] },
+          { c: ['Small molecule', '<b>Inducer</b> inactivates repressor', '<b>Corepressor</b> activates repressor'] },
+          { c: ['Pathway', '<b>Catabolic</b>', '<b>Anabolic</b>'] },
+          { c: ['Adding the molecule', 'Turns genes on', 'Turns genes off'] },
+          { c: ['Extra layer', 'CAP–cAMP positive control', '<b>Attenuation</b>'] },
+        ] },
+      ],
+    },
+    {
+      id: 're-euk',
+      title: 'Eukaryotic gene regulation',
+      kicker: 'Layered and combinatorial',
+      blocks: [
+        ostxBio('figure-16-04-01.jpg', 544, 637, 'An enhancer far from the gene binds activators; DNA bends so they contact the transcription machinery at the promoter.', 'Enhancers work at a distance and in either orientation.'),
+        { k: 'table', head: ['Element', 'Role'], rows: [
+          { c: ['<b>Transcription factors</b>', 'Sequence-specific activators and repressors that recruit RNA polymerase II'] },
+          { c: ['<b>Enhancers</b>', '<b>Increase</b> transcription at great distance, either orientation, even downstream, by DNA looping; a gene can have <b>several</b> enhancers'] },
+          { c: ['<b>Silencers</b>', 'Decrease transcription'] },
+          { c: ['<b>Insulators</b>', 'Boundaries that block enhancers or silencers from acting across them'] },
+          { c: ['<b>Epigenetic marks</b>', '<b>DNA methylation</b> at CpG islands (silencing); <b>histone modification</b>: acetylation loosens chromatin (on), deacetylation compacts it (off)'] },
+        ] },
+        ostxBio('figure-16-03-02.jpg', 725, 561, 'Closely packed nucleosomes block transcription factors; modifications that loosen them open the DNA for transcription.', 'Chromatin itself is a level of control.'),
+        { k: 'box', title: 'Britten–Davidson model (1969)', tone: 'recall', blocks: [{ k: 'p', x: 'Proposed coordinated control of batteries of genes by moderately repetitive DNA, at the level of <b>transcription</b>. <b>Sensor genes</b> receive signals; they activate <b>integrator genes</b>, which make small <b>activator RNAs</b>; these bind <b>receptor genes</b> beside <b>producer genes</b> (structural genes) and switch them on.' }] },
+      ],
+    },
+    {
+      id: 're-stats',
+      title: 'Describing data',
+      kicker: 'Centre and spread',
+      blocks: [
+        { k: 'table', head: ['Measure', 'Definition', 'Notes'], rows: [
+          { c: ['<b>Mean</b>', 'Sum ÷ number of values', 'Uses every value; pulled by outliers'] },
+          { c: ['<b>Median</b>', 'Middle value of <b>sorted</b> data (average the two middle ones if n is even)', 'Depends on position, not size, so unaffected by extremes'] },
+          { c: ['<b>Mode</b>', 'Most frequent value', 'Can be none, one, or several'] },
+        ] },
+        { k: 'box', title: 'Worked examples', tone: 'formula', blocks: [{ k: 'ul', items: [
+          '2, 4, 4, 5, 6, 6, 6: median (4th of 7) = <b>5</b>; mode = <b>6</b>.',
+          '2, 3, 4, 5, 7, 8: median = (4 + 5)/2 = <b>4.5</b>. Always <b>sort first</b>.',
+          '4, 5, 6: mean 5, median 5, <b>no mode</b>.',
+          'Geometric mean of 2 and 8 = √(2 × 8) = √16 = <b>4</b>.',
+        ] }] },
+        { k: 'ul', items: [
+          'Symmetrical distribution: mean = median (= mode if unimodal). <b>Positive (right) skew</b>: the high tail pulls the <b>mean above the median and mode</b>. Pearson: skewness ∝ (mean − mode) ≈ 3(mean − median).',
+          '<b>Variance</b>: average squared deviation from the mean (all observations). <b>SD</b> = √variance, the most used measure of spread; <b>SD = 0 means all values are identical</b>.',
+          '<b>Mean deviation</b>: average absolute deviation; lacks convenient algebraic properties.',
+          '<b>SEM = SD ÷ √n</b>: falls as samples grow.',
+          'The geometric mean (n-th root of the product, for rates and ratios) <b>can</b> be manipulated algebraically.',
+          '<b>Karl Pearson</b>: coefficient of variation (SD as % of mean) and the SD formalism; <b>Lorenz</b>: the Lorenz curve of inequality.',
+        ] },
+      ],
+    },
+    {
+      id: 're-tests',
+      title: 'Testing hypotheses',
+      kicker: 'χ², t, correlation, F',
+      blocks: [
+        { k: 'box', title: 'The χ² goodness-of-fit test', tone: 'formula', blocks: [
+          { k: 'p', x: '<b>χ² = Σ (O − E)² / E</b> over all classes. It uses only observed and expected frequencies, with no assumption about the parent distribution: a <b>non-parametric</b> test, the most used of them.' },
+          { k: 'ul', items: [
+            '<b>Null hypothesis</b>: no real difference; deviations are chance.',
+            'χ² = 0: perfect fit. <b>Larger χ² = worse fit</b>.',
+            '<b>df = number of classes − 1</b>: 3 : 1 has df 1; 9 : 3 : 3 : 1 has df 3.',
+            'p is the chance of a deviation this large if H₀ is true. <b>p &lt; 0.05</b> (or 0.01): reject H₀ (data do not fit). A good fit to 9 : 3 : 3 : 1 gives high p (around 0.95–0.99).',
+            '<b>Yates’ correction</b> for two classes (df = 1): subtract 0.5 from each |O − E| before squaring.',
+            'The <b>G-test</b> and <b>Wald test</b> also use the χ² distribution.',
+          ] },
+        ] },
+        { k: 'step', n: '1', title: 'Worked χ²: a monohybrid F2', blocks: [{ k: 'p', x: 'Observed 290 tall : 110 dwarf (n = 400). Expected 3 : 1 = 300 : 100. χ² = (290 − 300)²/300 + (110 − 100)²/100 = 0.33 + 1.00 = <b>1.33</b>. df = 1; the 5% critical value is <b>3.84</b>. 1.33 &lt; 3.84, so p &gt; 0.05: the data <b>fit 3 : 1</b>.' }] },
+        { k: 'step', n: '2', title: 'Worked χ²: a dihybrid F2', blocks: [{ k: 'p', x: 'Observed 315 : 108 : 101 : 32 (n = 556). Expected 9 : 3 : 3 : 1 = 312.75 : 104.25 : 104.25 : 34.75. χ² ≈ 0.016 + 0.135 + 0.101 + 0.218 = <b>0.47</b>, df = 3, critical 7.81: an excellent fit (Mendel’s own data).' }] },
+        { k: 'cards', items: [
+          { title: 'Student’s t-test', blocks: [{ k: 'ul', items: ['By <b>W. S. Gosset</b> (“Student”), <b>Biometrika, 1908</b>, for <b>small samples</b>.', 'Compares two means: <b>independent</b> or <b>paired</b>; also a one-sample test against a set (non-zero) value.', '<b>Parametric</b>: assumes normal data (and equal variances for the classic two-sample test).', 't-distribution shape set by <b>degrees of freedom</b> (from sample size). Outcome: accept or reject H₀ (equal means; difference zero).'] }] },
+          { title: 'Correlation, regression, F', blocks: [{ k: 'ul', items: ['<b>Correlation coefficient r</b>: −1 (perfect inverse) to 0 (none) to +1 (perfect positive); sensitive to <b>outliers</b>.', '<b>Regression</b> fits y = a + bx to <b>predict</b> one variable from another (e.g. offspring vs parent values for heritability).', '<b>F-test</b> (ANOVA) compares variances across several groups; F = ratio of two χ² variables over their df; right-skewed.'] }] },
+        ] },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Main control point: transcription initiation. Operator cis, repressor trans.',
+          'lac: inducible, allolactose inducer, CAP–cAMP positive control when glucose is low. trp: repressible, Trp corepressor, attenuation via leader peptide.',
+          'Enhancers (distance, many per gene), silencers, insulators, methylation (off), acetylation (on); Britten–Davidson sensor → integrator → activator RNA → receptor → producer.',
+          'Median of sorted data; mode can be none or several; right skew: mean > median; SD 0 = identical values; SEM = SD/√n; GM(2, 8) = 4.',
+          'χ² = Σ(O − E)²/E, df = classes − 1, Yates for df 1; reject H₀ if p &lt; 0.05. t-test: Gosset 1908, small samples. r from −1 to +1.',
+        ] }] },
+      ],
+    },
+  ]),
+  quiz: [
+    ['The most important control point of gene expression is', 'Transcription initiation', ['Rate of translation', 'Export of mRNA', 'Protein degradation'], 'In prokaryotes and eukaryotes.', 'Regulation'],
+    ['The operator is a', 'Cis-acting DNA site', ['Trans-acting protein', 'Diffusible RNA', 'Ribosome binding site'], 'Repressor binds it.', 'Operon'],
+    ['A mutation in lacI directly alters the', 'Repressor protein', ['Operator sequence', 'Promoter sequence', 'β-galactosidase gene'], 'Trans-acting.', 'Operon'],
+    ['The true inducer of the lac operon is', 'Allolactose', ['Glucose', 'Galactose', 'Cyclic AMP'], 'From lactose.', 'Lac'],
+    ['An inducer acts by binding the', 'Repressor', ['Promoter', 'Operator', 'RNA polymerase'], 'Changes its shape.', 'Lac'],
+    ['The lac repressor is', 'An allosteric protein', ['A small regulatory RNA', 'A cis-acting DNA sequence', 'A bacterial sigma factor'], 'Encoded by lacI.', 'Lac'],
+    ['When glucose is scarce, lac transcription is boosted by', 'CAP–cAMP', ['The lac repressor', 'Tryptophan', 'The Cro protein'], 'Catabolite repression relieved.', 'Lac'],
+    ['CAP–cAMP is an example of', 'Positive control', ['Negative control', 'Attenuation', 'Corepression'], 'Like σ factor.', 'Lac'],
+    ['The trp operon is', 'Repressible', ['Inducible', 'Constitutive', 'Polycistronic RNA only'], 'Anabolic.', 'Trp'],
+    ['In the trp operon, tryptophan acts as a', 'Corepressor', ['Inducer', 'Activator', 'Antiterminator'], 'Activates the repressor.', 'Trp'],
+    ['Attenuation in the trp operon depends on', 'Leader peptide translation', ['Binding of CAP–cAMP', 'The level of lactose', 'Histone acetylation'], 'Two Trp codons.', 'Trp'],
+    ['Inducible operons usually control', 'Catabolic pathways', ['Anabolic pathways', 'Chromosome replication', 'Ribosome assembly'], 'Breaking down substrates.', 'Operons'],
+    ['DNA elements that block enhancers acting across them are', 'Insulators', ['Silencers', 'Operators', 'Core promoters'], 'Boundaries.', 'Eukaryotes'],
+    ['Enhancers', 'Can act from far away', ['Act only beside the TATA box', 'Are found only in bacteria', 'Are always one per gene'], 'DNA looping.', 'Eukaryotes'],
+    ['Histone acetylation generally', 'Activates transcription', ['Silences transcription', 'Deletes the genes', 'Methylates the DNA'], 'Loosens chromatin.', 'Eukaryotes'],
+    ['In the Britten–Davidson model, activator RNAs are made by', 'Integrator genes', ['Sensor genes only', 'Receptor genes', 'Producer genes'], 'They bind receptor genes.', 'Eukaryotes'],
+    ['The median of 2, 4, 4, 5, 6, 6, 6 is', '5', ['4', '6', '4.7'], 'Middle of 7 values.', 'Statistics'],
+    ['The median of 2, 3, 4, 5, 7, 8 is', '4.5', ['4', '5', '4.8'], 'Average of 4 and 5.', 'Statistics'],
+    ['The measure that can have more than one value for a data set is the', 'Mode', ['Mean', 'Median', 'Standard deviation'], 'Bimodal data.', 'Statistics'],
+    ['In a positively skewed distribution', 'Mean > median', ['Mean < median', 'Mean = mode', 'Median > mean'], 'Tail to the right.', 'Statistics'],
+    ['A standard deviation of zero means', 'All values are equal', ['The mean is zero', 'The data are skewed', 'The sample is very large'], 'No deviation.', 'Statistics'],
+    ['The standard error of the mean equals', 'SD ÷ √n', ['SD × n', 'Variance ÷ n', '√SD ÷ n'], 'Falls as n grows.', 'Statistics'],
+    ['The geometric mean of 2 and 8 is', '4', ['5', '10', '16'], '√16.', 'Statistics'],
+    ['The χ² test is', 'Non-parametric', ['Parametric', 'Only for means', 'Only for two samples'], 'No distribution assumed.', 'χ²'],
+    ['A χ² value of zero means', 'Perfect fit', ['No fit at all', 'Reject H₀', 'Too few classes'], 'O = E.', 'χ²'],
+    ['Degrees of freedom for a 9 : 3 : 3 : 1 test are', '3', ['4', '1', '15'], 'Classes − 1.', 'χ²'],
+    ['Yates’ correction is applied when', 'There are two classes', ['There are four classes', 'The sample is huge', 'The data are normal'], 'df = 1.', 'χ²'],
+    ['290 tall and 110 dwarf tested against 3 : 1 give χ² of about', '1.33', ['0.33', '3.84', '13.3'], 'Below 3.84: fits.', 'χ²'],
+    ['A p-value below 0.05 in a χ² test means', 'Reject the null hypothesis', ['Accept the null hypothesis', 'A perfect fit', 'Too few degrees of freedom'], 'Data do not fit.', 'χ²'],
+    ['The t-test was published by Gosset in', '1908', ['1859', '1925', '1953'], 'In Biometrika as “Student”.', 't-test'],
+    ['The t-test was designed especially for', 'Small samples', ['Very large populations', 'Categorical counts', 'Three or more groups'], 'Unknown population parameters.', 't-test'],
+    ['A correlation coefficient of −1 means', 'Perfect inverse relationship', ['No relationship', 'Perfect positive relationship', 'A weak relationship'], 'r ranges −1 to +1.', 'Correlation'],
+    ['Predicting one variable from another uses', 'Regression', ['Correlation only', 'The mode', 'Yates’ correction'], 'y = a + bx.', 'Correlation'],
+  ],
+};

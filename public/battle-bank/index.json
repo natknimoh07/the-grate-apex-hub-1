@@ -1488,7 +1488,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1897,
+   "total": 1930,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1611,6 +1611,14 @@
      "unrated": 5
     },
     {
+     "id": "Correlation",
+     "title": "Correlation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Crosses",
      "title": "Crosses",
      "easy": 0,
@@ -1681,6 +1689,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Eukaryotes",
+     "title": "Eukaryotes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Gametogenesis",
@@ -1765,6 +1781,14 @@
     {
      "id": "Karyotype",
      "title": "Karyotype",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Lac",
+     "title": "Lac",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -1923,12 +1947,20 @@
      "unrated": 3
     },
     {
+     "id": "Operon",
+     "title": "Operon",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Operons",
      "title": "Operons",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 2
     },
     {
      "id": "Packing",
@@ -2019,6 +2051,14 @@
      "unrated": 61
     },
     {
+     "id": "Regulation",
+     "title": "Regulation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Repair",
      "title": "Repair",
      "easy": 0,
@@ -2075,12 +2115,28 @@
      "unrated": 7
     },
     {
+     "id": "Statistics",
+     "title": "Statistics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Syndromes",
      "title": "Syndromes",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "t-test",
+     "title": "t-test",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Techniques",
@@ -2107,6 +2163,14 @@
      "unrated": 3
     },
     {
+     "id": "Trp",
+     "title": "Trp",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Variation",
      "title": "Variation",
      "easy": 0,
@@ -2121,6 +2185,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "χ²",
+     "title": "χ²",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     }
    ]
   },
