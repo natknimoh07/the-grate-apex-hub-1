@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 870,
+   "total": 896,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6171,6 +6171,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "AutoComplete",
+     "title": "AutoComplete",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "AutoFormat & Format Painter",
@@ -6301,6 +6309,14 @@
      "unrated": 8
     },
     {
+     "id": "Dates",
+     "title": "Dates",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Dates, Times & AutoComplete",
      "title": "Dates, Times & AutoComplete",
      "easy": 0,
@@ -6309,12 +6325,28 @@
      "unrated": 14
     },
     {
+     "id": "Editing",
+     "title": "Editing",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Editing & the Fill Handle",
      "title": "Editing & the Fill Handle",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 15
+    },
+    {
+     "id": "Entering",
+     "title": "Entering",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Entering Formulas",
@@ -6371,6 +6403,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Filling",
+     "title": "Filling",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Filling Series & Custom Lists",
@@ -6571,6 +6611,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Office",
+     "title": "Office",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Opening Files",
@@ -6779,6 +6827,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Spreadsheets",
+     "title": "Spreadsheets",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Stacking Order",

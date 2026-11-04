@@ -120,6 +120,7 @@ import { algebraDiffBusiness } from '@/data/hb1-lessons/algebra-diff-business';
 import { algebraIntegration } from '@/data/hb1-lessons/algebra-integration';
 import { algebraIntApps } from '@/data/hb1-lessons/algebra-int-apps';
 import { algebraDiffEq } from '@/data/hb1-lessons/algebra-diffeq';
+import { compappExcelStart } from '@/data/hb1-lessons/compapp-excel-start';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -167,6 +168,8 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   statsIntro, statsData, statsDescriptive, statsProbability, statsDiscrete, statsContinuous,
 
   algebraSets, algebraEquations, algebraLogs, algebraNumbers, algebraSequences, algebraBinomial, algebraLines, algebraTrig, algebraMatrices, algebraFunctions, algebraDerivatives, algebraDiffApps, algebraDiffBusiness, algebraIntegration, algebraIntApps, algebraDiffEq,
+
+  compappExcelStart,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
