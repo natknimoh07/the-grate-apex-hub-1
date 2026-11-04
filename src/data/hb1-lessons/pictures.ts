@@ -29,3 +29,18 @@ export function numberFigures(sections: LegacySection[]): LegacySection[] {
     return { ...section, blocks: section.blocks.map((block) => (block.k === 'illus' ? { ...block, num: `Figure ${s + 1}.${++n}` } : block)) };
   });
 }
+
+const BIO_CREDIT = 'OpenStax, Biology · CC BY 4.0';
+const BIO_SOURCE = 'https://openstax.org/details/books/biology';
+
+/** An OpenStax Biology (1st edition, CC BY 4.0) picture in public/images/openstax-bio/. */
+export const ostxBio = (file: string, w: number, h: number, cap: string, note: string): Block => ({
+  k: 'illus',
+  src: `/images/openstax-bio/${file}`,
+  w,
+  h,
+  cap,
+  credit: BIO_CREDIT,
+  url: BIO_SOURCE,
+  note,
+});

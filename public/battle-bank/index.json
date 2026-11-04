@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1024,
+   "total": 1058,
    "topics": [
     {
      "id": "Active Site",
@@ -4668,6 +4668,14 @@
      "unrated": 1
     },
     {
+     "id": "Diabetes",
+     "title": "Diabetes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Effect of pH",
      "title": "Effect of pH",
      "easy": 0,
@@ -4686,6 +4694,14 @@
     {
      "id": "Effects of Light and Radiation",
      "title": "Effects of Light and Radiation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Energy",
+     "title": "Energy",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -4820,12 +4836,20 @@
      "unrated": 12
     },
     {
+     "id": "Glucose entry",
+     "title": "Glucose entry",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Glycolysis",
      "title": "Glycolysis",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 13
+     "unrated": 16
     },
     {
      "id": "Hexokinase vs Glucokinase",
@@ -4834,6 +4858,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Homeostasis",
+     "title": "Homeostasis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Induced Fit Model",
@@ -4916,6 +4948,14 @@
      "unrated": 1
     },
     {
+     "id": "Overview",
+     "title": "Overview",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Past Questions",
      "title": "Past Questions",
      "easy": 0,
@@ -4940,12 +4980,28 @@
      "unrated": 2
     },
     {
+     "id": "Pyruvate",
+     "title": "Pyruvate",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Rapoport-Luebering Shunt",
      "title": "Rapoport-Luebering Shunt",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Regulation",
+     "title": "Regulation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Regulation of Glycolysis",
@@ -4972,8 +5028,32 @@
      "unrated": 1
     },
     {
+     "id": "Step 1",
+     "title": "Step 1",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Step 10",
+     "title": "Step 10",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Step 10: Pyruvate Formation",
      "title": "Step 10: Pyruvate Formation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Step 3",
+     "title": "Step 3",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -4988,6 +5068,14 @@
      "unrated": 1
     },
     {
+     "id": "Step 4",
+     "title": "Step 4",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Step 4: Cleavage of F-1,6-BP",
      "title": "Step 4: Cleavage of F-1,6-BP",
      "easy": 0,
@@ -4996,12 +5084,36 @@
      "unrated": 1
     },
     {
+     "id": "Step 6",
+     "title": "Step 6",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Step 6: Oxidation of G-3-P",
      "title": "Step 6: Oxidation of G-3-P",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Step 7",
+     "title": "Step 7",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Step 9",
+     "title": "Step 9",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Step 9: Dehydration to PEP",
