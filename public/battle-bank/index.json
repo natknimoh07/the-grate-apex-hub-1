@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1058,
+   "total": 1083,
    "topics": [
     {
      "id": "Active Site",
@@ -4636,6 +4636,14 @@
      "unrated": 1
     },
     {
+     "id": "Bypasses",
+     "title": "Bypasses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Characteristics of Enzymes",
      "title": "Characteristics of Enzymes",
      "easy": 0,
@@ -4658,6 +4666,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Cori cycle",
+     "title": "Cori cycle",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Cost",
+     "title": "Cost",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Covalent Modification",
@@ -4881,7 +4905,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 13
+     "unrated": 18
     },
     {
      "id": "Introduction to Enzymes",
@@ -4894,6 +4918,14 @@
     {
      "id": "Introduction to Glycolysis",
      "title": "Introduction to Glycolysis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Ketosis",
+     "title": "Ketosis",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -4980,6 +5012,14 @@
      "unrated": 2
     },
     {
+     "id": "Precursors",
+     "title": "Precursors",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Pyruvate",
      "title": "Pyruvate",
      "easy": 0,
@@ -5001,7 +5041,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 11
     },
     {
      "id": "Regulation of Glycolysis",
