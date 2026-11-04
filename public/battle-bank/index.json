@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 919,
+   "total": 945,
    "topics": [
     {
      "id": "Absolute value",
@@ -3672,6 +3672,14 @@
      "unrated": 14
     },
     {
+     "id": "Angles",
+     "title": "Angles",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "AP",
      "title": "AP",
      "easy": 0,
@@ -3701,7 +3709,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 5
     },
     {
      "id": "Binomial",
@@ -3816,6 +3824,14 @@
      "unrated": 3
     },
     {
+     "id": "Distance",
+     "title": "Distance",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Distance & Midpoint",
      "title": "Distance & Midpoint",
      "easy": 0,
@@ -3832,12 +3848,28 @@
      "unrated": 12
     },
     {
+     "id": "Distance to a line",
+     "title": "Distance to a line",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Domain of Functions",
      "title": "Domain of Functions",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Equations",
+     "title": "Equations",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Equations & Coordinate Geometry",
@@ -3990,6 +4022,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Gradient",
+     "title": "Gradient",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Gradient & Equation of a Line",
@@ -4270,6 +4310,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Parallel",
+     "title": "Parallel",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Parallel & Perpendicular Lines",
@@ -4590,6 +4638,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Trials",
+     "title": "Trials",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Trig Equations",
