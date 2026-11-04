@@ -5715,7 +5715,7 @@
   {
    "id": "commskills",
    "name": "Communication Skills",
-   "total": 629,
+   "total": 702,
    "topics": [
     {
      "id": "'And' & Correlative Conjunctions",
@@ -5771,7 +5771,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 10
     },
     {
      "id": "Capitals",
@@ -5780,6 +5780,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Clauses",
+     "title": "Clauses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Colon",
@@ -5792,6 +5800,14 @@
     {
      "id": "Comma",
      "title": "Comma",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Comprehension",
+     "title": "Comprehension",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -5844,6 +5860,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Declarative",
+     "title": "Declarative",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Declarative Sentences",
@@ -5918,6 +5942,14 @@
      "unrated": 3
     },
     {
+     "id": "Exclamatory",
+     "title": "Exclamatory",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Exclamatory Sentences",
      "title": "Exclamatory Sentences",
      "easy": 0,
@@ -5950,6 +5982,14 @@
      "unrated": 13
     },
     {
+     "id": "Fragments",
+     "title": "Fragments",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Fragments — Correction",
      "title": "Fragments — Correction",
      "easy": 0,
@@ -5966,6 +6006,14 @@
      "unrated": 13
     },
     {
+     "id": "Function",
+     "title": "Function",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Headword",
      "title": "Headword",
      "easy": 0,
@@ -5976,6 +6024,14 @@
     {
      "id": "Hyphen",
      "title": "Hyphen",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Imperative",
+     "title": "Imperative",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -5996,6 +6052,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Interrogative",
+     "title": "Interrogative",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Interrogative Sentences",
@@ -6062,12 +6126,20 @@
      "unrated": 4
     },
     {
+     "id": "Paragraphs",
+     "title": "Paragraphs",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Parallelism",
      "title": "Parallelism",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 12
     },
     {
      "id": "Past questions",
@@ -6075,7 +6147,15 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 3
+    },
+    {
+     "id": "Patterns",
+     "title": "Patterns",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Prepositions",
@@ -6142,6 +6222,14 @@
      "unrated": 4
     },
     {
+     "id": "Run-ons",
+     "title": "Run-ons",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Run-ons — Correction",
      "title": "Run-ons — Correction",
      "easy": 0,
@@ -6206,12 +6294,28 @@
      "unrated": 5
     },
     {
+     "id": "Shifts",
+     "title": "Shifts",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Special",
      "title": "Special",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Spelling",
+     "title": "Spelling",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Structural",
@@ -6236,6 +6340,30 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Structure",
+     "title": "Structure",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Summary",
+     "title": "Summary",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Tense",
+     "title": "Tense",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "The Apostrophe",
@@ -6326,12 +6454,28 @@
      "unrated": 5
     },
     {
+     "id": "Usage",
+     "title": "Usage",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Verbs",
      "title": "Verbs",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 17
+    },
+    {
+     "id": "Voice",
+     "title": "Voice",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "What Is a Sentence",

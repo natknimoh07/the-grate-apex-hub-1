@@ -134,6 +134,9 @@ import { commskillsWordClasses } from '@/data/hb1-lessons/commskills-word-classe
 import { commskillsAmbiguity } from '@/data/hb1-lessons/commskills-ambiguity';
 import { commskillsPunctuation } from '@/data/hb1-lessons/commskills-punctuation';
 import { commskillsConcord } from '@/data/hb1-lessons/commskills-concord';
+import { commskillsSentence } from '@/data/hb1-lessons/commskills-sentence';
+import { commskillsErrors } from '@/data/hb1-lessons/commskills-errors';
+import { commskillsWriting } from '@/data/hb1-lessons/commskills-writing';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -184,7 +187,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
 
   compappExcelStart, compappFormulas, compappFunctions, compappFormatting, compappPrinting, compappFiles, compappCharts, compappPptBasics, compappPptMedia, compappPptShow,
 
-  commskillsWordClasses, commskillsAmbiguity, commskillsPunctuation, commskillsConcord,
+  commskillsWordClasses, commskillsAmbiguity, commskillsPunctuation, commskillsConcord, commskillsSentence, commskillsErrors, commskillsWriting,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
