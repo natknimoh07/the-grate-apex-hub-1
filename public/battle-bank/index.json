@@ -9109,7 +9109,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 927,
+   "total": 957,
    "topics": [
     {
      "id": "Adaptations",
@@ -9216,6 +9216,14 @@
      "unrated": 3
     },
     {
+     "id": "Bot fly",
+     "title": "Bot fly",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Burden",
      "title": "Burden",
      "easy": 0,
@@ -9253,7 +9261,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 18
+     "unrated": 21
     },
     {
      "id": "Culicines",
@@ -9318,6 +9326,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 9
+    },
+    {
+     "id": "Flies",
+     "title": "Flies",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Floor maggot",
+     "title": "Floor maggot",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Ghana",
@@ -9496,6 +9520,14 @@
      "unrated": 2
     },
     {
+     "id": "Myiasis",
+     "title": "Myiasis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
+    },
+    {
      "id": "Nuisance",
      "title": "Nuisance",
      "easy": 0,
@@ -9584,6 +9616,14 @@
      "unrated": 10
     },
     {
+     "id": "Screw-worms",
+     "title": "Screw-worms",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Self-protection",
      "title": "Self-protection",
      "easy": 0,
@@ -9648,6 +9688,14 @@
      "unrated": 4
     },
     {
+     "id": "Traumatic",
+     "title": "Traumatic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Treatment",
      "title": "Treatment",
      "easy": 0,
@@ -9670,6 +9718,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Tumbu fly",
+     "title": "Tumbu fly",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Tunga",
