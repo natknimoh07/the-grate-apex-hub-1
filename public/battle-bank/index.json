@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 971,
+   "total": 1015,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6221,6 +6221,14 @@
      "unrated": 6
     },
     {
+     "id": "Breaks",
+     "title": "Breaks",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Centering & Merging",
      "title": "Centering & Merging",
      "easy": 0,
@@ -6285,6 +6293,14 @@
      "unrated": 7
     },
     {
+     "id": "Closing",
+     "title": "Closing",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Closing & File Management",
      "title": "Closing & File Management",
      "easy": 0,
@@ -6323,6 +6339,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Consolidating",
+     "title": "Consolidating",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Consolidating Data",
@@ -6589,12 +6613,28 @@
      "unrated": 3
     },
     {
+     "id": "Headers",
+     "title": "Headers",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Headers & Footers",
      "title": "Headers & Footers",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Importing",
+     "title": "Importing",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Importing & File Types",
@@ -6637,6 +6677,14 @@
      "unrated": 4
     },
     {
+     "id": "Managing",
+     "title": "Managing",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Managing Worksheets",
      "title": "Managing Worksheets",
      "easy": 0,
@@ -6658,7 +6706,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 8
     },
     {
      "id": "Math & Trigonometric Functions",
@@ -6741,6 +6789,14 @@
      "unrated": 1
     },
     {
+     "id": "Opening",
+     "title": "Opening",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Opening Files",
      "title": "Opening Files",
      "easy": 0,
@@ -6767,6 +6823,14 @@
     {
      "id": "Page Layout Order",
      "title": "Page Layout Order",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Page Setup",
+     "title": "Page Setup",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -6821,6 +6885,22 @@
      "unrated": 4
     },
     {
+     "id": "Preview",
+     "title": "Preview",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Print area",
+     "title": "Print area",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Print Area",
      "title": "Print Area",
      "easy": 0,
@@ -6869,6 +6949,14 @@
      "unrated": 4
     },
     {
+     "id": "Protecting",
+     "title": "Protecting",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Protecting Workbooks",
      "title": "Protecting Workbooks",
      "easy": 0,
@@ -6901,6 +6989,14 @@
      "unrated": 2
     },
     {
+     "id": "Saving",
+     "title": "Saving",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Saving & File Formats",
      "title": "Saving & File Formats",
      "easy": 0,
@@ -6917,12 +7013,28 @@
      "unrated": 7
     },
     {
+     "id": "Scaling",
+     "title": "Scaling",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Scaling: Adjust To vs Fit To",
      "title": "Scaling: Adjust To vs Fit To",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Sheets",
+     "title": "Sheets",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Slide Basics & Views",
@@ -7005,6 +7117,14 @@
      "unrated": 2
     },
     {
+     "id": "Steps",
+     "title": "Steps",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Tables",
      "title": "Tables",
      "easy": 0,
@@ -7075,6 +7195,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Workbooks",
+     "title": "Workbooks",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     }
    ]
   },
