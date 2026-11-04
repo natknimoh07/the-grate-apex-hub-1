@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 867,
+   "total": 892,
    "topics": [
     {
      "id": "Absolute value",
@@ -3672,12 +3672,20 @@
      "unrated": 14
     },
     {
+     "id": "AP",
+     "title": "AP",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
+    },
+    {
      "id": "Applications",
      "title": "Applications",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 25
+     "unrated": 28
     },
     {
      "id": "Arithmetic Progression",
@@ -3693,7 +3701,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 4
     },
     {
      "id": "Binomial Theorem",
@@ -3960,6 +3968,14 @@
      "unrated": 9
     },
     {
+     "id": "GP",
+     "title": "GP",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Gradient & Equation of a Line",
      "title": "Gradient & Equation of a Line",
      "easy": 0,
@@ -4006,6 +4022,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Infinity",
+     "title": "Infinity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Integration",
@@ -4238,6 +4262,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 12
+    },
+    {
+     "id": "Partial fractions",
+     "title": "Partial fractions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Partial Fractions",
