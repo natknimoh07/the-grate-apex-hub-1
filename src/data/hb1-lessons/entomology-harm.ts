@@ -58,6 +58,7 @@ export const entomologyHarm: Hb1Lesson = {
           { c: ['Honey bee', '<b>Barbed</b>, used once — sting and venom sac stay in the wound'] },
           { c: ['Wasps and ants', '<b>Smooth</b>, used repeatedly; some ants spray venom into the wound'] },
         ] },
+        { k: 'p', x: 'Besides toxins, venoms contain <b>enzymes</b>: <b>proteases</b> and <b>hyaluronidase</b> (the “spreading factor” that breaks down connective tissue so venom spreads), and <b>acetylcholine</b>, which acts on the autonomic nervous system and adds to the pain. Bright-coloured clothes, cosmetics and scented soaps attract some stinging insects, so avoid them where they are common.' },
         { k: 'p', x: 'Venom works by <b>IgE-mediated</b> release of histamine, leukotrienes and prostaglandins. Bee, wasp and yellow-jacket venoms are alike, so they <b>cross-react</b>. Reactions range from:' },
         { k: 'ul', items: [
           '<b>Mild local:</b> redness, itching, pain, swelling.',

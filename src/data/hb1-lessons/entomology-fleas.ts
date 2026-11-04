@@ -26,6 +26,12 @@ export const entomologyFleas: Hb1Lesson = {
           'They are pests because they suck blood, burrow into skin and carry diseases and parasites.',
         ] },
         { k: 'p', x: 'Being flattened sideways lets a flea slip between hairs or feathers; the big hind legs let it leap onto a passing host.' },
+        { k: 'table', head: ['Adaptation (slides 5–7 notes)', 'What it does'], rows: [
+          { c: ['<b>Short antennae</b> lying in grooves (<b>antennal fossae</b>) on the head', 'Carry mechanoreceptors and chemoreceptors for touch, smell, <b>heat, humidity and vibration</b>: the main host-finding organs; males also use them to pick up chemical signals from females. In males they are erectable and hold the female during mating'] },
+          { c: ['<b>Hind legs and resilin</b>', 'Jumps of up to <b>150 times</b> the body length: the elastic protein <b>resilin</b> in the metathorax is compressed as the coxa flexes, then released like a spring'] },
+          { c: ['<b>Sensilium (pygidium)</b> at the tail end', 'A sensory plate detecting air movement, vibration and temperature gradients; in some species it helps in copulation'] },
+          { c: ['<b>Silken cocoon</b>', 'Pupae stay dormant for months and hatch in response to <b>vibration</b> from a host; the cocoon prevents drying, camouflages, and lengthens the flea’s life, which makes control hard'] },
+        ] },
       ],
     },
     {

@@ -55,7 +55,7 @@ export const entomologyLiceBedbugs: Hb1Lesson = {
           '<b>3 nymphal instars</b> over 7–14 days; maturity at <b>16–27 days</b>; adults live about <b>1 month</b> and are very sensitive to temperature (they leave a feverish or dead body). Heavy infestations can exceed 10 000 lice and nits.',
           'Predisposing factors: <b>cold climate</b>, <b>poverty</b>, <b>overcrowding</b>, refugee camps, disasters, homeless shelters, not washing or changing clothes.',
         ] },
-        { k: 'term', name: 'Pediculosis', def: 'Infestation with lice on any part of the body. It brings weariness, irritability, intense <b>itching (pruritus)</b> and rash from allergy to the bites, weeping skin and hay-fever-like symptoms. After years of bites and scratching the skin thickens and darkens: <b>vagabond’s disease</b> (morbus errorum).' },
+        { k: 'term', name: 'Pediculosis', def: 'Infestation with lice on any part of the body. It brings weariness, irritability, intense <b>itching (pruritus)</b> and rash from allergy to the bites, weeping skin and hay-fever-like symptoms. Sensitisation to louse saliva takes <b>4–6 weeks</b>, so a first infestation may not itch at first; the allergic rash can be <b>morbilliform</b> (measles-like), with excoriations from scratching, swollen lymph nodes and secondary bacterial infection such as impetigo. Pubic lice can spread from the pubic area to the perineum, thighs, umbilicus, chest, moustache, beard and eyelashes. After years of bites and scratching the skin thickens and darkens: <b>vagabond’s disease</b> (morbus errorum).' },
       ],
     },
     {

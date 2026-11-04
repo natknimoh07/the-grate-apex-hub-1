@@ -98,6 +98,12 @@ export const entomologyTicks: Hb1Lesson = {
           { c: ['Viruses', 'Tick-borne encephalitis (TBEV), Colorado tick fever, Crimean–Congo haemorrhagic fever'] },
           { c: ['Protozoa', '<b>Babesia microti</b> (babesiosis); Cytauxzoon felis (cats)'] },
         ] },
+        { k: 'table', head: ['Three-host genus (slide 17)', 'Diseases it carries'], rows: [
+          { c: ['<i>Ixodes</i>', 'Lyme borreliosis, babesiosis, human granulocytic ehrlichiosis'] },
+          { c: ['<i>Amblyomma</i>', 'Tularaemia, ehrlichiosis, Rocky Mountain spotted fever'] },
+          { c: ['<i>Dermacentor</i>', 'Rocky Mountain spotted fever, Colorado tick fever, tularaemia, tick paralysis'] },
+          { c: ['<i>Rhipicephalus</i>', 'Rocky Mountain spotted fever, boutonneuse fever'] },
+        ] },
         { k: 'h', x: 'African tick bite fever: a case', l: 3 },
         { k: 'p', x: 'A 69-year-old man returns to France from 6 days on farms in <b>Zimbabwe</b> with fever, <b>several eschars</b> on one leg, headache, cough, nausea, chills and back pain, and <b>lymphangitis</b> with swollen nodes in that leg. This is <b>African tick bite fever</b> (<i>Rickettsia africae</i>, carried by <i>Amblyomma</i> ticks), mainly a travellers’ disease.' },
         { k: 'table', head: ['Aspect', 'Features'], rows: [
