@@ -12,7 +12,7 @@ export const statsIntro: Hb1Lesson = {
   source: 'Statistical_Methods_1__Med_Sch__.pdf',
   quizId: 'stin',
   quizName: 'Quiz · Introduction to Statistics (lesson)',
-  pastSets: ['s1'],
+  pastSets: ['s1', 's8'],
   sections: [
     {
       id: 'in-what',

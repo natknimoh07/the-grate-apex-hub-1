@@ -4452,7 +4452,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 556,
+   "total": 584,
    "topics": [
     {
      "id": "Addition Rule",
@@ -4469,6 +4469,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Approximation",
+     "title": "Approximation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Basics",
@@ -4751,12 +4759,28 @@
      "unrated": 3
     },
     {
+     "id": "Exponential",
+     "title": "Exponential",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Exponential Distribution",
      "title": "Exponential Distribution",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Gamma",
+     "title": "Gamma",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Gamma Distribution",
@@ -4829,6 +4853,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Normal",
+     "title": "Normal",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
     },
     {
      "id": "Normal Approximation to Binomial",
@@ -5124,7 +5156,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 7
     },
     {
      "id": "Variables",
