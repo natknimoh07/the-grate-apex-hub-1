@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 794,
+   "total": 819,
    "topics": [
     {
      "id": "Absolute Value & Inequalities",
@@ -3678,6 +3678,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Basics",
+     "title": "Basics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Binomial Theorem",
@@ -3742,6 +3750,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Cubics",
+     "title": "Cubics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Curve Analysis",
@@ -4032,6 +4048,14 @@
      "unrated": 4
     },
     {
+     "id": "Linear",
+     "title": "Linear",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Linear Equations in One Variable",
      "title": "Linear Equations in One Variable",
      "easy": 0,
@@ -4216,6 +4240,14 @@
      "unrated": 4
     },
     {
+     "id": "Polynomials",
+     "title": "Polynomials",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Polynomials - Evaluation & Zeros",
      "title": "Polynomials - Evaluation & Zeros",
      "easy": 0,
@@ -4302,6 +4334,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Quadratics",
+     "title": "Quadratics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
     },
     {
      "id": "Sequences & Factorials",
