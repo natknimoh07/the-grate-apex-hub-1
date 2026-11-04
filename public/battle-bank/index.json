@@ -297,7 +297,7 @@
   {
    "id": "biolchem",
    "name": "Biological Chemistry",
-   "total": 1237,
+   "total": 1261,
    "topics": [
     {
      "id": "Acid-Base Chemistry",
@@ -529,7 +529,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 10
     },
     {
      "id": "Denaturation",
@@ -762,6 +762,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 12
+    },
+    {
+     "id": "Hormones",
+     "title": "Hormones",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Hybridisation",
@@ -1036,6 +1044,14 @@
      "unrated": 16
     },
     {
+     "id": "Pathways",
+     "title": "Pathways",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Peptides",
      "title": "Peptides",
      "easy": 0,
@@ -1108,6 +1124,14 @@
      "unrated": 14
     },
     {
+     "id": "Principles",
+     "title": "Principles",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Properties",
      "title": "Properties",
      "easy": 0,
@@ -1169,7 +1193,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 10
     },
     {
      "id": "Reactions & Analysis",
