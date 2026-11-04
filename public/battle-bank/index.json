@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 2953,
+   "total": 3041,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -223,7 +223,7 @@
     {
      "id": "blood-coagulation-and-fibrinolysis",
      "title": "Blood Coagulation and Fibrinolysis",
-     "easy": 67,
+     "easy": 155,
      "medium": 37,
      "hard": 1,
      "unrated": 20

@@ -27,7 +27,7 @@ HB2 Biochemistry
 - [x] cholesterol-and-bile-biosynthesis — 22 sections, 110 questions
 - [x] heme-metabolism — 33 sections, 165 questions
 - [x] oxygen-carriers — 19 sections, 95 questions
-- [ ] blood-coagulation-and-fibrinolysis
+- [x] blood-coagulation-and-fibrinolysis — 19 sections, 95 questions
 - [ ] hormones-endocrine-biochemistry
 - [ ] inborn-errors-of-metabolism
 - [ ] collagen-synthesis
