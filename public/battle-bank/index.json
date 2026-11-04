@@ -297,7 +297,7 @@
   {
    "id": "biolchem",
    "name": "Biological Chemistry",
-   "total": 1203,
+   "total": 1237,
    "topics": [
     {
      "id": "Acid-Base Chemistry",
@@ -500,6 +500,14 @@
      "unrated": 12
     },
     {
+     "id": "Cofactors",
+     "title": "Cofactors",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Configuration",
      "title": "Configuration",
      "easy": 0,
@@ -514,6 +522,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Control",
+     "title": "Control",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Denaturation",
@@ -793,7 +809,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 18
     },
     {
      "id": "Introduction",
@@ -801,11 +817,19 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 4
     },
     {
      "id": "Isomerism",
      "title": "Isomerism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Kinetics",
+     "title": "Kinetics",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -906,6 +930,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 18
+    },
+    {
+     "id": "Naming",
+     "title": "Naming",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Non-protein",
@@ -1204,6 +1236,14 @@
      "unrated": 11
     },
     {
+     "id": "Specificity",
+     "title": "Specificity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Specificity & Regulation",
      "title": "Specificity & Regulation",
      "easy": 0,
@@ -1276,6 +1316,14 @@
      "unrated": 12
     },
     {
+     "id": "Temperature",
+     "title": "Temperature",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Tests",
      "title": "Tests",
      "easy": 0,
@@ -1322,6 +1370,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 13
+    },
+    {
+     "id": "Vitamins",
+     "title": "Vitamins",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Waxes, Terpenes & Steroids",
