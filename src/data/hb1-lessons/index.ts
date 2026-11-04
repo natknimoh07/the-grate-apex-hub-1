@@ -76,6 +76,7 @@ import { entomologyCockroaches } from '@/data/hb1-lessons/entomology-cockroaches
 import { entomologyMyiasis } from '@/data/hb1-lessons/entomology-myiasis';
 import { entomologyCollecting } from '@/data/hb1-lessons/entomology-collecting';
 import { cellstructMicroscopy } from '@/data/hb1-lessons/cellstruct-microscopy';
+import { cellstructTechniques } from '@/data/hb1-lessons/cellstruct-techniques';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -115,7 +116,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyMuscleTissue, anatomyNervousTissue, anatomyFemaleReproductive, anatomyMaleReproductive, anatomyEmbryology,
   entomologyIntroduction, entomologyMosquitoes, entomologyAnophelineCulicine, entomologyLiceBedbugs, entomologySandfliesScabies, entomologyTsetseMidges, entomologyTicks, entomologyCockroaches, entomologyMyiasis, entomologyCollecting,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
-  cellstructMicroscopy,
+  cellstructMicroscopy, cellstructTechniques,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
