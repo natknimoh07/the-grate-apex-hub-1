@@ -4452,7 +4452,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 470,
+   "total": 496,
    "topics": [
     {
      "id": "Addition Rule",
@@ -4485,6 +4485,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Boxplot",
+     "title": "Boxplot",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Boxplots",
@@ -4525,6 +4533,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Centre",
+     "title": "Centre",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Classical & Axiomatic Probability",
@@ -4711,6 +4727,14 @@
      "unrated": 11
     },
     {
+     "id": "Grouped",
+     "title": "Grouped",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Introduction to Statistics & Basic Concepts",
      "title": "Introduction to Statistics & Basic Concepts",
      "easy": 0,
@@ -4839,6 +4863,14 @@
      "unrated": 7
     },
     {
+     "id": "Position",
+     "title": "Position",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Probability & Random Variables",
      "title": "Probability & Random Variables",
      "easy": 0,
@@ -4949,6 +4981,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Spread",
+     "title": "Spread",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Stages",
