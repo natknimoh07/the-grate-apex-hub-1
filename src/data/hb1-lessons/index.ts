@@ -52,6 +52,7 @@ import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
 import { entomologyVectorControl } from '@/data/hb1-lessons/entomology-vector-control';
 import { HB1_PRACTICE_IDS } from '@/data/hb1-lessons/practice-ids';
 import { anatomyIntroduction } from '@/data/hb1-lessons/anatomy-introduction';
+import { anatomySkeleton } from '@/data/hb1-lessons/anatomy-skeleton';
 import { anatomyJoints } from '@/data/hb1-lessons/anatomy-joints';
 import { anatomyEpithelium } from '@/data/hb1-lessons/anatomy-epithelium';
 import { anatomyConnectiveTissue } from '@/data/hb1-lessons/anatomy-connective-tissue';
@@ -91,7 +92,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
-  anatomyIntroduction, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyNervousTissue,
+  anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyNervousTissue,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
