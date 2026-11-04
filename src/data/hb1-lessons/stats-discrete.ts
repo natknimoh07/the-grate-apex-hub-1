@@ -1,0 +1,141 @@
+// Statistical Methods → Random Variables and Discrete Distributions. From "Statistical_Methods_3"
+// (slides 48–52) and "Statistical_Methods_4" (STAT 153, KNUST, slides 1–55), plus rules for
+// linear combinations the past questions use (labelled). Rewrites the original database lesson
+// stats-05 (same id, so progress is kept). Checked 2026-11-04; teaching text in our own words.
+// Practises Quiz 5.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+
+export const statsDiscrete: Hb1Lesson = {
+  id: 'stats-05',
+  order: 5,
+  title: 'Random Variables and Discrete Distributions',
+  summary: 'Random variables (discrete and continuous); the PMF, the PDF and the CDF; expectation and variance, and how they change for aX + b and for sums; then the discrete uniform, Bernoulli, binomial, multinomial and Poisson distributions with the hospital examples, and the Poisson approximation to the binomial',
+  minutes: 26,
+  source: 'Statistical_Methods_4.pdf',
+  quizId: 'strv',
+  quizName: 'Quiz · Discrete Distributions (lesson)',
+  pastSets: ['s5'],
+  sections: [
+    {
+      id: 'rv-what',
+      title: 'Random variables, PMF, PDF and CDF',
+      kicker: 'A number for every outcome',
+      blocks: [
+        { k: 'term', name: 'Random variable', def: 'A <b>function</b> that assigns a real number to each outcome in the sample space. Written X (the variable) and x (a value it takes).' },
+        { k: 'cards', items: [
+          { title: 'Discrete', blocks: [{ k: 'p', x: 'A <b>finite or countably infinite</b> set of values: <b>count</b> data (patients in a ward, defective kits). Described by a <b>probability mass function</b> p(x) = P(X = x).' }] },
+          { title: 'Continuous', blocks: [{ k: 'p', x: '<b>Infinitely many values in an interval</b>, from a continuous sample space: <b>measured</b> data (height, weight, temperature, a newborn’s weight). Described by a <b>probability density function</b> f(x).' }] },
+        ] },
+        { k: 'table', head: ['', 'PMF p(x) (discrete)', 'PDF f(x) (continuous)'], rows: [
+          { c: ['Values', '0 ≤ p(x) ≤ 1', 'f(x) ≥ 0 (a density, not a probability)'] },
+          { c: ['Total', 'Σ p(x) = 1', '∫ f(x) dx = 1 (area under the curve)'] },
+          { c: ['Probability', 'Add the p(x)', 'P(a ≤ X ≤ b) = ∫ₐᵇ f(x) dx; <b>P(X = a) = 0</b>, so ≤ and &lt; give the same answer'] },
+          { c: ['Mean E(X)', 'Σ x p(x)', '∫ x f(x) dx'] },
+          { c: ['Variance', 'E(X²) − [E(X)]²', 'E(X²) − [E(X)]², with E(X²) = ∫ x² f(x) dx'] },
+        ] },
+        { k: 'p', x: 'The <b>cumulative distribution function</b> F(x) = P(X ≤ x). It never decreases, runs from 0 (far left) to 1 (far right) and stays between 0 and 1. Discrete: a <b>step function</b>, F(x) = Σ<sub>t ≤ x</sub> p(t). Continuous: F(x) = ∫ f(t) dt from −∞ to x, so f(x) = F′(x) and P(x₁ ≤ X ≤ x₂) = F(x₂) − F(x₁).' },
+        { k: 'step', n: '1', title: 'Worked examples from the slides', blocks: [{ k: 'ul', items: [
+          'p(x) = k, 2k, k for x = 1, 2, 3: 4k = 1, so k = 1/4 and P(X ≤ 2) = 1/4 + 2/4 = <b>3/4</b>.',
+          'p(0) = 1/4, p(1) = 1/8, p(2) = 1/2, p(3) = 1/8: F(0) = 1/4, F(1) = <b>3/8</b>, F(2) = <b>7/8</b>, F(3) = 1.',
+          'f(x) = x/2 on [0, 2]: F(x) = x²/4 for 0 ≤ x ≤ 2, 0 below, 1 above.',
+        ] }] },
+        { k: 'step', n: '2', title: 'Past-paper patterns', blocks: [{ k: 'ul', items: [
+          '<b>Find the constant first</b>: f(x) = k(4 − x) on [0, 4] has area 8k = 1, so k = 1/8; P(1 &lt; X ≤ 3.5) = (1/8)[4x − x²/2] from 1 to 3.5 ≈ <b>0.55</b>.',
+          'f(x) = cx on [0, 4]: c = 1/8, E(X) = 8/3, E(X²) = 8, Var(X) = 8/9.',
+          'X = 8, 12, 16, 20, 24 with p = 1/8, 1/6, 3/8, 1/4, 1/12: E(X) = 16, E(X²) = 276, Var(X) = <b>20</b>.',
+        ] }] },
+        { k: 'box', title: 'Linear combinations (past questions)', tone: 'formula', blocks: [{ k: 'ul', items: [
+          'E(aX + b) = aE(X) + b; Var(aX + b) = <b>a²</b>Var(X): adding b never changes the spread. So Var(5X − 8) = 25 × 8/9 ≈ 22.2.',
+          'E(aX + bY) = aE(X) + bE(Y) always: E(2X + Y) with E(X) = 5, E(Y) = 3 is <b>13</b>.',
+          'If X and Y are <b>independent</b>, Var(aX ± bY) = a²Var(X) + b²Var(Y), the variances <b>add even for a minus</b>: Var(3X − 2Y) = 9(4) + 4(9) = <b>72</b>.',
+        ] }] },
+      ],
+    },
+    {
+      id: 'rv-uniform',
+      title: 'Discrete uniform and Bernoulli',
+      kicker: 'The simplest two',
+      blocks: [
+        { k: 'p', x: 'A <b>probability distribution</b> lists the possible values of X with their probabilities. Distributions used often have their own formulas and tables; they are <b>discrete</b> or <b>continuous</b>.' },
+        { k: 'term', name: 'Discrete uniform on {a, …, b}', def: 'Every one of the n = b − a + 1 integers is equally likely: P(X = k) = 1/(b − a + 1). <b>Mean</b> (a + b)/2; <b>variance</b> [(b − a + 1)² − 1]/12. For {1, …, n}: (n + 1)/2 and (n² − 1)/12.' },
+        { k: 'step', n: '3', title: 'Worked example', blocks: [{ k: 'p', x: 'X uniform on {1, …, 5}: E(X) = 3, Var(X) = (25 − 1)/12 = <b>2</b>. A fair die (n = 6): Var = 35/12 ≈ 2.92.' }] },
+        { k: 'p', x: 'A <b>Bernoulli trial</b> has two mutually exclusive outcomes (head or tail, alive or dead after surgery, male or female). A sequence of them is a <b>Bernoulli process</b> if: two outcomes each time; <b>p constant</b> from trial to trial (q = 1 − p); trials <b>independent</b>; X binary (0 or 1).' },
+        { k: 'box', title: 'Bernoulli(p)', tone: 'formula', blocks: [{ k: 'p', x: 'p(x) = pˣ(1 − p)¹⁻ˣ, x = 0, 1. <b>Mean p</b>, <b>variance p(1 − p)</b> (since E(X²) = p), MGF M(t) = peᵗ + q. It is the binomial with <b>n = 1</b>.' }] },
+      ],
+    },
+    {
+      id: 'rv-binom',
+      title: 'Binomial and multinomial',
+      kicker: 'Counting successes in n trials',
+      blocks: [
+        { k: 'p', x: 'The <b>binomial</b> generalises Bernoulli trials. Conditions: <b>n independent, identical trials</b>; two outcomes each; <b>p constant</b>; X = the <b>number of successes</b>.' },
+        { k: 'box', title: 'X ~ B(n, p)', tone: 'formula', blocks: [{ k: 'p', x: 'P(X = x) = ⁿCₓ pˣ(1 − p)ⁿ⁻ˣ, x = 0, 1, …, n. <b>Mean np</b>, <b>variance np(1 − p)</b>. “At least” questions use the complement.' }] },
+        { k: 'step', n: '4', title: 'Worked example: party A, n = 20, p = 0.25', blocks: [{ k: 'ul', items: [
+          'Exactly two: ²⁰C₂(0.25)²(0.75)¹⁸ = 190 × 0.0625 × 0.005638 ≈ <b>0.0669</b>.',
+          'At least three: 1 − P(X ≤ 2) = 1 − 0.0913 ≈ <b>0.9087</b>.',
+          'Fewer than two: (0.75)²⁰ + 20(0.25)(0.75)¹⁹ ≈ <b>0.0243</b>.',
+        ] }] },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'p', x: 'The question is about inhabitants who favour <b>party A</b>, but the solution slide calls it “testing 20 inhabitants for blood group A”. The numbers are the same; read it as party A.' }] },
+        { k: 'step', n: '5', title: 'Worked example: test kits, 3% defective, n = 20', blocks: [{ k: 'p', x: 'Exactly three defective: 1140(0.03)³(0.97)¹⁷ ≈ <b>0.0183</b>. Not more than two: (0.97)²⁰ + 20(0.03)(0.97)¹⁹ + 190(0.0009)(0.97)¹⁸ ≈ <b>0.979</b>.' }] },
+        { k: 'p', x: 'The <b>multinomial</b> generalises the binomial to <b>k &gt; 2</b> outcomes per trial (for, against, undecided; excellent … inferior), with probabilities p₁ … pₖ that sum to 1 and stay constant. With counts y₁ … yₖ adding to n:' },
+        { k: 'box', title: 'Multinomial', tone: 'formula', blocks: [{ k: 'p', x: 'P(y₁, …, yₖ) = n! / (y₁! … yₖ!) × p₁<sup>y₁</sup> … pₖ<sup>yₖ</sup>. E(yⱼ) = npⱼ, Var(yⱼ) = npⱼ(1 − pⱼ), Cov(yᵢ, yⱼ) = −npᵢpⱼ (negative: more in one category leaves fewer for the others).' }] },
+        { k: 'step', n: '6', title: 'Worked example: six test kits', blocks: [{ k: 'p', x: '70% defect-free, 20% type A, 10% type B; 3, 1, 2 of each: 6!/(3!1!2!) × 0.7³ × 0.2 × 0.1² = 60 × 0.000686 = <b>0.04116</b> (about 4.1%). Expected defect-free: 6 × 0.7 = 4.2.' }] },
+      ],
+    },
+    {
+      id: 'rv-poisson',
+      title: 'The Poisson distribution',
+      kicker: 'Counts per unit of time or space',
+      blocks: [
+        { k: 'p', x: 'A <b>Poisson process</b> counts events in a unit of <b>time, area or volume</b>. Assumptions: occurrences in different intervals are <b>random and independent</b>; events are <b>rare</b> (more than one in a tiny interval is negligible, yet any number is possible); probability is <b>proportional to the interval length</b>; the <b>mean equals the variance</b>.' },
+        { k: 'p', x: 'Examples: patients arriving at an emergency department, industrial accidents, radioactive particles emitted, typing errors per page, insurance claims, road repairs per kilometre, telephone calls per minute.' },
+        { k: 'box', title: 'X ~ P(μ)', tone: 'formula', blocks: [{ k: 'p', x: 'P(X = x) = μˣe<sup>−μ</sup> / x!, x = 0, 1, 2, …; <b>E(X) = Var(X) = μ</b>. Scale μ with the interval: 4 per minute is 8 per two minutes.' }] },
+        { k: 'step', n: '7', title: 'Worked example: 4 arrivals per minute', blocks: [{ k: 'ul', items: [
+          'None in a minute: e⁻⁴ ≈ <b>0.0183</b>.',
+          'At least two in a minute: 1 − (e⁻⁴ + 4e⁻⁴) = 1 − 5e⁻⁴ ≈ <b>0.9084</b>.',
+          'At least three in two minutes (μ = 8): 1 − (1 + 8 + 32)e⁻⁸ = 1 − 41e⁻⁸ ≈ <b>0.986</b>.',
+        ] }] },
+        { k: 'p', x: '<b>Poisson approximation to the binomial</b>: when <b>n is large and p small</b>, B(n, p) ≈ P(μ = np), which avoids huge factorials.' },
+        { k: 'step', n: '8', title: 'Worked example: a rare complication', blocks: [{ k: 'p', x: 'p = 0.00015, n = 20 000: expected cases np = <b>3</b>; P(at least one) = 1 − e⁻³ ≈ <b>0.9502</b>.' }] },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Discrete: PMF, sums; continuous: PDF, areas, P(X = a) = 0. CDF F(x) = P(X ≤ x).',
+          'Var = E(X²) − [E(X)]²; Var(aX + b) = a²Var(X); independent variances add, even for X − Y.',
+          'Uniform: (a + b)/2, [(b − a + 1)² − 1]/12. Bernoulli: p, p(1 − p). Binomial: np, np(1 − p).',
+          'Multinomial: n!/(Πyᵢ!) Πpᵢ<sup>yᵢ</sup>, E = npⱼ. Poisson: μˣe<sup>−μ</sup>/x!, mean = variance; approximates B(n, p) for large n, small p.',
+        ] }] },
+      ],
+    },
+  ],
+  quiz: [
+    ['A discrete random variable has', 'A countable set of values', ['Any value in an interval', 'Only negative values', 'Exactly two values always'], 'Finite or countably infinite.', 'Random variables'],
+    ['The weight of a newborn baby is a', 'Continuous random variable', ['Discrete random variable', 'Bernoulli variable', 'Poisson count'], 'Measured data.', 'Random variables'],
+    ['For a continuous X, P(X = 5) is', '0', ['f(5)', '1', 'F(5)'], 'A single point has no area.', 'Random variables'],
+    ['The CDF is defined as', 'F(x) = P(X ≤ x)', ['F(x) = P(X = x)', 'F(x) = P(X ≥ x)', 'F(x) = f′(x)'], 'Cumulative.', 'Random variables'],
+    ['p(0)=1/4, p(1)=1/8, p(2)=1/2, p(3)=1/8: F(2) =', '7/8', ['1/2', '3/8', '5/8'], '1/4 + 1/8 + 1/2.', 'Random variables'],
+    ['p(x) = k, 2k, k for x = 1, 2, 3. k =', '1/4', ['1/3', '1/2', '1/6'], '4k = 1.', 'Random variables'],
+    ['Variance is computed as', 'E(X²) − [E(X)]²', ['[E(X)]² − E(X²)', 'E(X²) + E(X)', 'E(X) − E(X²)'], 'Shortcut formula.', 'Random variables'],
+    ['If Var(X) = 4, Var(Y) = 9, independent, Var(3X − 2Y) =', '72', ['18', '0', '54'], '9 × 4 + 4 × 9.', 'Random variables'],
+    ['If E(X) = 5 and E(Y) = 3, E(2X + Y) =', '13', ['8', '10', '16'], '2 × 5 + 3.', 'Random variables'],
+    ['Var(aX + b) equals', 'a² Var(X)', ['a Var(X) + b', 'a² Var(X) + b', 'Var(X) + b²'], 'b shifts only.', 'Random variables'],
+    ['X uniform on {1, …, 5}: Var(X) =', '2', ['3', '2.5', '4'], '(25 − 1)/12.', 'Uniform'],
+    ['The mean of a discrete uniform on {a, …, b} is', '(a + b)/2', ['(b − a)/2', '(b − a + 1)/2', 'ab/2'], 'Average of the ends.', 'Uniform'],
+    ['A Bernoulli trial with p = 0.6 has E(X) =', '0.6', ['0.4', '0.24', '1.2'], 'Mean p.', 'Bernoulli'],
+    ['The variance of a Bernoulli variable is', 'p(1 − p)', ['p²(1 − p)', 'np(1 − p)', '(1 − p)²'], 'E(X²) = p.', 'Bernoulli'],
+    ['A Bernoulli distribution is a binomial with n =', '1', ['0', '2', 'p'], 'One trial.', 'Bernoulli'],
+    ['Which is NOT a Bernoulli-process condition?', 'p changes each trial', ['Two outcomes per trial', 'Independent trials', 'Binary random variable'], 'p must stay constant.', 'Bernoulli'],
+    ['In a binomial, X counts the', 'Number of successes in n trials', ['Trials until the first success', 'Events per unit of time', 'Outcomes in each of k groups'], 'Condition 4.', 'Binomial'],
+    ['The mean and variance of B(n, p) are', 'np and np(1 − p)', ['np and np', 'p and p(1 − p)', 'n and np'], 'Formulas.', 'Binomial'],
+    ['B(20, 0.25): P(X ≥ 3) ≈', '0.909', ['0.091', '0.067', '0.024'], '1 − P(X ≤ 2).', 'Binomial'],
+    ['B(20, 0.03): P(Y ≤ 2) ≈', '0.979', ['0.018', '0.544', '0.336'], 'Sum of three terms.', 'Binomial'],
+    ['A fair coin tossed 6 times: P(exactly 4 heads) =', '15/64', ['6/64', '20/64', '4/64'], '⁶C₄ / 2⁶.', 'Binomial'],
+    ['The multinomial applies when each trial has', 'More than two outcomes', ['Exactly two outcomes', 'A changing p', 'No fixed n'], 'k above 2.', 'Multinomial'],
+    ['P(3, 1, 2 kits) with p = 0.7, 0.2, 0.1 is about', '0.041', ['0.343', '0.120', '0.004'], '60 × 0.000686.', 'Multinomial'],
+    ['Expected defect-free kits of 6 at p = 0.70 is', '4.2', ['3.0', '0.7', '6.0'], 'npⱼ.', 'Multinomial'],
+    ['For a Poisson variable, the mean and variance are', 'Equal', ['Mean larger', 'Variance larger', 'Unrelated'], 'Both μ.', 'Poisson'],
+    ['Arrivals average 4 per minute. P(none in a minute) ≈', '0.018', ['0.250', '0.092', '0.000'], 'e⁻⁴.', 'Poisson'],
+    ['At 4 per minute, the rate over two minutes is', '8', ['4', '2', '16'], 'Scale with time.', 'Poisson'],
+    ['If X ~ Poisson(2), P(X = 0) ≈', '0.135', ['0.271', '0.500', '0.368'], 'e⁻².', 'Poisson'],
+    ['The Poisson approximates the binomial when', 'n is large and p small', ['n is small and p large', 'p is exactly 0.5', 'n equals p'], 'μ = np.', 'Poisson'],
+    ['p = 0.00015, n = 20 000: P(at least one case) ≈', '0.950', ['0.050', '0.003', '0.997'], '1 − e⁻³.', 'Poisson'],
+  ],
+};

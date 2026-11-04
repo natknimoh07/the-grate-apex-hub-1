@@ -4452,7 +4452,7 @@
   {
    "id": "stats",
    "name": "Statistical Methods",
-   "total": 526,
+   "total": 556,
    "topics": [
     {
      "id": "Addition Rule",
@@ -4487,12 +4487,28 @@
      "unrated": 5
     },
     {
+     "id": "Bernoulli",
+     "title": "Bernoulli",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Bernoulli Distribution",
      "title": "Bernoulli Distribution",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Binomial",
+     "title": "Binomial",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Binomial Distribution",
@@ -4783,6 +4799,14 @@
      "unrated": 4
     },
     {
+     "id": "Multinomial",
+     "title": "Multinomial",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Multinomial Distribution",
      "title": "Multinomial Distribution",
      "easy": 0,
@@ -4865,6 +4889,14 @@
     {
      "id": "PMF & CDF",
      "title": "PMF & CDF",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Poisson",
+     "title": "Poisson",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -4957,6 +4989,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 17
+    },
+    {
+     "id": "Random variables",
+     "title": "Random variables",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
     },
     {
      "id": "Random Variables",
@@ -5077,6 +5117,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 14
+    },
+    {
+     "id": "Uniform",
+     "title": "Uniform",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Variables",
