@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 892,
+   "total": 919,
    "topics": [
     {
      "id": "Absolute value",
@@ -3704,6 +3704,14 @@
      "unrated": 4
     },
     {
+     "id": "Binomial",
+     "title": "Binomial",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Binomial Theorem",
      "title": "Binomial Theorem",
      "easy": 0,
@@ -3725,7 +3733,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 11
     },
     {
      "id": "Completing the Square",
@@ -3902,6 +3910,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Factorials",
+     "title": "Factorials",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "First Principles & Rules",
@@ -4293,7 +4309,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 12
     },
     {
      "id": "Permutations & Combinations",
@@ -4461,7 +4477,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 4
     },
     {
      "id": "Series & Sum to Infinity",
