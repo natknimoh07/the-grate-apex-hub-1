@@ -6679,11 +6679,19 @@
   {
    "id": "anatomy",
    "name": "Anatomy",
-   "total": 1718,
+   "total": 1755,
    "topics": [
     {
      "id": "A Brief History of Anatomy",
      "title": "A Brief History of Anatomy",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Abdomen",
+     "title": "Abdomen",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -6696,6 +6704,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 17
+    },
+    {
+     "id": "Anatomical position",
+     "title": "Anatomical position",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Anatomical Position & Planes",
@@ -6712,6 +6728,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Approaches",
+     "title": "Approaches",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Arches of the foot",
@@ -6738,6 +6762,14 @@
      "unrated": 6
     },
     {
+     "id": "Body systems",
+     "title": "Body systems",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Cardiac Muscle Tissue",
      "title": "Cardiac Muscle Tissue",
      "easy": 0,
@@ -6756,6 +6788,14 @@
     {
      "id": "Carpus (clinical)",
      "title": "Carpus (clinical)",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Cavities",
+     "title": "Cavities",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -6842,6 +6882,14 @@
      "unrated": 22
     },
     {
+     "id": "Colour coding",
+     "title": "Colour coding",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Components of Connective Tissue",
      "title": "Components of Connective Tissue",
      "easy": 0,
@@ -6866,6 +6914,14 @@
      "unrated": 11
     },
     {
+     "id": "Definition",
+     "title": "Definition",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Directional & Relational Terms",
      "title": "Directional & Relational Terms",
      "easy": 0,
@@ -6880,6 +6936,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Divisions",
+     "title": "Divisions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Endocrine Glands",
@@ -6962,6 +7026,14 @@
      "unrated": 2
     },
     {
+     "id": "General structure",
+     "title": "General structure",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Genital Ducts",
      "title": "Genital Ducts",
      "easy": 0,
@@ -6986,6 +7058,14 @@
      "unrated": 1
     },
     {
+     "id": "History",
+     "title": "History",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Humerus",
      "title": "Humerus",
      "easy": 0,
@@ -7000,6 +7080,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Imaging",
+     "title": "Imaging",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Ischium",
@@ -7032,6 +7120,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Laterality",
+     "title": "Laterality",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Lower Limb",
@@ -7084,6 +7180,14 @@
     {
      "id": "Mixed review",
      "title": "Mixed review",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Movements",
+     "title": "Movements",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -7202,6 +7306,14 @@
      "unrated": 14
     },
     {
+     "id": "Planes",
+     "title": "Planes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Pubis",
      "title": "Pubis",
      "easy": 0,
@@ -7248,6 +7360,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Relationship terms",
+     "title": "Relationship terms",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Ribs",
@@ -7359,7 +7479,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 10
     },
     {
      "id": "Terms of Movement",
