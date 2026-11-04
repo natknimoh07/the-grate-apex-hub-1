@@ -186,14 +186,14 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 2474,
+   "total": 2616,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
      "title": "Fatty Acid Biosynthesis",
-     "easy": 153,
-     "medium": 64,
-     "hard": 6,
+     "easy": 281,
+     "medium": 75,
+     "hard": 9,
      "unrated": 0
     },
     {

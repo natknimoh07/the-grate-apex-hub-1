@@ -9,6 +9,7 @@ import { assertionReasonQuestions } from '@/data/topics/fatty-acid-biosynthesis/
 import { lessons } from '@/data/topics/fatty-acid-biosynthesis/lessons';
 import { moreQuestions } from '@/data/topics/fatty-acid-biosynthesis/more-questions';
 import { questions } from '@/data/topics/fatty-acid-biosynthesis/questions';
+import { sectionQuestions } from '@/data/topics/fatty-acid-biosynthesis/section-questions';
 import {
   concepts,
   diagrams,
@@ -30,7 +31,7 @@ export const fattyAcidBiosynthesis = buildTopic({
   contentVersion: 2,
   concepts,
   lessons,
-  questions: [...questions, ...moreQuestions, ...assertionReasonQuestions],
+  questions: [...questions, ...moreQuestions, ...assertionReasonQuestions, ...sectionQuestions],
   discrepancies,
   diagrams,
 });
