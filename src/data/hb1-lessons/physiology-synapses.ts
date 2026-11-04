@@ -2,7 +2,7 @@
 // neuroeffector junctions. From "LECTURE 7 communication between cells.pptx" (HB1 Physiology 1
 // theory). Rewrites the original database lesson physiology-07 with the same id, so progress is
 // kept; practises the course's Quiz 7 and the past questions on this topic. The facts are the
-// lecture's (as carried by the original lesson, written from the same deck); the teaching text
+// lecture's (checked against the deck, 2026-11-04); the teaching text
 // is in our own words.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostx } from '@/data/hb1-lessons/pictures';
@@ -157,6 +157,13 @@ export const physiologySynapses: Hb1Lesson = {
       kicker: 'Cholinergic and adrenergic mechanisms',
       blocks: [
         { k: 'p', x: 'The <b>neuroeffector junction</b> is where a postganglionic autonomic nerve ends on <b>smooth muscle, cardiac muscle or secretory tissue</b>. Near the effector, autonomic axons branch and intermingle as the <b>autonomic ground plexus</b>, partly lose their Schwann-cell covering, and end as a chain of <b>varicosities</b> at <b>5–10 µm</b> intervals. Transmitter is released <b>diffusely</b>, so it affects a wider area, acts more slowly and lasts longer than at the NMJ.' },
+        { k: 'ul', items: [
+          'The width of the junctional cleft varies between organs, from <b>10 to 2000 nm</b> (compare 20 nm at a neuronal synapse).',
+          'Varicosities hold accumulations of small synaptic <b>vesicles</b> (two types: <b>granular</b> and <b>agranular</b>) and <b>mitochondria</b>.',
+          'The neurons may be <b>cholinergic, adrenergic, purinergic</b> or <b>peptidergic</b>.',
+          'Transmitter is released <b>en passage</b> from varicosities as the impulse passes along the axon.',
+          '<b>Excitatory and inhibitory junction potentials</b> can be recorded in smooth muscle cells when the autonomic nerves are stimulated.',
+        ] },
         ostx('1504-autonomic-varicosities.jpg', 1000, 429, 'Autonomic varicosities release transmitter along the axon onto smooth muscle cells.', 'Compare with the NMJ: here there is no end plate, just swellings along the axon that release transmitter into the tissue, reaching many cells at once. That spray suits organs that must act as a whole.'),
         { k: 'h', x: 'Cholinergic fibres (release ACh)', l: 3 },
         { k: 'ul', items: [
@@ -168,6 +175,7 @@ export const physiologySynapses: Hb1Lesson = {
         { k: 'ul', items: [
           'Secrete <b>noradrenaline, dopamine and adrenaline</b>; <b>most sympathetic postganglionic</b> fibres are adrenergic.',
           'Release is by <b>Ca<sup>2+</sup>-mediated exocytosis</b>; released noradrenaline is <b>taken back up</b> (by the presynaptic ending and other cells) or <b>enzymatically degraded</b>.',
+          'Noradrenaline is made from tyrosine (tyrosine → DOPA → dopamine → noradrenaline), loaded into vesicles by the <b>vesicular monoamine transporter (VMAT)</b>, and broken down by <b>monoamine oxidase (MAO)</b> in the nerve ending and <b>catechol-O-methyltransferase (COMT)</b> in the tissues.',
           '<b>Adrenoceptors</b> are G protein-coupled: <b>α (α<sub>1</sub>, α<sub>2</sub>)</b> and <b>β (β<sub>1</sub>, β<sub>2</sub>)</b>. <b>Noradrenaline has more affinity for α</b>; <b>adrenaline for β</b>.',
         ] },
         { k: 'h', x: 'Denervation hypersensitivity', l: 3 },
@@ -229,5 +237,7 @@ export const physiologySynapses: Hb1Lesson = {
     ['Postganglionic muscarinic actions of ACh are blocked by', 'Atropine', ['Tubocurarine', 'Hemicholinium', 'Vesamicol'], 'Muscarinic responses are prolonged and can excite or inhibit.', 'Neuroeffector'],
     ['Noradrenaline has a higher affinity for', 'α-adrenergic receptors', ['β-adrenergic receptors', 'Nicotinic receptors', 'Muscarinic receptors'], 'Adrenaline has more affinity for β receptors.', 'Neuroeffector'],
     ['Denervation hypersensitivity develops about', '7–14 days after denervation', ['Within the first hour', 'After about 6–12 months', 'Only after the nerve has regrown'], 'Receptors proliferate and spread; degrading enzymes and uptake are lost.', 'Neuroeffector'],
+    ['The junctional cleft at autonomic neuroeffector junctions is', '10–2000 nm wide, depending on the organ', ['Always exactly 20 nm wide', '2–3 nm wide, as at gap junctions', 'About 1 mm wide in every organ'], 'The width varies widely between organs; transmitter acts over a large area.', 'Neuroeffector'],
+    ['Released noradrenaline is broken down by', 'MAO and COMT', ['Acetylcholinesterase', 'Butyrylcholinesterase', 'Phospholipase C'], 'VMAT loads it into vesicles; MAO and COMT degrade it.', 'Neuroeffector'],
   ],
 };

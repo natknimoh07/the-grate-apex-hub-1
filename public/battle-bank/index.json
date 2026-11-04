@@ -5040,7 +5040,7 @@
   {
    "id": "physiology",
    "name": "Physiology",
-   "total": 869,
+   "total": 879,
    "topics": [
     {
      "id": "Action potential",
@@ -5152,7 +5152,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 5
     },
     {
      "id": "Blood Groups",
@@ -5216,7 +5216,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 4
     },
     {
      "id": "Clotting Cascade",
@@ -5248,7 +5248,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 3
     },
     {
      "id": "Compartments",
@@ -5352,7 +5352,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 9
     },
     {
      "id": "Excitable tissues",
@@ -5560,7 +5560,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 3
     },
     {
      "id": "Iron Metabolism",
@@ -5680,7 +5680,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 7
     },
     {
      "id": "Neuron",
@@ -5856,7 +5856,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 6
     },
     {
      "id": "Refractory & Accommodation",
