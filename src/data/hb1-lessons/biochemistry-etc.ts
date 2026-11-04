@@ -1,0 +1,198 @@
+// Biochemistry 1 → The Electron Transport Chain and Oxidative Phosphorylation. From "LECTURE 8
+// ETC and Oxidative Phosphorylation -Revised-.pptx" and "LECTURE 11 Electron Transport Chain -
+// PA 1[61].pdf" (M. E. Annani-Akollor, KNUST; HB1 Biochemistry 1 theory); both are merged.
+// Rewrites the original database lesson biochemistry-09 with the same id, so progress is kept;
+// practises the course's ETC quiz (set s15). Facts only in the speaker notes are labelled.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+import { numberFigures, ostx, ostxBio } from '@/data/hb1-lessons/pictures';
+
+export const biochemistryEtc: Hb1Lesson = {
+  id: 'biochemistry-09',
+  order: 9,
+  title: 'The Electron Transport Chain and Oxidative Phosphorylation',
+  summary: 'M. E. Annani-Akollor · Redox potentials and free energy, the mitochondrion, the shuttles, complexes I–IV and the proton gradient, ATP synthase and the chemiosmotic theory, the ATP yield of glucose, inhibitors, uncouplers and mitochondrial disease',
+  minutes: 35,
+  source: 'LECTURE 8 ETC and Oxidative Phosphorylation -Revised-.pptx; LECTURE 11 Electron Transport Chain - PA 1[61].pdf (M. E. Annani-Akollor)',
+  quizId: 'etc',
+  quizName: 'Quiz · Electron Transport Chain (lesson)',
+  pastSets: ['s15'],
+  sections: numberFigures([
+    {
+      id: 'etc-energy',
+      title: 'Energy, ATP and redox potential',
+      kicker: 'Why electrons can do work',
+      blocks: [
+        { k: 'p', x: 'Cellular respiration breaks energy-rich molecules down to <b>CO<sub>2</sub> and water</b> and captures their energy. The C–H bonds of food are “burned” with O<sub>2</sub>; the energy ends up as ATP and heat. By the <b>first law of thermodynamics</b>, energy is neither created nor destroyed, only transferred and transformed (chemical, electrical, mechanical, light, heat).' },
+        { k: 'ul', items: [
+          '<b>Explain</b> how the energy of electrons from glucose becomes chemical energy in ATP.',
+          '<b>Explain</b> the role of oxygen in respiration.',
+          '<b>Explain</b> how the H<sup>+</sup> gradient across the inner membrane is made and how it drives ATP synthesis.',
+          '<b>Predict</b> the effects of inhibitors and uncouplers.',
+        ] },
+        { k: 'p', x: '<b>ATP</b> is the cell’s main energy currency. Cells store energy for immediate use in nucleotide triphosphates, and short-term in <b>ion gradients</b> and <b>high-energy electrons</b>. ATP itself is too unstable for long-term storage, so energy is stored in the C–H bonds of sugars and fats.' },
+        { k: 'table', head: ['Reaction', 'ΔG°′'], rows: [
+          { c: ['ATP + H<sub>2</sub>O → ADP + P<sub>i</sub>', '<b>−30.5 kJ/mol</b>'] },
+          { c: ['ADP + H<sub>2</sub>O → AMP + P<sub>i</sub>', '<b>−28.4 kJ/mol</b>'] },
+        ] },
+        ostx('2501-the-structure-of-atp-molecules.jpg', 1000, 785, 'ATP and its hydrolysis to ADP and AMP.', 'The energy is released when the bonds between the phosphates are hydrolysed. The electron transport chain exists to put that last phosphate back on, about 2.5 times for every NADH it oxidises.'),
+        { k: 'h', x: 'Redox potential', l: 3 },
+        { k: 'p', x: 'In oxidative phosphorylation, the <b>electron-transfer potential</b> of NADH and FADH<sub>2</sub> becomes the <b>phosphoryl-transfer potential</b> of ATP. The <b>redox (reduction) potential, E<sub>0</sub>′</b>, measures how strongly a substance tends to <b>accept electrons</b> and be reduced, measured with an electrode under standard conditions (1 M, 25 °C, pH 7).' },
+        { k: 'ul', items: [
+          '<b>Negative</b> E<sub>0</sub>′: the substance gives electrons away readily (a <b>strong reducing agent</b>): <b>NADH, −0.32 V</b>.',
+          '<b>Positive</b> E<sub>0</sub>′: it accepts electrons readily (a <b>strong oxidising agent</b>): <b>O<sub>2</sub>, +0.82 V</b>.',
+          'Electrons flow spontaneously from the <b>most negative</b> carrier to the <b>most positive</b> (oxygen), step by step.',
+        ] },
+        { k: 'box', title: 'Free energy from redox potentials', tone: 'formula', blocks: [
+          { k: 'p', x: '<b>ΔG°′ = −nFΔE°′</b>, where n = number of electrons, F = Faraday constant (96.48 kJ mol<sup>−1</sup> V<sup>−1</sup>; 23.06 kcal), ΔE°′ = difference in standard reduction potentials (V).' },
+          { k: 'p', x: '<b>Worked example</b> (lactate dehydrogenase, pyruvate + NADH → lactate + NAD<sup>+</sup>): pyruvate/lactate −0.19 V, NAD<sup>+</sup>/NADH −0.32 V. Reverse the NAD half-reaction (sign changes): ΔE°′ = −0.19 − (−0.32) = +0.13 V. ΔG°′ = −2 × 96.48 × 0.13 ≈ <b>−25 kJ/mol</b>: spontaneous.' },
+          { k: 'p', x: 'For NADH → O<sub>2</sub>: ΔE°′ = 0.82 − (−0.32) = 1.14 V, so ΔG°′ ≈ −2 × 96.48 × 1.14 ≈ <b>−220 kJ/mol</b>: enough for several ATP.' },
+          { k: 'p', x: 'Outside standard conditions the <b>Nernst equation</b> applies: −nFE = −nFE° + RT ln Q.' },
+        ] },
+      ],
+    },
+    {
+      id: 'etc-mito',
+      title: 'The mitochondrion and the shuttles',
+      kicker: 'Where respiration happens',
+      blocks: [
+        { k: 'p', x: 'A mitochondrion has a <b>double membrane</b>: an outer membrane, a highly folded <b>inner membrane</b> (the <b>cristae</b>), the <b>intermembrane space</b> between them, and the <b>matrix</b> inside. Muscle mitochondria have more cristae than liver mitochondria: more surface for the ETC to meet a higher energy demand.' },
+        { k: 'table', head: ['Compartment', 'Features and functions'], rows: [
+          { c: ['<b>Outer membrane</b>', '<b>Freely permeable</b> to small molecules and ions (porins, 10 000 Da limit); phospholipid synthesis; fatty acid desaturation and elongation'] },
+          { c: ['<b>Inner membrane</b>', 'Protein-rich (<b>4 : 1</b> protein : lipid), <b>impermeable</b>; holds the <b>ETC, ATP synthase</b> and transporters'] },
+          { c: ['<b>Cristae</b>', 'Folds of the inner membrane that <b>increase surface area</b>'] },
+          { c: ['<b>Matrix</b>', 'Protein-rich (500 mg/mL): <b>TCA cycle</b>, pyruvate dehydrogenase, <b>β-oxidation</b>, amino acid oxidation, mitochondrial <b>DNA, ribosomes</b>, transcription and translation'] },
+          { c: ['<b>Intermembrane space</b>', 'Composition similar to the cytosol; where the protons are pumped'] },
+        ] },
+        { k: 'h', x: 'Getting cytosolic NADH in', l: 3 },
+        { k: 'p', x: 'The inner membrane is <b>impermeable to NADH and FADH<sub>2</sub></b>, so the electrons of NADH made in glycolysis must be <b>shuttled</b> in.' },
+        { k: 'cards', items: [
+          { title: 'Malate–aspartate shuttle (efficient)', blocks: [{ k: 'p', x: 'Cytosolic NADH reduces oxaloacetate to <b>malate</b>, which enters the matrix and is oxidised back to oxaloacetate, making <b>NADH inside</b>; oxaloacetate returns as aspartate (exchanged with α-ketoglutarate). The electrons enter at Complex I: <b>about 2.5 ATP</b> per NADH. Liver, heart, kidney.' }] },
+          { title: 'Glycerol 3-phosphate shuttle (inefficient)', blocks: [{ k: 'p', x: 'NADH reduces DHAP to <b>glycerol 3-phosphate</b>, which gives its electrons to an <b>FAD</b> enzyme on the inner membrane, making FADH<sub>2</sub>; the electrons go to <b>CoQ, bypassing Complex I</b>: only <b>about 1.5 ATP</b> (the lecture: 2). Muscle and brain.' }] },
+        ] },
+        { k: 'p', x: 'Glycolysis and the Krebs cycle make only about <b>4 ATP</b> per glucose directly (2 + 2, by substrate-level phosphorylation). The ETC gives the rest: the lecture says about <b>34 ATP</b>.' },
+      ],
+    },
+    {
+      id: 'etc-complexes',
+      title: 'The four complexes',
+      kicker: 'Electrons downhill, protons out',
+      blocks: [
+        { k: 'p', x: 'The <b>electron transport chain</b> is a chain of protein complexes in the <b>inner mitochondrial membrane</b> that carries electrons from NADH and FADH<sub>2</sub> to O<sub>2</sub>, each acceptor having greater electron affinity than its donor, and uses the energy to <b>pump H<sup>+</sup> into the intermembrane space</b>. It works <b>only with O<sub>2</sub></b>. Each complex contains several proteins with <b>Fe–S, haem or copper</b> prosthetic groups; <b>Complexes I, III and IV are proton pumps</b>.' },
+        ostxBio('figure-07-04-01.jpg', 544, 462, 'The electron transport chain: complexes in the inner mitochondrial membrane pass electrons to oxygen and pump protons out of the matrix.', 'Follow the electrons from NADH (Complex I) or FADH₂ (Complex II) to ubiquinone (Q), Complex III, cytochrome c and Complex IV, where they reduce O₂ to water. At I, III and IV, protons are pushed from the matrix into the intermembrane space.'),
+        { k: 'table', head: ['Complex', 'Name', 'Proteins', 'Prosthetic groups', 'H⁺ pumped per 2 e⁻'], rows: [
+          { c: ['<b>I</b>', '<b>NADH dehydrogenase</b> (NADH–CoQ reductase)', '<b>46</b> (lecture also: more than 30, 850 kDa)', '<b>FMN</b>, 9 Fe–S centres', '<b>4</b>'] },
+          { c: ['<b>II</b>', '<b>Succinate–CoQ reductase</b> (succinate dehydrogenase of the TCA cycle)', '4–5', '<b>FAD</b>, cyt b<sub>560</sub>, 3 Fe–S centres', '<b>0</b>'] },
+          { c: ['<b>III</b>', '<b>CoQ–cytochrome c reductase</b>', '11', 'cyt b<sub>H</sub>, cyt b<sub>L</sub>, cyt c<sub>1</sub>, Rieske Fe–S', '<b>4</b>'] },
+          { c: ['<b>IV</b>', '<b>Cytochrome c oxidase</b>', '13', '<b>cyt a, a<sub>3</sub>, Cu<sub>A</sub>, Cu<sub>B</sub></b>', '<b>2</b>'] },
+        ] },
+        { k: 'step', n: 'I', title: 'Complex I', blocks: [{ k: 'p', x: 'Takes 2 e<sup>−</sup> from <b>NADH</b> onto <b>FMN</b>; FMNH<sub>2</sub> converts the 2-electron transfer to 1-electron steps through Fe–S centres, and passes the electrons to <b>coenzyme Q (ubiquinone)</b>. Pumps <b>4 H<sup>+</sup></b>.' }] },
+        { k: 'step', n: 'II', title: 'Complex II', blocks: [{ k: 'p', x: '<b>Succinate</b> → fumarate puts 2 e<sup>−</sup> on <b>FAD</b>, which passes them one at a time through Fe–S proteins to CoQ. <b>No protons pumped</b>, which is why FADH<sub>2</sub> yields less ATP than NADH.' }] },
+        { k: 'step', n: 'Q', title: 'Coenzyme Q', blocks: [{ k: 'p', x: 'A small, lipid-soluble carrier that collects electrons from I and II (and from other FAD enzymes) and carries them to III.' }] },
+        { k: 'step', n: 'III', title: 'Complex III', blocks: [{ k: 'p', x: 'Passes electrons from QH<sub>2</sub> to <b>cytochrome c</b> by the <b>Q cycle</b>, pumping <b>4 H<sup>+</sup></b> (2 from QH<sub>2</sub>). Fe–S clusters are one-electron carriers. <b>Cytochrome c</b> is a small <b>water-soluble</b> carrier in the intermembrane space.' }] },
+        { k: 'step', n: 'IV', title: 'Complex IV', blocks: [{ k: 'p', x: 'Uses electrons from cytochrome c in a <b>four-electron reduction of O<sub>2</sub> to 2 H<sub>2</sub>O</b>, with haems a and a<sub>3</sub> and two copper sites. <b>Oxygen is the terminal electron acceptor</b>. Pumps <b>2 H<sup>+</sup></b>.' }] },
+        ostx('2508-the-electron-transport-chain.jpg', 1000, 688, 'The electron transport chain and ATP synthase in the inner mitochondrial membrane.', 'See the two halves of the process side by side: on the left, the chain pumps H⁺ into the intermembrane space; on the right, H⁺ flows back through ATP synthase, which uses the flow to make ATP from ADP and Pi.'),
+        { k: 'box', title: 'Why we breathe', tone: 'life', blocks: [{ k: 'p', x: 'Without O<sub>2</sub> to accept electrons, the chain <b>backs up</b>, NADH cannot be reoxidised, ATP production stops, cells run out of energy and die. The O<sub>2</sub> we breathe ends as the H<sub>2</sub>O of respiration; the CO<sub>2</sub> we breathe out comes from the carbons cut off sugars in the PDH and Krebs reactions.' }] },
+      ],
+    },
+    {
+      id: 'etc-atp-synthase',
+      title: 'ATP synthase and the chemiosmotic theory',
+      kicker: 'A proton-driven motor',
+      blocks: [
+        { k: 'p', x: 'Pumping builds up H<sup>+</sup> in the intermembrane space, like water behind a dam. <b>ATP synthase</b> in the inner membrane is the <b>only channel permeable to H<sup>+</sup></b>; as protons flow back through it down their gradient, its shape changes and it bonds P<sub>i</sub> to ADP. The pumping is powered by electron flow, not by ATP: using ATP to make ATP would gain nothing.' },
+        ostxBio('figure-07-04-02.jpg', 469, 575, 'ATP synthase: a molecular machine that uses the flow of H⁺ to make ATP from ADP and Pi.', 'The membrane part (F₀) is a rotor turned by protons flowing through it; the knob in the matrix (F₁) contains the catalytic sites, which change shape as the rotor turns and squeeze ADP and Pi together into ATP.'),
+        { k: 'box', title: 'Mitchell’s chemiosmotic theory', tone: 'gold', blocks: [{ k: 'p', x: 'Electron transport drives H<sup>+</sup> from the matrix into the intermembrane space. The matrix becomes <b>alkaline</b> (pH rises) and <b>negatively charged</b>: an <b>electrochemical proton gradient</b> (the <b>proton-motive force</b>). The favourable flow of protons back down this gradient, through ATP synthase, drives ATP synthesis. So the coupling of electron transport to ATP synthesis is <b>indirect</b>, through the gradient, and needs an <b>intact inner membrane impermeable to H<sup>+</sup></b>.' }] },
+        ostxBio('figure-07-04-03.jpg', 725, 504, 'Oxidative phosphorylation: the pH gradient made by electron transport is used by ATP synthase to make ATP.', 'Compare the H⁺ density on the two sides of the membrane: high in the intermembrane space, low in the matrix. That difference in concentration and charge is the stored energy.'),
+        { k: 'h', x: 'The ATP yield of one glucose', l: 3 },
+        { k: 'table', head: ['Stage', 'Produced', 'ATP (2.5 per NADH, 1.5 per FADH₂)'], rows: [
+          { c: ['Glycolysis (substrate level)', '4 ATP − 2 ATP used', '2'] },
+          { c: ['Glycolysis (G3P dehydrogenase)', '2 NADH', '5 (or 3 by the glycerol phosphate shuttle)'] },
+          { c: ['Pyruvate dehydrogenase', '2 NADH', '5'] },
+          { c: ['TCA cycle: isocitrate, α-KG and malate dehydrogenases', '6 NADH', '15'] },
+          { c: ['TCA: succinyl CoA synthetase', '2 GTP', '2'] },
+          { c: ['TCA: succinate dehydrogenase', '2 FADH<sub>2</sub>', '3'] },
+          { c: ['<b>Total</b>', '', '<b>32 (30)</b>; with the older values of 3 and 2 ATP: <b>38 (36)</b>'] },
+        ] },
+        { k: 'p', x: 'The lecture summary equation: C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6 O<sub>2</sub> → 6 CO<sub>2</sub> + 6 H<sub>2</sub>O + <b>~36 ATP</b> (+ heat).' },
+      ],
+    },
+    {
+      id: 'etc-inhibitors',
+      title: 'Inhibitors and uncouplers',
+      kicker: 'Poisons, drugs and heat',
+      blocks: [
+        { k: 'p', x: 'Many potent poisons act on oxidative phosphorylation. There are two classes of inhibitor: <b>respiration inhibitors</b>, which block electron transport and so stop O<sub>2</sub> uptake, and <b>phosphorylation inhibitors</b>, which allow electron flow but stop ATP synthesis (and, because the coupling is tight, then stop respiration too).' },
+        { k: 'table', head: ['Site', 'Inhibitors'], rows: [
+          { c: ['<b>Complex I</b>', '<b>Rotenone</b> (an insecticide and fish poison used in the Amazon; poorly absorbed in humans), <b>amytal (amobarbital)</b>, MPP<sup>+</sup>, <b>piericidin A</b>'] },
+          { c: ['<b>Complex II</b>', '<b>3-Nitropropionate</b> (and malonate, at succinate dehydrogenase)'] },
+          { c: ['<b>Complex III</b>', '<b>Antimycin A</b>, TTFA, <b>dimercaprol</b>'] },
+          { c: ['<b>Complex IV</b>', '<b>Cyanide, azide, H<sub>2</sub>S</b> (bind the Fe<sup>3+</sup> of haem a<sub>3</sub>), <b>carbon monoxide</b> (binds Fe<sup>2+</sup>)'] },
+          { c: ['<b>ATP synthase</b> (F<sub>0</sub> proton channel)', '<b>Oligomycin, DCCD</b>'] },
+          { c: ['<b>ATP/ADP antiporter</b>', '<b>Atractyloside</b> (ADP becomes limiting)'] },
+        ] },
+        { k: 'h', x: 'Uncouplers', l: 3 },
+        { k: 'p', x: 'Uncouplers are <b>hydrophobic molecules with a dissociable proton</b> that carry H<sup>+</sup> back across the inner membrane, <b>dissipating the gradient</b> without passing through ATP synthase. Electron transport continues (even speeds up), NADH and O<sub>2</sub> are consumed, but <b>no ATP is made: the energy is released as heat</b>.' },
+        { k: 'ul', items: [
+          'Chemical: <b>2,4-dinitrophenol (DNP)</b>, dicoumarol, CCCP, high-dose <b>salicylate</b> (aspirin poisoning causes fever), and <b>CaCl<sub>2</sub></b> (Ca<sup>2+</sup> dissipates the electrical part of the gradient). Valinomycin (a K<sup>+</sup> ionophore) also disturbs it.',
+          'Biological: <b>thermogenin</b> (UCP1) in <b>brown adipose tissue</b> of newborns and hibernating mammals: <b>non-shivering thermogenesis</b>, heat instead of ATP.',
+          'DNP was once a <b>diet drug</b>: fat was burned without making ATP, but people developed fatal body temperatures (around 107 °F).',
+        ] },
+        { k: 'box', title: 'Tell them apart', tone: 'recall', blocks: [{ k: 'p', x: '<b>Inhibitor</b> (cyanide, oligomycin): O<sub>2</sub> use and ATP synthesis both stop. <b>Uncoupler</b> (DNP): O<sub>2</sub> use continues or rises, ATP synthesis stops, heat rises.' }] },
+      ],
+    },
+    {
+      id: 'etc-mito-disease',
+      title: 'Mitochondrial inheritance and disease',
+      kicker: 'Passed down from the mother',
+      blocks: [
+        { k: 'p', x: 'Mitochondria carry their own <b>DNA</b>, which codes for some ETC and ATP synthase components and some mitochondrial tRNAs. Mitochondrial traits are therefore inherited in a <b>non-Mendelian</b> way:' },
+        { k: 'ul', items: [
+          'Inherited <b>only maternally</b>: only the mother contributes mitochondria to the embryo.',
+          'Both males and females can be affected; <b>all children of an affected mother</b> are affected, and an affected father passes it to none.',
+          'Often appear as <b>neuropathies and myopathies</b>, because brain and muscle depend most on oxidative phosphorylation.',
+        ] },
+        { k: 'p', x: 'The lecture also notes that microbes can use <b>other terminal electron acceptors</b> when O<sub>2</sub> is absent (anaerobic respiration), in order of decreasing energy: O<sub>2</sub> (−479 kJ/mol), NO<sub>3</sub><sup>−</sup> (−453), Mn<sup>4+</sup> (−349), Fe<sup>3+</sup> (−114), SO<sub>4</sub><sup>2−</sup> (−77).' },
+      ],
+    },
+  ]),
+  extras: {
+    facts: [
+      { h: 'Key points', lines: [
+        'NADH −0.32 V, O₂ +0.82 V; ΔG°′ = −nFΔE°′; ATP hydrolysis −30.5 kJ/mol.',
+        'I NADH DH (FMN, Fe–S, 4 H⁺); II succinate DH (FAD, 0 H⁺); III cyt bc₁ (Q cycle, 4 H⁺); IV cyt c oxidase (a, a₃, CuA, CuB, 2 H⁺).',
+        'Chemiosmotic theory (Mitchell): proton-motive force drives ATP synthase; inner membrane must be intact.',
+        'Rotenone, amytal: I. Antimycin A: III. Cyanide, azide, CO, H₂S: IV. Oligomycin: ATP synthase. Atractyloside: ADP/ATP translocase.',
+        'Uncouplers: DNP, thermogenin (brown fat), salicylate: O₂ used, no ATP, heat.',
+        'Malate–aspartate shuttle ≈ 2.5 ATP/NADH; glycerol phosphate shuttle ≈ 1.5 (lecture 2).',
+      ] },
+    ],
+  },
+  quiz: [
+    ['The standard free energy of ATP hydrolysis to ADP is about', '−30.5 kJ/mol', ['−3.05 kJ/mol', '−305 kJ/mol', '+30.5 kJ/mol'], 'ADP → AMP releases −28.4 kJ/mol.', 'Energetics'],
+    ['A strong reducing agent has a', 'Negative reduction potential', ['Positive reduction potential', 'Reduction potential of zero', 'High affinity for electrons'], 'NADH (−0.32 V) readily donates electrons; O₂ (+0.82 V) readily accepts them.', 'Energetics'],
+    ['The standard reduction potential of O₂ is about', '+0.82 V', ['−0.32 V', '−0.19 V', '+1.14 V'], 'Electrons flow from negative carriers toward oxygen.', 'Energetics'],
+    ['ΔG°′ is related to the change in reduction potential by', 'ΔG°′ = −nFΔE°′', ['ΔG°′ = +nFΔE°′', 'ΔG°′ = −RT/ΔE°′', 'ΔG°′ = nF/ΔE°′'], 'n is the number of electrons and F the Faraday constant.', 'Energetics'],
+    ['The inner mitochondrial membrane is', 'Impermeable and protein-rich', ['Freely permeable to ions through porins', 'The site of fatty acid elongation only', 'Composed mainly of cholesterol and porins'], 'It holds the ETC, ATP synthase and transporters.', 'Mitochondrion'],
+    ['The TCA cycle and β-oxidation take place in the', 'Mitochondrial matrix', ['Intermembrane space', 'Outer membrane', 'Cytosol of the cell (soluble fraction)'], 'The matrix also holds mitochondrial DNA and ribosomes.', 'Mitochondrion'],
+    ['Cytosolic NADH must be shuttled into the matrix because', 'The inner membrane is impermeable to NADH', ['NADH is made only in the matrix', 'The outer membrane destroys NADH', 'Complex I faces the cytosol directly'], 'The malate–aspartate and glycerol phosphate shuttles carry its electrons.', 'Shuttles'],
+    ['The glycerol 3-phosphate shuttle is less efficient because its electrons', 'Bypass Complex I and enter at CoQ', ['Are lost as heat in the cytosol', 'Pass through two extra complexes', 'Reduce O₂ directly in the cytosol'], 'FADH₂ is formed, giving fewer protons pumped.', 'Shuttles'],
+    ['Which complexes pump protons?', 'I, III and IV', ['I, II and III', 'II and IV only', 'All four complexes'], 'Complex II pumps none.', 'Complexes'],
+    ['The prosthetic group that first accepts electrons from NADH in Complex I is', 'FMN', ['FAD', 'Haem a₃', 'CuB'], 'FMNH₂ converts two-electron transfer to one-electron steps.', 'Complexes'],
+    ['Complex II is the same enzyme as', 'Succinate dehydrogenase', ['Malate dehydrogenase', 'Pyruvate dehydrogenase', 'Isocitrate dehydrogenase'], 'It contains FAD and pumps no protons.', 'Complexes'],
+    ['The water-soluble electron carrier between Complexes III and IV is', 'Cytochrome c', ['Coenzyme Q', 'FAD', 'Cytochrome a₃'], 'Coenzyme Q is the lipid-soluble carrier between I/II and III.', 'Complexes'],
+    ['Complex III transfers electrons by a mechanism called the', 'Q cycle', ['Cori cycle', 'Krebs cycle', 'Urea cycle'], 'It pumps 4 H⁺ per 2 electrons.', 'Complexes'],
+    ['The terminal electron acceptor of the ETC is', 'Oxygen', ['NAD⁺', 'Cytochrome c', 'Water'], 'Complex IV reduces O₂ to 2 H₂O with four electrons.', 'Complexes'],
+    ['Cytochrome c oxidase contains', 'Haems a and a₃ and two Cu sites', ['FMN and nine Fe–S centres', 'FAD and cytochrome b₅₆₀', 'Cytochromes b and c₁ only'], 'It has 13 subunits and pumps 2 H⁺.', 'Complexes'],
+    ['According to the chemiosmotic theory, electron transport and ATP synthesis are coupled by', 'A proton gradient across the inner membrane', ['A high-energy phosphorylated intermediate', 'Direct contact between Complex IV and ATP synthase', 'Calcium released from the matrix'], 'Mitchell proposed the proton-motive force.', 'ATP synthase'],
+    ['As protons are pumped out, the matrix becomes', 'More alkaline and negatively charged', ['More acidic and positively charged', 'Neutral in both pH and charge', 'Acidic but negatively charged'], 'This electrochemical gradient drives H⁺ back through ATP synthase.', 'ATP synthase'],
+    ['Oligomycin inhibits', 'The proton channel of ATP synthase', ['Complex I', 'Complex IV', 'The malate–aspartate shuttle carrier'], 'DCCD acts at the same site.', 'Inhibitors'],
+    ['Cyanide stops respiration by inhibiting', 'Complex IV', ['Complex I', 'Complex II', 'ATP synthase'], 'It binds the Fe³⁺ of haem a₃; azide and H₂S act alike.', 'Inhibitors'],
+    ['Rotenone and amytal inhibit', 'Complex I', ['Complex II', 'Complex III', 'Complex IV'], 'Rotenone is an insecticide and fish poison.', 'Inhibitors'],
+    ['Antimycin A inhibits', 'Complex III', ['Complex I', 'Complex IV', 'ATP synthase'], 'Dimercaprol acts at the same site.', 'Inhibitors'],
+    ['Atractyloside inhibits', 'The ATP/ADP antiporter', ['Complex IV (cytochrome oxidase)', 'Complex I', 'Cytochrome c'], 'ADP becomes limiting, so ATP synthesis stops.', 'Inhibitors'],
+    ['An uncoupler such as 2,4-dinitrophenol', 'Lets O₂ be used without ATP being made', ['Stops O₂ use and ATP synthesis', 'Blocks Complex IV directly', 'Increases the ATP made per NADH'], 'It carries H⁺ across the membrane; the energy becomes heat.', 'Uncouplers'],
+    ['Thermogenin is found in', 'Brown adipose tissue', ['Skeletal muscle fibres', 'The liver', 'Red blood cells'], 'It produces heat by non-shivering thermogenesis in newborns and hibernators.', 'Uncouplers'],
+    ['Mitochondrial diseases are inherited', 'Only from the mother', ['Only from the father', 'As autosomal dominant traits', 'As X-linked recessive traits'], 'All children of an affected mother are affected.', 'Mitochondrial disease'],
+    ['Mitochondrial diseases often appear as neuropathies and myopathies because', 'They depend most on oxidative phosphorylation', ['Brain and muscle have no mitochondria', 'Mitochondrial DNA is only in nerves', 'Muscle makes ATP only by glycolysis'], 'Mitochondrial DNA codes for some ETC components.', 'Mitochondrial disease'],
+  ],
+};

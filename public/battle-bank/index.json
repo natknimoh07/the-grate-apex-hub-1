@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1187,
+   "total": 1213,
    "topics": [
     {
      "id": "Active Site",
@@ -4644,6 +4644,14 @@
      "unrated": 1
     },
     {
+     "id": "ATP synthase",
+     "title": "ATP synthase",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Basic Concept & Design of Metabolism / Enzymes",
      "title": "Basic Concept & Design of Metabolism / Enzymes",
      "easy": 0,
@@ -4682,6 +4690,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Complexes",
+     "title": "Complexes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
     },
     {
      "id": "Cori cycle",
@@ -4746,6 +4762,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Energetics",
+     "title": "Energetics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Energy",
@@ -4993,7 +5017,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 7
     },
     {
      "id": "Introduction",
@@ -5050,6 +5074,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Mitochondrial disease",
+     "title": "Mitochondrial disease",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Mitochondrion",
+     "title": "Mitochondrion",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Multiple Completion — Gluconeogenesis, Glycolysis & Galactose Metabolism",
@@ -5204,6 +5244,14 @@
      "unrated": 1
     },
     {
+     "id": "Shuttles",
+     "title": "Shuttles",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Significance of Glycolysis",
      "title": "Significance of Glycolysis",
      "easy": 0,
@@ -5334,6 +5382,14 @@
     {
      "id": "Substrate Concentration",
      "title": "Substrate Concentration",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Uncouplers",
+     "title": "Uncouplers",
      "easy": 0,
      "medium": 0,
      "hard": 0,

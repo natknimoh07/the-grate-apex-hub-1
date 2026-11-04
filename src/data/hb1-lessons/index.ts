@@ -42,6 +42,7 @@ import { biochemistryFructoseGalactose } from '@/data/hb1-lessons/biochemistry-f
 import { biochemistryKrebs } from '@/data/hb1-lessons/biochemistry-krebs';
 import { biochemistryPpp } from '@/data/hb1-lessons/biochemistry-ppp';
 import { biochemistryGlycogen } from '@/data/hb1-lessons/biochemistry-glycogen';
+import { biochemistryEtc } from '@/data/hb1-lessons/biochemistry-etc';
 import { entomologyBlackflies } from '@/data/hb1-lessons/entomology-blackflies';
 import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
 import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
@@ -81,7 +82,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   bmcAldehydes, bmcKetones, bmcCarboxylicAcids, bmcAcidDerivatives, bmcAmines, bmcStereochemistry,
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
-  biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen,
+  biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
