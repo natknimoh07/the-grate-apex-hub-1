@@ -54,6 +54,7 @@ import { HB1_PRACTICE_IDS } from '@/data/hb1-lessons/practice-ids';
 import { anatomyIntroduction } from '@/data/hb1-lessons/anatomy-introduction';
 import { anatomyJoints } from '@/data/hb1-lessons/anatomy-joints';
 import { anatomyEpithelium } from '@/data/hb1-lessons/anatomy-epithelium';
+import { anatomyConnectiveTissue } from '@/data/hb1-lessons/anatomy-connective-tissue';
 import { anatomyNervousTissue } from '@/data/hb1-lessons/anatomy-nervous-tissue';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
@@ -90,7 +91,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
-  anatomyIntroduction, anatomyJoints, anatomyEpithelium, anatomyNervousTissue,
+  anatomyIntroduction, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyNervousTissue,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
 ];
 
