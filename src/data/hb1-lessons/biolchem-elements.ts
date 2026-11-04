@@ -1,0 +1,120 @@
+// Biological Chemistry → Elemental Composition of Cells. From "BIOL 157_Lecture 1.pdf"
+// (Dr S. A. Domfeh). Rewrites the original database lesson biolchem-01 (same id, so progress is
+// kept). Checked 2026-11-04; teaching text in our own words. Practises Quiz 1.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+import { numberFigures, ostxBio } from '@/data/hb1-lessons/pictures';
+
+export const biolchemElements: Hb1Lesson = {
+  id: 'biolchem-01',
+  order: 1,
+  title: 'Elemental Composition of Cells',
+  summary: 'Where elements come from (Big Bang, fusion in stars, laboratory synthesis); the Oddo–Harkins rule; the bulk and trace elements of cells and the features of the major ones; why elements are included (biosphere, sea ancestry, chemical democracy) or excluded (artificial, inert, toxic, radioactive); why carbon is unique compared with silicon, boron and nitrogen',
+  minutes: 18,
+  source: 'BIOL 157_Lecture 1.pdf',
+  quizId: 'bcel',
+  quizName: 'Quiz · Elemental Composition of Cells (lesson)',
+  pastSets: ['s1'],
+  sections: numberFigures([
+    {
+      id: 'el-origin',
+      title: 'Where the elements came from',
+      kicker: 'Big Bang, stars, laboratories',
+      blocks: [
+        { k: 'p', x: 'All living cells are complex, organised structures built from the elements of nature. A <b>living cell</b> is an active cell with organised structures responsible for its function. An <b>element</b> is a substance whose atoms all have the <b>same number of protons</b> (atomic number). Cells are the building blocks of organisms; in biochemistry, <b>atoms are the building blocks</b>.' },
+        { k: 'p', x: 'Elements are thought to come from three processes:' },
+        { k: 'step', n: '1', title: 'The Big Bang', blocks: [{ k: 'p', x: 'An infinitely hot, dense ball of primordial matter exploded billions of years ago. Only <b>hydrogen and helium</b> formed; there were no stars or light. Gravity pulled the gas clouds together until they collapsed into <b>galaxies</b> of billions of stars.' }] },
+        { k: 'step', n: '2', title: 'Fusion in stars (stellar hypothesis)', blocks: [
+          { k: 'p', x: 'All elements other than H and He were made in the <b>cores of stars</b> and released when stars exploded. Fusion needs very <b>high temperatures and concentrations</b> to overcome the <b>electrostatic repulsion</b> between positive nuclei. Fusing helium nuclei (twice the charge of hydrogen) needs about <b>20 × 10<sup>6</sup> K</b>.' },
+          { k: 'ul', items: ['2 He → <sup>8</sup>Be', 'He + Be → <sup>12</sup>C', 'He + C → <sup>16</sup>O'] },
+          { k: 'p', x: 'The <b>largest atom fusion can make is iron (Fe)</b>. Heavier atoms form when Fe nuclei <b>capture neutrons</b> during the explosion of a star (supernova). Even-numbered elements come from mainstream fusion, odd ones from side-stream reactions.' },
+        ] },
+        { k: 'step', n: '3', title: 'Artificial (laboratory) synthesis', blocks: [{ k: 'p', x: 'Elements beyond atomic number 92 (the <b>transuranium</b> elements) are made by firing high-energy particles from <b>cyclotrons</b> at target nuclei. <b>Seaborg et al. (1950)</b> made <b>californium</b> by firing helium nuclei (alpha particles) at <b>curium-242</b>.' }] },
+        { k: 'box', title: 'Oddo–Harkins rule', tone: 'recall', blocks: [{ k: 'p', x: 'Elements with <b>even atomic numbers are far more abundant</b> than their odd-numbered neighbours (the deck notes exceptions such as H and Be).' }] },
+      ],
+    },
+    {
+      id: 'el-cell',
+      title: 'Elements in cells',
+      kicker: 'Bulk and trace',
+      blocks: [
+        { k: 'p', x: 'About <b>32 elements</b> are recognised as essential to cells. <b>Over 99% of the mass</b> of most cells is made of six <b>major (bulk) elements</b>: <b>C, H, O, N, P and S</b>. <b>Carbon</b> is the most versatile and predominant.' },
+        { k: 'p', x: '<b>Minor (trace) elements</b>: Na, Mg, Ca, B, V, Mo, Mn, Fe, Co, Ni, Cu, Zn, Si, Se, Cl, Cr and I. The major elements are found in the cell’s <b>organic compounds</b>; the minor ones are mainly in the <b>fluids that bathe the cells</b>.' },
+        { k: 'box', title: 'Features of the major elements', tone: 'formula', blocks: [{ k: 'ul', items: ['Mostly <b>p-block</b> elements (H is s-block).', 'Form <b>covalent bonds</b>.', '<b>Non-metals</b>.', '<b>Small</b> atomic size and low atomic number.', '<b>Neither too reactive nor inert</b>.'] }] },
+        ostxBio('figure-02-01-04.jpg', 900, 719, 'The periodic table, giving each element’s atomic number and atomic mass.', 'Almost every group has a member in living cells: “chemical democracy”.'),
+        { k: 'h', x: 'Why some elements are included', l: 3 },
+        { k: 'ul', items: [
+          '<b>Properties of the biosphere</b>: the body’s elements reflect the Earth’s composition (O 48.9%, Fe 18.8%, Si 14.0%, Mg 12.4%, C 0.10%, as the deck gives it).',
+          '<b>Sea ancestry</b>: the main ions (Na<sup>+</sup>, K<sup>+</sup>, Ca<sup>2+</sup>, Mg<sup>2+</sup>…) are in similar proportions in <b>seawater and blood plasma</b>, suggesting our ancestors came from the sea.',
+          '<b>Chemical democracy</b>: almost every group has a representative in cells: <b>15 of the 18 groups</b>, and every block (s, p, d) except the <b>f-block</b> (lanthanides and actinides).',
+        ] },
+        { k: 'h', x: 'Why some elements are excluded', l: 3 },
+        { k: 'table', head: ['Reason', 'Examples'], rows: [
+          { c: ['<b>Artificial nature</b>', 'Elements above atomic number 92 are made in laboratories'] },
+          { c: ['<b>Inert nature</b>', 'Noble gases He, Ne, Ar, Kr, Xe; scarce lanthanides and actinides'] },
+          { c: ['<b>Toxic nature</b>', '<b>Lead (Pb<sup>2+</sup>)</b> causes <b>anaemia</b> by blocking haem synthesis; <b>mercury</b> damages liver, kidney and brain; <b>beryllium (Be<sup>2+</sup>)</b> interferes with Mg<sup>2+</sup>'] },
+          { c: ['<b>Radioactive nature</b>', 'Emit harmful particles or radiation, e.g. <b>uranium</b>'] },
+        ] },
+        { k: 'p', x: 'Some non-essential elements still help us as medicines: <b>platinum</b> complexes (cisplatin) against cancer, <b>gold</b> complexes against arthritis, <b>lithium carbonate</b> in psychiatry, and <b>kaolin</b> (an aluminium clay) against diarrhoea.' },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'ul', items: [
+          'The deck lists technetium, astatine and francium as “elements with atomic numbers above 92”. They are <b>43, 85 and 87</b>: radioactive elements so scarce in nature that they are mostly made artificially. Technetium’s symbol is <b>Tc</b>, not Te (tellurium).',
+          'It calls Pt, Au, Li and Al “radioactive elements”. They are <b>not radioactive</b>; they are simply <b>non-essential</b> elements with medical uses.',
+          'Lithium is used mainly for <b>bipolar disorder</b> (mania), not schizophrenia.',
+        ] }] },
+      ],
+    },
+    {
+      id: 'el-carbon',
+      title: 'Why carbon is unique',
+      kicker: 'The backbone of life',
+      blocks: [
+        { k: 'table', head: ['Property', 'Meaning'], rows: [
+          { c: ['<b>Ideal size</b>', 'Neither too small nor too big, so it forms <b>stable covalent bonds</b>'] },
+          { c: ['<b>Catenation</b>', 'Bonds to itself in <b>straight chains, branches and rings</b>'] },
+          { c: ['<b>Multiple bonds</b>', 'Double and triple bonds with itself and other elements, giving great variety'] },
+          { c: ['<b>Tetravalency</b>', 'Four bonds per atom'] },
+        ] },
+        { k: 'cards', items: [
+          { title: 'Silicon', blocks: [{ k: 'p', x: 'A <b>congener</b> of carbon (same group), but larger: two Si atoms cannot get close enough for good orbital overlap, so <b>Si–Si bonds are weak</b>.' }] },
+          { title: 'Boron', blocks: [{ k: 'p', x: 'Only <b>three valence electrons</b>: its compounds are <b>electron-deficient</b> and less stable.' }] },
+          { title: 'Nitrogen', blocks: [{ k: 'p', x: 'Five valence electrons leave a <b>lone pair</b> on each bonded N; <b>lone-pair repulsion</b> makes the N–N bond much weaker than C–C.' }] },
+        ] },
+        { k: 'p', x: 'Si, N and B can all form three or more bonds and short chains, but none matches carbon. (Read on: valency, electronegativity and the octet rule, covered in Lectures 3 and 4.)' },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Big Bang → H and He; stars fuse up to Fe; heavier by neutron capture in supernovae; >92 made in cyclotrons (californium from curium-242).',
+          'Even atomic numbers more abundant (Oddo–Harkins).',
+          '~32 essential elements; C, H, O, N, P, S = 99% of cell mass: p-block, covalent, non-metal, small, moderately reactive.',
+          'Included: biosphere, sea ancestry, chemical democracy (15 of 18 groups; no f-block). Excluded: artificial, inert, toxic (Pb, Hg, Be), radioactive.',
+          'Carbon: ideal size, catenation, multiple bonds, tetravalent; Si too big, B electron-deficient, N lone pairs.',
+        ] }] },
+      ],
+    },
+  ]),
+  quiz: [
+    ['An element is a substance whose atoms all have the same', 'Number of protons', ['Number of neutrons', 'Mass number', 'Number of bonds'], 'The atomic number.', 'Introduction'],
+    ['Which elements formed in the Big Bang?', 'Hydrogen and helium', ['Carbon and oxygen', 'Iron and nickel', 'Uranium and lead ores'], 'Others formed in stars.', 'Origin'],
+    ['Very high temperatures are needed for fusion to overcome', 'Repulsion between nuclei', ['Attraction of the electrons', 'Gravity between the stars', 'The weight of the neutrons'], 'Both nuclei are positive.', 'Origin'],
+    ['Fusing helium nuclei needs about', '20 × 10⁶ K', ['20 × 10³ K', '2000 K', '20 K'], 'Twice hydrogen’s charge.', 'Origin'],
+    ['He + Be fuses to give', 'Carbon-12', ['Oxygen-16', 'Iron-56', 'Lithium-7'], 'He + C gives O-16.', 'Origin'],
+    ['The largest atom made by stellar fusion is', 'Iron', ['Uranium', 'Lead', 'Gold'], 'Heavier ones need neutron capture.', 'Origin'],
+    ['Elements heavier than iron form by', 'Neutron capture in supernovae', ['Fusion in quiet young stars', 'The Big Bang explosion itself', 'Radioactive decay of hydrogen'], 'In supernovae.', 'Origin'],
+    ['Seaborg made californium by bombarding curium-242 with', 'Alpha particles', ['Fast electrons', 'Gamma rays', 'Protons only'], 'Helium nuclei from a cyclotron.', 'Origin'],
+    ['The Oddo–Harkins rule says elements of even atomic number are', 'More abundant', ['Less abundant', 'Always radioactive', 'Always metals'], 'Than odd neighbours.', 'Origin'],
+    ['About how many elements are essential to cells?', '32', ['6', '92', '118'], 'Six are bulk elements.', 'Cell elements'],
+    ['Over 99% of cell mass is made of', 'C, H, O, N, P and S', ['Na, K, Ca, Mg, Cl, Fe', 'C, H, O, Fe, Cu, Zn', 'He, Ne, Ar, Kr, Xe, Rn'], 'The bulk elements.', 'Cell elements'],
+    ['Which is a trace element?', 'Zinc', ['Carbon', 'Nitrogen', 'Oxygen'], 'Also Fe, Cu, Se, I…', 'Cell elements'],
+    ['Major elements of cells are mostly', 'p-block non-metals', ['d-block metals', 'f-block metals', 'Inert noble gases'], 'They form covalent bonds.', 'Cell elements'],
+    ['Trace elements are found mainly in', 'Fluids bathing the cells', ['The organic compounds', 'The cell walls only', 'The nucleic acid chains'], 'Major ones are in organic compounds.', 'Cell elements'],
+    ['Similar ions in seawater and blood suggest that', 'Our ancestry is from the sea', ['Blood is made of seawater', 'The sea came from animals', 'Ions never change in nature'], 'A reason for inclusion.', 'Inclusion'],
+    ['“Chemical democracy” means', 'Most groups are used by cells', ['All elements are equally common', 'Cells vote on their elements', 'Only metals are used by cells'], '15 of 18 groups.', 'Inclusion'],
+    ['Which block has no representative in cells?', 'f-block', ['s-block', 'p-block', 'd-block'], 'Lanthanides and actinides.', 'Inclusion'],
+    ['Noble gases are excluded from cells because they are', 'Inert', ['Toxic', 'Radioactive', 'Artificial'], 'They do not react.', 'Exclusion'],
+    ['Lead causes anaemia by', 'Inhibiting haem synthesis', ['Destroying white cells', 'Blocking iron uptake in gut', 'Replacing calcium in bone'], 'A toxic element.', 'Exclusion'],
+    ['Beryllium (Be²⁺) is toxic because it interferes with', 'Mg²⁺', ['Na⁺', 'Fe²⁺', 'Cl⁻'], 'Same group.', 'Exclusion'],
+    ['A platinum complex is used medically against', 'Cancer', ['Arthritis', 'Diarrhoea', 'Anaemia'], 'Cisplatin. Gold: arthritis.', 'Exclusion'],
+    ['Kaolin, used against diarrhoea, contains', 'Aluminium', ['Lithium', 'Platinum', 'Elemental gold'], 'A clay.', 'Exclusion'],
+    ['Carbon’s ability to bond to itself in chains and rings is', 'Catenation', ['Tetravalency', 'Hybridisation', 'Isomerism'], 'A reason it is unique.', 'Carbon'],
+    ['Si–Si bonds are weak because silicon atoms are', 'Too large', ['Too small', 'Too electronegative', 'Electron-deficient'], 'Poor orbital overlap.', 'Carbon'],
+    ['Boron compounds are unstable because boron has', 'Three valence electrons', ['Five valence electrons', 'A lone pair on each atom', 'A full stable octet'], 'Electron-deficient.', 'Carbon'],
+    ['The N–N bond is weaker than C–C because of', 'Lone-pair repulsion', ['Larger atomic size', 'Electron deficiency', 'Lack of valence electrons'], 'Each N keeps a lone pair.', 'Carbon'],
+  ],
+};

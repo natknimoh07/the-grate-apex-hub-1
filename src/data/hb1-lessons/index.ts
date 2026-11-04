@@ -80,6 +80,7 @@ import { cellstructTechniques } from '@/data/hb1-lessons/cellstruct-techniques';
 import { cellstructCell } from '@/data/hb1-lessons/cellstruct-cell';
 import { cellstructOrganelles } from '@/data/hb1-lessons/cellstruct-organelles';
 import { cellstructMembrane } from '@/data/hb1-lessons/cellstruct-membrane';
+import { biolchemElements } from '@/data/hb1-lessons/biolchem-elements';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -120,6 +121,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   entomologyIntroduction, entomologyMosquitoes, entomologyAnophelineCulicine, entomologyLiceBedbugs, entomologySandfliesScabies, entomologyTsetseMidges, entomologyTicks, entomologyCockroaches, entomologyMyiasis, entomologyCollecting,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
   cellstructMicroscopy, cellstructTechniques, cellstructCell, cellstructOrganelles, cellstructMembrane,
+  biolchemElements,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
