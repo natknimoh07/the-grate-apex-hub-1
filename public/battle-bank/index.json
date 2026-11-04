@@ -4601,7 +4601,7 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1163,
+   "total": 1187,
    "topics": [
     {
      "id": "Active Site",
@@ -4940,6 +4940,22 @@
      "unrated": 5
     },
     {
+     "id": "Glycogenesis",
+     "title": "Glycogenesis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Glycogenolysis",
+     "title": "Glycogenolysis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Glycolysis",
      "title": "Glycolysis",
      "easy": 0,
@@ -5018,6 +5034,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 14
+    },
+    {
+     "id": "Liver vs muscle",
+     "title": "Liver vs muscle",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Lock and Key Model",
@@ -5161,7 +5185,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 16
+     "unrated": 23
     },
     {
      "id": "Regulation of Glycolysis",
@@ -5282,6 +5306,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Storage diseases",
+     "title": "Storage diseases",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Structure",
+     "title": "Structure",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Structure of Enzymes",
