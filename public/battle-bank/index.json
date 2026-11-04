@@ -1488,7 +1488,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1830,
+   "total": 1863,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1587,6 +1587,14 @@
      "unrated": 66
     },
     {
+     "id": "Chromosomal",
+     "title": "Chromosomal",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Control",
      "title": "Control",
      "easy": 0,
@@ -1601,6 +1609,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Cytoplasmic",
+     "title": "Cytoplasmic",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Cytoplasmic (Extranuclear) Inheritance",
@@ -1673,6 +1689,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 129
+    },
+    {
+     "id": "Gene structure",
+     "title": "Gene structure",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Genome",
@@ -1827,6 +1851,22 @@
      "unrated": 209
     },
     {
+     "id": "Mutagens",
+     "title": "Mutagens",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Mutations",
+     "title": "Mutations",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
      "id": "Notation",
      "title": "Notation",
      "easy": 0,
@@ -1841,6 +1881,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Operons",
+     "title": "Operons",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Packing",
@@ -1915,12 +1963,28 @@
      "unrated": 61
     },
     {
+     "id": "Repair",
+     "title": "Repair",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Repeats",
      "title": "Repeats",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Replication",
+     "title": "Replication",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Ribosomes",

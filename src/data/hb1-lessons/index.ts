@@ -95,6 +95,7 @@ import { medgenChromosomes } from '@/data/hb1-lessons/medgen-chromosomes';
 import { medgenCellCycle } from '@/data/hb1-lessons/medgen-cellcycle';
 import { medgenMendel } from '@/data/hb1-lessons/medgen-mendel';
 import { medgenSex } from '@/data/hb1-lessons/medgen-sex';
+import { medgenMolecular } from '@/data/hb1-lessons/medgen-molecular';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -137,7 +138,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   cellstructMicroscopy, cellstructTechniques, cellstructCell, cellstructOrganelles, cellstructMembrane,
   biolchemElements, biolchemEvolution, biolchemAtoms, biolchemBonds, biolchemCarbohydrates, biolchemNucleic, biolchemProteins, biolchemEnzymes, biolchemPathways, biolchemLipids,
 
-  medgenCell, medgenChromosomes, medgenCellCycle, medgenMendel, medgenSex,
+  medgenCell, medgenChromosomes, medgenCellCycle, medgenMendel, medgenSex, medgenMolecular,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
