@@ -44,3 +44,18 @@ export const ostxBio = (file: string, w: number, h: number, cap: string, note: s
   url: BIO_SOURCE,
   note,
 });
+
+const MICRO_CREDIT = 'OpenStax, Microbiology · CC BY 4.0';
+const MICRO_SOURCE = 'https://openstax.org/details/books/microbiology';
+
+/** An OpenStax Microbiology (CC BY 4.0) picture in public/images/openstax-micro/. */
+export const ostxMicro = (file: string, w: number, h: number, cap: string, note: string): Block => ({
+  k: 'illus',
+  src: `/images/openstax-micro/${file}`,
+  w,
+  h,
+  cap,
+  credit: MICRO_CREDIT,
+  url: MICRO_SOURCE,
+  note,
+});

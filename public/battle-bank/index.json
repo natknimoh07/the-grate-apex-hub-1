@@ -991,8 +991,16 @@
   {
    "id": "cellstruct",
    "name": "Cell Structure",
-   "total": 418,
+   "total": 448,
    "topics": [
+    {
+     "id": "Aberrations",
+     "title": "Aberrations",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
     {
      "id": "Autoradiography",
      "title": "Autoradiography",
@@ -1088,6 +1096,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Compound microscope",
+     "title": "Compound microscope",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Compound Microscope Structure",
@@ -1226,6 +1242,14 @@
      "unrated": 12
     },
     {
+     "id": "Magnification",
+     "title": "Magnification",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Magnification vs Resolution",
      "title": "Magnification vs Resolution",
      "easy": 0,
@@ -1338,6 +1362,14 @@
      "unrated": 18
     },
     {
+     "id": "Resolution",
+     "title": "Resolution",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
+    },
+    {
      "id": "SA:V Ratio",
      "title": "SA:V Ratio",
      "easy": 0,
@@ -1360,6 +1392,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Simple microscope",
+     "title": "Simple microscope",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Simple Microscopes & History",
@@ -1424,6 +1464,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Units",
+     "title": "Units",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Units of Measurement",
