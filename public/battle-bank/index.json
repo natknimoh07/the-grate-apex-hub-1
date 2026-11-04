@@ -12229,7 +12229,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 990,
+   "total": 993,
    "topics": [
     {
      "id": "Adaptations",
@@ -12869,7 +12869,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 4
     },
     {
      "id": "Trypanosomiasis",

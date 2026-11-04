@@ -79,6 +79,13 @@ export const entomologyLiceBedbugs: Hb1Lesson = {
           { c: ['<b>Pubic lice</b>', 'A crab louse or eggs in pubic hair (or eyebrows, eyelashes, beard, armpit); a magnifying lens helps'] },
         ] },
         { k: 'p', x: '<b>Delousing</b>: hot water and hot air, <b>ironing</b> (especially seams), fumigation and good hygiene. <b>Treatment</b>: topical lotions, sprays and shampoos, e.g. <b>1% permethrin</b> or pyrethrins with <b>piperonyl butoxide</b>, repeated to catch newly hatched nymphs.' },
+        { k: 'table', head: ['Louse', 'Treatment and control (slides 56–60)'], rows: [
+          { c: ['<b>Head</b>', 'Check all household members and close contacts; treat those actively infested. <b>Pediculicides</b>: if only weakly <b>ovicidal</b> (egg-killing), re-treat routinely; if strongly ovicidal, re-treat only if live lice remain several days later. Time the re-treatment <b>after all eggs have hatched but before new eggs are laid</b>. Wash hats, scarves, pillowcases, bedding, clothes and towels used in the <b>2 days</b> before treatment in hot water and dry hot: lice and eggs die after <b>5 minutes above 53.5 °C</b>. Dry-clean what cannot be washed, or seal it in a <b>plastic bag for 2 weeks</b>; do not share combs, hats or towels; vacuum furniture and floors for fallen hairs with nits. Nit combs alone are not very effective.'] },
+          { c: ['<b>Body</b>', 'Mainly <b>personal hygiene</b>: at least a weekly change into clean clothes; launder clothing, bedding and towels in hot water (about <b>54 °C</b>) and machine-dry hot; boiling, dry heat and dry cleaning also work.'] },
+          { c: ['<b>Pubic</b>', '<b>1% permethrin</b> lotion or a pyrethrin + piperonyl butoxide mousse; <b>malathion 0.5%</b> lotion (kills lice and eggs); <b>lindane</b> shampoo only as a last resort. Avoid sexual and close contact until treated; wash clothes and bedding hot.'] },
+          { c: ['<b>All lice</b>', 'Spraying the area with insecticide is <b>useless</b> (lice live on the person). Education on what works, and what does not, matters most.'] },
+        ] },
+        { k: 'box', title: 'Why lindane is last-line', tone: 'red', blocks: [{ k: 'p', x: 'Lindane kills lice and eggs but is <b>neurotoxic</b> (brain and nerves, seizures). It is kept for patients who failed or cannot tolerate safer drugs, and must not be used in premature infants, people with seizure disorders, pregnant or breast-feeding women, or on very irritated or broken skin.' }] },
       ],
     },
     {
@@ -153,5 +160,8 @@ export const entomologyLiceBedbugs: Hb1Lesson = {
     ['Bed bugs are', 'Not natural vectors of human disease', ['Vectors of epidemic typhus', 'Vectors of relapsing fever', 'The main vectors of plague'], 'Possible mechanical spread of hepatitis B.', 'Bed bugs'],
     ['Heavy bed bug infestation in children may cause', 'Iron-deficiency anaemia', ['Epidemic typhus', 'Lymphatic elephantiasis', 'Sleeping sickness'], 'From repeated blood loss.', 'Bed bugs'],
     ['A residual insecticide used for bed bugs is', 'Pirimiphos-methyl', ['Ivermectin', 'Chloroquine', 'Diethylcarbamazine'], 'Also bendiocarb, propoxur.', 'Bed bugs'],
+    ['Head lice and their eggs on clothing are killed by 5 minutes at temperatures above', '53.5 °C', ['30 °C', '40 °C', '100 °C only'], 'Hot wash and hot dry.', 'Treatment'],
+    ['Lindane shampoo for lice is reserved as a last resort because it is', 'Toxic to the nervous system', ['Unable to kill louse eggs', 'Too expensive to buy anywhere', 'Only effective on body lice'], 'Not for infants, pregnancy or seizures.', 'Treatment'],
+    ['Spraying a room with insecticide against head lice is', 'Useless', ['The first-line treatment', 'Needed every week', 'Better than shampoo'], 'Lice live on the person.', 'Treatment'],
   ],
 };
