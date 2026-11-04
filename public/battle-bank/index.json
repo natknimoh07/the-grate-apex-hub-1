@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 819,
+   "total": 846,
    "topics": [
     {
      "id": "Absolute Value & Inequalities",
@@ -3856,6 +3856,14 @@
      "unrated": 4
     },
     {
+     "id": "Exponential",
+     "title": "Exponential",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Exponential Equations",
      "title": "Exponential Equations",
      "easy": 0,
@@ -3952,6 +3960,14 @@
      "unrated": 14
     },
     {
+     "id": "Graphs",
+     "title": "Graphs",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Identities",
      "title": "Identities",
      "easy": 0,
@@ -3973,7 +3989,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 6
     },
     {
      "id": "Integration",
@@ -4118,6 +4134,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Logs",
+     "title": "Logs",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
     },
     {
      "id": "Matrices",
@@ -4341,7 +4365,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 10
+     "unrated": 13
     },
     {
      "id": "Sequences & Factorials",
