@@ -9109,7 +9109,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 897,
+   "total": 927,
    "topics": [
     {
      "id": "Adaptations",
@@ -9192,6 +9192,14 @@
      "unrated": 5
     },
     {
+     "id": "Biology",
+     "title": "Biology",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Blackflies",
      "title": "Blackflies",
      "easy": 0,
@@ -9245,7 +9253,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 12
+     "unrated": 18
     },
     {
      "id": "Culicines",
@@ -9413,7 +9421,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 24
+     "unrated": 27
     },
     {
      "id": "Malaria",
@@ -9422,6 +9430,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 8
+    },
+    {
+     "id": "Medical",
+     "title": "Medical",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
     },
     {
      "id": "Medical importance",
@@ -9453,7 +9469,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 7
     },
     {
      "id": "Mosquito control",
@@ -9582,6 +9598,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Species",
+     "title": "Species",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
     },
     {
      "id": "Systems",
