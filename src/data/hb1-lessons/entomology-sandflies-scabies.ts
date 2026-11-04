@@ -1,0 +1,136 @@
+// Entomology → Sandflies, Leishmaniasis and Scabies. The sandfly and scabies decks are not in the
+// HB1 folder, so this lesson rewrites the original database lesson entomology-05 (same id, so
+// progress is kept) from its content, Topic Quiz 5 and standard parasitology texts, checked
+// 2026-11-04; the teaching text is in our own words. It practises Topic Quiz 5 and the past
+// questions on other vectors.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+
+export const entomologySandfliesScabies: Hb1Lesson = {
+  id: 'entomology-05',
+  order: 5,
+  title: 'Sandflies, Leishmaniasis and the Scabies Mite',
+  summary: 'Phlebotomine sandflies: classification, Old and New World genera, recognition, life cycle out of water, biting, habitats and control; Leishmania amastigotes and promastigotes, the life cycle, cutaneous, mucocutaneous and visceral leishmaniasis, diagnosis and treatment; Sarcoptes scabiei: arachnid features, morphology, burrowing life cycle, spread, symptoms, crusted scabies and management',
+  minutes: 36,
+  source: 'Sandflies and scabies lectures (decks not in the HB1 folder; rebuilt from the original lesson and Topic Quiz 5)',
+  quizId: 'esan',
+  quizName: 'Quiz · Sandflies and Scabies (lesson)',
+  pastSets: ['s10'],
+  pastTopics: ['other-vectors'],
+  sections: [
+    {
+      id: 'san-fly',
+      title: 'Phlebotomine sandflies',
+      kicker: 'The only vectors of Leishmania',
+      blocks: [
+        { k: 'p', x: 'Order Diptera → suborder Nematocera → family <b>Psychodidae</b> → subfamily <b>Phlebotominae</b>. Of about <b>700 species</b>, only about <b>90 bite humans</b>. They are the <b>only vectors of Leishmania</b>, and also carry <b>sandfly fever</b> (a virus), <b>Carrion’s disease</b> (Bartonella bacilliformis) and vesicular stomatitis virus.' },
+        { k: 'table', head: ['Old World genera', 'New World genera'], rows: [
+          { c: ['<b>Phlebotomus</b> (the vector), Sergentomyia, Chinius', '<b>Lutzomyia</b> (the vector), Brumptomyia, Warileya'] },
+        ] },
+        { k: 'box', title: 'Memory hook', tone: 'recall', blocks: [{ k: 'p', x: '<b>P</b>hlebotomus = <b>P</b>ast (Old World); <b>L</b>utzomyia = <b>L</b>atin America (New World).' }] },
+        { k: 'table', head: ['Feature', 'Sandfly'], rows: [
+          { c: ['Size', '<b>1.5–3.5 mm</b>: among the smallest biting flies (they pass through ordinary bed-net mesh)'] },
+          { c: ['Look', '<b>Hairy</b> body and wings, large black eyes, long legs'] },
+          { c: ['Wings', 'Held <b>erect in a V</b> (about 40°) at rest and while feeding'] },
+          { c: ['Flight', '<b>Hopping</b>, not sustained'] },
+          { c: ['Feeding', 'Both sexes take plant sugars; only <b>females</b> take blood (for eggs). <b>Pool feeders</b> (telmophages): they lacerate skin and drink the pool'] },
+          { c: ['Biting time', 'Mostly <b>dusk and night</b>, outdoors; by day in dark rooms or shaded vegetation if disturbed'] },
+        ] },
+        { k: 'p', x: 'Holometabolous: <b>egg → larva → pupa → adult</b>, but <b>none of the stages lives in water</b>, which separates them from mosquitoes. A female lays <b>30–70 eggs</b> per gonotrophic cycle (one blood meal → one batch) in moist <b>cracks in soil and walls, animal burrows and among tree roots</b>. Eggs hatch in 4–20 days; <b>4 larval instars</b> (20–30 days) scavenge decaying organic matter and may enter diapause; the pupa lasts 6–13 days. Adults rest in rock crevices, caves, rodent burrows and dark humid corners of houses and animal shelters, in savannah and semi-desert, rural to urban. They bite many hosts depending on what is available; in towns <b>humans and dogs</b> (the dog being the reservoir).' },
+        { k: 'box', title: 'Control', tone: 'life', blocks: [{ k: 'p', x: 'Breeding sites are mostly unknown, so <b>larval control is largely impossible</b>. Instead: <b>insecticides against resting adults</b>; personal protection (repellents, clothing, <b>fine-mesh</b> or treated nets); habitat modification; controlling <b>reservoirs</b> (dogs, rodents) and their habitats; biological control with <b>Bacillus sphaericus</b>.' }] },
+      ],
+    },
+    {
+      id: 'san-leish',
+      title: 'Leishmania and its life cycle',
+      kicker: 'A parasite that lives inside macrophages',
+      blocks: [
+        { k: 'table', head: ['Form', 'Host', 'Features'], rows: [
+          { c: ['<b>Amastigote</b>', 'Humans and vertebrates', 'Round–oval, <b>2–4 µm</b>, <b>no free flagellum</b>; inside <b>macrophages</b>; nucleus and kinetoplast stain dark mauve with Giemsa. Identical in all species, so the species cannot be told by microscopy'] },
+          { c: ['<b>Promastigote</b>', 'Sandfly gut', '<b>Flagellated</b>, motile; the <b>infective</b> stage injected by the fly'] },
+        ] },
+        { k: 'box', title: 'Memory hook', tone: 'recall', blocks: [{ k: 'p', x: '<b>A</b>mastigote = <b>a</b>bsent flagellum, in m<b>a</b>n. <b>P</b>romastigote = <b>p</b>ropels itself, in the fly.' }] },
+        { k: 'step', n: '1', title: 'Bite', blocks: [{ k: 'p', x: 'An infected sandfly injects <b>promastigotes</b> into the skin.' }] },
+        { k: 'step', n: '2', title: 'In man', blocks: [{ k: 'p', x: 'They lose the flagellum, become <b>amastigotes</b> inside macrophages and other reticuloendothelial cells, multiply until the cell bursts and infect more cells (in visceral disease, destroying liver and spleen).' }] },
+        { k: 'step', n: '3', title: 'In the fly', blocks: [{ k: 'p', x: 'A sandfly feeding on an infected person takes up amastigotes, which become <b>promastigotes</b>, multiply by <b>binary fission</b> in the <b>midgut</b> and move to the <b>proboscis</b>.' }] },
+        { k: 'p', x: 'Leishmaniasis is a <b>zoonosis</b> affecting about <b>12 million</b> people in <b>88 countries</b>; in Ghana cases are reported around <b>Ho</b> (3–4% reported, 12–32% suspected; Kweku et al., 2011).' },
+        { k: 'table', head: ['Disease', 'Species', 'World / vector', 'Clinical picture'], rows: [
+          { c: ['<b>Cutaneous</b> (Oriental sore)', '<b>L. tropica</b> (also L. major, L. aethiopica, L. infantum); New World <b>L. mexicana</b> (chiclero ulcer, bay sore)', 'Old World, Phlebotomus (New World, Lutzomyia); reservoirs dogs, foxes, rodents', 'After 2–8 weeks a red itchy papule at the bite enlarges and <b>ulcerates</b>; crusted, exuding; heals in months with a <b>disfiguring scar</b>'] },
+          { c: ['<b>Mucocutaneous</b> (espundia)', '<b>L. braziliensis</b>', 'New World (Central and South America), <b>Lutzomyia</b>; dogs', 'Skin lesion, then spread by lymphatics to the <b>nose, palate, pharynx and lips</b>, destroying mucosa: severe facial mutilation, even loss of speech; responds poorly to treatment'] },
+          { c: ['<b>Visceral</b> (kala-azar, “black fever”)', '<b>L. donovani</b>', 'Africa, Asia, the Americas; Phlebotomus; dogs, foxes, porcupines', 'Weeks to a year’s incubation; fever, diarrhoea, anaemia, malaria-like chills; <b>enlarged liver and spleen</b>, wasting, kidney damage, <b>darkened skin</b>; untreated, death within 1–2 years'] },
+        ] },
+        { k: 'box', title: 'Strictly speaking', tone: 'gold', blocks: [{ k: 'p', x: 'The original lesson linked the “chiclero ulcer” of chicle-sap workers to L. braziliensis. It is usually caused by <b>L. mexicana</b>, a <b>cutaneous</b> lesion (often of the ear); L. braziliensis causes the mucocutaneous form, espundia.' }] },
+        { k: 'table', head: ['Diagnosis and treatment', 'Details'], rows: [
+          { c: ['<b>Gold standard</b>', '<b>Amastigotes</b> in Giemsa-stained smears of blood and aspirates (bone marrow, spleen, lymph node), or ulcer-edge biopsy for skin disease'] },
+          { c: ['Other tests', 'Culture in <b>NNN medium</b> (Novy–MacNeal–Nicolle), which grows promastigotes; animal inoculation; <b>PCR</b>; <b>leishmanin (Montenegro) skin test</b>; ELISA'] },
+          { c: ['Treatment', '<b>Pentavalent antimonials</b> IV or IM: <b>sodium stibogluconate</b> (20 mg/kg daily for 28 days) and meglumine antimoniate; alternatives <b>amphotericin B</b>, paromomycin, <b>miltefosine</b>; antibiotics for secondary infection'] },
+          { c: ['Prevention', 'Screens and fine nets, clothing, repellents, treated nets; prompt treatment of patients (people are a source too)'] },
+        ] },
+      ],
+    },
+    {
+      id: 'san-scabies',
+      title: 'The scabies mite: Sarcoptes scabiei',
+      kicker: 'An arachnid that lives in the skin',
+      blocks: [
+        { k: 'p', x: '<i>Sarcoptes scabiei</i> is a <b>permanent ectoparasite</b> that burrows in the epidermis, found worldwide, causing <b>scabies</b> (acariasis, “Norwegian itch”). It is an <b>arachnid</b> (subclass Acari), so unlike an insect it has <b>no wings, no antennae, no compound eyes</b> and <b>four pairs of legs</b>. Its body is the <b>idiosoma</b> (prosoma and opisthosoma fused) with a false head, the <b>capitulum</b>, bearing sensory <b>pedipalps</b>, cutting <b>chelicerae</b> and the hypostome, but no mandibles, maxillae or hypopharynx.' },
+        { k: 'table', head: ['Feature', 'Adult mite'], rows: [
+          { c: ['Size and shape', '<b>0.3–0.5 mm</b>, barely visible; whitish, oval, flat below and convex above'] },
+          { c: ['Cuticle', 'Soft, with wavy parallel striations and <b>backward-pointing spines</b> that act as a ratchet in the burrow'] },
+          { c: ['Senses and breathing', '<b>No eyes, no tracheae</b>'] },
+          { c: ['Legs', 'Four pairs of short brown stumpy legs; the front two pairs well separated from the back two'] },
+          { c: ['Sexing', '<b>Female</b>: legs 1–2 end in stalked <b>suckers</b>, legs 3–4 in long <b>bristles</b>. <b>Male</b>: the <b>4th pair</b> also ends in suckers'] },
+        ] },
+        { k: 'ul', items: [
+          'The female cuts into the <b>stratum corneum</b> (with front tibiae and chelicerae, in 2–20 minutes) and digs a winding tunnel parallel to the surface, growing <b>2–3 mm a day</b>, where eggs and faecal pellets alternate; she sits at the <b>blind end</b>, the place to scrape for diagnosis.',
+          'Preferred sites: thin, wrinkled skin of the <b>finger webs, wrists, elbows, groin, genitals, nipples, buttocks</b>; in children also the face, palms and soles. Adults are spared on palms, soles, back and chest. In surveys, adults are most often affected on the <b>hands and wrists (84%)</b>, children on the <b>feet and ankles (77%)</b>.',
+          'She lays <b>2–3 eggs a day</b> and lives 1–2 months. Eggs hatch in <b>3–5 days</b> into a <b>six-legged larva</b> (the only six-legged stage), which moults after 2–3 days into an <b>eight-legged nymph</b>, then an adult. Males wander over the skin to mate in the burrows and die after mating. Egg to egg: <b>14–31 days</b>.',
+        ] },
+        { k: 'p', x: '<b>Spread</b> is by <b>direct, prolonged skin contact</b> (gravid or fertilised females and active immatures): within families and roommates, overcrowding with little water, sexual contact, prisons, care homes and child care. It affects all classes, sexes and ages (“scabies in the elite”) and can come from animals (mange).' },
+        { k: 'box', title: 'Why it itches', tone: 'formula', blocks: [{ k: 'p', x: 'The rash and the <b>excruciating night-time itch</b> are an <b>allergic reaction</b> to the mites’ secretions and faeces in the burrows, so symptoms start <b>4–6 weeks</b> after first infestation and the itch can last weeks after cure. Complications: secondary infection (<b>impetigo</b>), eczema, boils. <b>Crusted (Norwegian) scabies</b>: thousands of mites in thick crusts, in the immunocompromised, elderly and disabled (little itching, so little scratching); highly contagious.' }] },
+        { k: 'table', head: ['Management', 'Details'], rows: [
+          { c: ['<b>Diagnosis</b>', 'Usually clinical (rash, burrows, night itch); confirm by <b>skin scraping</b> for mites, eggs or faeces under the microscope'] },
+          { c: ['<b>Scabicides</b>', '<b>Permethrin cream</b>, <b>benzyl benzoate</b> emulsion, sulphur ointment (Tetmosol), Mitigal, lindane (an organochlorine), <b>oral ivermectin</b>'] },
+          { c: ['<b>Itch</b>', 'Antihistamines (at night); hydrocortisone only after diagnosis, since it changes the rash'] },
+          { c: ['<b>Contacts</b>', 'Treat <b>all household and close contacts</b> at the same time, even without symptoms; in day care, classmates and carers too'] },
+          { c: ['<b>Home</b>', 'Mites survive <b>2–3 days</b> off the host: hot-wash and hot-dry everything used in the last 3 days, or seal items in a bag for 7 days'] },
+          { c: ['<b>Return</b>', 'Back to school or work 24 h after treatment starts; itching beyond 4 weeks or a new rash means re-treatment'] },
+        ] },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Psychodidae, Phlebotominae; Phlebotomus (Old World), Lutzomyia (New World); hairy, V-shaped wings, hopping; no aquatic stages.',
+          'Amastigote (man, no flagellum, in macrophages) vs promastigote (fly, flagellated, infective).',
+          'L. tropica cutaneous; L. braziliensis mucocutaneous; L. donovani visceral (kala-azar). Stibogluconate.',
+          'Sarcoptes: 0.3–0.5 mm, no eyes or tracheae; burrows 2–3 mm/day; six-legged larva; allergic itch at night; treat all contacts.',
+        ] }] },
+      ],
+    },
+  ],
+  quiz: [
+    ['Sandflies belong to the family', 'Psychodidae', ['Culicidae', 'Simuliidae', 'Glossinidae'], 'Subfamily Phlebotominae.', 'Sandflies'],
+    ['The Old World sandfly vector of leishmaniasis is', 'Phlebotomus', ['Lutzomyia', 'Simulium', 'Culicoides midges'], 'Lutzomyia is the New World vector.', 'Sandflies'],
+    ['Of about 700 phlebotomine species, how many bite humans?', 'About 90', ['About 7', 'About 300', 'All 700'], 'Most are of no medical importance.', 'Sandflies'],
+    ['A resting sandfly holds its wings', 'Erect in a V over the body', ['Flat over the abdomen', 'Folded like closed scissors', 'Spread out to the sides'], 'About 40°.', 'Sandflies'],
+    ['Sandfly larvae develop', 'In moist soil, never in water', ['In standing fresh water', 'In fast-flowing streams', 'In water-filled tree holes and pots'], 'No stage is aquatic.', 'Sandflies'],
+    ['Sandflies feed on blood by', 'Drinking a pool from cut skin', ['Cannulating a single capillary', 'Sucking through the intact skin', 'Scraping dried blood from wounds'], 'They are pool feeders (telmophages).', 'Sandflies'],
+    ['Larval control of sandflies is difficult because', 'Their breeding sites are mostly unknown', ['Larvae are resistant to all insecticides', 'Larvae live inside the human host', 'Larvae are aquatic in deep lakes'], 'Control targets adults and reservoirs.', 'Sandflies'],
+    ['A bacterium used for biological control of sandflies is', 'Bacillus sphaericus', ['Bacillus anthracis', 'Bartonella bacilliformis', 'Borrelia recurrentis'], 'It reduces survival and fecundity.', 'Sandflies'],
+    ['The Leishmania stage found inside human macrophages is the', 'Amastigote', ['Promastigote', 'Trypomastigote', 'Sporozoite'], 'Round, no free flagellum.', 'Leishmania'],
+    ['The infective stage injected by the sandfly is the', 'Promastigote', ['Amastigote', 'Epimastigote', 'Merozoite'], 'Flagellated and motile.', 'Leishmania'],
+    ['Promastigotes multiply in the sandfly’s', 'Midgut', ['Salivary glands', 'Ovaries', 'Haemocoel'], 'Then move to the proboscis.', 'Leishmania'],
+    ['Kala-azar (visceral leishmaniasis) is caused by', 'Leishmania donovani', ['Leishmania tropica', 'Leishmania braziliensis', 'Leishmania mexicana'], '“Black fever”, with big liver and spleen.', 'Leishmaniasis'],
+    ['Mucocutaneous leishmaniasis destroying the nose and palate is caused by', 'Leishmania braziliensis', ['Leishmania donovani', 'Leishmania tropica', 'Leishmania aethiopica'], 'Espundia, New World.', 'Leishmaniasis'],
+    ['Oriental sore (Old World cutaneous leishmaniasis) is caused by', 'Leishmania tropica', ['Leishmania donovani', 'Leishmania braziliensis', 'Trypanosoma brucei'], 'Ulcer that scars.', 'Leishmaniasis'],
+    ['The gold standard for diagnosing leishmaniasis is', 'Amastigotes seen in a smear', ['A rising antibody titre on ELISA', 'A positive leishmanin skin test', 'Culturing the sandfly from the house'], 'Giemsa stain, oil immersion.', 'Diagnosis'],
+    ['Leishmania promastigotes are cultured in', 'NNN medium', ['Löwenstein–Jensen medium', 'MacConkey agar', 'Sabouraud agar'], 'Novy–MacNeal–Nicolle.', 'Diagnosis'],
+    ['The drug of choice for visceral leishmaniasis in the lecture is', 'Sodium stibogluconate', ['Chloroquine phosphate', 'Ivermectin tablets', 'Benzyl benzoate'], 'A pentavalent antimonial.', 'Treatment'],
+    ['The scabies mite is an', 'Arachnid', ['Insect', 'Crustacean', 'Myriapod'], 'Four pairs of legs, no antennae.', 'Scabies'],
+    ['Which is absent in the scabies mite?', 'Eyes and tracheae', ['Chelicerae', 'Four pairs of legs', 'Dorsal spines'], 'It also lacks antennae and wings.', 'Scabies'],
+    ['A male scabies mite is recognised by suckers on', 'The fourth pair of legs', ['The third pair of legs only', 'None of its legs', 'The chelicerae'], 'Females have bristles on legs 3 and 4.', 'Scabies'],
+    ['The female scabies mite burrows in the', 'Stratum corneum', ['Dermis', 'Subcutaneous fat', 'Hair shaft'], 'Tunnels lengthen 2–3 mm a day.', 'Scabies'],
+    ['The only six-legged stage of the scabies mite is the', 'Larva', ['Nymph', 'Adult male', 'Adult female'], 'Nymphs and adults have eight legs.', 'Scabies'],
+    ['In adults, scabies most often affects the', 'Hands and wrists', ['Palms and soles', 'Face and scalp', 'Back and the chest'], 'Children: feet and ankles.', 'Scabies'],
+    ['The itch of scabies is mainly due to', 'Allergy to mite secretions', ['Mites biting the nerve endings', 'Bacterial toxins in the burrow', 'Blood loss from mite feeding'], 'Worst at night.', 'Scabies'],
+    ['Crusted (Norwegian) scabies occurs mainly in', 'Immunocompromised and elderly people', ['Healthy young athletes', 'Newborn babies only', 'People with eczema or psoriasis'], 'Thousands of mites, highly contagious.', 'Scabies'],
+    ['Which is a treatment for scabies?', 'Permethrin cream', ['Sodium stibogluconate', 'Chloroquine', 'Amphotericin B'], 'Also benzyl benzoate, ivermectin.', 'Scabies'],
+    ['When treating scabies, you should also', 'Treat all close contacts too', ['Treat only those with symptoms', 'Wait four weeks before treating contacts', 'Avoid washing the bedding'], 'Symptoms take weeks to appear.', 'Scabies'],
+  ],
+};

@@ -9109,7 +9109,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 814,
+   "total": 841,
    "topics": [
     {
      "id": "Adaptations",
@@ -9269,7 +9269,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 3
     },
     {
      "id": "Direct harm",
@@ -9350,6 +9350,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Leishmania",
+     "title": "Leishmania",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Leishmaniasis",
+     "title": "Leishmaniasis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Lice",
@@ -9504,6 +9520,22 @@
      "unrated": 3
     },
     {
+     "id": "Sandflies",
+     "title": "Sandflies",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 8
+    },
+    {
+     "id": "Scabies",
+     "title": "Scabies",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
+    },
+    {
      "id": "Self-protection",
      "title": "Self-protection",
      "easy": 0,
@@ -9542,6 +9574,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Treatment",
+     "title": "Treatment",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Tunga",
