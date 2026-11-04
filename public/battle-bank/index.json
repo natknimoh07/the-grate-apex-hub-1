@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 1075,
+   "total": 1095,
    "topics": [
     {
      "id": "Absolute value",
@@ -3758,6 +3758,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 10
+    },
+    {
+     "id": "Conditions",
+     "title": "Conditions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Continuity",
@@ -3936,6 +3944,14 @@
      "unrated": 4
     },
     {
+     "id": "Examples",
+     "title": "Examples",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 13
+    },
+    {
      "id": "Exponential",
      "title": "Exponential",
      "easy": 0,
@@ -4005,7 +4021,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 12
     },
     {
      "id": "Functions and Limits",
