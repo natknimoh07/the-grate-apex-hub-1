@@ -1,0 +1,147 @@
+// Computer Appreciation → Formulas, Operators and Cell Referencing. From "CSM 177 slides"
+// (Chapter Two, slides 75–126). Rewrites the original database lesson compapp-02 (same id, so
+// progress is kept). Checked 2026-11-04; teaching text in our own words, with notes from current
+// Excel behaviour. Practises Quiz 2 and the formulas past questions.
+import type { Hb1Lesson } from '@/data/hb1-lessons';
+
+export const compappFormulas: Hb1Lesson = {
+  id: 'compapp-02',
+  order: 2,
+  title: 'Formulas, Operators and Cell Referencing',
+  summary: 'What a formula is, how it must start and what it may contain; entering formulas and viewing them; cell references and the name box; entering references by pointing; relative, absolute, mixed and circular references, with F4; references to other sheets and 3-D references; the four operator types; order of evaluation and the three evaluation rules; and naming cells and ranges (rules, the name box, Define Name, Name Manager)',
+  minutes: 24,
+  source: 'CSM 177 slides.pdf',
+  quizId: 'cpfm',
+  quizName: 'Quiz · Formulas and Referencing (lesson)',
+  pastSets: ['s2'],
+  pastTopics: ['excel-formulas-functions'],
+  sections: [
+    {
+      id: 'fm-what',
+      title: 'What a formula is',
+      kicker: 'The core of a worksheet',
+      blocks: [
+        { k: 'p', x: 'A <b>formula</b> is an entry whose cell shows not the entry itself but the <b>result it generates</b> (a value or a label). Formulas do every calculation you would do by hand or with a calculator, from simple +, −, ×, ÷ to complex financial, statistical and scientific work; without them a spreadsheet would be pointless. The cell shows the <b>result</b>; the <b>formula bar</b> shows the formula. To see it in the cell, double-click or press <b>F2</b>.' },
+        { k: 'table', head: ['A formula…', 'Detail'], rows: [
+          { c: ['Starts with', '<b>=</b> (normal), or <b>+</b> or <b>−</b>. A leading minus negates what follows: −B3+B4 with 10 and 15 gives <b>5</b>'] },
+          { c: ['May contain', 'Constants (numbers, text), arithmetic, comparison and text operators, functions (SUM( ), SQRT( ), COS(20)), parentheses, cell references and names'] },
+          { c: ['Example', '=C4*D8 multiplies the contents of C4 by D8'] },
+        ] },
+        { k: 'p', x: '<b>Entering</b>: make an <b>empty</b> cell active (anything already there is lost), type the formula (it shows in the cell and the formula bar) and press Enter: the cell now shows the result. The big advantage: change any cell the formula uses and it <b>recalculates automatically</b>.' },
+      ],
+    },
+    {
+      id: 'fm-refs',
+      title: 'Cell references',
+      kicker: 'Addresses in formulas',
+      blocks: [
+        { k: 'p', x: 'A <b>cell reference (address)</b> is the column letter and row number, e.g. <b>B10</b>; it lets a formula use values from anywhere on the sheet. The active cell’s reference shows in the <b>name box</b>, at the left of the formula bar. A reference may be one cell or a <b>range</b>.' },
+        { k: 'p', x: '<b>Pointing</b> is the least error-prone way to enter a reference: select the formula cell, type =, click the cell you want (a moving dashed border, the <b>marquee</b>, appears and the status mode changes from <b>Enter to Point</b>), type an operator, point to the next cell or drag across a range, then press Enter.' },
+        { k: 'table', head: ['Type', 'Written', 'When the formula is copied'], rows: [
+          { c: ['<b>Relative</b> (the default)', 'A5', 'Changes to keep the same <b>position relative</b> to the formula cell'] },
+          { c: ['<b>Absolute</b>', '$A$5', 'Stays fixed: a permanent link to cell A5'] },
+          { c: ['<b>Mixed</b>', '$A5 or A$5', '$A5: column fixed, row relative; A$5: row fixed, column relative'] },
+          { c: ['<b>Circular</b>', '—', 'A formula that refers to its own cell, directly or indirectly'] },
+        ] },
+        { k: 'step', n: '1', title: 'Relative references, worked', blocks: [{ k: 'ul', items: [
+          'B5 holds =(+B4−B3)/B2. Excel reads it as “(one row up − two rows up) ÷ three rows up”, so copied to Z6 it becomes <b>=(+Z5−Z4)/Z3</b>.',
+          '=SUM(B4:D4) in F4 copied to F5 becomes <b>=SUM(B5:D5)</b>; copied on to F10, =SUM(B10:D10).',
+          'The problem: =SUM(B4:D4)*A4 copied to F5 becomes =SUM(B5:D5)*<b>A5</b>, but you wanted A4 every time.',
+        ] }] },
+        { k: 'step', n: '2', title: 'Absolute and mixed, worked', blocks: [{ k: 'ul', items: [
+          '=SUM(B4:D4)*$D$4 copied to F5 becomes =SUM(B5:D5)*<b>$D$4</b>: the $ parts never change.',
+          'Type the $ signs, or put the cursor on the reference and press <b>F4</b>: each press cycles <b>A10 → $A$10 → A$10 → $A10 → A10</b>.',
+          '=$A4*B$3 has two mixed references: $A4 keeps column A, B$3 keeps row 3. One such formula can fill a whole multiplication table across and down.',
+        ] }] },
+        { k: 'box', title: 'Circular references', tone: 'red', blocks: [{ k: 'p', x: 'A formula in D3 of =(D1+D2+D3)/3 uses its own cell, so its result keeps changing. =(+B4−B3)/B2 is circular if placed in B2, B3 or B4. The slides say circular addressing is “not permitted in Excel” (Lotus would not complain); strictly, modern Excel <b>warns</b> you and shows 0, and allows it only if you switch on iterative calculation. Avoid it unless you mean it.' }] },
+        { k: 'p', x: '<b>Other sheets</b>: add the sheet name and <b>!</b>: <b>Sheet5!A10</b>, CSM1!A10; a name with spaces needs single quotes: <b>’CSM 1’!A10</b>. A <b>3-D reference</b> covers the same range on several sheets: =SUM(Sheet1:Sheet4!$D$1:$D$10) adds D1:D10 on each of Sheets 1–4 for a grand total.' },
+      ],
+    },
+    {
+      id: 'fm-ops',
+      title: 'Operators and order of evaluation',
+      kicker: 'Four kinds of operator',
+      blocks: [
+        { k: 'table', head: ['Arithmetic', 'Meaning', 'Example'], rows: [
+          { c: ['+', 'Addition', 'A2+3'] },
+          { c: ['−', 'Subtraction; negation', 'C3−A3; −B4'] },
+          { c: ['*', 'Multiplication', 'A4*8'] },
+          { c: ['/', 'Division', 'B4/B3'] },
+          { c: ['%', 'Percent', '95%'] },
+          { c: ['^', 'Exponentiation', '4^3 = 64'] },
+        ] },
+        { k: 'p', x: '<b>Comparison</b> operators give a logical <b>TRUE or FALSE</b>: = (A3=C4), &gt; , &lt; , &gt;= , &lt;= and <b>&lt;&gt;</b> (not equal). The one <b>text concatenation</b> operator is <b>&amp;</b>: "CSM"&amp;"183" gives <b>CSM183</b>.' },
+        { k: 'table', head: ['Reference operator', 'Meaning', 'Example'], rows: [
+          { c: [': (colon)', '<b>Range</b> (“to”): every cell between two references, inclusive', 'A10:G40'] },
+          { c: [', (comma)', '<b>Union</b> (“and”): joins references into one', 'MAX(B15,B19:G15)'] },
+          { c: ['(space)', '<b>Intersection</b>: the cells common to two references; none in common gives <b>#NULL!</b>', 'C10:D17 C6:C18 (= C10:C17)'] },
+        ] },
+        { k: 'table', head: ['Precedence (highest first)', 'Operator'], rows: [
+          { c: ['1', 'Reference operators : , (space)'] },
+          { c: ['2', 'Negation −'] },
+          { c: ['3', 'Percent %'] },
+          { c: ['4', 'Exponentiation ^'] },
+          { c: ['5', '* and / (equal rank)'] },
+          { c: ['6', '+ and − (equal rank)'] },
+          { c: ['7', '&amp; concatenation'] },
+          { c: ['8', 'Comparison = &lt; &gt; &lt;= &gt;= &lt;&gt;'] },
+        ] },
+        { k: 'box', title: 'The three evaluation rules', tone: 'formula', blocks: [{ k: 'ul', items: [
+          '<b>Higher precedence first</b>: =8/2^3 is 8/8 = <b>1</b>, not 64.',
+          '<b>Same precedence: left to right</b>: =10/5*2 is 2 × 2 = <b>4</b>, not 1.',
+          '<b>Brackets first</b>: =10/(5*2) = <b>1</b>; =6+27/3 = 15 but =(6+27)/3 = 11.',
+        ] }] },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'p', x: 'One slide lists the order as multiplication, then division, then addition, then subtraction. Multiplication and division have <b>equal</b> rank (as do + and −) and are done <b>left to right</b>, as rule 2 says. Also note Excel does negation before ^, so =−2^2 is <b>4</b>, unlike algebra’s −4.' }] },
+      ],
+    },
+    {
+      id: 'fm-names',
+      title: 'Naming cells and ranges',
+      kicker: 'Price * Quantity instead of A1*B1',
+      blocks: [
+        { k: 'p', x: 'A selected group of cells is a <b>range</b>; it can be formatted, moved, copied, deleted and <b>named</b>. A name works anywhere a reference does, and =Price*Quantity is easier to understand than =A1*B1.' },
+        { k: 'box', title: 'Rules for names', tone: 'recall', blocks: [{ k: 'ul', items: ['Start with a <b>letter or underscore</b>; after that any character except a <b>space</b> or a <b>hyphen</b> (use _ or a full stop instead).', 'Up to <b>255 characters</b>, but keep them short.', 'Upper or lower case: names are not case-sensitive.', 'Textbook addition: a name cannot look like a cell reference (Q1, AB12) or be just R or C.'] }] },
+        { k: 'table', head: ['Method', 'Steps'], rows: [
+          { c: ['<b>Name box</b>', 'Select the cells → click in the name box (left of the formula bar) → type the name → <b>Enter</b>. Its arrow lists every name in the workbook alphabetically; pick one to jump to and select that range'] },
+          { c: ['<b>Define Name</b>', 'Select → <b>Formulas → Define Name</b> (or right-click → Define/Name a Range) → New Name dialog: type a name (or accept Excel’s), add a <b>comment</b> if useful (for later auditing), check <b>Refers to</b> (retype with a leading = or reselect), OK'] },
+          { c: ['<b>Name Manager</b>', 'Formulas → <b>Name Manager → New</b>: best for creating several names in one go; you return to the manager after each'] },
+        ] },
+        { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Formulas start with = (or + or −); the cell shows the result, the bar the formula; F2 to edit.',
+          'Relative A1 moves, absolute $A$1 stays, mixed $A1 / A$1 half-stays; F4 cycles them. Circular = refers to itself.',
+          'Sheet5!A10, ’CSM 1’!A10; 3-D: Sheet1:Sheet4!D1:D10.',
+          'Operators: arithmetic, comparison, &amp;, reference (: range, , union, space intersection → #NULL!).',
+          'Order: reference, negation, %, ^, */ , +−, &amp;, comparison; same rank left to right; brackets first.',
+          'Names: letter or _ first, no spaces or hyphens, ≤ 255 characters; name box, Define Name, Name Manager.',
+        ] }] },
+      ],
+    },
+  ],
+  quiz: [
+    ['A cell holding a formula displays', 'Its result', ['The formula text', 'Nothing until printed', 'Its cell address'], 'The bar shows the formula.', 'Formulas'],
+    ['Which key shows a formula inside its cell for editing?', 'F2', ['F4', 'F9', 'F12'], 'Or double-click.', 'Formulas'],
+    ['If B3 = 10 and B4 = 15, −B3+B4 gives', '5', ['25', '−25', '−5'], 'Negate B3.', 'Formulas'],
+    ['The main advantage of formulas is that they', 'Recalculate when inputs change', ['Never need checking at all', 'Format the cells for you', 'Print the sheet automatically'], 'Automatic update.', 'Formulas'],
+    ['The active cell’s reference is shown in the', 'Name box', ['Status bar', 'Title bar', 'Sheet tab'], 'Left of the formula bar.', 'References'],
+    ['Pointing to a cell while typing a formula shows a', 'Moving dashed border', ['Red error triangle', 'Green corner mark', 'Bold outline only'], 'The marquee.', 'References'],
+    ['A relative reference, when copied', 'Adjusts to its new position', ['Stays exactly the same', 'Turns into a fixed value', 'Becomes a circular one'], 'Default.', 'References'],
+    ['=(+B4−B3)/B2 in B5 copied to Z6 becomes', '=(+Z5−Z4)/Z3', ['=(+B4−B3)/B2', '=(+Z4−Z3)/Z2', '=(+Z6−Z5)/Z4'], 'Same relative pattern.', 'References'],
+    ['=SUM(B4:D4)*$D$4 copied from F4 to F5 becomes', '=SUM(B5:D5)*$D$4', ['=SUM(B5:D5)*$D$5', '=SUM(B4:D4)*$D$4', '=SUM(B5:D5)*D5'], '$ parts fixed.', 'References'],
+    ['Pressing F4 on A10 repeatedly gives', '$A$10, A$10, $A10, A10', ['A$10, $A10, $A$10, A10', '$A10, A$10, $A$10, A10', 'A10, $A10, A$10, $A$10'], 'The cycle.', 'References'],
+    ['In $G5, which part is fixed?', 'The column G', ['The row 5', 'Both parts', 'Neither part'], 'Mixed reference.', 'References'],
+    ['A formula that refers to its own cell is', 'Circular', ['Absolute', 'Mixed', 'A 3-D reference'], 'Defined in terms of itself.', 'References'],
+    ['The correct reference to A10 on a sheet named CSM 1 is', '’CSM 1’!A10', ['CSM 1!A10', '"CSM 1"A10', '[CSM 1]A10'], 'Quotes for spaces.', 'References'],
+    ['=SUM(Sheet1:Sheet4!D1:D10) is a', '3-D reference', ['Circular reference', 'Mixed reference', 'Union reference'], 'Across sheets.', 'References'],
+    ['4^3 evaluates to', '64', ['12', '7', '81'], 'Exponentiation.', 'Operators'],
+    ['Comparison operators return', 'TRUE or FALSE', ['A number value', 'A text string', 'An error value'], 'Logical values.', 'Operators'],
+    ['"CSM"&"183" gives', 'CSM183', ['CSM 183', 'CSM+183', '#VALUE!'], 'Concatenation.', 'Operators'],
+    ['The comma reference operator is the', 'Union operator', ['Range operator', 'Intersection operator', 'Concatenation operator'], '“And”.', 'Operators'],
+    ['A space between two ranges with no cells in common gives', '#NULL!', ['#REF!', '#VALUE!', '0'], 'Intersection.', 'Operators'],
+    ['=8/2^3 equals', '1', ['64', '4', '32'], '^ first.', 'Evaluation'],
+    ['=10/5*2 equals', '4', ['1', '20', '10'], 'Left to right.', 'Evaluation'],
+    ['=(6+27)/3 equals', '11', ['15', '33', '9'], 'Brackets first.', 'Evaluation'],
+    ['A range name may start with', 'A letter or underscore', ['A digit from 0 to 9', 'A hyphen or dash', 'A space then a letter'], 'Naming rule.', 'Names'],
+    ['Which is NOT allowed in a range name?', 'A space', ['An underscore', 'A full stop', 'A digit after a letter'], 'Use _ instead.', 'Names'],
+    ['To create several names in one go, use the', 'Name Manager', ['Name box only', 'Status bar', 'Page Setup dialog'], 'Formulas tab.', 'Names'],
+  ],
+};

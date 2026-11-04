@@ -6138,7 +6138,7 @@
   {
    "id": "compapp",
    "name": "Computer Appreciation",
-   "total": 896,
+   "total": 921,
    "topics": [
     {
      "id": "Absolute & Mixed References",
@@ -6357,6 +6357,14 @@
      "unrated": 6
     },
     {
+     "id": "Evaluation",
+     "title": "Evaluation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Excel",
      "title": "Excel",
      "easy": 0,
@@ -6447,6 +6455,14 @@
     {
      "id": "Formatting Worksheets",
      "title": "Formatting Worksheets",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "Formulas",
+     "title": "Formulas",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -6581,6 +6597,14 @@
      "unrated": 5
     },
     {
+     "id": "Names",
+     "title": "Names",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Naming Cells & Ranges",
      "title": "Naming Cells & Ranges",
      "easy": 0,
@@ -6631,6 +6655,14 @@
     {
      "id": "Operator Precedence",
      "title": "Operator Precedence",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Operators",
+     "title": "Operators",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -6747,6 +6779,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "References",
+     "title": "References",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
     },
     {
      "id": "Relative References",
