@@ -90,6 +90,7 @@ import { biolchemProteins } from '@/data/hb1-lessons/biolchem-proteins';
 import { biolchemEnzymes } from '@/data/hb1-lessons/biolchem-enzymes';
 import { biolchemPathways } from '@/data/hb1-lessons/biolchem-pathways';
 import { biolchemLipids } from '@/data/hb1-lessons/biolchem-lipids';
+import { medgenCell } from '@/data/hb1-lessons/medgen-cell';
 
 /** One quiz question: prompt, right answer, three wrong answers, explanation, topic label. */
 export type Hb1QuizItem = [question: string, right: string, wrong: [string, string, string], explanation: string, topic: string];
@@ -131,6 +132,8 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
   cellstructMicroscopy, cellstructTechniques, cellstructCell, cellstructOrganelles, cellstructMembrane,
   biolchemElements, biolchemEvolution, biolchemAtoms, biolchemBonds, biolchemCarbohydrates, biolchemNucleic, biolchemProteins, biolchemEnzymes, biolchemPathways, biolchemLipids,
+
+  medgenCell,
 ];
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];

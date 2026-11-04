@@ -1488,7 +1488,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1659,
+   "total": 1694,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1507,6 +1507,22 @@
      "unrated": 54
     },
     {
+     "id": "Cancer",
+     "title": "Cancer",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
+     "id": "Cell",
+     "title": "Cell",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Cell Cycle, Mitosis & Meiosis",
      "title": "Cell Cycle, Mitosis & Meiosis",
      "easy": 0,
@@ -1521,6 +1537,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 435
+    },
+    {
+     "id": "Centrioles",
+     "title": "Centrioles",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Chromatin, Chromosome Structure & Karyotype",
@@ -1539,12 +1563,28 @@
      "unrated": 2
     },
     {
+     "id": "Cytoskeleton",
+     "title": "Cytoskeleton",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "DNA Structure, Replication & Repair",
      "title": "DNA Structure, Replication & Repair",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 33
+    },
+    {
+     "id": "ER",
+     "title": "ER",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Gene Regulation & Biostatistics for Genetics",
@@ -1571,6 +1611,30 @@
      "unrated": 59
     },
     {
+     "id": "Junctions",
+     "title": "Junctions",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Lysosomes",
+     "title": "Lysosomes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Membrane",
+     "title": "Membrane",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Mendelian Genetics & Inheritance Patterns",
      "title": "Mendelian Genetics & Inheritance Patterns",
      "easy": 0,
@@ -1579,12 +1643,36 @@
      "unrated": 120
     },
     {
+     "id": "Mitochondria",
+     "title": "Mitochondria",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Molecular Genetics: Gene Structure & Mutation",
      "title": "Molecular Genetics: Gene Structure & Mutation",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 209
+    },
+    {
+     "id": "Nucleus",
+     "title": "Nucleus",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Peroxisomes",
+     "title": "Peroxisomes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Prions & Transmissible Spongiform Encephalopathies",
@@ -1601,6 +1689,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 61
+    },
+    {
+     "id": "Ribosomes",
+     "title": "Ribosomes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Sex Determination, Sex-Linkage, Blood Groups & Syndromes",
