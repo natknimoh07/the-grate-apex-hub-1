@@ -1488,7 +1488,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1728,
+   "total": 1762,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1555,6 +1555,14 @@
      "unrated": 2
     },
     {
+     "id": "Checkpoints",
+     "title": "Checkpoints",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Chromatin",
      "title": "Chromatin",
      "easy": 0,
@@ -1569,6 +1577,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 66
+    },
+    {
+     "id": "Control",
+     "title": "Control",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Cytoplasmic (Extranuclear) Inheritance",
@@ -1609,6 +1625,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Gametogenesis",
+     "title": "Gametogenesis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Gene Regulation & Biostatistics for Genetics",
@@ -1683,6 +1707,14 @@
      "unrated": 3
     },
     {
+     "id": "Meiosis",
+     "title": "Meiosis",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
+    },
+    {
      "id": "Membrane",
      "title": "Membrane",
      "easy": 0,
@@ -1701,6 +1733,14 @@
     {
      "id": "Mitochondria",
      "title": "Mitochondria",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
+     "id": "Mitosis",
+     "title": "Mitosis",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -1745,6 +1785,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Phases",
+     "title": "Phases",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
     },
     {
      "id": "Prions & Transmissible Spongiform Encephalopathies",
@@ -1797,6 +1845,14 @@
     {
      "id": "Telomeres",
      "title": "Telomeres",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Variation",
+     "title": "Variation",
      "easy": 0,
      "medium": 0,
      "hard": 0,
