@@ -3637,7 +3637,7 @@
   {
    "id": "algebra",
    "name": "Algebra",
-   "total": 1120,
+   "total": 1160,
    "topics": [
     {
      "id": "Absolute value",
@@ -3696,6 +3696,14 @@
      "unrated": 28
     },
     {
+     "id": "Area",
+     "title": "Area",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Arithmetic Progression",
      "title": "Arithmetic Progression",
      "easy": 0,
@@ -3704,12 +3712,28 @@
      "unrated": 6
     },
     {
+     "id": "Average",
+     "title": "Average",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Basics",
      "title": "Basics",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 18
+    },
+    {
+     "id": "Between curves",
+     "title": "Between curves",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Binomial",
@@ -3824,6 +3848,14 @@
      "unrated": 17
     },
     {
+     "id": "Curves",
+     "title": "Curves",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Definite",
      "title": "Definite",
      "easy": 0,
@@ -3838,6 +3870,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "DEs",
+     "title": "DEs",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
     },
     {
      "id": "DEs & Partial Derivatives",
@@ -4472,6 +4512,14 @@
      "unrated": 7
     },
     {
+     "id": "Partials",
+     "title": "Partials",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Perms: Repetition & Circular",
      "title": "Perms: Repetition & Circular",
      "easy": 0,
@@ -4816,6 +4864,14 @@
      "unrated": 6
     },
     {
+     "id": "Surplus",
+     "title": "Surplus",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
+    },
+    {
      "id": "Systems",
      "title": "Systems",
      "easy": 0,
@@ -4910,6 +4966,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Uses",
+     "title": "Uses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Venn",
