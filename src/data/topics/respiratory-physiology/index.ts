@@ -3,6 +3,7 @@
 //   lessons.ts     — the nine lessons (reading layer)
 //   interactive.ts — each lesson's interactive layer
 //   questions.ts   — the quiz bank (with Assertion–Reason questions)
+import { sectionQuestions } from '@/data/topics/respiratory-physiology/section-questions';
 import { contentTopics } from '@/data/content-catalog';
 import { buildTopic } from '@/data/topics/build';
 import { lessons } from '@/data/topics/respiratory-physiology/lessons';
@@ -22,6 +23,6 @@ export const respiratoryPhysiology = buildTopic({
   contentVersion: 2,
   concepts,
   lessons,
-  questions,
+  questions: [...questions, ...sectionQuestions],
   discrepancies,
 });

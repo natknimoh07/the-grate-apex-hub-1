@@ -38,7 +38,7 @@ HB2 Biochemistry
 
 HB2 Physiology
 - [x] cardiovascular-physiology — 67 sections, 335 questions
-- [ ] respiratory-physiology
+- [x] respiratory-physiology — 56 sections, 280 questions
 - [ ] central-nervous-system
 - [ ] endocrinology
 - [ ] gastrointestinal-physiology

@@ -107,7 +107,7 @@
   {
    "id": "hb2-physiology",
    "name": "Physiology",
-   "total": 2757,
+   "total": 3032,
    "topics": [
     {
      "id": "cardiovascular-physiology",
@@ -120,8 +120,8 @@
     {
      "id": "respiratory-physiology",
      "title": "Respiratory Physiology",
-     "easy": 229,
-     "medium": 45,
+     "easy": 502,
+     "medium": 47,
      "hard": 0,
      "unrated": 131
     },
