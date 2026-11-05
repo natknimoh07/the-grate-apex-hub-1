@@ -4,7 +4,7 @@
   {
    "id": "hb2-anatomy",
    "name": "Anatomy",
-   "total": 3323,
+   "total": 3482,
    "topics": [
     {
      "id": "cardiovascular-system-gross",
@@ -75,6 +75,14 @@
      "title": "Respiratory System (Micro)",
      "easy": 94,
      "medium": 20,
+     "hard": 0,
+     "unrated": 0
+    },
+    {
+     "id": "gastrointestinal-system-micro",
+     "title": "Gastrointestinal System (Micro)",
+     "easy": 129,
+     "medium": 30,
      "hard": 0,
      "unrated": 0
     },

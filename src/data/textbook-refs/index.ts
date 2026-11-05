@@ -34,6 +34,7 @@ import { textbookPages as urinarySystemGross } from '@/data/textbook-refs/urinar
 import { textbookPages as cardiovascularSystemMicro } from '@/data/textbook-refs/cardiovascular-system-micro';
 import { textbookPages as respiratorySystemMicro } from '@/data/textbook-refs/respiratory-system-micro';
 import { textbookPages as embryology } from '@/data/textbook-refs/embryology';
+import { textbookPages as gastrointestinalSystemMicro } from '@/data/textbook-refs/gastrointestinal-system-micro';
 
 const byTopic: Record<string, TextbookPages> = {
   "amino-acid-metabolism": aminoAcidMetabolism,
@@ -62,6 +63,7 @@ const byTopic: Record<string, TextbookPages> = {
   "cardiovascular-system-micro": cardiovascularSystemMicro,
   "respiratory-system-micro": respiratorySystemMicro,
   "embryology": embryology,
+  "gastrointestinal-system-micro": gastrointestinalSystemMicro,
 };
 
 /** The textbook references for one reading section (none when not listed). */

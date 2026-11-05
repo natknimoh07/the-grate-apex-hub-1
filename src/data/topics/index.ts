@@ -35,6 +35,7 @@ import { urinaryGross } from '@/data/topics/urinary-system-gross';
 import { cardiovascularMicro } from '@/data/topics/cardiovascular-system-micro';
 import { respiratoryMicro } from '@/data/topics/respiratory-system-micro';
 import { embryology } from '@/data/topics/embryology';
+import { gastrointestinalMicro } from '@/data/topics/gastrointestinal-system-micro';
 
 // Anatomy topics are in HB2 Gross Anatomy course order.
-export const builtTopics: BuiltTopic[] = [fattyAcidBiosynthesis, cholesterolAndBileBiosynthesis, hemeMetabolism, oxygenCarriers, bloodCoagulation, hormones, inbornErrors, collagenAndElastin, freeRadicals, aminoAcidMetabolism, nucleicAcids, immunology, cardiovascularPhysiology, respiratoryPhysiology, centralNervousSystem, endocrinology, gastrointestinalPhysiology, renalPhysiology, reproductivePhysiology, specialSenses, cardiovascularGross, respiratoryGross, gastrointestinalGross, urinaryGross, upperLimb, headAndNeck, neuroanatomy, cardiovascularMicro, respiratoryMicro, embryology];
+export const builtTopics: BuiltTopic[] = [fattyAcidBiosynthesis, cholesterolAndBileBiosynthesis, hemeMetabolism, oxygenCarriers, bloodCoagulation, hormones, inbornErrors, collagenAndElastin, freeRadicals, aminoAcidMetabolism, nucleicAcids, immunology, cardiovascularPhysiology, respiratoryPhysiology, centralNervousSystem, endocrinology, gastrointestinalPhysiology, renalPhysiology, reproductivePhysiology, specialSenses, cardiovascularGross, respiratoryGross, gastrointestinalGross, urinaryGross, upperLimb, headAndNeck, neuroanatomy, cardiovascularMicro, respiratoryMicro, gastrointestinalMicro, embryology];

@@ -41,6 +41,24 @@ const pic = (file: string, width: number, height: number, caption: string): Illu
 });
 
 export const ILLUSTRATIONS: Record<string, Record<string, Illustration[]>> = {
+  'gastrointestinal-system-micro-1': {
+    "The digestive system": [pic('2401-components-of-the-digestive-system.jpg', 885, 1100, "The alimentary canal and the accessory digestive organs.")],
+  },
+  'gastrointestinal-system-micro-3': {
+    "The three major salivary glands": [pic('2408-salivary-glands.jpg', 586, 542, "The three pairs of major salivary glands and their ducts.")],
+  },
+  'gastrointestinal-system-micro-4': {
+    "The four coats": [pic('2402-layers-of-the-gastrointestinal-tract.jpg', 1000, 570, "The four layers of the gut wall: mucosa, submucosa, muscularis and serosa.")],
+    "Regions of the stomach": [pic('2414-stomach.jpg', 1000, 660, "The regions and muscle layers of the stomach.")],
+  },
+  'gastrointestinal-system-micro-5': {
+    "The small intestine": [pic('2417-small-intestinen.jpg', 839, 552, "The three parts of the small intestine: duodenum, jejunum and ileum.")],
+    "The large intestine and appendix": [pic('2420-large-intestine.jpg', 633, 427, "The large intestine: caecum, colon, rectum and anal canal.")],
+  },
+  'gastrointestinal-system-micro-6': {
+    "The gallbladder": [pic('2425-gallbladder.jpg', 787, 641, "The gallbladder stores and concentrates bile and empties it into the duodenum.")],
+    "The pancreas": [pic('2424-exocrine-and-endocrine-pancreas.jpg', 637, 827, "The exocrine acini and endocrine islets of the pancreas, and its duct.")],
+  },
   'embryology-1': {
     "The three phases of fertilization": [pic('2901-sperm-fertilization.jpg', 1000, 690, "Fertilization: sperm cross the corona radiata and zona pellucida before one fuses with the oocyte.")],
   },
