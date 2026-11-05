@@ -244,3 +244,11 @@ test('a learner moved on with the wrong league is put right, and a right one is 
   // Already right: nothing to change.
   assert.equal(settledLeagueFix({ tier: 1, prev: { week: W, tier: 0, weeklyXp: 790, position: 1, size: 164, outcome: 'promoted', rechecked: true } }, W, place), null);
 });
+
+test('weekly league XP includes separate phone and laptop contributions', async () => {
+  const { weeklyContributionTotal } = await import('../api/_league-store.mjs');
+  const week = '2026-10-19';
+  assert.equal(weeklyContributionTotal({ weeklyXp: 60, xpWeek: week, weeklyByDevice: { phone: 60, laptop: 45 } }, week, true), 105);
+  assert.equal(weeklyContributionTotal({ weeklyXp: 60, xpWeek: week, weeklyByDevice: { phone: 20 } }, week, true), 60);
+  assert.equal(weeklyContributionTotal({ weeklyXp: 90, xpWeek: '2026-10-26', weeklyByDevice: { phone: 90 } }, week, true), 0);
+});

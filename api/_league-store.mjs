@@ -77,6 +77,7 @@ export function savedWeeklyXp(entry, week, finished) {
 }
 
 export function weeklyContributionTotal(entry, week, finished) {
+  if (entry?.xpWeek !== undefined && entry.xpWeek !== week) return 0;
   const saved = savedWeeklyXp(entry, week, finished) ?? 0;
   const devices = entry?.weeklyByDevice;
   if (!devices || typeof devices !== 'object') return saved;
@@ -112,12 +113,14 @@ export async function tierTable(call, week, tier) {
   for (const person of live) {
     const entry = person.league;
     const saved = savedWeeklyXp(entry, week, finished);
-    const trusted = Number(entry.startXp) > 0 || saved !== null;
-    const weeklyXp = saved ?? (trusted ? Math.max(0, (xp.get(person.id) ?? 0) - (Number(entry.startXp) || 0)) : 0);
+    const contributed = weeklyContributionTotal(entry, week, finished);
+    const trusted = Number(entry.startXp) > 0 || saved !== null || contributed > 0;
+    const fromScores = trusted ? Math.max(0, (xp.get(person.id) ?? 0) - (Number(entry.startXp) || 0)) : 0;
+    const weeklyXp = Math.max(contributed, fromScores);
     rows.set(person.id, { userId: person.id, username: person.username, weeklyXp });
   }
   for (const person of people(moved)) {
-    if (!rows.has(person.id)) rows.set(person.id, { userId: person.id, username: person.username, weeklyXp: Math.max(0, Number(person.league.prev?.weeklyXp) || 0) });
+    if (!rows.has(person.id)) rows.set(person.id, { userId: person.id, username: person.username, weeklyXp: weeklyContributionTotal(person.league.prev, week, true) });
   }
   return [...rows.values()];
 }
