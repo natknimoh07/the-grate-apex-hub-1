@@ -8,6 +8,7 @@ import {
   limit,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -338,22 +339,39 @@ async function saveLeaderboardSummary(userId: string, totalXp: number, stats?: C
     const profile = (await getDoc(doc(db, 'users', userId))).data();
     const username = profile?.username;
     if (typeof username !== 'string' || !/^[a-z0-9_]{3,20}$/.test(username)) return;
-    await setDoc(
-      doc(db, 'scores', userId),
-      {
+    const scoreRef = doc(db, 'scores', userId);
+    await runTransaction(db, async (transaction) => {
+      const current = await transaction.get(scoreRef);
+      const xp = Math.max(0, Number(current.data()?.xp) || 0, Math.min(1_000_000, Math.max(0, Math.round(totalXp))));
+      transaction.set(scoreRef, {
         username,
-        xp: Math.min(1_000_000, Math.max(0, Math.round(totalXp))),
+        xp,
         hall: typeof profile?.hall === 'string' ? profile.hall : '',
         semester: profile?.semester === 2 ? 2 : 1,
         // Friends see this streak; streakDay (the last study day) lets them tell when it has lapsed.
         ...(stats ? { streak: Math.max(0, Math.floor(stats.current_streak)), streakDay: stats.last_activity_date ?? '', streakFreezes: stats.streak_freezes ?? 0 } : {}),
         updatedAt: Date.now(),
-      },
-      { merge: true }
-    );
+      }, { merge: true });
+    });
   } catch (error) {
     console.warn('Could not update the leaderboard entry:', error);
   }
+}
+
+/**
+ * The progress document is shared by every signed-in device. A normal merged
+ * write can arrive after another device's newer total and lower XP again, so
+ * compare it on Firestore before saving. This preserves the account's highest
+ * earned total while the local stores catch up through the live listener.
+ */
+async function saveProgressSummary(userId: string, values: Record<string, unknown>, totalXp: number) {
+  const progressDocRef = doc(db, 'progress', userId);
+  return runTransaction(db, async (transaction) => {
+    const current = await transaction.get(progressDocRef);
+    const xp = Math.max(0, Number(current.data()?.xp) || 0, totalXp);
+    transaction.set(progressDocRef, { ...values, xp }, { merge: true });
+    return xp;
+  });
 }
 
 export async function saveCloudProgress(
@@ -362,15 +380,12 @@ export async function saveCloudProgress(
 ) {
   const userId = await getUserId();
   if (!userId) return;
-  const progressDocRef = doc(db, 'progress', userId);
-  void saveLeaderboardSummary(userId, stats.total_xp, stats);
 
   try {
     // Only this app's own fields, merged: the shared `lessons` map is not written.
-    await setDoc(
-      progressDocRef,
+    const savedXp = await saveProgressSummary(
+      userId,
       {
-        xp: stats.total_xp,
         // How many lessons are done: another device that sees more than it has reads them again.
         ...(completedLessons.length ? { lessonsDone: completedLessons.length } : {}),
         streak: stats.current_streak,
@@ -379,8 +394,9 @@ export async function saveCloudProgress(
         savedAt: serverTimestamp(),
         updatedAt: Date.now(),
       },
-      { merge: true }
+      stats.total_xp
     );
+    void saveLeaderboardSummary(userId, savedXp, { ...stats, total_xp: savedXp });
     if (completedLessons.length === 0) return;
 
     const stored = await readCompletionDocs(userId);
@@ -418,19 +434,18 @@ export async function saveCloudXpEvent(
   if (!userId) return;
 
   try {
-    const progressDocRef = doc(db, 'progress', userId);
-    await setDoc(
-      progressDocRef,
+    const savedXp = await saveProgressSummary(
+      userId,
       {
-        xp: stats.total_xp,
         streak: stats.current_streak,
         lastActivityDate: stats.last_activity_date,
         ...streakFields(stats),
         savedAt: serverTimestamp(),
         updatedAt: Date.now(),
       },
-      { merge: true }
+      stats.total_xp
     );
+    void saveLeaderboardSummary(userId, savedXp, { ...stats, total_xp: savedXp });
   } catch (error) {
     console.warn('Could not save XP event to Firestore:', error);
   }

@@ -76,6 +76,19 @@ function myXpInWeek(key: string) {
   return getProgressSnapshot().xpLedger.filter((item) => item.at >= start && item.at < end).reduce((sum, item) => sum + Math.max(0, item.amount), 0);
 }
 
+/**
+ * Weekly XP must be an account value, not just this device's local history.
+ * A phone and laptop keep separate ledgers, so use the best figure already
+ * saved on the account and the synced lifetime-XP baseline as well.
+ */
+function currentWeeklyXp(entry: LeagueEntry | undefined, lifetime: number, week: string) {
+  const saved = entry?.xpWeek === week && typeof entry.weeklyXp === 'number' ? Math.max(0, entry.weeklyXp) : 0;
+  const fromStart = Number(entry?.startXp) > 0 || saved > 0
+    ? Math.max(0, lifetime - (Number(entry?.startXp) || 0))
+    : 0;
+  return Math.max(myXpInWeek(week), saved, fromStart);
+}
+
 const clampTier = (tier: number) => Math.max(0, Math.min(LEAGUE_TIERS.length - 1, Math.round(tier)));
 
 /** The tier after a finish: one up when promoted, one down when relegated. */
@@ -226,7 +239,7 @@ export async function saveWeeklyLeagueXp(value: unknown) {
   await waitForProgressSync().catch(() => {});
   const progress = getProgressSnapshot();
   const week = weekKey();
-  const weeklyXp = myXpInWeek(week);
+  const weeklyXp = currentWeeklyXp(entry, progress.xp, week);
   const startXp = Math.max(0, progress.xp - weeklyXp);
   if (progress.xp <= 0 || (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week)) return;
   // Only the XP figures, never the whole entry: a stale copy must not put back an old league.
@@ -287,7 +300,7 @@ async function readLeague(): Promise<LeagueView> {
   // My weekly XP comes from my own XP history (earned since Monday), so it is
   // never mixed up with lifetime XP; the start point others use is corrected to
   // match (it was 0 for anyone who joined before their XP had loaded).
-  const ledgerWeekly = myXpInWeek(week);
+  const ledgerWeekly = currentWeeklyXp(entry, myXp, week);
   const fixedStart = Math.max(0, myXp - ledgerWeekly);
   if (myXp > 0 && (fixedStart !== entry.startXp || entry.weeklyXp !== ledgerWeekly || entry.xpWeek !== week)) {
     entry = { ...entry, startXp: fixedStart, weeklyXp: ledgerWeekly, xpWeek: week };
