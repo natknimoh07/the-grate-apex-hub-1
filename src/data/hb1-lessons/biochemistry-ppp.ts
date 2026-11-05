@@ -3,6 +3,7 @@
 // biochemistry-07 with the same id, so progress is kept; practises the course's Quiz 7 and the
 // past questions on the pathway. The deck shows the reactions as pictures; they are given here
 // from the textbooks it recommends, in our own words.
+// Also checked against "PPP 2026 HB.pdf" (2026-11-05).
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostxBio } from '@/data/hb1-lessons/pictures';
 
@@ -101,6 +102,7 @@ export const biochemistryPpp: Hb1Lesson = {
         ] },
         { k: 'p', x: '<b>Symptoms:</b> pallor (of mouth, lips, tongue), extreme tiredness, rapid heartbeat, shortness of breath, dizziness, <b>jaundice</b> (especially in newborns), and <b>dark, tea-coloured urine</b> (haemoglobin from burst cells).' },
         { k: 'p', x: '<b>Management:</b> <b>avoid the oxidative stressors</b>; <b>folic acid and iron</b> supplements; <b>oxygen</b> therapy at times; <b>blood transfusion</b> if anaemia is severe. Haemolysis is usually short-lived but can be <b>life-threatening</b>.' },
+        { k: 'box', title: 'G6PD deficiency in pregnancy (2026 deck)', tone: 'life', blocks: [{ k: 'p', x: 'Cells with little reduced glutathione cannot clear peroxides (2 GSH + H<sub>2</sub>O<sub>2</sub> → GSSG + 2 H<sub>2</sub>O), so red cells haemolyse. In pregnancy the deficiency raises the risk of <b>anaemia</b>, <b>spontaneous abortion</b>, <b>low birth-weight</b> babies and <b>neonatal jaundice</b>.' }] },
       ],
     },
   ]),
@@ -142,5 +144,6 @@ export const biochemistryPpp: Hb1Lesson = {
     ['Which can trigger haemolysis in G6PD deficiency?', 'Fava beans', ['White rice', 'Cow’s milk', 'Ripe bananas'], 'Also infections, aspirin, sulfonamides, antimalarials and naphthalene.', 'G6PD deficiency'],
     ['Dark, tea-coloured urine in G6PD deficiency is due to', 'Haemoglobin from burst red cells', ['Excess bilirubin from the liver', 'Fructose spilling into urine', 'Myoglobin from damaged muscle'], 'Jaundice, pallor and tiredness also occur.', 'G6PD deficiency'],
     ['The main management of G6PD deficiency is', 'Avoiding oxidative stressors', ['Lifelong insulin injections', 'A strict fructose-free diet', 'Daily aspirin for life'], 'Plus folic acid, iron, oxygen and transfusion if needed.', 'G6PD deficiency'],
+    ['A pregnancy outcome linked to G6PD deficiency is', 'Low birth-weight infants', ['Unusually large (macrosomic) babies', 'Gestational diabetes mellitus', 'Neural tube defects in the fetus'], 'Also anaemia, miscarriage and neonatal jaundice.', 'G6PD'],
   ],
 };

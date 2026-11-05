@@ -2,6 +2,7 @@
 // (HB1 Biochemistry 1 theory, KNUST). Rewrites the original database lesson biochemistry-10 with
 // the same id, so progress is kept; practises the course's lipid oxidation quiz (set s14). Every
 // fact on the slides is here; the teaching text is in our own words.
+// Also checked against "Beta Oxidation 2026.pptx" (2026-11-05): ketones, the brain and diabetic coma.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostx } from '@/data/hb1-lessons/pictures';
 
@@ -166,6 +167,12 @@ export const biochemistryLipidOxidation: Hb1Lesson = {
           'Ketosis can be measured from <b>acetone in exhaled air</b> (gas chromatography).',
           'In untreated <b>insulin-dependent diabetes mellitus</b>, glucose use falls and fatty acid oxidation rises; acetyl CoA production exceeds the tissues’ ability to oxidise ketone bodies: <b>diabetic ketoacidosis (DKA)</b>.',
         ] },
+        { k: 'box', title: 'Ketones, the brain and diabetic coma (2026 deck)', tone: 'life', blocks: [{ k: 'ul', items: [
+          'In a carbohydrate shortage the liver makes more ketone bodies so that <b>heart and skeletal muscle</b> run on them and spare glucose for the brain. The brain is about <b>1.4 kg</b> of a 70 kg body but uses about <b>20% of resting O<sub>2</sub></b>, and builds neurotransmitters and membrane components partly from glucose or ketones; <b>acute hypoglycaemia</b> (e.g. an insulin overdose or alcohol) starves a brain that has been relying on glucose.',
+          'Three kinds of <b>diabetic coma</b>: severe <b>hypoglycaemia</b>; <b>diabetic ketoacidosis</b> (usually type 1: very high glucose, ketones, dehydration, shock); and <b>hyperosmolar non-ketotic coma</b> (usually type 2: glucose above about <b>600 mg/dL (33.3 mmol/L)</b>; glucose spilling into urine drags water out, causing dangerous dehydration).',
+          'Risk factors: insulin delivery problems, illness, trauma or surgery, poorly controlled diabetes, skipping meals or insulin, alcohol and illegal drugs.',
+          'Treatment: <b>intravenous fluids</b> and <b>insulin</b> for hyperglycaemia and DKA, with sodium, potassium or phosphate replaced if low; <b>glucagon</b> for hypoglycaemia. Most recover fully with prompt treatment; a long coma can cause brain damage or death. A medical identification bracelet is advised.',
+        ] }] },
       ],
     },
   ]),
@@ -211,5 +218,7 @@ export const biochemistryLipidOxidation: Hb1Lesson = {
     ['The brain can use ketone bodies but not fatty acids because fatty acids', 'Cannot cross the blood–brain barrier', ['Are too small to be oxidised', 'Contain no stored energy', 'Are converted into glucose first in the liver'], 'In prolonged starvation ketone bodies spare glucose.', 'Ketone bodies'],
     ['Which tissue prefers acetoacetate to glucose?', 'Heart muscle', ['Red blood cells', 'The retina', 'The liver'], 'The renal cortex does too; the liver cannot use ketone bodies.', 'Ketone bodies'],
     ['Diabetic ketoacidosis occurs mainly in', 'Untreated insulin-dependent diabetes', ['Well-fed healthy adults', 'Glycogen storage disease type V', 'Essential fructosuria (fructokinase)'], 'Fat oxidation rises and acetyl CoA floods into ketone bodies.', 'Ketone bodies'],
+    ['Hyperosmolar non-ketotic coma is most typical of', 'Type 2 diabetes with very high glucose', ['Type 1 diabetes with high ketones', 'An insulin overdose with low glucose', 'Prolonged fasting in a healthy adult'], 'Dehydration alone causes unconsciousness.', 'Ketone bodies'],
+    ['Severe hypoglycaemia in a diabetic is treated with', 'Glucagon', ['Insulin', 'Bicarbonate', 'Potassium'], 'Glucagon raises blood glucose.', 'Ketone bodies'],
   ],
 };

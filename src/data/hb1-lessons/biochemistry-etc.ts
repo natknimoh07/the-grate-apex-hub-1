@@ -3,6 +3,7 @@
 // PA 1[61].pdf" (M. E. Annani-Akollor, KNUST; HB1 Biochemistry 1 theory); both are merged.
 // Rewrites the original database lesson biochemistry-09 with the same id, so progress is kept;
 // practises the course's ETC quiz (set s15). Facts only in the speaker notes are labelled.
+// Also checked against "Electron Transport Chain 2026.pptx" (2026-11-05): substrate-level phosphorylation, statins, think questions.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostx, ostxBio } from '@/data/hb1-lessons/pictures';
 
@@ -152,6 +153,11 @@ export const biochemistryEtc: Hb1Lesson = {
           'Often appear as <b>neuropathies and myopathies</b>, because brain and muscle depend most on oxidative phosphorylation.',
         ] },
         { k: 'p', x: 'The lecture also notes that microbes can use <b>other terminal electron acceptors</b> when O<sub>2</sub> is absent (anaerobic respiration), in order of decreasing energy: O<sub>2</sub> (−479 kJ/mol), NO<sub>3</sub><sup>−</sup> (−453), Mn<sup>4+</sup> (−349), Fe<sup>3+</sup> (−114), SO<sub>4</sub><sup>2−</sup> (−77).' },
+        { k: 'box', title: 'More from the 2026 deck', tone: 'gold', blocks: [{ k: 'ul', items: [
+          '<b>Phosphorylation</b> is adding a phosphoryl group (PO<sub>3</sub>). <b>Substrate-level phosphorylation</b> passes a phosphoryl group directly from a high-energy substrate to ADP or GDP (as in glycolysis and the Krebs cycle); <b>oxidative phosphorylation</b> uses the proton gradient made by electron transport. ATP is the cell’s energy currency because breaking its two <b>phosphoanhydride bonds</b> is strongly <b>exergonic</b>. An <b>exergonic</b> reaction releases free energy and is spontaneous (ΔG negative); an <b>endergonic</b> one needs energy put in.',
+          '<b>Statins</b> also affect mitochondria: they lower <b>coenzyme Q10</b>, inhibit respiratory chain complexes, promote mitochondrial apoptosis, upset Ca<sup>2+</sup> handling and change carnitine palmitoyltransferase-2 expression; this has been linked to diabetes and dementia through less oxidative phosphorylation, more oxidative stress and less uncoupling protein 3.',
+          'Questions to think about: inhibiting ATP synthase also stops electron transport, because the gradient builds up until pumping cannot continue (tight coupling); blocking the ATP–ADP translocase starves the synthase of ADP and so slows the Krebs cycle and glycolysis; uncouplers as diet drugs burn fuel as heat (and sweat, hence the joke about antiperspirant makers) but were rejected as dangerous; muscle mitochondria have more cristae than liver ones because muscle needs more ATP.',
+        ] }] },
       ],
     },
   ]),
@@ -194,5 +200,7 @@ export const biochemistryEtc: Hb1Lesson = {
     ['Thermogenin is found in', 'Brown adipose tissue', ['Skeletal muscle fibres', 'The liver', 'Red blood cells'], 'It produces heat by non-shivering thermogenesis in newborns and hibernators.', 'Uncouplers'],
     ['Mitochondrial diseases are inherited', 'Only from the mother', ['Only from the father', 'As autosomal dominant traits', 'As X-linked recessive traits'], 'All children of an affected mother are affected.', 'Mitochondrial disease'],
     ['Mitochondrial diseases often appear as neuropathies and myopathies because', 'They depend most on oxidative phosphorylation', ['Brain and muscle have no mitochondria', 'Mitochondrial DNA is only in nerves', 'Muscle makes ATP only by glycolysis'], 'Mitochondrial DNA codes for some ETC components.', 'Mitochondrial disease'],
+    ['Making ATP directly from a high-energy substrate, as in glycolysis, is called', 'Substrate-level phosphorylation', ['Oxidative phosphorylation', 'Photophosphorylation', 'Chemiosmotic phosphorylation'], 'No proton gradient is needed.', 'Energy'],
+    ['Statins can reduce the mitochondrial level of', 'Coenzyme Q10', ['Cytochrome c', 'Thermogenin', 'Oligomycin'], 'CoQ shares the mevalonate pathway with cholesterol.', 'Inhibitors'],
   ],
 };
