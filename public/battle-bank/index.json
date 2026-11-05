@@ -9951,7 +9951,7 @@
   {
    "id": "anatomy",
    "name": "Anatomy",
-   "total": 2129,
+   "total": 2139,
    "topics": [
     {
      "id": "A Brief History of Anatomy",
@@ -10848,6 +10848,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Limb joints",
+     "title": "Limb joints",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 10
     },
     {
      "id": "Lower limb",

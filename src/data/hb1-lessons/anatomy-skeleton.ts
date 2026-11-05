@@ -291,6 +291,14 @@ export const anatomySkeleton: Hb1Lesson = {
         { k: 'p', x: 'The <b>7 tarsals</b>, in order of decreasing size, are <b>calcaneus, talus, cuboid, navicular, medial, lateral and intermediate cuneiforms</b> (<i>Cute Theresa Can Never Make Love Inside</i>). The <b>talus</b> is the only foot bone that articulates with the tibia and fibula; its head rests on the <b>sustentaculum tali</b> of the <b>calcaneus</b>, the largest and strongest tarsal. The talus and calcaneus articulate in front with the <b>navicular</b> and <b>cuboid</b>; the three cuneiforms lie between the navicular and metatarsals I–III; the cuboid meets metatarsals IV and V. The <b>5 metatarsals</b> are numbered from the medial side; the <b>hallux</b> has two phalanges and its metatarsal is the shortest and thickest.' },
         ostx('812-bones-of-the-foot.jpg', 1000, 735, 'Bones of the foot: tarsals, metatarsals and phalanges.', 'Talus on top of the calcaneus; navicular in front of the talus on the medial side.'),
         { k: 'box', title: 'Club foot (talipes)', tone: 'life', blocks: [{ k: 'p', x: 'A congenital deformity in which the <b>sole faces medially</b> and the foot points <b>down</b> (the talus points inferiorly).' }] },
+        { k: 'box', title: 'Disorders of the appendicular skeleton (2026 deck)', tone: 'life', blocks: [{ k: 'ul', items: [
+          '<b>Talipes equinovarus</b> (club foot): the commonest foot deformity; the foot is inverted, adducted and plantar flexed.',
+          '<b>Genu valgum</b> (knock-knee) and <b>genu varum</b> (bow-leggedness).',
+          '<b>Hallux valgus</b> (bunion): the big toe angled towards the others; <b>hammer and claw toes</b>; <b>Lisfranc injury</b> to the tarsometatarsal joints.',
+          '<b>Paget’s disease</b>: excessive bone breakdown and abnormal formation, giving a high rate of woven bone.',
+          'Wet footprints show no print along the medial margin from heel to the first metatarsal head because the <b>medial longitudinal arch</b> lifts it off the ground.',
+          'The <b>hyoid</b> matters in homicide investigations: it is often fractured in <b>strangulation</b>.',
+        ] }] },
         { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
           '206 bones: 80 axial, 126 appendicular. Sesamoid: patella, pisiform, fabella.',
           'Cranial 8 (frontal, 2 parietal, 2 temporal, occipital, sphenoid, ethmoid); facial 14; mandible the only movable; hyoid has no joint.',
