@@ -6,6 +6,8 @@
 // tests/illustrations.test.mjs checks every picture has a note.
 
 export const ILLUSTRATION_NOTES: Record<string, string> = {
+  '403-epithelial-tissue.jpg':
+    'Read the grid by rows (cell shape: squamous, cuboidal, columnar) and columns (one layer or several). The bottom-right panel is the one for the airways: pseudostratified columnar epithelium. Its nuclei sit at different heights so it looks layered, yet every cell touches the basement membrane, and the tall cells carry cilia on top.',
   // Cardiovascular physiology
   '2018-conduction-system-of-heart.jpg':
     'Follow the yellow pathway: the impulse starts at the SA node in the right atrium, spreads across both atria (Bachman’s bundle to the left atrium), funnels through the AV node, then runs down the bundle of His and the bundle branches in the septum before fanning out as Purkinje fibres in the ventricle walls.',

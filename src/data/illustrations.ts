@@ -41,6 +41,16 @@ const pic = (file: string, width: number, height: number, caption: string): Illu
 });
 
 export const ILLUSTRATIONS: Record<string, Record<string, Illustration[]>> = {
+  'respiratory-system-micro-1': {
+    "Organs, functions and divisions": [pic('2301-major-respiratory-organs.jpg', 1000, 841, "The respiratory organs from the nasal cavity to the lungs.")],
+    "Respiratory epithelium": [pic('403-epithelial-tissue.jpg', 1000, 802, "Epithelial types; respiratory epithelium is the pseudostratified ciliated columnar kind.")],
+  },
+  'respiratory-system-micro-2': {
+    "The larynx": [pic('2306-the-larynx.jpg', 1000, 922, "The larynx, its cartilages and the vocal folds.")],
+  },
+  'respiratory-system-micro-3': {
+    "Down the bronchial tree": [pic('2312-gross-anatomy-of-the-lungs.jpg', 1000, 688, "The bronchial tree branching from the trachea into the lungs.")],
+  },
   'cardiovascular-system-micro-1': {
     "The layers of the heart wall": [pic('2004-heart-wall.jpg', 1000, 695, "The heart wall in layers: endocardium, myocardium and epicardium, inside the pericardial sac.")],
     "The heart valves": [pic('2011-heart-valves.jpg', 1000, 798, "The atrioventricular and semilunar valves seen from above with the atria removed.")],
