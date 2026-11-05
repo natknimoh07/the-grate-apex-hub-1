@@ -9,6 +9,7 @@ import { arrayRemove, collection, deleteDoc, deleteField, doc, type DocumentData
 import { cleanShare, previewOf } from '@/data/chat';
 import { type CommunityMessage, type MessageShare, shareOf } from '@/data/community';
 import { auth, db } from '@/lib/firebase';
+import { findMyUsername } from '@/lib/my-username';
 import { cleanMedia, safeUrl, type Media } from '@/lib/media';
 
 export type GroupInfo = { id: string; name: string; description: string; ownerUid: string; memberUids: string[]; members: Record<string, string | null>; createdAt: number };
@@ -21,7 +22,8 @@ async function myName() {
   await auth.authStateReady();
   const uid = auth.currentUser?.uid;
   if (!uid) throw new Error('Please sign in again.');
-  const username = (await getDoc(doc(db, 'users', uid))).data()?.username as string | undefined;
+  // The loaded profile first, then the database, the server and the device copy (lib/my-username.ts).
+  const username = await findMyUsername(uid);
   if (!username) throw new Error('Choose a username first.');
   return { uid, username };
 }

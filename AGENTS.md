@@ -99,6 +99,8 @@ Everything uses Firebase Auth (`src/lib/firebase.ts`, `src/lib/firebase-auth.ts`
   * It is practice only: demo answers, XP and schedules are never recorded.
   * The one exception is "Make it yours" (name, avatar, theme), which saves real settings and is labelled as such.
 
+* **Your own username** (owner, 2026-11-05: "I am logged in but the app is telling me to choose username"): a read of `users/{uid}` holding only the start-up fields, or a server that did not answer, looked like "no username". `src/lib/my-username.ts` (`findMyUsername`) asks the loaded profile, the database, the server and the device copy; posting, comments and groups use it, the profile and its device copy keep a username already seen, and the guard checks it before sending anyone to `/choose-username`. `tests/my-username.test.mjs`.
+
 There is intentionally no `src/app/learn/_layout.tsx` unless the project owner specifically asks for one.
 
 ## Current data structure

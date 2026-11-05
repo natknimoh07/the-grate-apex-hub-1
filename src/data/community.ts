@@ -6,7 +6,6 @@ import {
   deleteField,
   doc,
   getDoc,
-  getDocFromServer,
   getDocs,
   increment,
   limit,
@@ -25,6 +24,7 @@ import {
 
 import { type Poll, type PollDef, pollOf } from '@/data/polls';
 import { auth, db } from '@/lib/firebase';
+import { findMyUsername } from '@/lib/my-username';
 import { cleanMedia, optimized, safeUrl, uploadMedia, uploadVoiceNote } from '@/lib/media';
 import { ONLINE_WITHIN_MS } from '@/lib/presence';
 import { announceInteraction } from '@/lib/web-push';
@@ -235,15 +235,11 @@ async function signedInUserId(): Promise<string> {
 
 const BLOCKED_KEY = 'grateapex_blocked_learners';
 
-const validUsername = (value: unknown): value is string => typeof value === 'string' && /^[a-z0-9_]{3,20}$/.test(value);
-
 export async function myUsername(): Promise<{ uid: string; username: string }> {
   const uid = await signedInUserId();
-  let username = (await getDoc(doc(db, 'users', uid))).data()?.username;
-  // Right after signing in on a new device the first read can be a local copy holding only
-  // what the app has just written (online status): ask the server once before giving up.
-  if (!validUsername(username)) username = (await getDocFromServer(doc(db, 'users', uid)).catch(() => null))?.data()?.username;
-  if (typeof username !== 'string' || !/^[a-z0-9_]{3,20}$/.test(username)) throw new Error('Choose a username first — posts show your username.');
+  // The loaded profile first, then the database, the server and the device copy (lib/my-username.ts).
+  const username = await findMyUsername(uid);
+  if (!username) throw new Error('Choose a username first — posts show your username.');
   return { uid, username };
 }
 

@@ -13,6 +13,8 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { samePresenceAside } from '@/lib/presence';
 import { setAnalyticsUser } from '@/lib/analytics';
+import { needsUsername } from '@/lib/login-identifier';
+import { knownMyUsername, noteMyUsername, onMyUsernameFound, PROFILE_COPY_KEY } from '@/lib/my-username';
 
 export interface AuthUser {
   id: string; // for compatibility with code referencing user.id
@@ -40,7 +42,7 @@ export interface AuthState {
 // read — no connection, or the free plan's daily reads used up — the app carries on with the
 // last profile it saw instead of an empty one (an empty one has no class, so Study showed
 // "Coming soon" and other features hid). Only plain values are kept (no database timestamps).
-const PROFILE_KEY = 'grateapex_profile:';
+const PROFILE_KEY = PROFILE_COPY_KEY;
 
 function plainCopy(value: unknown): unknown {
   if (value === null || ['string', 'number', 'boolean'].includes(typeof value)) return value;
@@ -56,7 +58,10 @@ function plainCopy(value: unknown): unknown {
   return undefined; // timestamps and other special values
 }
 
-function saveProfileCopy(uid: string, profile: Record<string, any>) {
+function saveProfileCopy(uid: string, given: Record<string, any>) {
+  // Never let a read without the username wipe it from the copy (see authUserOf).
+  const seen = knownMyUsername(uid);
+  const profile = needsUsername(given.username) && seen ? { ...given, username: seen } : given;
   try {
     void AsyncStorage.setItem(PROFILE_KEY + uid, JSON.stringify(plainCopy(profile))).catch(() => {});
   } catch {
@@ -79,7 +84,14 @@ async function readProfileCopy(uid: string): Promise<Record<string, any> | null>
 const ASSUMED_CLASS = { grateapex_academic_selection: { classId: 'HB2', semester: 1 } };
 const hasClass = (profile: Record<string, any>) => Boolean(profile.grateapex_academic_selection || profile.classLocked === true);
 
-function authUserOf(firebaseUser: FirebaseUser, profile: Record<string, any>, profileLoaded: boolean): AuthUser {
+function authUserOf(firebaseUser: FirebaseUser, given: Record<string, any>, profileLoaded: boolean): AuthUser {
+  // Posting, comments and groups use this name without reading the profile again (lib/my-username.ts).
+  noteMyUsername(firebaseUser.uid, given.username);
+  // A read holding only the start-up fields once sent signed-in learners to "Choose your
+  // username" (owner, 2026-11-05). A username is never removed (only changed, which arrives
+  // as the new name), so one already seen for this account fills the gap — in memory only.
+  const seen = knownMyUsername(firebaseUser.uid);
+  const profile = needsUsername(given.username) && seen ? { ...given, username: seen } : given;
   return {
     id: firebaseUser.uid,
     uid: firebaseUser.uid,
@@ -205,9 +217,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       watchProfile(firebaseUser, 0);
     });
 
+    // A check before "Choose your username" (app/_layout.tsx) found the name this
+    // profile was missing: show it, so the learner is not asked for one.
+    const unsubFound = onMyUsernameFound((uid) => {
+      const firebaseUser = auth.currentUser;
+      if (!firebaseUser || firebaseUser.uid !== uid || !lastProfile) return;
+      setSession({ user: authUserOf(firebaseUser, lastProfile, lastLoaded) });
+    });
+
     return () => {
       stopWatching();
       unsubAuth();
+      unsubFound();
     };
   }, []);
 

@@ -28,6 +28,8 @@ import { readClassSelection } from '@/data/class-curriculum';
 import { AuthProvider, useAuth } from '@/hooks/use-auth';
 import { useIsClient } from '@/hooks/use-is-client';
 import { needsUsername } from '@/lib/login-identifier';
+import { findMyUsername } from '@/lib/my-username';
+import { auth } from '@/lib/firebase';
 import { useResolvedColorScheme, useTheme } from '@/hooks/use-theme';
 import { loadWebFonts } from '@/lib/web-fonts';
 import { routes } from '@/lib/routes';
@@ -120,7 +122,15 @@ function AppGuard({ children }: { children: ReactNode }) {
     //    actually read — never because it couldn't be loaded.
     const onChooseUsername = first === 'choose-username';
     if (session.user.profileLoaded && needsUsername(session.user.profile?.username)) {
-      if (!onChooseUsername) router.replace('/choose-username' as Href);
+      // A read holding only the start-up fields once sent signed-in learners here (owner,
+      // 2026-11-05). Ask the database, the server and the device copy first: if any has the
+      // name, use-auth.tsx shows it and the learner stays where they are.
+      if (!onChooseUsername) {
+        const uid = session.user.id;
+        void findMyUsername(uid).then((name) => {
+          if (!name && auth.currentUser?.uid === uid) router.replace('/choose-username' as Href);
+        });
+      }
       return;
     }
     if (onChooseUsername) {
