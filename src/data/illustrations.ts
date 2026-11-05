@@ -41,6 +41,30 @@ const pic = (file: string, width: number, height: number, caption: string): Illu
 });
 
 export const ILLUSTRATIONS: Record<string, Record<string, Illustration[]>> = {
+  'embryology-1': {
+    "The three phases of fertilization": [pic('2901-sperm-fertilization.jpg', 1000, 690, "Fertilization: sperm cross the corona radiata and zona pellucida before one fuses with the oocyte.")],
+  },
+  'embryology-2': {
+    "Cleavage": [pic('2903-preembryonic-cleavages-02.jpg', 1000, 877, "Cleavage from the two-cell stage to the blastocyst.")],
+    "Blastocyst formation": [pic('2904-preembryonic-development-02.jpg', 1000, 916, "The journey from ovulation through cleavage in the tube to implantation in the uterus.")],
+  },
+  'embryology-3': {
+    "Day 8: two layers from each part": [pic('2907-embroyonic-disc-amniotic-cavity-yolk-sac-02.jpg', 1000, 690, "The bilaminar disc between the amniotic cavity and the blastocyst cavity, inside the two-layered trophoblast.")],
+    "Abnormal implantation": [pic('2905-implantation.jpg', 799, 1000, "Implantation into the endometrium and its usual site on the uterine wall.")],
+  },
+  'embryology-4': {
+    "Forming the three germ layers": [pic('2908-germ-layers-02.jpg', 1000, 893, "Gastrulation: cells pass through the primitive streak to form mesoderm and endoderm.")],
+  },
+  'embryology-5': {
+    "Neurulation": [pic('2912-neurulation-02.jpg', 866, 1000, "Neurulation: the neural plate folds into the neural tube and the neural crest separates.")],
+  },
+  'embryology-6': {
+    "Fetal membranes, decidua and chorion": [pic('2910-the-placenta-02.jpg', 1000, 519, "The placenta, chorionic villi and maternal blood in the intervillous space.")],
+  },
+  'embryology-7': {
+    "Folding of the embryo and endoderm": [pic('2913-embryonic-folding.jpg', 1000, 916, "Folding turns the flat trilaminar disc into a body with an enclosed gut tube.")],
+    "The yolk sac": [pic('2909-embryo-week-3-02.jpg', 1000, 865, "The embryo with its amnion, yolk sac, allantois and chorion, and what each germ layer becomes.")],
+  },
   'respiratory-system-micro-1': {
     "Organs, functions and divisions": [pic('2301-major-respiratory-organs.jpg', 1000, 841, "The respiratory organs from the nasal cavity to the lungs.")],
     "Respiratory epithelium": [pic('403-epithelial-tissue.jpg', 1000, 802, "Epithelial types; respiratory epithelium is the pseudostratified ciliated columnar kind.")],

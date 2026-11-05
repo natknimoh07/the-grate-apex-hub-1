@@ -6,6 +6,24 @@
 // tests/illustrations.test.mjs checks every picture has a note.
 
 export const ILLUSTRATION_NOTES: Record<string, string> = {
+  '2903-preembryonic-cleavages-02.jpg':
+    "The red row happens in the uterine tube, the blue row in the uterus. Notice that the outer circle (the zona pellucida) stays the same size from two cells to the morula: the cells get smaller, not the embryo. In the last panel the blastocoel has opened, the trophoblast forms the wall and the inner cell mass sits at one pole.",
+  '2904-preembryonic-development-02.jpg':
+    "Follow the numbers along the tube: (1) the ovulated oocyte, (2) fertilization in the ampulla, (3–5) cleavage to the morula as it travels, (6) the blastocyst reaching the uterus. At (7) it hatches from the zona pellucida, and at (8) it implants in the endometrium of the uterine body.",
+  '2907-embroyonic-disc-amniotic-cavity-yolk-sac-02.jpg':
+    "This is the week 2 embryo. The disc has just two layers: the epiblast (dark blue) facing the amniotic cavity and the hypoblast (purple) facing the old blastocyst cavity, which becomes the yolk sac. The trophoblast is split into a thin cytotrophoblast and a thick, invading syncytiotrophoblast (orange) eating into the endometrium.",
+  '2905-implantation.jpg':
+    "(1) The blastocyst digests the uterine lining and sinks in; (2) the endometrium closes over it, so it lies completely buried. The small inset shows the usual site, high on the posterior wall of the uterine body. Implantation low near the cervix would give placenta previa.",
+  '2908-germ-layers-02.jpg':
+    "Top: the bilaminar disc of epiblast and hypoblast. Bottom: cells from the epiblast pass down through the primitive streak; some spread out between the layers as mesoderm and others push aside the hypoblast to become endoderm, while those left on top are ectoderm. The inset shows where the cut is taken through the streak.",
+  '2912-neurulation-02.jpg':
+    "(1) The notochord induces the ectoderm above it to thicken into the neural plate. (2) The plate folds up and its borders meet; these borders are the neural crest. (3) The closed tube sinks under the ectoderm and the crest cells separate to form much of the peripheral nervous system. (4) Somites lie beside the tube; the notochord will remain only as the nucleus pulposus.",
+  '2910-the-placenta-02.jpg':
+    "On the left the fetus floats in amniotic fluid inside the amnion, with the chorion outside it and the placenta on one side. The enlargement shows the fetal villi branching into pools of maternal blood in the intervillous space: the two bloods come close but never mix. The umbilical arteries and vein link the villi to the fetus.",
+  '2913-embryonic-folding.jpg':
+    "The left column shows the flat disc forming three layers. On the right the disc curls: the sides fold down and meet underneath, pinching off the top of the yolk sac (yellow, endoderm) into a tube inside the body. In the last section the gut is a closed tube, surrounded by mesoderm, with ectoderm as the outer covering.",
+  '2909-embryo-week-3-02.jpg':
+    "The embryo lies in the amniotic cavity with the yolk sac below it and the allantois growing into the connecting stalk; the chorion with its villi faces the maternal blood. The boxes summarise each germ layer. OpenStax puts the lung epithelial layers under mesoderm; the lecture derives the airway lining epithelium from endoderm, with mesoderm forming the tissue around it.",
   '403-epithelial-tissue.jpg':
     'Read the grid by rows (cell shape: squamous, cuboidal, columnar) and columns (one layer or several). The bottom-right panel is the one for the airways: pseudostratified columnar epithelium. Its nuclei sit at different heights so it looks layered, yet every cell touches the basement membrane, and the tall cells carry cilia on top.',
   // Cardiovascular physiology
