@@ -76,6 +76,14 @@ export function savedWeeklyXp(entry, week, finished) {
   return Math.max(0, entry.weeklyXp);
 }
 
+export function weeklyContributionTotal(entry, week, finished) {
+  const saved = savedWeeklyXp(entry, week, finished) ?? 0;
+  const devices = entry?.weeklyByDevice;
+  if (!devices || typeof devices !== 'object') return saved;
+  const total = Object.values(devices).reduce((sum, value) => sum + Math.max(0, Number(value) || 0), 0);
+  return Math.max(saved, total);
+}
+
 /**
  * Everyone in one tier of one week, with their weekly XP, the way the app counts it
  * (src/data/leagues.ts tierRows): the weekly figure each learner's app saved, or —

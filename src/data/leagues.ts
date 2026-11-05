@@ -18,6 +18,7 @@
 // Last week's result is checked again once with these rules; it can only move a
 // learner up, never down.
 import { collection, doc, getDoc, getDocFromServer, getDocs, limit, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { getLeagueOutcome, type LeagueOutcome } from '@/data/ranks';
 import { auth, db } from '@/lib/firebase';
@@ -42,7 +43,7 @@ export const LEAGUE_TIERS = [
  * settles it, the app also saves its XP since Monday 00:00 (`nextXp`, for `nextWeek`), so the new
  * week starts at midnight, not when the server gets to it.
  */
-export type LeagueEntry = { week: string; tier: number; startXp: number; weeklyXp?: number; xpWeek?: string; nextWeek?: string; nextXp?: number; prev?: { week: string; tier: number; weeklyXp: number; position: number; size: number; outcome: LeagueOutcome; rechecked?: boolean } };
+export type LeagueEntry = { week: string; tier: number; startXp: number; weeklyXp?: number; weeklyByDevice?: Record<string, number>; xpWeek?: string; nextWeek?: string; nextXp?: number; prev?: { week: string; tier: number; weeklyXp: number; weeklyByDevice?: Record<string, number>; position: number; size: number; outcome: LeagueOutcome; rechecked?: boolean } };
 export type LeagueRow = { userId: string; username: string | null; weeklyXp: number; isMe: boolean };
 
 /** Monday 00:00 (local) of the week containing `time`, as 'YYYY-MM-DD'. */
@@ -90,6 +91,17 @@ function currentWeeklyXp(entry: LeagueEntry | undefined, lifetime: number, week:
 }
 
 const clampTier = (tier: number) => Math.max(0, Math.min(LEAGUE_TIERS.length - 1, Math.round(tier)));
+const DEVICE_KEY = 'grateapex_league_device';
+let deviceId: Promise<string> | null = null;
+function leagueDeviceId() {
+  if (!deviceId) deviceId = AsyncStorage.getItem(DEVICE_KEY).then((saved) => {
+    if (saved && /^[a-z0-9]{16,40}$/.test(saved)) return saved;
+    const next = globalThis.crypto?.randomUUID?.().replace(/-/g, '') ?? `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`;
+    void AsyncStorage.setItem(DEVICE_KEY, next);
+    return next;
+  });
+  return deviceId;
+}
 
 /** The tier after a finish: one up when promoted, one down when relegated. */
 export function nextTier(tier: number, outcome: LeagueOutcome) {
@@ -242,9 +254,11 @@ export async function saveWeeklyLeagueXp(value: unknown) {
   const week = weekKey();
   const weeklyXp = currentWeeklyXp(entry, progress.xp, week);
   const startXp = Math.max(0, progress.xp - weeklyXp);
-  if (progress.xp <= 0 || (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week)) return;
+  const device = await leagueDeviceId();
+  const mine = myXpInWeek(week);
+  if (progress.xp <= 0 || (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week && entry.weeklyByDevice?.[device] === mine)) return;
   // Only the XP figures, never the whole entry: a stale copy must not put back an old league.
-  await updateDoc(doc(db, 'users', uid), { 'league.startXp': startXp, 'league.weeklyXp': weeklyXp, 'league.xpWeek': week }).catch(() => {});
+  await updateDoc(doc(db, 'users', uid), { 'league.startXp': startXp, 'league.weeklyXp': weeklyXp, 'league.xpWeek': week, [`league.weeklyByDevice.${device}`]: mine }).catch(() => {});
 }
 
 /**
@@ -258,7 +272,8 @@ async function repairPreviousLeagueXp(uid: string, entry: LeagueEntry | null) {
   if (!previous || previous.week === weekKey()) return;
   const exactXp = myXpInWeek(previous.week);
   if (exactXp <= previous.weeklyXp) return;
-  await updateDoc(doc(db, 'users', uid), { 'league.prev.weeklyXp': exactXp }).catch(() => {});
+  const device = await leagueDeviceId();
+  await updateDoc(doc(db, 'users', uid), { 'league.prev.weeklyXp': exactXp, [`league.prev.weeklyByDevice.${device}`]: exactXp }).catch(() => {});
 }
 
 /**

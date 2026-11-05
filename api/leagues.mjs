@@ -14,7 +14,7 @@
 // that changed after it was read is left to that learner's app (never overwritten).
 // Needs FIREBASE_SERVICE_ACCOUNT (like api/reminders.mjs).
 import { adminToken, serviceAccount } from './_admin.mjs';
-import { DB, encode, firestore, lifetimeXp, savedWeeklyXp, usersWhere } from './_league-store.mjs';
+import { DB, encode, firestore, lifetimeXp, savedWeeklyXp, usersWhere, weeklyContributionTotal } from './_league-store.mjs';
 import { leagueFinalPlaces, leagueWeek, nextLeagueTier, settledLeagueFix } from './_push-logic.mjs';
 
 /** Settles one finished week. Returns what changed (or would, when dry). */
@@ -32,12 +32,12 @@ export async function settleLeagueWeek(call, week, newWeek, dry) {
     const closed = saved !== null && entry.nextWeek === newWeek && typeof entry.nextXp === 'number';
     const trusted = Number(entry.startXp) > 0 || saved !== null;
     const fromScores = !closed && trusted ? Math.max(0, (xp.get(person.id) ?? 0) - (Number(entry.startXp) || 0)) : 0;
-    add(Math.round(Number(entry.tier) || 0), { uid: person.id, weeklyXp: Math.max(saved ?? 0, fromScores), person, moved: false });
+    add(Math.round(Number(entry.tier) || 0), { uid: person.id, weeklyXp: Math.max(weeklyContributionTotal(entry, week, true), fromScores), person, moved: false });
   }
   for (const person of movedOn) {
     const prev = person.league.prev ?? {};
     // Moved on already: their final figure (counted from their own XP history by their app).
-    if (!waiting.some((other) => other.id === person.id)) add(Math.round(Number(prev.tier) || 0), { uid: person.id, weeklyXp: Math.max(0, Number(prev.weeklyXp) || 0), person, moved: true });
+    if (!waiting.some((other) => other.id === person.id)) add(Math.round(Number(prev.tier) || 0), { uid: person.id, weeklyXp: weeklyContributionTotal(prev, week, true), person, moved: true });
   }
 
   const writes = [];
