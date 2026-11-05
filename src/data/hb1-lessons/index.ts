@@ -98,6 +98,8 @@ import { medgenSex } from '@/data/hb1-lessons/medgen-sex';
 import { medgenMolecular } from '@/data/hb1-lessons/medgen-molecular';
 import { medgenBacterial } from '@/data/hb1-lessons/medgen-bacterial';
 import { medgenRegulation } from '@/data/hb1-lessons/medgen-regulation';
+import { medgenHistory } from '@/data/hb1-lessons/medgen-history';
+import { medgenProbability } from '@/data/hb1-lessons/medgen-probability';
 import { statsIntro } from '@/data/hb1-lessons/stats-intro';
 import { statsData } from '@/data/hb1-lessons/stats-data';
 import { statsDescriptive } from '@/data/hb1-lessons/stats-descriptive';
@@ -179,7 +181,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   cellstructMicroscopy, cellstructTechniques, cellstructCell, cellstructOrganelles, cellstructMembrane,
   biolchemElements, biolchemEvolution, biolchemAtoms, biolchemBonds, biolchemCarbohydrates, biolchemNucleic, biolchemProteins, biolchemEnzymes, biolchemPathways, biolchemLipids,
 
-  medgenCell, medgenChromosomes, medgenCellCycle, medgenMendel, medgenSex, medgenMolecular, medgenBacterial, medgenRegulation,
+  medgenHistory, medgenCell, medgenChromosomes, medgenCellCycle, medgenMendel, medgenProbability, medgenSex, medgenMolecular, medgenBacterial, medgenRegulation,
 
   statsIntro, statsData, statsDescriptive, statsProbability, statsDiscrete, statsContinuous,
 

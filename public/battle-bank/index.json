@@ -1512,7 +1512,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1930,
+   "total": 1982,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1539,12 +1539,36 @@
      "unrated": 4
     },
     {
+     "id": "Before Mendel",
+     "title": "Before Mendel",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Binomial",
+     "title": "Binomial",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Blood groups",
      "title": "Blood groups",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 6
+    },
+    {
+     "id": "Branches",
+     "title": "Branches",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Cancer",
@@ -1595,6 +1619,14 @@
      "unrated": 5
     },
     {
+     "id": "Chi-square",
+     "title": "Chi-square",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Chromatin",
      "title": "Chromatin",
      "easy": 0,
@@ -1617,6 +1649,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Chromosomes",
+     "title": "Chromosomes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Concepts",
+     "title": "Concepts",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Conjugation",
@@ -1673,6 +1721,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Disorders",
+     "title": "Disorders",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
+     "id": "DNA",
+     "title": "DNA",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "DNA content",
@@ -1755,6 +1819,14 @@
      "unrated": 5
     },
     {
+     "id": "Genes",
+     "title": "Genes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Genome",
      "title": "Genome",
      "easy": 0,
@@ -1769,6 +1841,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "History",
+     "title": "History",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Human Genome Project & Genomics",
@@ -1896,7 +1976,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 7
     },
     {
      "id": "Mendelian Genetics & Inheritance Patterns",
@@ -1912,7 +1992,15 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 10
+    },
+    {
+     "id": "Mitochondrial inheritance",
+     "title": "Mitochondrial inheritance",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Mitosis",
@@ -1929,6 +2017,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Modern genetics",
+     "title": "Modern genetics",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Molecular Genetics: Gene Structure & Mutation",
@@ -2000,7 +2096,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 8
     },
     {
      "id": "Penetrance",
@@ -2064,7 +2160,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 5
     },
     {
      "id": "Recombinant DNA & Molecular Techniques",
@@ -2177,6 +2273,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Timeline",
+     "title": "Timeline",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
     },
     {
      "id": "Transduction",
