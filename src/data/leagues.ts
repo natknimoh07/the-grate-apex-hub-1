@@ -229,6 +229,7 @@ export async function saveWeeklyLeagueXp(value: unknown) {
   const saved = savedLeague(value);
   if (!uid) return;
   const entry = value as LeagueEntry | null;
+  await repairPreviousLeagueXp(uid, entry);
   if (entry?.week === weekKey(Date.now() - 7 * 86_400_000)) {
     // The week has ended and the server has not settled it yet.
     await waitForProgressSync().catch(() => {});
@@ -244,6 +245,20 @@ export async function saveWeeklyLeagueXp(value: unknown) {
   if (progress.xp <= 0 || (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week)) return;
   // Only the XP figures, never the whole entry: a stale copy must not put back an old league.
   await updateDoc(doc(db, 'users', uid), { 'league.startXp': startXp, 'league.weeklyXp': weeklyXp, 'league.xpWeek': week }).catch(() => {});
+}
+
+/**
+ * A phone may hold XP from a finished week that the laptop never saw. If the
+ * server settled that week using the lower figure, keep the phone's exact
+ * history on `prev` too; the scheduled league repair then recalculates the
+ * whole tier and restores the earned tier instead of leaving it in Bronze.
+ */
+async function repairPreviousLeagueXp(uid: string, entry: LeagueEntry | null) {
+  const previous = entry?.prev;
+  if (!previous || previous.week === weekKey()) return;
+  const exactXp = myXpInWeek(previous.week);
+  if (exactXp <= previous.weeklyXp) return;
+  await updateDoc(doc(db, 'users', uid), { 'league.prev.weeklyXp': exactXp }).catch(() => {});
 }
 
 /**
