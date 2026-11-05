@@ -58,6 +58,7 @@ import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
 import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
 import { entomologyVectorControl } from '@/data/hb1-lessons/entomology-vector-control';
 import { HB1_PRACTICE_IDS } from '@/data/hb1-lessons/practice-ids';
+import { withBmcPictures } from '@/data/hb1-lessons/bmc-pictures';
 import { anatomyIntroduction } from '@/data/hb1-lessons/anatomy-introduction';
 import { anatomySkeleton } from '@/data/hb1-lessons/anatomy-skeleton';
 import { anatomyJoints } from '@/data/hb1-lessons/anatomy-joints';
@@ -201,7 +202,8 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   compappExcelStart, compappFormulas, compappFunctions, compappFormatting, compappPrinting, compappFiles, compappCharts, compappPptBasics, compappPptMedia, compappPptShow,
 
   commskillsWordClasses, commskillsAmbiguity, commskillsPunctuation, commskillsConcord, commskillsSentence, commskillsErrors, commskillsWriting,
-];
+  // Basic Medical Chemistry pictures (structures, bonds, mechanisms) are placed by bmc-pictures.ts.
+].map(withBmcPictures);
 
 const courseOf = (lesson: Hb1Lesson) => lesson.id.split('-')[0];
 

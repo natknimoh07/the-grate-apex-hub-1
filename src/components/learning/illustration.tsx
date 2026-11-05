@@ -45,9 +45,14 @@ export function IllustrationFigure({ item, side = false }: { item: Illustration;
           <Text style={styles.noteText}>{item.note}</Text>
         </View>
       ) : null}
-      <Interactive onPress={() => void Linking.openURL(item.sourceUrl).catch(() => undefined)} accessibilityRole="link">
-        <Text style={styles.credit}>{`Image: ${item.credit}`}</Text>
-      </Interactive>
+      {/* Drawings made for the app (e.g. the chemistry structures) have no outside source to open. */}
+      {item.sourceUrl ? (
+        <Interactive onPress={() => void Linking.openURL(item.sourceUrl).catch(() => undefined)} accessibilityRole="link">
+          <Text style={styles.credit}>{`Image: ${item.credit}`}</Text>
+        </Interactive>
+      ) : (
+        <Text style={[styles.credit, styles.creditPlain]}>{`Image: ${item.credit}`}</Text>
+      )}
       <Sheet visible={open} onClose={() => setOpen(false)} title="Picture" subtitle={item.credit} width={1000}>
         <View style={[styles.big, { aspectRatio: ratio }]}>
           <Image source={{ uri: uriOf(item.src) }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityLabel={item.caption} />
@@ -102,6 +107,7 @@ function createStyles(colors: ThemeColors) {
     noteText: { fontSize: 13, lineHeight: 20, color: colors.text },
     bigNote: { ...Type.callout, color: colors.text, marginTop: 8 },
     credit: { fontSize: 11, color: colors.textTertiary, textDecorationLine: 'underline' },
+    creditPlain: { textDecorationLine: 'none' },
     big: { width: '100%', backgroundColor: Paper, borderRadius: Radius.md, overflow: 'hidden' },
     bigCaption: { ...Type.callout, color: colors.textSecondary, marginTop: 10 },
   });
