@@ -3,6 +3,7 @@
 //   lessons.ts      — the lessons (reading layer)
 //   interactive.ts  — each lesson's interactive layer + reading extras
 //   questions.ts    — the topic question bank (quiz layer)
+import { sectionQuestions } from '@/data/topics/amino-acid-metabolism/section-questions';
 import { contentTopics } from '@/data/content-catalog';
 import { buildTopic } from '@/data/topics/build';
 import { lessons } from '@/data/topics/amino-acid-metabolism/lessons';
@@ -21,7 +22,7 @@ export const aminoAcidMetabolism = buildTopic({
   contentVersion: 1,
   concepts,
   lessons,
-  questions,
+  questions: [...questions, ...sectionQuestions],
   discrepancies,
   diagrams: [],
 });

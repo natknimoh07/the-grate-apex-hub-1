@@ -32,7 +32,7 @@ HB2 Biochemistry
 - [x] inborn-errors-of-metabolism — 30 sections, 150 questions
 - [x] collagen-synthesis — 27 sections, 135 questions
 - [x] free-radicals-and-oxygen-toxicity — 22 sections, 110 questions
-- [ ] amino-acid-metabolism
+- [x] amino-acid-metabolism — 33 sections, 165 questions
 - [ ] nucleic-acids
 - [ ] immunology
 

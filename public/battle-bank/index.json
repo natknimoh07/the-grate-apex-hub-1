@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 3472,
+   "total": 3636,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -263,7 +263,7 @@
     {
      "id": "amino-acid-metabolism",
      "title": "Amino Acid Metabolism",
-     "easy": 105,
+     "easy": 269,
      "medium": 0,
      "hard": 0,
      "unrated": 0
