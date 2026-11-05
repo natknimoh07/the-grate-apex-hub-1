@@ -2,7 +2,8 @@
 // Anatomy 1). Rewrites the original database lesson anatomy-04 with the same id, so progress is
 // kept; practises the course's Quiz 4 and the past questions on cells and epithelia. The facts
 // are the lecture's (checked against the deck, 2026-11-04); the teaching text and the examples
-// added from standard histology textbooks (Ross) are in our own words.
+// added from standard histology textbooks (Ross) are in our own words. Checked against
+// "BASIC TISSUES FOR HB1 2026.pptx" too (2026-11-05): tissue processing, disorders, metaplasia.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostx } from '@/data/hb1-lessons/pictures';
 
@@ -219,6 +220,41 @@ export const anatomyEpithelium: Hb1Lesson = {
         ] }] },
       ],
     },
+    {
+      id: 'epi-2026',
+      title: 'Preparing tissue, and diseases of epithelium',
+      kicker: 'From the 2026 basic tissues deck',
+      blocks: [
+        { k: 'p', x: 'A <b>tissue</b> is a group of cells of similar embryonic origin specialised for particular functions; an <b>organ</b> is two or more tissues working together. <b>Histology</b> is the study of tissues. A <b>pathologist</b> is a doctor who examines cells and tissues for changes that point to disease; a <b>biopsy</b> removes living tissue for microscopy, while an <b>autopsy</b> examines the body after death.' },
+        { k: 'h', x: 'How a slide is made', l: 3 },
+        { k: 'p', x: 'Fresh tissue is colourless, soft and moist and shows little, so it is processed in seven steps that keep the cells looking as they did in life:' },
+        { k: 'step', n: '1', title: 'Fixation', blocks: [{ k: 'p', x: 'Stops the tissue in its state at death and stops its own enzymes digesting it. Routine fixatives: <b>10% neutral buffered formaldehyde</b> (formalin) or <b>3% phosphate-buffered glutaraldehyde</b>.' }] },
+        { k: 'step', n: '2', title: 'Dehydration', blocks: [{ k: 'p', x: 'Rising concentrations of <b>ethanol</b> until all the water is replaced by absolute ethanol.' }] },
+        { k: 'step', n: '3', title: 'Clearing', blocks: [{ k: 'p', x: 'Several changes of <b>xylol (xylene) or chloroform</b> replace the ethanol (these mix with wax; ethanol does not).' }] },
+        { k: 'step', n: '4', title: 'Infiltration', blocks: [{ k: 'p', x: 'Several changes of warm <b>paraffin wax</b> soak into the tissue.' }] },
+        { k: 'step', n: '5', title: 'Embedding', blocks: [{ k: 'p', x: 'The tissue is set in a block of melted paraffin.' }] },
+        { k: 'step', n: '6', title: 'Sectioning', blocks: [{ k: 'p', x: 'Excess wax is trimmed and a <b>microtome</b> cuts slices about <b>5 µm</b> thick, thin enough for light to pass; they are floated on warm water, picked up on glass slides and dried.' }] },
+        { k: 'step', n: '7', title: 'Staining', blocks: [{ k: 'p', x: 'Most cell parts have similar refractive indices and look transparent, so coloured dyes that bind different components (e.g. haematoxylin and eosin) give contrast.' }] },
+        { k: 'box', title: 'Glands: points the 2026 deck adds', tone: 'gold', blocks: [{ k: 'ul', items: [
+          '<b>Serous</b> glands make watery, protein- and enzyme-rich fluid (purely serous: <b>parotid</b>); <b>mucous</b> glands make viscous glycoprotein (mucus); <b>seromucous</b>: submandibular (more serous than mucous) and sublingual (more mucous than serous).',
+          'A <b>serous demilune</b> is a crescent of serous cells capping a mucous acinus in a mixed gland; it is thought to be an <b>artefact of fixation</b> (swelling mucous cells push the serous cells aside).',
+          'The fatty part of breast milk is released by <b>apocrine</b> secretion. <b>Intercalated ducts</b> (simple cuboidal, the first ducts after the acini, prominent in serous glands such as the parotid) carry fluid and add bicarbonate and chloride; <b>striated ducts</b> modify the ions of saliva and are poorly developed in the sublingual gland.',
+        ] }] },
+        { k: 'h', x: 'Disorders of epithelium', l: 3 },
+        { k: 'table', head: ['Disorder', 'What goes wrong'], rows: [
+          { c: ['<b>Cystic fibrosis</b>', 'Autosomal recessive mutation of <b>CFTR</b>, a chloride channel of <b>exocrine glands</b>: thick, sticky secretions; salty skin, poor growth, persistent cough, breathlessness, mucus build-up. No cure; treatment manages symptoms.'] },
+          { c: ['<b>Kartagener’s syndrome</b>', 'A <b>primary ciliary dyskinesia</b> (autosomal recessive, e.g. DNAI1 or DNAH5, ciliary motor proteins): <b>chronic sinusitis, bronchiectasis and situs inversus</b>; poor mucus clearance, recurrent infections, nasal polyps, male infertility.'] },
+          { c: ['<b>Coeliac disease</b>', 'Autoimmune reaction to <b>gluten</b> damaging the simple columnar epithelium of the small intestine.'] },
+          { c: ['<b>Psoriasis</b>', 'Chronic autoimmune skin disease with rapid overgrowth of the keratinised stratified squamous epidermis.'] },
+        ] },
+        { k: 'h', x: 'Metaplasia, dysplasia and cancer', l: 3 },
+        { k: 'ul', items: [
+          '<b>Metaplasia</b>: a <b>reversible</b> replacement of one differentiated epithelium by another in response to lasting injury or irritation. <b>Barrett’s oesophagus</b>: reflux turns the lower oesophagus’s non-keratinised stratified squamous lining into simple columnar with goblet cells. <b>Smokers</b>: ciliated pseudostratified airway lining becomes stratified squamous. A <b>bile duct stone</b> can turn columnar lining into stratified squamous. Treatment: remove the cause (stop smoking, clear the infection) and watch the site; the <b>Pap smear</b> screens the cervix for such changes.',
+          '<b>Dysplasia</b>: abnormal growth with cells changing in size, shape and arrangement; <b>premalignant</b>.',
+          'A <b>tumour</b> is any abnormal mass of proliferating tissue, benign or malignant; <b>cancer</b> is a malignant, spreading tumour. Breaking through the <b>basal lamina</b> marks malignancy. <b>Carcinomas</b> arise from surface epithelia; <b>adenocarcinomas</b> from glands (a sarcoma arises from connective tissue).',
+        ] },
+      ],
+    },
   ]),
   extras: {
     facts: [
@@ -269,5 +305,13 @@ export const anatomyEpithelium: Hb1Lesson = {
     ['An example of apocrine secretion is the', 'Mammary gland', ['Pancreas', 'Sebaceous gland', 'Parotid gland'], 'Also Moll’s and ceruminous glands.', 'Mode of secretion'],
     ['Which is a mixed (exocrine and endocrine) gland?', 'Pancreas', ['Thyroid gland', 'Pineal gland', 'Sweat gland'], 'Also the ovaries and testes.', 'Endocrine'],
     ['Endocrine glands differ from exocrine glands in that they', 'Have no ducts', ['Secrete onto body surfaces', 'Are always unicellular', 'Use holocrine secretion'], 'Hormones enter the blood.', 'Endocrine'],
+    ['The first step in preparing tissue for light microscopy is', 'Fixation', ['Dehydration', 'Clearing', 'Embedding'], 'Then dehydration, clearing, infiltration, embedding, sectioning, staining.', 'Tissue preparation'],
+    ['Water is removed from a specimen with', 'Rising concentrations of ethanol', ['Several changes of warm paraffin', 'Several changes of xylol', 'Buffered formaldehyde solution'], 'Xylol clears; paraffin infiltrates; formalin fixes.', 'Tissue preparation'],
+    ['Routine paraffin sections are cut on a microtome at about', '5 µm', ['50 µm', '0.5 mm', '1 mm'], 'Thin enough for light to pass.', 'Tissue preparation'],
+    ['Cystic fibrosis is a defect of a chloride channel in', 'Exocrine glands', ['Endocrine glands', 'Sebaceous glands', 'Ciliated airway cells'], 'CFTR; thick, sticky secretions.', 'Disorders'],
+    ['Chronic sinusitis, bronchiectasis and situs inversus together suggest', 'Kartagener’s syndrome', ['Cystic fibrosis', 'Coeliac disease', 'Ehlers–Danlos syndrome'], 'A primary ciliary dyskinesia.', 'Disorders'],
+    ['In Barrett’s oesophagus the lower oesophagus becomes lined by', 'Simple columnar with goblet cells', ['Keratinised stratified squamous', 'Ciliated pseudostratified columnar', 'Transitional epithelium'], 'Metaplasia from reflux.', 'Metaplasia'],
+    ['A malignant tumour of a gland is a', 'Adenocarcinoma', ['Fibroadenoma', 'Osteosarcoma', 'Liposarcoma'], 'Carcinoma: surface epithelium; adenoma is benign.', 'Metaplasia'],
+    ['The serous demilune is thought to be', 'An artefact of fixation', ['A separate gland type', 'A cap of mucous cells', 'A crescent of duct cells'], 'Swelling mucous cells push serous cells aside.', 'Glands'],
   ],
 };

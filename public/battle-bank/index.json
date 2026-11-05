@@ -9951,7 +9951,7 @@
   {
    "id": "anatomy",
    "name": "Anatomy",
-   "total": 2139,
+   "total": 2148,
    "topics": [
     {
      "id": "A Brief History of Anatomy",
@@ -10183,7 +10183,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 3
     },
     {
      "id": "Cardiac Muscle Tissue",
@@ -10471,7 +10471,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 11
     },
     {
      "id": "Disorders & Aging of Muscle Tissue",
@@ -10695,7 +10695,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 5
     },
     {
      "id": "Glands: Classification Overview",
@@ -10904,6 +10904,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 1
+    },
+    {
+     "id": "Metaplasia",
+     "title": "Metaplasia",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Micro Anatomy",
@@ -11532,6 +11540,14 @@
     {
      "id": "Tissue change",
      "title": "Tissue change",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Tissue preparation",
+     "title": "Tissue preparation",
      "easy": 0,
      "medium": 0,
      "hard": 0,

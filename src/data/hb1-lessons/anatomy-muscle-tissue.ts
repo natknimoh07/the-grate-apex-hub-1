@@ -111,6 +111,12 @@ export const anatomyMuscleTissue: Hb1Lesson = {
           { c: ['Speciality', 'Fast, powerful', 'Pumps blood rhythmically', '<b>Slow, prolonged</b> contraction; peristalsis'] },
         ] },
         ostx('1020-cardiac-muscle.jpg', 1000, 468, 'Cardiac muscle cells joined by intercalated discs with gap junctions and desmosomes.', 'The discs let excitation spread cell to cell, so the heart contracts as one unit.'),
+        { k: 'box', title: 'Why damaged heart muscle does not grow back', tone: 'life', blocks: [{ k: 'ul', items: [
+          'Mature cardiomyocytes are <b>terminally differentiated</b>: they have left the cell cycle and cannot divide, unlike skin or liver cells.',
+          'The heart has very few, if any, active <b>stem cells</b> (it has no satellite cells like skeletal muscle), far too few to rebuild lost muscle.',
+          'Injury activates <b>fibroblasts</b>, not muscle cells, so the gap fills with non-contractile <b>collagen scar</b>.',
+          'After a <b>myocardial infarction</b> the dead muscle becomes scar that cannot contract; pumping falls permanently and chronic <b>heart failure</b> may follow. This is why heart attacks are so dangerous.',
+        ] }] },
         ostx('1028-smooth-muscle-contraction.jpg', 1000, 207, 'Smooth muscle: filaments attached to dense bodies pull the cell into a shorter, fatter shape.', 'No sarcomeres, so no striations.'),
         { k: 'box', title: 'The lecture’s smooth muscle questions', tone: 'recall', blocks: [{ k: 'ul', items: [
           'Smooth muscle cells are spindle-shaped, have actin and myosin, have <b>no distinct sarcomeres</b> and are joined by <b>nexuses (gap junctions)</b>; they do <b>not</b> have peripheral nuclei.',
@@ -247,5 +253,6 @@ export const anatomyMuscleTissue: Hb1Lesson = {
     ['Change of one mature tissue type into another is', 'Metaplasia', ['Differentiation', 'Dysplasia', 'Hypertrophy'], 'Differentiation is from embryonic tissue.', 'Tissue change'],
     ['Programmed cell death without inflammation is', 'Apoptosis', ['Necrosis', 'Gangrene', 'Infarction'], 'Necrosis is pathological death.', 'Tissue change'],
     ['Repair by scar tissue that does not restore function is', 'Fibrosis', ['Regeneration', 'Metaplasia', 'Hyperplasia'], 'Excess fibrosis forms a keloid.', 'Tissue repair'],
+    ['After a myocardial infarction the dead heart muscle is replaced by', 'Collagen scar tissue', ['New cardiomyocytes', 'Satellite cell muscle', 'Smooth muscle cells'], 'Cardiomyocytes are terminally differentiated.', 'Cardiac muscle'],
   ],
 };
