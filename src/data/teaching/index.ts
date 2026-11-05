@@ -11,6 +11,7 @@ import type { Teaching } from '@/data/teaching/types';
 import { teaching as aminoAcidMetabolism } from '@/data/teaching/amino-acid-metabolism';
 import { teaching as bloodCoagulationAndFibrinolysis } from '@/data/teaching/blood-coagulation-and-fibrinolysis';
 import { teaching as cardiovascularPhysiology } from '@/data/teaching/cardiovascular-physiology';
+import { teaching as cardiovascularSystemMicro } from '@/data/teaching/cardiovascular-system-micro';
 import { teaching as cardiovascularSystemGross } from '@/data/teaching/cardiovascular-system-gross';
 import { teaching as centralNervousSystem } from '@/data/teaching/central-nervous-system';
 import { teaching as cholesterolAndBileBiosynthesis } from '@/data/teaching/cholesterol-and-bile-biosynthesis';
@@ -41,6 +42,7 @@ const byTopic: Record<string, Teaching> = {
   'blood-coagulation-and-fibrinolysis': bloodCoagulationAndFibrinolysis,
   'cardiovascular-physiology': cardiovascularPhysiology,
   'cardiovascular-system-gross': cardiovascularSystemGross,
+  'cardiovascular-system-micro': cardiovascularSystemMicro,
   'central-nervous-system': centralNervousSystem,
   'cholesterol-and-bile-biosynthesis': cholesterolAndBileBiosynthesis,
   'collagen-synthesis': collagenSynthesis,

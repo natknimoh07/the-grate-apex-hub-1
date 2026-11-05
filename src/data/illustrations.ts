@@ -41,6 +41,21 @@ const pic = (file: string, width: number, height: number, caption: string): Illu
 });
 
 export const ILLUSTRATIONS: Record<string, Record<string, Illustration[]>> = {
+  'cardiovascular-system-micro-1': {
+    "The layers of the heart wall": [pic('2004-heart-wall.jpg', 1000, 695, "The heart wall in layers: endocardium, myocardium and epicardium, inside the pericardial sac.")],
+    "The heart valves": [pic('2011-heart-valves.jpg', 1000, 798, "The atrioventricular and semilunar valves seen from above with the atria removed.")],
+    "The conducting system": [pic('2018-conduction-system-of-heart.jpg', 1000, 670, "The conducting system from the SA node to the Purkinje fibres.")],
+  },
+  'cardiovascular-system-micro-2': {
+    "The arterial wall": [pic('2103-muscular-and-elastic-artery-arteriole.jpg', 1000, 255, "An elastic artery, a muscular artery and an arteriole compared, with their three tunics.")],
+  },
+  'cardiovascular-system-micro-3': {
+    "Three types of capillary": [pic('2104-three-major-capillary-types.jpg', 1000, 377, "Continuous, fenestrated and sinusoidal capillaries.")],
+  },
+  'cardiovascular-system-micro-4': {
+    "Medium veins": [pic('2114-skeletal-muscle-vein-pump.jpg', 1000, 875, "Venous valves and the skeletal muscle pump moving blood towards the heart.")],
+    "Lymphatic vessels": [pic('2202-lymphatic-capillaries.jpg', 1000, 578, "Blind-ended lymphatic capillaries among the blood capillaries."), pic('2203-lymphatic-trunks-and-ducts-system.jpg', 870, 678, "The lymphatic trunks, the right lymphatic duct and the thoracic duct.")],
+  },
   'cardiovascular-physiology-1': {
     "The conducting system": [pic('2018-conduction-system-of-heart.jpg', 1000, 670, "The heart's conducting system: SA node, internodal pathways, AV node, bundle of His, bundle branches and Purkinje fibres.")],
     "Ventricular systole": [pic('2027-phases-of-the-cardiac-cycle.jpg', 1000, 1089, "The phases of one cardiac cycle, from atrial systole through ventricular systole to diastole.")],

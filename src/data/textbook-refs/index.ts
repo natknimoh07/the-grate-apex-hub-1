@@ -31,6 +31,7 @@ import { textbookPages as respiratorySystemGross } from '@/data/textbook-refs/re
 import { textbookPages as specialSenses } from '@/data/textbook-refs/special-senses';
 import { textbookPages as upperLimb } from '@/data/textbook-refs/upper-limb';
 import { textbookPages as urinarySystemGross } from '@/data/textbook-refs/urinary-system-gross';
+import { textbookPages as cardiovascularSystemMicro } from '@/data/textbook-refs/cardiovascular-system-micro';
 
 const byTopic: Record<string, TextbookPages> = {
   "amino-acid-metabolism": aminoAcidMetabolism,
@@ -56,6 +57,7 @@ const byTopic: Record<string, TextbookPages> = {
   "special-senses": specialSenses,
   "upper-limb": upperLimb,
   "urinary-system-gross": urinarySystemGross,
+  "cardiovascular-system-micro": cardiovascularSystemMicro,
 };
 
 /** The textbook references for one reading section (none when not listed). */

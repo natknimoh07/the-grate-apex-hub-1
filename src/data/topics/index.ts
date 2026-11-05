@@ -32,6 +32,7 @@ import { aminoAcidMetabolism } from '@/data/topics/amino-acid-metabolism';
 import { nucleicAcids } from '@/data/topics/nucleic-acids';
 import { immunology } from '@/data/topics/immunology';
 import { urinaryGross } from '@/data/topics/urinary-system-gross';
+import { cardiovascularMicro } from '@/data/topics/cardiovascular-system-micro';
 
 // Anatomy topics are in HB2 Gross Anatomy course order.
-export const builtTopics: BuiltTopic[] = [fattyAcidBiosynthesis, cholesterolAndBileBiosynthesis, hemeMetabolism, oxygenCarriers, bloodCoagulation, hormones, inbornErrors, collagenAndElastin, freeRadicals, aminoAcidMetabolism, nucleicAcids, immunology, cardiovascularPhysiology, respiratoryPhysiology, centralNervousSystem, endocrinology, gastrointestinalPhysiology, renalPhysiology, reproductivePhysiology, specialSenses, cardiovascularGross, respiratoryGross, gastrointestinalGross, urinaryGross, upperLimb, headAndNeck, neuroanatomy];
+export const builtTopics: BuiltTopic[] = [fattyAcidBiosynthesis, cholesterolAndBileBiosynthesis, hemeMetabolism, oxygenCarriers, bloodCoagulation, hormones, inbornErrors, collagenAndElastin, freeRadicals, aminoAcidMetabolism, nucleicAcids, immunology, cardiovascularPhysiology, respiratoryPhysiology, centralNervousSystem, endocrinology, gastrointestinalPhysiology, renalPhysiology, reproductivePhysiology, specialSenses, cardiovascularGross, respiratoryGross, gastrointestinalGross, urinaryGross, upperLimb, headAndNeck, neuroanatomy, cardiovascularMicro];
