@@ -415,6 +415,7 @@ export async function saveCloudProgress(
 
     // The completions rule is not deployed yet: keep the earlier, protected
     // behaviour (this app's objects in the shared map; numbers never replaced).
+    const progressDocRef = doc(db, 'progress', userId);
     const snap = await getDoc(progressDocRef);
     // Never the original app's own lessons: that map holds its section counts.
     await setDoc(progressDocRef, { lessons: mergeAppLessons(snap.data()?.lessons, completedLessons.filter((lesson) => !isLegacyLessonId(lesson.lessonId))) }, { merge: true });

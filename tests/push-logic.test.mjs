@@ -243,6 +243,11 @@ test('a learner moved on with the wrong league is put right, and a right one is 
   assert.equal(settledLeagueFix({ tier: 1, prev: { week: W, tier: 0, weeklyXp: 20, position: 1, size: 1, outcome: 'promoted' } }, W, { position: 8, size: 10, weeklyXp: 20, outcome: 'stays' }).tier, 0);
   // Already right: nothing to change.
   assert.equal(settledLeagueFix({ tier: 1, prev: { week: W, tier: 0, weeklyXp: 790, position: 1, size: 164, outcome: 'promoted', rechecked: true } }, W, place), null);
+  // Settled by the server and shown as a promotion: a later re-run with different figures
+  // never takes it back (2026-11-05: learners promoted to Gold on Monday must stay in Gold).
+  assert.equal(settledLeagueFix({ tier: 2, prev: { week: W, tier: 1, weeklyXp: 400, position: 3, size: 50, outcome: 'promoted', rechecked: true } }, W, { position: 45, size: 50, weeklyXp: 400, outcome: 'relegated' }), null);
+  // …but it can still be corrected upward.
+  assert.equal(settledLeagueFix({ tier: 1, prev: { week: W, tier: 1, weeklyXp: 400, position: 12, size: 50, outcome: 'stays', rechecked: true } }, W, { position: 2, size: 50, weeklyXp: 400, outcome: 'promoted' }).tier, 2);
 });
 
 test('weekly league XP includes separate phone and laptop contributions', async () => {

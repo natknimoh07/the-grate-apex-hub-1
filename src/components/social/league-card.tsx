@@ -12,6 +12,7 @@ import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { useNow } from '@/data/learning/use-learning';
 import { LEAGUE_TIERS, type LeagueView, loadLeague, outcomeFor } from '@/data/leagues';
+import { useAuth } from '@/hooks/use-auth';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { routes } from '@/lib/routes';
 import { friendlyError } from '@/lib/errors';
@@ -36,7 +37,12 @@ export function LeagueCard() {
   }, []);
   useFocusEffect(useCallback(() => { void refresh(); }, [refresh]));
 
-  const tier = view ? LEAGUE_TIERS[view.tier] : LEAGUE_TIERS[0];
+  // Until the table loads (or when it cannot be, e.g. the database's free daily limit is used up),
+  // show the league saved on the learner's own account, never Bronze (owner, 2026-11-05: everyone
+  // saw "Bronze League" on every device while the league could not be read).
+  const savedEntry = useAuth().user?.profile?.league as { tier?: unknown } | undefined;
+  const savedTier = typeof savedEntry?.tier === 'number' ? LEAGUE_TIERS[Math.max(0, Math.min(LEAGUE_TIERS.length - 1, Math.round(savedEntry.tier)))] : null;
+  const tier = view ? LEAGUE_TIERS[view.tier] : savedTier;
   const msLeft = view ? Math.max(0, view.endsAt - now) : 0;
   const days = Math.floor(msLeft / 86_400_000);
   const hours = Math.floor((msLeft % 86_400_000) / 3_600_000);
@@ -46,11 +52,11 @@ export function LeagueCard() {
   return (
     <Card style={styles.card}>
       <View style={styles.head}>
-        <View style={[styles.badge, { backgroundColor: tier.color }]}>
-          <Text style={styles.badgeEmoji}>{tier.emoji}</Text>
+        <View style={[styles.badge, { backgroundColor: tier?.color ?? colors.surfaceMuted }]}>
+          <Text style={styles.badgeEmoji}>{tier?.emoji ?? ''}</Text>
         </View>
         <View style={styles.flex}>
-          <SectionHeader title={`${tier.name} League`} subtitle={view ? (view.settling ? `Last week's final table · ${size} learner${size === 1 ? '' : 's'}` : `${size} learner${size === 1 ? '' : 's'} · ends in ${days}d ${hours}h`) : 'Loading…'} style={styles.noMargin} />
+          <SectionHeader title={tier ? `${tier.name} League` : 'Your league'} subtitle={view ? (view.settling ? `Last week's final table · ${size} learner${size === 1 ? '' : 's'}` : `${size} learner${size === 1 ? '' : 's'} · ends in ${days}d ${hours}h`) : error ? 'The table could not be loaded' : 'Loading…'} style={styles.noMargin} />
         </View>
         <Button label="Refresh" variant="ghost" size="sm" onPress={() => void refresh()} />
       </View>
@@ -58,7 +64,7 @@ export function LeagueCard() {
         <View style={[styles.prev, view.prev.outcome === 'promoted' ? styles.prevUp : view.prev.outcome === 'relegated' ? styles.prevDown : null]}>
           <Text style={styles.prevText}>
             Last week: #{view.prev.position} of {view.prev.size} in {prevTier.name} with {view.prev.weeklyXp} XP —{' '}
-            {view.prev.outcome === 'promoted' ? `promoted to ${tier.name}! 🎉` : view.prev.outcome === 'relegated' ? `moved down to ${tier.name}.` : `stayed in ${tier.name}.`}
+            {view.prev.outcome === 'promoted' ? `promoted to ${tier?.name}! 🎉` : view.prev.outcome === 'relegated' ? `moved down to ${tier?.name}.` : `stayed in ${tier?.name}.`}
           </Text>
         </View>
       ) : null}

@@ -216,6 +216,10 @@ export function settledLeagueFix(league, week, place) {
   const lastTier = Math.round(Number(prev.tier) || 0);
   const tier = nextLeagueTier(lastTier, place.outcome);
   const fixedPrev = { week, tier: lastTier, weeklyXp: place.weeklyXp, position: place.position, size: place.size, outcome: place.outcome, rechecked: true };
+  // A result the server settled itself (`rechecked`) is only ever corrected upward: the daily
+  // re-run must never take back a promotion learners have already been shown (owner, 2026-11-05).
+  // Only results an app settled on its own (before the server did it) can still be moved down.
+  if (prev.rechecked === true && tier < Math.round(Number(league?.tier) || 0)) return null;
   const same = Math.round(Number(league?.tier) || 0) === tier
     && Object.entries(fixedPrev).every(([key, value]) => prev[key] === value);
   return same ? null : { tier, prev: fixedPrev };
