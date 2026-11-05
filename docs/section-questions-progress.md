@@ -33,7 +33,7 @@ HB2 Biochemistry
 - [x] collagen-synthesis — 27 sections, 135 questions
 - [x] free-radicals-and-oxygen-toxicity — 22 sections, 110 questions
 - [x] amino-acid-metabolism — 33 sections, 165 questions
-- [ ] nucleic-acids
+- [x] nucleic-acids — 55 sections, 275 questions (two files, a and b)
 - [ ] immunology
 
 HB2 Physiology

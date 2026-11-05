@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 3636,
+   "total": 3906,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -271,7 +271,7 @@
     {
      "id": "nucleic-acids",
      "title": "Nucleic Acids",
-     "easy": 183,
+     "easy": 453,
      "medium": 0,
      "hard": 0,
      "unrated": 45
