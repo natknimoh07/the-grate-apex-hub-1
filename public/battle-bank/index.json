@@ -4,7 +4,7 @@
   {
    "id": "hb2-anatomy",
    "name": "Anatomy",
-   "total": 3133,
+   "total": 3323,
    "topics": [
     {
      "id": "cardiovascular-system-gross",
@@ -79,20 +79,20 @@
      "unrated": 0
     },
     {
+     "id": "embryology",
+     "title": "Early Embryology",
+     "easy": 155,
+     "medium": 35,
+     "hard": 0,
+     "unrated": 556
+    },
+    {
      "id": "general-anatomy",
      "title": "General Anatomy: Bones, Joints and Body Systems",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 299
-    },
-    {
-     "id": "embryology",
-     "title": "Embryology",
-     "easy": 0,
-     "medium": 0,
-     "hard": 0,
-     "unrated": 556
     },
     {
      "id": "histology",

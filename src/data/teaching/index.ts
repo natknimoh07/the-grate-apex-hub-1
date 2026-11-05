@@ -33,6 +33,7 @@ import { teaching as renalPhysiology } from '@/data/teaching/renal-physiology';
 import { teaching as reproductivePhysiology } from '@/data/teaching/reproductive-physiology';
 import { teaching as respiratoryPhysiology } from '@/data/teaching/respiratory-physiology';
 import { teaching as respiratorySystemMicro } from '@/data/teaching/respiratory-system-micro';
+import { teaching as embryology } from '@/data/teaching/embryology';
 import { teaching as respiratorySystemGross } from '@/data/teaching/respiratory-system-gross';
 import { teaching as specialSenses } from '@/data/teaching/special-senses';
 import { teaching as upperLimb } from '@/data/teaching/upper-limb';
@@ -65,6 +66,7 @@ const byTopic: Record<string, Teaching> = {
   'respiratory-physiology': respiratoryPhysiology,
   'respiratory-system-gross': respiratorySystemGross,
   'respiratory-system-micro': respiratorySystemMicro,
+  embryology,
   'special-senses': specialSenses,
   'upper-limb': upperLimb,
   'urinary-system-gross': urinarySystemGross,
