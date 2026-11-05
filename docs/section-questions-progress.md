@@ -30,7 +30,7 @@ HB2 Biochemistry
 - [x] blood-coagulation-and-fibrinolysis — 19 sections, 95 questions
 - [x] hormones-endocrine-biochemistry — 12 sections, 60 questions
 - [x] inborn-errors-of-metabolism — 30 sections, 150 questions
-- [ ] collagen-synthesis
+- [x] collagen-synthesis — 27 sections, 135 questions
 - [ ] free-radicals-and-oxygen-toxicity
 - [ ] amino-acid-metabolism
 - [ ] nucleic-acids

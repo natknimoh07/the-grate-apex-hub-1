@@ -4,6 +4,7 @@
 //   interactive.ts     — each lesson's interactive layer + reading extras
 //   questions.ts       — the topic question bank (quiz layer); lessons 4–6
 //                        are in more-questions.ts
+import { sectionQuestions } from '@/data/topics/collagen-synthesis/section-questions';
 import { contentTopics } from '@/data/content-catalog';
 import { buildTopic } from '@/data/topics/build';
 import { assertionReasonQuestions } from '@/data/topics/collagen-synthesis/assertion-reason';
@@ -30,7 +31,7 @@ export const collagenAndElastin = buildTopic({
   contentVersion: 1,
   concepts,
   lessons,
-  questions: [...questions, ...assertionReasonQuestions],
+  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions],
   discrepancies,
   diagrams,
 });

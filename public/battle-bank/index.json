@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 3238,
+   "total": 3365,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -247,10 +247,10 @@
     {
      "id": "collagen-synthesis",
      "title": "Collagen and Elastin",
-     "easy": 101,
-     "medium": 75,
+     "easy": 197,
+     "medium": 107,
      "hard": 1,
-     "unrated": 195
+     "unrated": 194
     },
     {
      "id": "free-radicals-and-oxygen-toxicity",
