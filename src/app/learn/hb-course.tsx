@@ -198,7 +198,7 @@ export default function LegacyCourseScreen() {
                 <View style={[styles.sectionBanner, index > 0 && styles.sectionBannerGap]} accessibilityRole="header">
                   <Text style={styles.sectionBannerKicker}>{course.name.toUpperCase()} SECTION</Text>
                   <Text style={styles.sectionBannerTitle}>{lesson.section}</Text>
-                  <Text style={styles.metaSoft}>{count} topic{count === 1 ? '' : 's'} · {own.length} lessons</Text>
+                  <Text style={styles.metaSoft}>{own.some((item) => item.group) ? `${count} topic${count === 1 ? '' : 's'} · ` : ''}{own.length} lesson{own.length === 1 ? '' : 's'}</Text>
                 </View>
               );
             })() : null}

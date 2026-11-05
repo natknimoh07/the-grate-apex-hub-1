@@ -3,7 +3,9 @@
 // theory); the history of biochemistry comes from the original database lesson biochemistry-01
 // (written from the course's introductory material, which is not in the Human Biology folder).
 // Rewrites biochemistry-01 with the same id, so progress is kept; practises the course's Quiz 1
-// and the past questions on the introduction to metabolism.
+// and the past questions on the introduction to metabolism. Updated from the 2026 deck ("Basic
+// Concept and Design of Metabolism_2026", read in three parts, 2026-11-05): requirements and
+// pathway types, amphibolism, redox, branched pathways, compartments, design principles, ATP.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostx, ostxBio } from '@/data/hb1-lessons/pictures';
 
@@ -13,7 +15,7 @@ export const biochemistryMetabolism: Hb1Lesson = {
   title: 'Introduction to Biochemistry and the Design of Metabolism',
   summary: 'C. Obirikorang · What biochemistry and metabolism are, the history of the field, catabolism and anabolism, why all life shares the same pathways, how pathways are organised and regulated, Gibbs free energy, and the energy currencies',
   minutes: 26,
-  source: 'Basic Concept and Design of Metabolism 2023.pptx (C. Obirikorang)',
+  source: 'Basic Concept and Design of Metabolism 2023.pptx; Basic Concept and Design of Metabolism_2026.pptx (C. Obirikorang)',
   quizId: 'met',
   quizName: 'Quiz · Design of Metabolism (lesson)',
   pastSets: ['s1'],
@@ -69,6 +71,13 @@ export const biochemistryMetabolism: Hb1Lesson = {
           'The basic pathways are strikingly <b>similar</b> across vastly different species.',
           'Metabolism is <b>highly coordinated</b> and <b>strictly regulated</b>; <b>metabolic maps</b> portray its reactions.',
         ] },
+        { k: 'p', x: 'To survive we must meet <b>two basic requirements</b>: make everything our cells need that the diet does not supply, and protect our internal environment from toxins and outside changes. We do this through <b>four kinds of pathway</b>:' },
+        { k: 'table', head: ['Pathway type', 'What it does', 'Examples'], rows: [
+          { c: ['<b>Fuel oxidation</b>', 'Burns fuels to make ATP', 'Glycolysis, β-oxidation, Krebs cycle'] },
+          { c: ['<b>Fuel storage and mobilisation</b>', 'Stores fuel after meals and releases it when fasting', 'Glycogenesis and glycogenolysis; fat storage and lipolysis'] },
+          { c: ['<b>Biosynthesis</b>', 'Builds the molecules cells need', 'Protein, nucleotide and fatty acid synthesis'] },
+          { c: ['<b>Detoxification and waste disposal</b>', 'Removes toxins and waste', 'Urea cycle; drug metabolism by cytochrome P450'] },
+        ] },
       ],
     },
     {
@@ -83,10 +92,18 @@ export const biochemistryMetabolism: Hb1Lesson = {
           { c: ['Shape', 'Convergent: many fuels → a few products (acetyl CoA, CO<sub>2</sub>)', '<b>Divergent</b>: a few precursors → many products'] },
           { c: ['Role', 'Turns food into biologically useful energy', '“Builds up” tissues and organs'] },
         ] },
+        { k: 'ul', items: [
+          '<b>Catabolism</b> breaks carbohydrates, fats and proteins into smaller molecules and makes <b>ATP, NADH and FADH<sub>2</sub></b>: glycolysis, β-oxidation, glycogenolysis.',
+          '<b>Anabolism</b> uses <b>ATP</b> and reducing power as <b>NADPH</b> for growth, repair and storage: protein synthesis, glycogenesis, fatty acid synthesis.',
+          '<b>Amphibolism</b>, the third component, is the dual role of pathways at the crossroads of metabolism that serve both building and breaking down; the <b>citric acid cycle</b> both makes energy and supplies precursors for biosynthesis.',
+          'Catabolism supplies the energy and intermediates that anabolism uses, and the two are coordinated to keep energy in balance.',
+        ] },
         { k: 'p', x: '<b>Anabolism is powered by catabolism</b>. It runs in three stages: production of small, simple <b>precursors</b>; <b>activation</b> of the precursors to reactive forms using ATP; and <b>assembly</b> into complex molecules.' },
         { k: 'h', x: 'The stages of energy extraction from food', l: 3 },
         ostx('2502-catabolic-reactions.jpg', 1000, 919, 'Catabolic reactions: proteins, lipids and polysaccharides are broken into building blocks, then into acetyl CoA, then oxidised.', 'Three stages: (1) large molecules become their building blocks (amino acids, fatty acids and glycerol, glucose); (2) these become acetyl CoA; (3) acetyl CoA is oxidised in the Krebs cycle and electron transport chain, which make most of the ATP.'),
         { k: 'p', x: 'Pathways that serve both, such as the <b>citric acid cycle</b>, are <b>amphibolic</b>. A genetic defect in one enzyme of a pathway is an <b>inborn error of metabolism</b> (for example the galactosaemias), and disordered metabolism underlies conditions such as diabetes, obesity and the metabolic syndrome.' },
+        { k: 'p', x: 'Every reaction is enzyme-mediated, so metabolism goes wrong for three reasons: a <b>genetic defect</b> in an enzyme (an inborn error), a <b>dietary deficiency</b>, or a <b>disease</b>. Clinically, enzyme or hormone defects cause metabolic disorders such as <b>diabetes mellitus</b> and the inherited metabolic diseases, and abnormal metabolism contributes to <b>obesity</b> and <b>cardiovascular disease</b>.' },
+        { k: 'box', title: 'Oxidation and reduction', tone: 'formula', blocks: [{ k: 'p', x: 'Redox reactions move <b>electrons</b> from one molecule to another: <b>oxidation is loss</b> of electrons, <b>reduction is gain</b> (OIL RIG). The carriers are <b>NAD<sup>+</sup>, NADP<sup>+</sup> and FAD</b>; catabolism reduces NAD<sup>+</sup> and FAD to NADH and FADH<sub>2</sub>, whose electrons later make ATP, while NADPH supplies electrons for biosynthesis.' }] },
       ],
     },
     {
@@ -112,16 +129,21 @@ export const biochemistryMetabolism: Hb1Lesson = {
       blocks: [
         { k: 'p', x: 'A pathway consists of <b>sequential steps</b>. Its enzymes may be arranged in three ways:' },
         { k: 'table', head: ['Arrangement', 'Features', 'Examples'], rows: [
-          { c: ['<b>Separate enzymes</b>', 'Each step has its own free enzyme; intermediates diffuse between them; steps can be regulated independently', 'Glycolysis, pentose phosphate pathway'] },
+          { c: ['<b>Separate enzymes</b>', 'Each pathway has its own enzymes and starting materials; intermediates diffuse between free enzymes; steps can be regulated independently', 'Glycolysis, pentose phosphate pathway (the 2026 deck also lists fatty acid synthesis)'] },
           { c: ['<b>Multienzyme complex</b>', 'Enzymes clustered together, passing intermediates directly (<b>channelling</b>): faster, with little loss', 'Pyruvate dehydrogenase complex, fatty acid synthase'] },
-          { c: ['<b>Membrane-bound system</b>', 'Enzymes embedded in or attached to a membrane', 'Electron transport chain, transport ATPases, cytochrome P450'] },
+          { c: ['<b>Membrane-bound system</b>', 'Enzymes <b>integral</b> (embedded) or <b>peripheral</b> (attached) to a membrane, for signalling, transport or metabolism', 'Receptor tyrosine kinases (signalling), ATPases (transport), cytochrome P450 (metabolism), the electron transport chain'] },
         ] },
-        { k: 'p', x: 'Pathways also have three shapes:' },
+        { k: 'p', x: 'A pathway is a series of enzyme-catalysed reactions in which the product of one becomes the substrate of the next, each step with its own enzyme. Pathways come in four shapes:' },
         { k: 'table', head: ['Shape', 'What happens', 'Example'], rows: [
           { c: ['<b>Linear</b>', 'The product of each reaction is the substrate of the next', '<b>Biosynthesis of serine</b> (and glycolysis)'] },
           { c: ['<b>Cyclic</b> (closed loop)', 'The intermediates are <b>regenerated</b> each turn', '<b>Citric acid cycle</b>'] },
-          { c: ['<b>Spiral</b>', 'The <b>same set of enzymes</b> is used repeatedly to lengthen (or shorten) a chain', '<b>Fatty acid synthesis</b> (and β-oxidation)'] },
+          { c: ['<b>Spiral</b>', 'The <b>same set of enzymes</b> is used repeatedly to lengthen (or shorten) a chain', '<b>Fatty acid synthesis</b> (2023 deck); <b>β-oxidation</b> (2026 deck): fatty acid → shortened fatty acid → … → acetyl CoA'] },
+          { c: ['<b>Branched</b>', 'One intermediate can go to two or more products by separate routes, giving flexibility and control', '<b>Glucose 6-phosphate</b> → glycolysis or glycogenesis'] },
         ] },
+        { k: 'box', title: 'Two decks, two examples', tone: 'red', blocks: [{ k: 'p', x: 'The 2023 deck gives serine synthesis as the linear example and fatty acid synthesis as the spiral one; the 2026 deck uses <b>glycolysis</b> (linear) and <b>β-oxidation</b> (spiral), and lists fatty acid synthesis as a separate-enzyme pathway. Both spiral examples are correct. In humans fatty acid synthase is in fact a <b>multienzyme complex</b> on one chain, so the 2023 placing is the textbook one.' }] },
+        { k: 'p', x: '<b>Compartmentation</b>: pathways run in particular parts of the cell (glycolysis in the cytosol, the citric acid cycle in the mitochondria), which improves efficiency and control.' },
+        { k: 'h', x: 'Design principles', l: 3 },
+        { k: 'p', x: 'Pathways are highly organised and regulated; their <b>irreversible steps are the main control points</b>; they are linked through <b>common intermediates</b>; and energy is used efficiently by <b>coupling</b> reactions.' },
         { k: 'h', x: 'Why proceed in discrete steps?', l: 3 },
         { k: 'ul', items: [
           '<b>Enzyme specificity</b> defines the route.',
@@ -165,6 +187,7 @@ export const biochemistryMetabolism: Hb1Lesson = {
           '<b>Less resonance stabilisation</b> of the phosphoanhydride bonds than of the products.',
           '<b>High electrostatic repulsion</b> between the negatively charged phosphate groups, relieved on hydrolysis.',
         ] },
+        { k: 'p', x: '<b>ATP</b> is the universal energy currency: <b>adenine + ribose + three phosphates</b>. Energy from oxidising nutrients is stored briefly in its bonds and then spent on biosynthesis, transport and muscle contraction, so ATP links energy-producing and energy-consuming reactions.' },
         { k: 'p', x: 'Hydrolysis of ATP gives <b>ADP + P<sub>i</sub> + energy</b>, and the energy drives a biological reaction, usually by <b>phosphorylating a substrate</b> (energy coupling). NADH and FADH<sub>2</sub> carry electrons to the electron transport chain, where their energy is converted to ATP.' },
       ],
     },
@@ -203,5 +226,10 @@ export const biochemistryMetabolism: Hb1Lesson = {
     ['A reaction with ΔG equal to zero is', 'At equilibrium', ['Highly exergonic', 'Highly endergonic', 'Proceeding in reverse'], 'There is no net change.', 'Free energy'],
     ['The high energy of ATP’s phosphoanhydride bonds is due partly to', 'Repulsion between phosphate groups', ['Strong hydrogen bonds between bases', 'The stability of the adenine ring', 'Covalent bonds to the ribose oxygen'], 'Also less resonance stabilisation of the bonds.', 'Energy currency'],
     ['ATP hydrolysis drives biological reactions mainly by', 'Phosphorylating a substrate', ['Releasing heat to warm the reaction', 'Donating electrons to oxygen', 'Breaking hydrogen bonds in water'], 'Energy coupling transfers the phosphate to a reactant.', 'Energy currency'],
+    ['Which is NOT one of the four basic types of metabolic pathway?', 'Fuel absorption routes', ['Fuel oxidative pathways', 'Biosynthetic pathways', 'Detoxification pathways'], 'The fourth is fuel storage and mobilisation.', 'Metabolism'],
+    ['Catabolism produces', 'ATP, NADH and FADH2', ['NADPH for fatty acid synthesis', 'Glycogen from glucose', 'Proteins from amino acids'], 'Anabolism uses ATP and NADPH.', 'Catabolism and anabolism'],
+    ['Glucose 6-phosphate going either to glycolysis or to glycogenesis is an example of a', 'Branched pathway', ['Linear pathway', 'Cyclic pathway', 'Spiral pathway'], 'One intermediate, two routes.', 'Organisation'],
+    ['In oxidation a molecule', 'Loses electrons', ['Gains electrons', 'Gains a phosphate', 'Loses a water molecule'], 'Reduction is gain of electrons.', 'Redox'],
+    ['Receptor tyrosine kinases are examples of', 'Membrane-bound enzymes', ['Multienzyme complexes', 'Separate soluble enzymes', 'Ribozymes in the cytosol'], 'They act in signal transduction.', 'Organisation'],
   ],
 };

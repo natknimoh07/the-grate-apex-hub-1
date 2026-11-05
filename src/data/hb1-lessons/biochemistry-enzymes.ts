@@ -3,7 +3,8 @@
 // is kept; practises the course's Quiz 2 and the past questions on enzymes. Every fact on the
 // slides is here; the kinetics section (Michaelis–Menten, Lineweaver–Burk), which the course's
 // past questions ask about but the deck shows only in pictures, is from the textbooks, in our
-// own words.
+// own words. Updated from "Enzymes_Lecture_2026.pptx" (read in six parts, 2026-11-05): structure
+// levels, medical importance, EC numbers, types of specificity, salt, covalent modification.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostx, ostxBio } from '@/data/hb1-lessons/pictures';
 
@@ -13,7 +14,7 @@ export const biochemistryEnzymes: Hb1Lesson = {
   title: 'Enzymes',
   summary: 'C. Obirikorang · What enzymes are, how they are named and classified, the active site and specificity, lock-and-key and induced fit, cofactors, the factors that change their rate, kinetics, inhibition, regulation, ribozymes and enzymes in medicine and industry',
   minutes: 38,
-  source: 'Enzymes.pptx (C. Obirikorang)',
+  source: 'Enzymes.pptx; Enzymes_Lecture_2026.pptx (C. Obirikorang)',
   quizId: 'enz',
   quizName: 'Quiz · Enzymes (lesson)',
   pastSets: ['s2'],
@@ -42,7 +43,15 @@ export const biochemistryEnzymes: Hb1Lesson = {
           'Accelerate the making and breaking of covalent bonds.',
           '<b>Catalyse the forward and reverse reactions to an equal extent</b>: they speed up reaching equilibrium but do not change where it lies.',
           'Work by <b>stabilising the transition state</b>, which lowers the <b>activation energy</b>.',
+          'The 2026 deck adds: highly <b>efficient</b>, <b>regulated</b>, <b>sensitive to their surroundings</b> (temperature, pH), unchanged at the end, and essential for metabolism and survival.',
         ] },
+        { k: 'p', x: 'Most enzymes are <b>globular proteins</b> whose 3-D shape lets them bind substrates: <b>their structure determines their function</b>. Like all proteins they have four levels of structure: <b>primary</b> (the amino acid sequence, joined by peptide bonds), <b>secondary</b> (α-helices and β-pleated sheets), <b>tertiary</b> (the folded 3-D shape) and <b>quaternary</b> (several polypeptide chains together).' },
+        { k: 'box', title: 'Why enzymes matter in medicine', tone: 'life', blocks: [{ k: 'ul', items: [
+          'Central to metabolism and cell function.',
+          '<b>Diagnostic markers</b>: ALT, AST, CK-MB.',
+          '<b>Drug targets</b>: statins (HMG-CoA reductase), ACE inhibitors (angiotensin-converting enzyme).',
+          '<b>Defects cause disease</b>: phenylketonuria (phenylalanine hydroxylase), G6PD deficiency.',
+        ] }] },
         ostxBio('figure-06-05-01.jpg', 544, 468, 'Enzymes lower the activation energy of a reaction but do not change its free energy.', 'Compare the two humps: the catalysed path has a much lower barrier, so many more molecules get over it each second. The start and end levels (and so ΔG) are the same with or without the enzyme.'),
       ],
     },
@@ -61,6 +70,7 @@ export const biochemistryEnzymes: Hb1Lesson = {
           { c: ['<b>5</b>', '<b>Isomerases</b>', 'All isomerisations', 'Triose phosphate isomerase'] },
           { c: ['<b>6</b>', '<b>Ligases</b>', 'Join two molecules using <b>ATP</b> (Greek <i>ligare</i>, to bind)', 'Pyruvate carboxylase, DNA ligase'] },
         ] },
+        { k: 'p', x: 'Today the <b>IUBMB</b> gives each enzyme an <b>EC (Enzyme Commission) number</b> of four digits separated by dots: <b>class . subclass . sub-subclass . the enzyme’s own number</b>. For example <b>EC 3.2.1.4</b>: 3 = hydrolase, 2 = glycosylase, 1 = glycosidase, 4 = <b>cellulase</b>.' },
         { k: 'box', title: 'Memory aid: “Over The HILL”', tone: 'recall', blocks: [{ k: 'p', x: '<b>O</b>xidoreductase, <b>T</b>ransferase, <b>H</b>ydrolase, <b>I</b>somerase… wait: the real order is O, T, H, <b>L</b>yase, <b>I</b>somerase, <b>L</b>igase. Try “<b>Oh, The Hairy Lion Is Loud</b>”. A lyase that removes water is a dehydratase; one that adds water is a hydratase, which is not a hydrolase.' }] },
       ],
     },
@@ -71,7 +81,7 @@ export const biochemistryEnzymes: Hb1Lesson = {
       blocks: [
         { k: 'ul', items: [
           'Enzymes are generally <b>globular proteins</b>, from just <b>62</b> to over <b>2500</b> amino acid residues, and much larger than their substrates.',
-          'Only a small portion, about <b>2–4 amino acids</b>, takes part directly in catalysis.',
+          'Only a small portion, about <b>2–4 amino acids</b> (the 2026 deck says <b>2–6</b>), takes part directly in catalysis: the active site.',
           'A linear chain of amino acids folds into a 3-D structure; each sequence gives a unique structure with unique properties.',
           'Heat or chemical denaturants <b>unfold and inactivate</b> most enzymes; denaturation may be reversible or irreversible.',
         ] },
@@ -83,9 +93,16 @@ export const biochemistryEnzymes: Hb1Lesson = {
           'It is <b>not rigid</b> but flexible, to promote specific substrate binding.',
           'It has a <b>substrate-binding site</b> and a <b>catalytic site</b>; substrates bind by <b>weak non-covalent</b> bonds.',
           'Common active-site amino acids: serine, aspartate, histidine, cysteine, lysine, arginine, glutamate, tyrosine; <b>serine is the most frequent</b>.',
-          'E + S → <b>ES complex</b> → E + P; the enzyme is then free for reuse.',
+          'E + S → <b>ES complex</b> → E + P; the enzyme is then free for reuse. The 2026 deck writes the full mechanism as <b>E + S ⇌ ES → EP → E + P</b> (EP = enzyme–product complex).',
+          'Its four jobs: <b>bind the substrate</b>, <b>catalyse</b> the reaction, <b>stabilise the transition state</b> and <b>decide specificity</b>.',
         ] },
         { k: 'h', x: 'Specificity and functions', l: 3 },
+        { k: 'table', head: ['Type of specificity', 'Meaning', 'Example (2026 deck)'], rows: [
+          { c: ['<b>Absolute</b>', 'Acts on only one substrate', '<b>Urease</b> (urea only)'] },
+          { c: ['<b>Group</b>', 'Acts on a family of related substrates', '<b>Hexokinase</b> (several hexoses)'] },
+          { c: ['<b>Bond</b>', 'Acts on one kind of bond wherever it occurs', '<b>Lipase</b> (ester bonds)'] },
+          { c: ['<b>Stereospecific</b>', 'Acts on only one optical isomer', '<b>Glucokinase</b> (D-glucose)'] },
+        ] },
         { k: 'p', x: 'Enzymes are usually very <b>specific</b> for their reactions and substrates, because of <b>complementary shape, charge and hydrophilic/hydrophobic</b> character. They are essential for respiration, digestion, muscle and nerve function, growth, blood clotting, healing, breathing and reproduction, and some have exotic jobs: <b>luciferase</b> makes the light of fireflies. Some break large molecules into absorbable pieces; others join two molecules into a new one.' },
       ],
     },
@@ -128,6 +145,7 @@ export const biochemistryEnzymes: Hb1Lesson = {
           { c: ['<b>Substrate concentration</b>', 'Rate rises as more active sites fill, then <b>levels off</b> at <b>V<sub>max</sub></b> when active sites are almost continuously filled'] },
           { c: ['<b>Enzyme concentration</b>', 'Rate rises in proportion to enzyme concentration (when substrate is in excess)'] },
           { c: ['<b>Product concentration</b>', 'Accumulating products <b>decrease</b> velocity; some bind the active site; in the body products are removed quickly; <b>end-product (feedback) inhibition</b>'] },
+          { c: ['<b>Salt concentration</b>', 'Changes the ionic interactions inside the enzyme, altering substrate binding and stability; <b>high salt can denature</b> it'] },
           { c: ['<b>Light and radiation</b>', 'UV, β, γ and X-rays inactivate some enzymes by forming <b>peroxides</b>; <b>UV inhibits salivary amylase</b>'] },
           { c: ['<b>Activators</b>', 'Metal ions (Mg<sup>2+</sup>, Mn<sup>2+</sup>, Zn<sup>2+</sup>, Ca<sup>2+</sup>, Co<sup>2+</sup>, Cu<sup>2+</sup>, Na<sup>+</sup>, K<sup>+</sup>) raise activity: by combining with the substrate, forming ES–metal complexes, taking part in the reaction, or changing the enzyme’s shape'] },
         ] },
@@ -170,9 +188,11 @@ export const biochemistryEnzymes: Hb1Lesson = {
         { k: 'table', head: ['Inhibitor', 'Target', 'Effect'], rows: [
           { c: ['<b>Diisopropyl fluorophosphate (DFP)</b>, a nerve gas of World War II', 'Enzymes with <b>serine</b> in the active site: serine proteases, <b>acetylcholinesterase</b>', 'Constricted pupils, profuse salivation, convulsions, involuntary urination and defecation; death by cardiac arrest after loss of respiratory function'] },
           { c: ['<b>Organophosphorus insecticides</b>', 'Acetylcholinesterase', 'Paralysis of vital functions'] },
+          { c: ['<b>Cyanide</b>', '<b>Cytochrome oxidase</b> (complex IV)', 'Stops oxidative phosphorylation'] },
           { c: ['<b>Antibiotics</b> (e.g. penicillin)', 'Serine-containing bacterial enzymes', 'Block <b>bacterial cell wall synthesis</b>'] },
           { c: ['<b>Disulfiram</b> (Antabuse), for alcoholism', '<b>Acetaldehyde dehydrogenase</b>', 'Acetaldehyde accumulates after alcohol: flushing, headache, nausea, vomiting, chest pain, sweating, breathing difficulty, anxiety'] },
         ] },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'p', x: 'The 2026 deck lists <b>statins</b> and <b>ACE inhibitors</b> as clinical examples of <b>irreversible</b> inhibition. Both are in fact <b>reversible, competitive</b> inhibitors (statins of HMG-CoA reductase, captopril and enalaprilat of ACE), which is why their effect wears off as the drug is cleared. Cyanide, organophosphates, penicillin and disulfiram are the true irreversible examples.' }] },
       ],
     },
     {
@@ -180,12 +200,13 @@ export const biochemistryEnzymes: Hb1Lesson = {
       title: 'Regulation of enzymes',
       kicker: 'Cellular economy',
       blocks: [
-        { k: 'p', x: 'Enzyme activity is regulated in several ways to achieve <b>cellular economy</b>:' },
-        { k: 'step', n: '1', title: 'Allosteric regulation', blocks: [{ k: 'p', x: '<b>Allosteric enzymes</b> have extra sites besides the active site. <b>Allosteric modulators</b> (effectors) bind there: a <b>positive effector</b> at an <b>activator site</b> raises activity; a <b>negative effector</b> at an <b>inhibitor site</b> lowers it. In <b>feedback inhibition</b>, the <b>final product</b> of a pathway inhibits its <b>first</b> step, so the cell does not waste energy making what it already has.' }] },
-        { k: 'step', n: '2', title: 'Activation of latent enzymes', blocks: [{ k: 'p', x: 'Some enzymes are made as inactive <b>proenzymes (zymogens)</b> and activated irreversibly by breaking peptide bonds: <b>chymotrypsinogen → chymotrypsin, pepsinogen → pepsin, plasminogen → plasmin</b>.' }] },
-        { k: 'step', n: '3', title: 'Compartmentation', blocks: [{ k: 'p', x: 'Opposing pathways run in different organelles so they do not happen at once: <b>fatty acid synthesis in the cytosol</b>, <b>fatty acid oxidation in the mitochondria</b>; hormones decide which runs.' }] },
-        { k: 'step', n: '4', title: 'Control of enzyme synthesis', blocks: [{ k: 'p', x: 'Rate-limiting enzymes are present in very low concentrations, and the <b>amount</b> of enzyme directly controls the rate; many have <b>short half-lives</b>, so their levels can be adjusted quickly (induction and repression).' }] },
-        { k: 'step', n: '5', title: 'Enzyme degradation', blocks: [{ k: 'p', x: 'Enzymes are not immortal; half-lives range from minutes to days: <b>LDH 5–6 days</b>, <b>amylase 3–5 hours</b>.' }] },
+        { k: 'p', x: '<b>Enzyme regulation</b> is the control of enzyme activity so that reactions happen at the right time and rate; it keeps the internal environment stable, prevents waste, balances metabolism and lets the body adapt. Activity is regulated in several ways to achieve <b>cellular economy</b>:' },
+        { k: 'step', n: '1', title: 'Allosteric regulation', blocks: [{ k: 'p', x: '<b>Allosteric enzymes</b> have extra sites besides the active site. <b>Allosteric modulators</b> (effectors) bind there: a <b>positive effector</b> at an <b>activator site</b> raises activity; a <b>negative effector</b> at an <b>inhibitor site</b> lowers it. In <b>feedback inhibition</b>, the <b>final product</b> of a pathway inhibits its <b>first</b> step, so the cell does not waste energy making what it already has. Allosteric control is <b>rapid</b> and common in pathways: <b>phosphofructokinase</b> is inhibited by ATP and activated by AMP.' }] },
+        { k: 'step', n: '2', title: 'Covalent modification', blocks: [{ k: 'p', x: 'Adding or removing a chemical group switches an enzyme on or off, most often <b>phosphorylation and dephosphorylation</b>: <b>glycogen phosphorylase is activated by phosphorylation</b>.' }] },
+        { k: 'step', n: '3', title: 'Activation of latent enzymes', blocks: [{ k: 'p', x: 'Some enzymes are made as inactive <b>proenzymes (zymogens)</b> and activated irreversibly by breaking peptide bonds: <b>chymotrypsinogen → chymotrypsin, trypsinogen → trypsin, pepsinogen → pepsin, plasminogen → plasmin</b>. This stops the enzymes working where they would do harm, such as digesting the pancreas that makes them.' }] },
+        { k: 'step', n: '4', title: 'Compartmentation', blocks: [{ k: 'p', x: 'Opposing pathways run in different organelles so they do not happen at once: <b>fatty acid synthesis in the cytosol</b>, <b>fatty acid oxidation in the mitochondria</b>; hormones decide which runs.' }] },
+        { k: 'step', n: '5', title: 'Control of enzyme synthesis', blocks: [{ k: 'p', x: 'Rate-limiting enzymes are present in very low concentrations, and the <b>amount</b> of enzyme directly controls the rate; many have <b>short half-lives</b>, so their levels can be adjusted quickly (<b>induction</b> raises synthesis, <b>repression</b> lowers it, at the level of gene expression).' }] },
+        { k: 'step', n: '6', title: 'Enzyme degradation', blocks: [{ k: 'p', x: 'Enzymes are not immortal; half-lives range from minutes to days: <b>LDH 5–6 days</b>, <b>amylase 3–5 hours</b>.' }] },
       ],
     },
     {
@@ -269,5 +290,11 @@ export const biochemistryEnzymes: Hb1Lesson = {
     ['Raised serum amylase suggests', 'Acute pancreatitis', ['Prostate cancer', 'Muscular dystrophy', 'Rickets'], 'Acid phosphatase: prostate; aldolase: muscular dystrophy.', 'Diagnosis'],
     ['The early enzyme marker of myocardial infarction in the lecture is', 'Creatine phosphokinase', ['Alanine transaminase', 'Acid phosphatase', 'Amylase'], 'AST and LDH also rise in heart attacks.', 'Diagnosis'],
     ['Raised γ-glutamyl transferase (GGT) is associated with', 'Alcoholism', ['Acute pancreatitis', 'Prostate cancer', 'Muscular dystrophy'], '5′-nucleotidase and ALT point to the liver too.', 'Diagnosis'],
+    ['In EC 3.2.1.4 (cellulase), the first digit 3 shows the enzyme is a', 'Hydrolase', ['Transferase', 'Lyase', 'Isomerase'], 'Class . subclass . sub-subclass . serial number.', 'Classification'],
+    ['Urease acts only on urea. This is', 'Absolute specificity', ['Group specificity', 'Bond specificity', 'Stereospecificity'], 'Hexokinase shows group specificity.', 'Specificity'],
+    ['Lipase hydrolyses ester bonds in many lipids. This is', 'Bond specificity', ['Absolute specificity', 'Group specificity', 'Stereospecificity'], 'It recognises the bond, not one substrate.', 'Specificity'],
+    ['Glycogen phosphorylase is activated by', 'Phosphorylation', ['Proteolytic cleavage', 'Dephosphorylation', 'Gene repression'], 'Covalent modification.', 'Regulation'],
+    ['Phosphofructokinase is activated allosterically by', 'AMP', ['ATP', 'Citrate', 'Glucagon'], 'ATP inhibits it.', 'Regulation'],
+    ['Cyanide irreversibly inhibits', 'Cytochrome oxidase', ['Acetylcholinesterase', 'HMG-CoA reductase', 'Acetaldehyde dehydrogenase'], 'Complex IV of the respiratory chain.', 'Inhibition'],
   ],
 };

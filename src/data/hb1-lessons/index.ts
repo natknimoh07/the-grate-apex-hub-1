@@ -46,6 +46,13 @@ import { biochemistryEtc } from '@/data/hb1-lessons/biochemistry-etc';
 import { biochemistryLipidOxidation } from '@/data/hb1-lessons/biochemistry-lipid-oxidation';
 import { biochemistryMetabolism } from '@/data/hb1-lessons/biochemistry-metabolism';
 import { biochemistryEnzymes } from '@/data/hb1-lessons/biochemistry-enzymes';
+import { biochemistryPracLabSkills } from '@/data/hb1-lessons/biochemistry-prac-lab-skills';
+import { biochemistryPracUnits } from '@/data/hb1-lessons/biochemistry-prac-units';
+import { biochemistryPracBloodTubes } from '@/data/hb1-lessons/biochemistry-prac-blood-tubes';
+import { biochemistryPracAmylase } from '@/data/hb1-lessons/biochemistry-prac-amylase';
+import { biochemistryPracCarbohydrates } from '@/data/hb1-lessons/biochemistry-prac-carbohydrates';
+import { biochemistryPracGlucose } from '@/data/hb1-lessons/biochemistry-prac-glucose';
+import { biochemistryPracUrinalysis } from '@/data/hb1-lessons/biochemistry-prac-urinalysis';
 import { entomologyBlackflies } from '@/data/hb1-lessons/entomology-blackflies';
 import { entomologyFleas } from '@/data/hb1-lessons/entomology-fleas';
 import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
@@ -164,6 +171,8 @@ export type Hb1Lesson = {
   pastSets?: string[];
   /** Bank questions with these topic labels (`t`) are practised with this lesson too; "<set id>:<label>" limits a label to one set. */
   bankTopics?: string[];
+  /** A heading on the course path for a group of lessons, e.g. "Biochem practicals" (owner, 2026-11-05). */
+  section?: string;
 };
 
 export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
@@ -175,6 +184,8 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   behaviouralLearning, behaviouralMemory, behaviouralPersonality, behaviouralStress,
   physiologyBodyFluids, physiologyHomeostasis, physiologyExcitable, physiologySkeletalMuscle, physiologyCardiacMuscle, physiologySmoothMuscle, physiologySynapses, physiologyAns, physiologyBlood,
   biochemistryMetabolism, biochemistryEnzymes, biochemistryGlycolysis, biochemistryGluconeogenesis, biochemistryFructoseGalactose, biochemistryKrebs, biochemistryPpp, biochemistryGlycogen, biochemistryEtc, biochemistryLipidOxidation,
+  // Biochem practicals (owner, 2026-11-05): their own section on the course path.
+  biochemistryPracLabSkills, biochemistryPracUnits, biochemistryPracBloodTubes, biochemistryPracAmylase, biochemistryPracCarbohydrates, biochemistryPracGlucose, biochemistryPracUrinalysis,
   anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyMuscleTissue, anatomyNervousTissue, anatomyFemaleReproductive, anatomyMaleReproductive, anatomyEmbryology,
   entomologyIntroduction, entomologyMosquitoes, entomologyAnophelineCulicine, entomologyLiceBedbugs, entomologySandfliesScabies, entomologyTsetseMidges, entomologyTicks, entomologyCockroaches, entomologyMyiasis, entomologyCollecting,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
@@ -218,6 +229,7 @@ export function hb1LessonMeta(lesson: Hb1Lesson): LegacyLessonMeta {
     qids: HB1_PRACTICE_IDS[lesson.id] ?? hb1QuizQuestions(lesson).map((question) => question.id),
     ptopics: lesson.pastTopics,
     psets: lesson.pastSets,
+    section: lesson.section,
   };
 }
 

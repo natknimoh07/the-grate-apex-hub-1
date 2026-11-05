@@ -7873,8 +7873,16 @@
   {
    "id": "biochemistry",
    "name": "Biochemistry",
-   "total": 1306,
+   "total": 1436,
    "topics": [
+    {
+     "id": "Achromic point",
+     "title": "Achromic point",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
     {
      "id": "Active site",
      "title": "Active site",
@@ -7906,6 +7914,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Amylase",
+     "title": "Amylase",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Anaplerotic",
@@ -7948,6 +7964,14 @@
      "unrated": 1
     },
     {
+     "id": "Blood bank",
+     "title": "Blood bank",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Bypasses",
      "title": "Bypasses",
      "easy": 0,
@@ -7961,7 +7985,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 5
     },
     {
      "id": "Characteristics",
@@ -7985,7 +8009,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 11
     },
     {
      "id": "Classification of Enzymes",
@@ -7994,6 +8018,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 4
+    },
+    {
+     "id": "Clinical",
+     "title": "Clinical",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Clinical uses",
+     "title": "Clinical uses",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Cofactors",
@@ -8020,12 +8060,20 @@
      "unrated": 7
     },
     {
+     "id": "Concentration",
+     "title": "Concentration",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Control",
      "title": "Control",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 8
     },
     {
      "id": "Cori cycle",
@@ -8066,6 +8114,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Dilution",
+     "title": "Dilution",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Dipstick",
+     "title": "Dipstick",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 12
     },
     {
      "id": "Disorders",
@@ -8364,6 +8428,14 @@
      "unrated": 16
     },
     {
+     "id": "HbA1c",
+     "title": "HbA1c",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 6
+    },
+    {
      "id": "Hexokinase vs Glucokinase",
      "title": "Hexokinase vs Glucokinase",
      "easy": 0,
@@ -8401,7 +8473,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 7
     },
     {
      "id": "Inhibitors",
@@ -8468,6 +8540,14 @@
      "unrated": 14
     },
     {
+     "id": "Lab skills",
+     "title": "Lab skills",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Lipids",
      "title": "Lipids",
      "easy": 0,
@@ -8494,6 +8574,14 @@
     {
      "id": "Metabolism",
      "title": "Metabolism",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Methods",
+     "title": "Methods",
      "easy": 0,
      "medium": 0,
      "hard": 0,
@@ -8572,12 +8660,20 @@
      "unrated": 1
     },
     {
+     "id": "OGTT",
+     "title": "OGTT",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
      "id": "Organisation",
      "title": "Organisation",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 6
     },
     {
      "id": "Overview",
@@ -8628,6 +8724,30 @@
      "unrated": 2
     },
     {
+     "id": "Physical",
+     "title": "Physical",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 7
+    },
+    {
+     "id": "Pipettes",
+     "title": "Pipettes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Pipetting",
+     "title": "Pipetting",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
      "id": "Polyol pathway",
      "title": "Polyol pathway",
      "easy": 0,
@@ -8642,6 +8762,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 3
+    },
+    {
+     "id": "Preparation",
+     "title": "Preparation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Procedure",
+     "title": "Procedure",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
     },
     {
      "id": "Pyruvate",
@@ -8668,12 +8804,28 @@
      "unrated": 7
     },
     {
+     "id": "Redox",
+     "title": "Redox",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
+     "id": "Reducing sugars",
+     "title": "Reducing sugars",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Regulation",
      "title": "Regulation",
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 29
+     "unrated": 31
     },
     {
      "id": "Regulation of Glycolysis",
@@ -8700,6 +8852,14 @@
      "unrated": 1
     },
     {
+     "id": "Sampling",
+     "title": "Sampling",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
      "id": "Shuttles",
      "title": "Shuttles",
      "easy": 0,
@@ -8722,6 +8882,22 @@
      "medium": 0,
      "hard": 0,
      "unrated": 5
+    },
+    {
+     "id": "Specificity",
+     "title": "Specificity",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Starch",
+     "title": "Starch",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
     },
     {
      "id": "Step 1",
@@ -8852,12 +9028,68 @@
      "unrated": 2
     },
     {
+     "id": "Temperature",
+     "title": "Temperature",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Tests",
+     "title": "Tests",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 15
+    },
+    {
+     "id": "Tubes",
+     "title": "Tubes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 9
+    },
+    {
      "id": "Uncouplers",
      "title": "Uncouplers",
      "easy": 0,
      "medium": 0,
      "hard": 0,
      "unrated": 2
+    },
+    {
+     "id": "Units",
+     "title": "Units",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
+    },
+    {
+     "id": "Urine",
+     "title": "Urine",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 2
+    },
+    {
+     "id": "Validation",
+     "title": "Validation",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 5
+    },
+    {
+     "id": "Venepuncture",
+     "title": "Venepuncture",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Yield",
