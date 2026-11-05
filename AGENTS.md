@@ -493,6 +493,10 @@ The full redesign rationale is in `docs/redesign-notes.md`.
   * a small resized photo data URI (`src/lib/avatar-upload.ts`)
   * nothing, which shows initials
 
+### Legends badge (owner, 2026-11-05)
+
+* The top 5 lifetime XP learners since the original app (July 2026) get a blue star with a check instead of a tick, everywhere a tick is shown: `LEGEND_USERNAMES` in `src/data/verified.ts` (outranks gold and blue; `higherTier`), drawn by `VerifiedBadge`. Gold-list members still appear in "Suggested for you".
+
 ### Usage analytics (owner, 2026-10-20)
 
 * **Google Analytics for Firebase** (web, so the Android app too): `src/lib/analytics.ts` (`initAnalytics` in `_layout.tsx`, `track`, `setAnalyticsUser` in `use-auth.tsx`). Page views are automatic; events: `sign_up`, `login`, `lesson_complete`, `first_lesson_complete`, `quiz_complete`, `apex_challenge_complete`, `battle_start`, `battle_finish`, `stamp_sent`. Never send names, emails or answers. Every call is fire-and-forget and does nothing on native or with the emulators.

@@ -14,8 +14,20 @@ import { auth, db } from '@/lib/firebase';
 
 export const VERIFIED_USERNAMES: readonly string[] = ['prince', 'theapexhub', 'originate', 'robotnik', 'stbretro', 'grate_apex', 'myuncletouchesme', 'grate_apex02', 'stickyfingers', 'retro', 'retr0', 'patricia_a', 'atu', 'grateapex_official', 'nate', 'echocircuitnkn07', 'ev', 'drev', 'heisgoddey', 'dennis', 'yeezy'];
 export const BLUE_VERIFIED_USERNAMES: readonly string[] = ['bevelyn', 'amtul', 'akua', 'cupid', 'amtul_1'];
+// Legends (owner, 2026-11-05): the top 5 lifetime XP learners since the original app (July 2026).
+// They get a blue star instead of a tick, everywhere a tick is shown; it outranks gold and blue.
+export const LEGEND_USERNAMES: readonly string[] = ['hefata', 'bevelyn', 'dennis', 'koddy', 'angela'];
 
-export type VerifiedTier = 'gold' | 'blue';
+export type VerifiedTier = 'legend' | 'gold' | 'blue';
+
+const TIER_RANK: Record<VerifiedTier, number> = { legend: 3, gold: 2, blue: 1 };
+
+/** The higher of two ticks (legend > gold > blue). */
+export function higherTier(a: VerifiedTier | null | undefined, b: VerifiedTier | null | undefined): VerifiedTier | null {
+  if (!a) return b ?? null;
+  if (!b) return a;
+  return TIER_RANK[a] >= TIER_RANK[b] ? a : b;
+}
 
 const normalise = (username: string) => username.trim().replace(/^@/, '').toLowerCase();
 
@@ -23,13 +35,14 @@ const normalise = (username: string) => username.trim().replace(/^@/, '').toLowe
 export function verifiedTierOf(username: string | null | undefined): VerifiedTier | null {
   if (!username) return null;
   const name = normalise(String(username));
+  if (LEGEND_USERNAMES.includes(name)) return 'legend';
   return VERIFIED_USERNAMES.includes(name) ? 'gold' : BLUE_VERIFIED_USERNAMES.includes(name) ? 'blue' : null;
 }
 
 export const isVerifiedUsername = (username: string | null | undefined) => verifiedTierOf(username) !== null;
 
 /** Spellings a username may be stored with (Firestore `in` matches exactly). */
-export function usernameSpellings(names: readonly string[] = [...VERIFIED_USERNAMES, ...BLUE_VERIFIED_USERNAMES]) {
+export function usernameSpellings(names: readonly string[] = [...VERIFIED_USERNAMES, ...BLUE_VERIFIED_USERNAMES, ...LEGEND_USERNAMES]) {
   return [...new Set(names.flatMap((name) => [name, name[0].toUpperCase() + name.slice(1), name.toUpperCase()]))];
 }
 
@@ -54,7 +67,7 @@ function verifiedListUids() {
       for (const snap of snaps) {
         for (const item of snap?.docs ?? []) {
           const tier = verifiedTierOf(item.data().username as string);
-          if (tier && uids.get(item.id) !== 'gold') uids.set(item.id, tier);
+          if (tier) uids.set(item.id, higherTier(uids.get(item.id), tier) ?? tier);
         }
       }
       return uids;
@@ -106,7 +119,7 @@ export async function loadGoldAccounts(): Promise<SuggestedAccount[]> {
   for (const snap of snaps) {
     for (const item of snap?.docs ?? []) {
       const data = item.data();
-      if (item.id === me || seen.has(item.id) || verifiedTierOf(data.username as string) !== 'gold') continue;
+      if (item.id === me || seen.has(item.id) || !VERIFIED_USERNAMES.includes(String(data.username ?? '').toLowerCase())) continue;
       seen.add(item.id);
       accounts.push({
         uid: item.id,
