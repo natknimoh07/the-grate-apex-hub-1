@@ -2,7 +2,9 @@
 // Anatomy 1). Rewrites the original database lesson anatomy-01 with the same id, so progress is
 // kept; practises the course's Quiz 1 and the past questions on this topic. The facts are the
 // lecture's (checked against the slides, 2026-11-04); the teaching text and the examples added
-// from standard anatomy textbooks are in our own words.
+// from standard anatomy textbooks are in our own words. Checked against "Introductory Anatomy
+// HBI 2025 edited.pptx" too (2026-11-05): its extra branches, cadavers, word parts, muscle
+// names and imaging are in the sections marked "2025 deck".
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 import { numberFigures, ostx } from '@/data/hb1-lessons/pictures';
 
@@ -46,6 +48,32 @@ export const anatomyIntroduction: Hb1Lesson = {
           { title: 'Clinical anatomy', blocks: [{ k: 'p', x: 'Emphasises the <b>clinical application</b> of anatomical knowledge: why a fracture damages a nerve, where to put a needle.' }] },
         ] },
         ostx('101-levels-of-org-in-body.jpg', 847, 1000, 'Levels of organisation, from chemicals and cells up to tissues, organs, organ systems and the whole organism.', 'Gross anatomy works at the organ and system levels; histology at the cell and tissue levels.'),
+      ],
+    },
+    {
+      id: 'ana-2025-study',
+      title: 'More branches, surface landmarks and the dissection room',
+      kicker: '2025 deck',
+      blocks: [
+        { k: 'p', x: 'The word <b>anatomy</b> comes from the Greek <i>anatome</i> (<i>ana</i>, up; <i>tome</i>, a cutting): “a cutting up”, which is dissection. Anatomy is the study of body structures and the relationships among them; physiology is the study of how they work.' },
+        { k: 'table', head: ['Branch', 'What it studies'], rows: [
+          { c: ['<b>Gross (macroscopic)</b>', 'Structures visible to the naked eye; includes regional, systemic and surface anatomy'] },
+          { c: ['<b>Microscopic</b>', 'Structures too small to see: <b>cytology</b> (cells) and <b>histology</b> (tissues)'] },
+          { c: ['<b>Developmental</b>', 'Structural change through life, from fertilisation to death; <b>embryology</b> is the part before birth'] },
+          { c: ['<b>Surface (topographical)</b>', 'Surface markings, used to work out internal anatomy by looking and <b>palpation</b> — the basis of the physical examination'] },
+          { c: ['<b>Pathological</b>', 'Structural changes, gross to microscopic, that come with disease'] },
+          { c: ['<b>Functional</b>', 'How structure relates to function'] },
+          { c: ['<b>Radiographic</b>', 'Internal structures seen with imaging: X-rays, CT, MRI'] },
+        ] },
+        { k: 'p', x: 'Microscopic anatomy is the <b>bridge between anatomy and physiology</b>, and anatomy as a whole sets the stage on which body events happen; both matter in surgery, medicine and pathology.' },
+        { k: 'box', title: 'Landmarks of the anterior abdominal wall', tone: 'recall', blocks: [{ k: 'p', x: 'Bony and soft-tissue landmarks to find on yourself: <b>xiphoid process</b>, <b>costal margin</b> and the tip of the <b>9th costal cartilage</b>, the <b>tendinous intersections</b> of rectus abdominis, the <b>umbilicus</b>, the <b>iliac crest</b> and <b>anterior superior iliac spine</b>, the <b>linea semilunaris</b> (edge of rectus) and <b>linea alba</b> (midline), the <b>inguinal ligament</b>, and the <b>pubic tubercle, pubic crest and pubic symphysis</b>.' }] },
+        { k: 'h', x: 'Cadavers and the practical room', l: 3 },
+        { k: 'ul', items: [
+          'Cadavers come mainly from <b>voluntary body donation</b> and <b>unclaimed hospital bodies</b>. They are <b>embalmed</b> to stop decay and kept cold so they stay usable.',
+          'Preservation: <b>formaldehyde-based</b> solutions (e.g. 37% formalin); the <b>Thiel method</b> (salts, glycols and alcohol) keeps tissues flexible and life-like; <b>plastination</b> replaces body fluids with curable polymers, giving dry, odourless specimens that last indefinitely.',
+          'Storage: <b>2–4 °C</b> cold rooms; tissues kept <b>moist</b> during dissection; the body sealed in heavy plastic cadaver bags or tanks to hold in moisture.',
+          'Care: specimens must not dry out (keep them under fixative such as formalin unless told otherwise); handle tissue with <b>tissue forceps or blunt clamps</b>, not sharp toothed instruments that crush or tear; wear <b>PPE</b> (lab coat, gloves, apron); wash instruments straight after use; carry a microscope with <b>both hands</b>, one on the arm and one under the base.',
+        ] },
       ],
     },
     {
@@ -113,6 +141,60 @@ export const anatomyIntroduction: Hb1Lesson = {
         ] },
         { k: 'p', x: '<b>Eponyms</b> are structures named after people or legends: <b>Adam’s apple</b> (laryngeal prominence), <b>Eustachian tube</b> (pharyngotympanic tube), <b>Sertoli cells</b> (sustentacular cells of the testis). They are common in clinics, but descriptive names are preferred because they tell you what the structure is.' },
         ostx('107-regions-of-human-body.jpg', 1000, 876, 'Regional terms on the body in the anatomical position: (a) anterior view, (b) posterior view.', 'Find axillary, brachial, carpal, crural, gluteal and tarsal: the slide examples.'),
+      ],
+    },
+    {
+      id: 'ana-2025-words',
+      title: 'More word parts, plurals and how muscles are named',
+      kicker: '2025 deck',
+      blocks: [
+        { k: 'table', head: ['Prefix', 'Means', 'Examples'], rows: [
+          { c: ['<b>a-, an-</b>', 'no, not, without', 'aphagia, anaemia, aphasia, anaesthesia, apathy'] },
+          { c: ['<b>ante-</b>', 'before', 'antepartum, anterior, antecubital, anteversion'] },
+          { c: ['<b>anti-</b>', 'against', 'antibiotic, antidepressant, antidiuretic'] },
+          { c: ['<b>dys-</b>', 'difficult, painful', 'dyspareunia, dysmenorrhoea, dysphagia'] },
+          { c: ['<b>endo-</b>', 'within', 'endoscope, endotracheal'] },
+          { c: ['<b>epi-</b>', 'upon, above', 'epiglottis, epidermis, epistaxis'] },
+          { c: ['<b>ex-, exo-</b>', 'out', 'excretion, exfoliate'] },
+          { c: ['<b>hemi-</b>', 'half', 'hemiplegia, hemicolectomy, hemisphere'] },
+          { c: ['<b>hyper- / hypo-</b>', 'above (excess) / below (too little)', 'hyperglycaemia, hyperaesthesia / hypodermic, hypokalaemia'] },
+          { c: ['<b>inter- / intra-</b>', 'between / within', 'intercostal / intra-abdominal, intracranial, intramammary'] },
+          { c: ['<b>peri-</b>', 'around', 'peritoneum, peritonsillar, peristalsis'] },
+          { c: ['<b>poly-</b>', 'many', 'polycythaemia, polyarthritis'] },
+          { c: ['<b>post- / pro-</b>', 'after / before', 'postnatal, postoperative, post-mortem / prophylaxis'] },
+          { c: ['<b>retro-</b>', 'behind', 'retrocaecal, retroperitoneal, retroversion, retropharyngeal'] },
+          { c: ['<b>trans-</b>', 'across', 'transabdominal, transfusion'] },
+        ] },
+        { k: 'table', head: ['Suffix', 'Means', 'Examples'], rows: [
+          { c: ['<b>-dynia</b>', 'pain (like -algia)', 'gastrodynia, mastodynia; cephalgia (headache)'] },
+          { c: ['<b>-ectomy</b>', 'cutting out', 'hysterectomy, gastrectomy, appendicectomy'] },
+          { c: ['<b>-aemia</b>', 'blood condition', 'leukaemia, anaemia'] },
+          { c: ['<b>-oma</b>', 'tumour, benign or malignant', 'lymphoma, melanoma, sarcoma'] },
+          { c: ['<b>-pathy</b>', 'disease of', 'hepatopathy, neuropathy, cardiopathy'] },
+          { c: ['<b>-plasty</b>', 'surgical repair', 'bronchoplasty, rhinoplasty'] },
+          { c: ['<b>-rrhage, -rrhagia</b>', 'heavy bleeding', 'haemorrhage, menorrhagia'] },
+          { c: ['<b>-scope</b>', 'instrument for looking', 'ophthalmoscope, gastroscope, proctoscope, bronchoscope'] },
+          { c: ['<b>-spasm</b>', 'sudden contraction', 'pylorospasm, bronchospasm, vasospasm'] },
+          { c: ['<b>-stenosis</b>', 'narrowing', 'pyloric, aortic, pulmonary and valvular stenosis'] },
+          { c: ['<b>-tomy</b>', 'cutting into', 'gastrotomy, laparotomy'] },
+          { c: ['<b>-um</b>', 'a structure or region', 'epigastrium, hypogastrium'] },
+        ] },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'p', x: 'The suffix printed as “snosiste” is <b>-stenosis</b> (narrowing), as its examples show; “Gastroma” is not a standard term (a stomach tumour is usually named by type, e.g. gastric carcinoma).' }] },
+        { k: 'p', x: '<b>Combining forms</b>: <b>arthr/o</b> joint (arthritis, arthroscopy, arthroplasty, arthrocentesis); <b>carcin/o</b> cancer (carcinoma, carcinogen); <b>cyst/o</b> fluid-filled sac or bladder (cystic, cystitis); <b>cyt/o</b> cell (cytology, cytonecrosis); <b>erythr/o</b> red (erythrocytosis, erythroderma); <b>thromb/o</b> clot (thrombosis, thrombocytopenia); <b>viscer/o</b> internal organ (visceral, visceromegaly).' },
+        { k: 'table', head: ['Singular ending', 'Plural', 'Examples'], rows: [
+          { c: ['-a', '-ae', 'vertebra → vertebrae; bursa → bursae'] },
+          { c: ['-ix', '-ices', 'appendix → appendices'] },
+          { c: ['-is', '-es', 'diagnosis → diagnoses'] },
+          { c: ['-nx', '-nges', 'phalanx → phalanges'] },
+          { c: ['-um', '-a', 'diverticulum → diverticula'] },
+          { c: ['-us', '-i', 'alveolus → alveoli; uterus → uteri; malleolus → malleoli'] },
+        ] },
+        { k: 'h', x: 'Muscles: their jobs and their names', l: 3 },
+        { k: 'ul', items: [
+          '<b>Agonist (prime mover)</b> produces a movement; the <b>antagonist</b> opposes or reverses it; a <b>synergist</b> helps the agonist or cancels unwanted movement; a <b>fixator</b> is a special synergist that steadies the prime mover’s origin so all its pull acts at the insertion, and helps posture.',
+          'Names tell you about the muscle: <b>location</b> (temporalis over the temporal bone); <b>number of origins</b> (biceps 2, triceps 3, quadriceps 4: biceps brachii has two heads); <b>fibre direction</b> relative to the midline (<b>rectus</b> straight, <b>transversus</b> across, <b>oblique</b> slanting: rectus abdominis, transversus abdominis); <b>size</b> (<b>maximus</b> largest, <b>minimus</b> smallest, <b>longus</b> long, <b>brevis</b> short: gluteus maximus and minimus).',
+          'Fascicle arrangement shapes a muscle: the common patterns are <b>circular, convergent, parallel and pennate</b>.',
+        ] },
       ],
     },
     {
@@ -249,7 +331,7 @@ export const anatomyIntroduction: Hb1Lesson = {
           'The body is organised as <b>layers enclosing cavities</b>: <b>skin</b> → <b>subcutaneous tissue (superficial fascia)</b> → <b>deep fascia</b>, which covers the deeper muscles and skeleton. The cavities contain the internal organs, the <b>viscera</b>.',
         ] },
         { k: 'box', title: 'Anatomical variation', tone: 'gold', blocks: [{ k: 'p', x: 'Human diversity shows as <b>anatomical variation</b>; variation in external form may reflect variation in internal form (e.g. the <b>shape and position of the stomach</b>). Textbooks present the <b>most common pattern</b>, so expect real bodies, and patients, to differ.' }] },
-        { k: 'box', title: 'Colour coding in anatomical diagrams', tone: 'recall', blocks: [{ k: 'ul', items: ['<b>Red</b>: arteries', '<b>Blue</b>: veins', '<b>Yellow</b>: nerves', '<b>Green</b>: lymphatics'] }] },
+        { k: 'box', title: 'Colour coding in anatomical diagrams', tone: 'recall', blocks: [{ k: 'ul', items: ['<b>Red</b>: arteries', '<b>Blue</b>: veins', '<b>Yellow</b>: nerves', '<b>Green</b>: lymphatics', '<b>Pinkish brown</b>: muscles', '<b>Creamy yellow</b>: bone', '<b>Sky blue</b>: cartilage'] }] },
       ],
     },
     {
@@ -274,6 +356,38 @@ export const anatomyIntroduction: Hb1Lesson = {
           'Dorsal cavity (meninges): cranial, spinal. Ventral (serous): pericardial, pleural, abdominopelvic.',
           'Quadrants: median + transumbilical. Nine regions: midclavicular + subcostal/transpyloric + transtubercular.',
           'X-ray absorption: air, fat, fluid, soft tissue, bone, metal.',
+        ] }] },
+      ],
+    },
+    {
+      id: 'ana-2025-imaging',
+      title: 'Imaging in more detail',
+      kicker: '2025 deck',
+      blocks: [
+        { k: 'p', x: 'Imaging (radiology) lets doctors screen for, diagnose and monitor disease by seeing inside the living body. The main methods are X-rays, CT, MRI, ultrasound and nuclear medicine (PET, SPECT, bone scans, sentinel lymph node mapping).' },
+        { k: 'table', head: ['Method', 'Points from the deck'], rows: [
+          { c: ['<b>Plain X-ray</b>', 'X-rays are very short-wavelength electromagnetic waves and are a <b>carcinogen</b>. Best for bones and abnormal dense things (some tumours, TB nodules). Dense tissue absorbs more and looks <b>white</b>; air-filled lung (or the trachea) looks <b>dark</b>. Special forms: low-dose <b>digital mammography</b> (breast cancer), <b>panoramic</b> dental films, <b>DEXA</b> bone densitometry (mineral density, e.g. in osteoporosis) and <b>fluoroscopy</b> (real-time moving X-ray pictures).'] },
+          { c: ['<b>PA chest film</b>', 'The commonest imaging test. The film is against the front of the chest, so the heart is <b>not magnified</b> and its size can be judged; the scapulae lie at the edges, the clavicles over the lung fields, and the gastric fundus gas bubble shows.'] },
+          { c: ['<b>AP chest film</b>', 'For patients who cannot stand (bedside, intensive care). The heart looks <b>larger</b>, the scapulae overlap the lungs and the clavicles sit above the lung apices.'] },
+          { c: ['<b>Lateral and decubitus</b>', 'A lateral is taken with the left chest against the cassette to limit heart magnification; a decubitus film (lying on the side) helps judge the volume of pleural fluid.'] },
+          { c: ['<b>CT</b>', 'Many X-ray beams make cross-sectional slices; densities show as shades of grey. Most useful for the torso (lung cancer, coronary artery disease, kidney cancer); less good for nervous tissue and joints, where bone hides detail.'] },
+          { c: ['<b>MRI</b>', 'Magnetic fields and radio waves; tells tissues apart by <b>water (hydrogen) content</b>, so it shows soft tissue, ligaments, cartilage, joints and brain tumours well, in any plane, but not bone. <b>No radiation</b>; not for patients with metal implants or pacemakers. Images can be <b>T1- or T2-weighted</b>; <b>functional MRI</b> shows where blood flow is concentrated.'] },
+          { c: ['<b>Ultrasound</b>', 'Pulses of high-frequency sound echo off tissues; a transducer turns the echoes into images. Safe, painless, no dye; used for the <b>fetus</b>, organ size and movement, and blood flow (<b>Doppler</b>).'] },
+          { c: ['<b>PET</b>', 'A positron-emitting tracer is injected, inhaled or swallowed; positrons meeting electrons give gamma rays picked up by cameras. Shows <b>activity</b> (blue/black low; red to white high).'] },
+          { c: ['<b>Radionuclide scan, SPECT</b>', 'An intravenous radionuclide is detected by a gamma camera to show organ activity (e.g. tumours, heart scars); <b>SPECT</b> is especially used for brain, heart, lungs and liver.'] },
+          { c: ['<b>Angiography, DSA</b>', 'Vessel pictures for aneurysms, atherosclerosis and bleeding. <b>Digital subtraction</b> takes images before and after dye and subtracts what is common, leaving only the dye-filled vessels.'] },
+        ] },
+        { k: 'p', x: 'Radiation dose is measured in <b>millisieverts (mSv)</b>. About 100 mSv in a year raises the risk of cancer, and about 5% of people receiving 1000 mSv over a lifetime could develop a fatal cancer later.' },
+        { k: 'p', x: '<b>Contrast media</b> improve contrast: <b>iodine</b> and <b>barium sulphate</b> for X-rays, <b>gadolinium</b> for MRI, <b>microbubbles</b> for ultrasound (echocardiograms); given by injection, mouth or rectum. Reactions include rash, redness and swelling, sometimes with nausea, vomiting and dizziness.' },
+        { k: 'ul', items: [
+          '<b>Endoscopy</b>: a lighted instrument with lenses passed through natural openings (mouth, anus) — colonoscopy, colposcopy, gastroscopy, hysteroscopy.',
+          '<b>Laparoscopy</b> (keyhole surgery): looking into the abdominopelvic cavity without a large incision.',
+          '<b>Interventional radiology</b>: minimally invasive, image-guided procedures, diagnostic (guided biopsy, contrast into vessels or ducts) or therapeutic (balloon angioplasty, stents, embolisation, radiofrequency ablation, thrombolysis, TIPS, central lines, gastrostomy tubes, spinal injections and lumbar puncture); less risk, less pain and faster recovery than open surgery.',
+        ] },
+        { k: 'box', title: 'Choosing the test (the deck’s exercises)', tone: 'recall', blocks: [{ k: 'ul', items: [
+          'Broken wrist or forearm: <b>plain X-ray</b>. Gallstones with right hypochondrial pain: <b>ultrasound</b>. Knee pain after a sports injury (ligaments, menisci): <b>MRI</b>. Internal injury after a car crash: <b>CT</b>.',
+          'Blocked heart artery: <b>angiography</b> (or CT angiography). Which brain areas work hardest while studying: <b>PET or fMRI</b>, not CT, because CT shows structure, not activity.',
+          'Measuring a fetal head: <b>transabdominal ultrasound</b>; suspected brain tumour: <b>MRI</b>.',
         ] }] },
       ],
     },
@@ -328,5 +442,16 @@ export const anatomyIntroduction: Hb1Lesson = {
     ['Which absorbs X-rays least?', 'Air', ['Fat', 'Bone', 'Muscle'], 'Air < fat < fluid < soft tissue < bone < metal.', 'Imaging'],
     ['Ultrasonography produces images using', 'High-frequency sound and echoes', ['Ionising X-rays and a detector', 'Magnetic fields and radio pulses', 'Injected radioactive material'], 'A transducer picks up echoes from tissues of different density.', 'Imaging'],
     ['Which technique gives mainly functional images?', 'Nuclear medicine imaging', ['Plain radiography', 'Computed tomography', 'Ultrasonography'], 'Injected radioactivity shows what tissues are doing.', 'Imaging'],
+    ['Which branch of anatomy most helps a doctor palpate bony landmarks during a physical examination?', 'Surface anatomy', ['Microscopic anatomy', 'Developmental anatomy', 'Pathological anatomy'], 'Surface (topographical) anatomy.', 'Branches'],
+    ['Plastination preserves a specimen by', 'Replacing body fluids with curable polymers', ['Soaking it in 37% formalin for several weeks', 'Perfusing it with salts, glycols and alcohol', 'Freezing it at 2–4 °C in sealed cadaver bags'], 'Thiel uses salts, glycols and alcohol.', 'Cadavers'],
+    ['The prefix “hemi-” means', 'Half', ['Blood', 'Around', 'Many'], 'Hemiplegia, hemisphere.', 'Word parts'],
+    ['The plural of phalanx is', 'Phalanges', ['Phalanxes', 'Phalanxae', 'Phalanices'], '-nx becomes -nges.', 'Word parts'],
+    ['The suffix “-plasty” means', 'Surgical repair', ['Surgical removal', 'Heavy bleeding', 'Sudden contraction'], 'Rhinoplasty.', 'Word parts'],
+    ['A muscle that steadies the origin of a prime mover is a', 'Fixator', ['Antagonist', 'Agonist', 'Pennate muscle'], 'A specialised synergist.', 'Muscles'],
+    ['Triceps in a muscle’s name tells you it has three', 'Origins', ['Insertions', 'Nerve supplies', 'Fascicle types'], 'Biceps two, quadriceps four.', 'Muscles'],
+    ['Which will appear black on a plain X-ray?', 'Trachea', ['Rib', 'Heart', 'Hip prosthesis'], 'Air absorbs little X-ray.', 'Imaging'],
+    ['On an AP chest film compared with a PA film the heart looks', 'Larger', ['Smaller', 'Unchanged', 'Displaced left'], 'The heart is further from the film.', 'Imaging'],
+    ['MRI should not be used in a patient with', 'A cardiac pacemaker', ['A plaster of Paris cast', 'A urinary catheter', 'An allergy to iodine dye'], 'Metal and battery devices.', 'Imaging'],
+    ['To see which brain areas are most active while studying, the best test is', 'PET scan', ['Plain X-ray', 'CT scan', 'Ultrasound'], 'CT shows structure, not activity.', 'Imaging'],
   ],
 };
