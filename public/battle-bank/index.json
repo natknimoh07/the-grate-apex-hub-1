@@ -11814,7 +11814,7 @@
   {
    "id": "behavioural",
    "name": "Behavioural Science",
-   "total": 707,
+   "total": 708,
    "topics": [
     {
      "id": "Amnesia",
@@ -11886,7 +11886,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 10
     },
     {
      "id": "Cognitive",

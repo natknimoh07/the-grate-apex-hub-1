@@ -95,6 +95,11 @@ export const behaviouralLearning: Hb1Lesson = {
           '<b>Aversion therapy</b> — pairing a problem behaviour with something unpleasant (some treatment of alcoholism, enuresis). <b>Counter-conditioning</b> pairs something pleasant with an unpleasant object.',
           'A child who had painful injections cries at the sight of the hospital; chemotherapy patients feel nausea at the sight of the treatment room.',
         ] },
+        { k: 'box', title: 'Practice: name the US, UR, CS and CR', tone: 'recall', blocks: [{ k: 'table', head: ['Example from the slides', 'US → UR', 'CS → CR'], rows: [
+          { c: ['A man worried about tomorrow’s interview is anxious throughout a flight; weeks later he feels nervous about flying and cancels a trip to Tamale.', 'Worry about the interview → anxiety', 'Flying → nervousness about flying'] },
+          { c: ['Farmers feed wolves poisoned mutton that causes dizziness and nausea; later the smell of sheep makes the wolves flee.', 'Poison → dizziness and nausea', 'Smell (taste) of sheep → avoidance, running away (a conditioned taste aversion)'] },
+          { c: ['An alcoholic is given a drug that makes him vomit whenever he drinks; after several doses he stops drinking.', 'The drug → vomiting', 'Alcohol → nausea and avoiding drink (aversion therapy)'] },
+        ] }] },
       ],
     },
     {
@@ -166,5 +171,6 @@ export const behaviouralLearning: Hb1Lesson = {
     ['Compared with continuous reinforcement, partial reinforcement', 'Is learned more slowly but resists extinction', ['Is learned faster and extinguishes faster', 'Is learned faster and never extinguishes', 'Cannot produce any learning at all'], 'Slide 54.', 'Schedules'],
     ['Guiding behaviour by reinforcing successive approximations is', 'Shaping', ['Extinction', 'Generalisation', 'Habituation'], 'Slide 57: e.g. teaching a dog to sit.', 'Operant conditioning'],
     ['Which is a drawback of punishment named in the lecture?', 'It does not replace the behaviour with a better one', ['It always removes the behaviour for good', 'It strengthens the punished behaviour', 'It works only on animals, not people'], 'Slide 62: punishment has mixed effects.', 'Punishment'],
+    ['Farmers feed wolves poisoned mutton; later the smell of sheep makes them flee. The conditioned stimulus is', 'The smell of sheep', ['The poison in the mutton', 'The dizziness and nausea', 'Running away from sheep'], 'Poison is the US, nausea the UR, fleeing the CR.', 'Classical conditioning'],
   ],
 };
