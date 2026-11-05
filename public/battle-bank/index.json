@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 3365,
+   "total": 3472,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -255,8 +255,8 @@
     {
      "id": "free-radicals-and-oxygen-toxicity",
      "title": "Free Radicals and Oxygen Toxicity",
-     "easy": 110,
-     "medium": 0,
+     "easy": 216,
+     "medium": 1,
      "hard": 0,
      "unrated": 0
     },
