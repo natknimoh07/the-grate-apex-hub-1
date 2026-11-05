@@ -755,7 +755,7 @@ const lesson8: Draft = {
       ],
       keyPoints: [
         'Control: the vomiting centre in the medullary reticular formation and the chemoreceptor trigger zone (CTZ) in the area postrema (floor of the fourth ventricle). Inputs: the GI tract (vagus), cortex and thalamus, the vestibular system (motion sickness) and the CTZ (drugs, uraemia, hypoxia, diabetic ketoacidosis) (slides 188–190).',
-        'Outputs: phrenic nerve (diaphragm), spinal nerves (abdominal and chest wall), vagus (oesophagus, larynx, pharynx). Transmitters include dopamine, serotonin, ACh, histamine and substance P (slides 190–191).',
+        'Outputs: phrenic nerve (diaphragm), spinal nerves (abdominal and chest wall), vagus (oesophagus, larynx, pharynx). Other triggers: unpleasant tastes, emotion, opioid drugs (codeine, morphine, pethidine) and cancer therapy. Transmitters include dopamine, serotonin, ACh, histamine and substance P (slides 190–191).',
       ],
       sourceRefs: ds([184, 185, 186, 188, 189, 190, 191]),
     },

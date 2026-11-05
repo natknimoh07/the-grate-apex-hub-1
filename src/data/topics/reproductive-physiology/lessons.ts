@@ -628,7 +628,7 @@ const lesson8: Draft = {
         rows: [
           ['When', 'Gradually, from about 40', '45–55; no period for 12 months in a row'],
           ['Why', 'Testosterone declines; SHBG rises, lowering bioavailable testosterone; estrogen rises', 'Fewer oocytes; follicles resist FSH; estrogen falls; no ovulation or corpus luteum; endometrium no longer maintained'],
-          ['Features', 'Low energy, low mood, poor concentration, insomnia, more fat, less muscle, gynaecomastia, erectile dysfunction, low libido, infertility, small testes, hot flushes, osteoporosis', 'Period changes, spotting, hot flushes, night sweats, vaginal changes, osteoporosis, mood change, urinary problems, palpitations'],
+          ['Features', 'Low energy, depression or sadness, less motivation, lower self-confidence, poor concentration, insomnia, more fat, less muscle, gynaecomastia, erectile dysfunction, low libido, infertility, small testes, hot flushes, osteoporosis', 'Period changes, abnormal bleeding (spotting), hot flushes, night sweats and poor sleep, vaginal changes, bone thinning (osteoporosis, loss of height, fractures), mood change and depression, urinary problems, poor concentration, lower sex drive, weight changes, hair loss or thinning, headaches, joint pain, digestive problems, palpitations'],
         ],
       },
       sourceRefs: sr([10, 11, 12, 13, 17, 18, 19, 20]),
