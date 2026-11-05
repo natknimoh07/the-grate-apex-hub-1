@@ -1,4 +1,5 @@
-// Entomology → Flies and Myiasis. From "Flies & Myiasis" (SMS 164 entomology deck). Rewrites the
+// Entomology → Flies and Myiasis. From "Flies & Myiasis" (SMS 164 entomology deck), checked against
+// "SMS164_Vectors_biological_mechanical_myiasis_HB1" (B. Dinko) in the Telegram downloads, 2026-11-05. Rewrites the
 // original database lesson entomology-10 (same id, so progress is kept). Checked 2026-11-04;
 // teaching text in our own words. Practises the past questions on other vectors.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
@@ -131,6 +132,31 @@ export const entomologyMyiasis: Hb1Lesson = {
         ] }] },
       ],
     },
+    {
+      id: 'myi-vectors',
+      title: 'Mechanical and biological vectors',
+      kicker: 'From the SMS 164 vectors deck',
+      blocks: [
+        { k: 'p', x: 'A vector can pass on a pathogen in two ways. In <b>mechanical transmission</b> the pathogen is simply carried <b>on</b> the vector to the next host; the vector is usually not harmed by it. In <b>biological transmission</b> the pathogen uses the vector’s resources to <b>multiply and develop within</b> it before it is passed on (mosquitoes, black flies, tsetse). Insects are the main group of vectors.' },
+        { k: 'table', head: ['Mechanical vector', 'Appearance and habitat', 'How it transmits', 'Diseases', 'Control'], rows: [
+          { c: ['<b>Housefly</b>', 'Winged, 6 legs; near decaying protein, rubbish and faeces', 'Contact with its body or <b>spongy mouthparts</b>', '<b>Typhoid fever, cholera, hepatitis</b>', 'Netting, clean surroundings, chemicals'] },
+          { c: ['<b>Fleas</b>', 'Wingless crawling ectoparasites of mammals, 1.5–3.3 mm', 'Biting and blood-sucking', 'Bite dermatitis, rickettsial infection, typhus', 'Removal from the skin, chemicals'] },
+          { c: ['<b>Cockroach</b>', 'Winged crawlers in warm, moist, dark places', 'Contact with food and objects', 'Allergic reactions, <b>dysentery</b>', 'Chemicals, natural predators such as birds'] },
+          { c: ['<b>Horsefly</b>', 'Winged, 5–30 mm; warm climates', 'Biting and blood-sucking', 'Itchy swellings, <b>equine infectious anaemia virus</b>, <b>Loa loa</b>, <b>tularaemia</b> (rabbit fever)', 'Chemicals, skin protection'] },
+        ] },
+        { k: 'p', x: 'The deck sets a group task: list the features of insects that help mechanical transmission (for example hairy legs and bodies, sponging mouthparts, feeding on both filth and food, vomiting and defecating while feeding, interrupted blood meals on several hosts).' },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'p', x: 'The vectors deck gives the housefly as <b>1–5 mm</b> (houseflies are about 6–7 mm), the cockroach as <b>3–8 cm</b> (the cockroach deck says 1–5 cm), and describes fleas as having four legs (insects have <b>six</b>: three pairs). Its “rickettsia typhoid” means rickettsial (murine) typhus, not typhoid fever.' }] },
+        { k: 'h', x: 'Myiasis in this deck', l: 3 },
+        { k: 'ul', items: [
+          'Myiasis is infestation of human tissue, e.g. skin, by fly larvae (maggots), in tropical and subtropical areas; people with <b>untreated open wounds</b> are most at risk.',
+          'Main human species: <b>Dermatobia hominis</b> (human bot fly), <b>Cochliomyia hominivorax</b> (New World screw-worm), <b>Chrysomya bezziana</b> (Old World screw-worm), <b>Cordylobia anthropophaga</b> (tumbu fly).',
+          'D. hominis gives painful, discharging swellings on the body or scalp; death is rare, but <b>cerebral myiasis</b> has occurred in children when larvae entered the brain; secondary bacterial infection is common.',
+          'Diagnosis: finding the larvae in tissue; species identified from larval structures, helped by the <b>travel history</b>.',
+          'Three families cause important myiasis in livestock and people: <b>Calliphoridae</b> (blowflies, e.g. <b>Calliphora vomitoria</b> and <b>C. vicina</b>), <b>Oestridae</b> (bot flies) and <b>Sarcophagidae</b> (flesh flies, e.g. <b>Sarcophaga barbata</b>).',
+          'Treatment: <b>surgical removal</b> first; petroleum jelly over the opening cuts off air so the larva crawls out; antibiotics for secondary infection.',
+        ] },
+      ],
+    },
   ],
   quiz: [
     ['In Diptera the hindwings are reduced to', 'Halteres', ['Tegmina', 'Elytra', 'Hemelytra'], 'Balancing organs.', 'Flies'],
@@ -163,5 +189,10 @@ export const entomologyMyiasis: Hb1Lesson = {
     ['The human bot fly is', 'Dermatobia hominis', ['Cordylobia anthropophaga', 'Oestrus ovis', 'Chrysomya bezziana'], 'Central and South America.', 'Bot fly'],
     ['Dermatobia gluing its eggs onto a mosquito is an example of', 'Phoresy', ['Parthenogenesis', 'Transovarial spread', 'Viviparity'], 'Hitch-hiking.', 'Bot fly'],
     ['Covering a furuncle with petroleum jelly to remove a larva is', 'Occlusion', ['Debridement', 'Fumigation', 'Cauterisation'], 'The larva suffocates and backs out.', 'Control'],
+    ['In mechanical transmission the pathogen', 'Is carried on the vector', ['Multiplies within the vector', 'Develops in the vector’s gut', 'Is passed to the vector’s eggs'], 'Biological transmission involves multiplication within.', 'Vectors'],
+    ['Which disease is spread mechanically by houseflies?', 'Typhoid fever', ['Loa loa', 'Tularaemia', 'Onchocerciasis'], 'Also cholera and hepatitis.', 'Vectors'],
+    ['Horseflies are linked with which filarial worm?', 'Loa loa', ['Wuchereria bancrofti', 'Onchocerca volvulus', 'Brugia malayi'], 'Also tularaemia and equine infectious anaemia.', 'Vectors'],
+    ['A rare, serious complication of Dermatobia hominis in children is', 'Cerebral myiasis', ['Urinary myiasis', 'Enteric myiasis', 'Ophthalmic myiasis'], 'Larvae entering the brain.', 'Myiasis'],
+    ['Sarcophaga barbata belongs to the family', 'Sarcophagidae', ['Calliphoridae', 'Oestridae', 'Muscidae'], 'Flesh flies.', 'Myiasis'],
   ],
 };

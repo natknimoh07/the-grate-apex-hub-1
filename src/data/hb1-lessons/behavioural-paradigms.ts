@@ -1,7 +1,8 @@
-// Behavioural Science → Theoretical Paradigms. The paradigms lecture deck is not in the HB1 folder,
-// so this lesson rewrites the original database lesson behavioural-02 (same id, so progress is
-// kept) from its content, the paradigm slides of Lecture 1 and standard psychology texts,
-// checked 2026-11-04; the teaching text is in our own words. It practises the course's Quiz 2
+// Behavioural Science → Theoretical Paradigms. Rewrites the original database lesson behavioural-02
+// (same id, so progress is kept) from its content, the paradigm slides of Lecture 1 and standard
+// psychology texts (2026-11-04), then checked slide by slide against the lecture deck "Week 2-
+// Theoretical Paradigms.pptx" (SMS 154, E. Ohenewa) from the owner's Telegram downloads
+// (2026-11-05); the teaching text is in our own words. It practises the course's Quiz 2
 // and the past questions on schools and perspectives.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 
@@ -31,6 +32,7 @@ export const behaviouralParadigms: Hb1Lesson = {
           { c: ['<b>Cognitive</b>', 'No single founder', 'The mind as an <b>information processor</b>'] },
           { c: ['<b>Biological</b>', '—', 'Genes, hormones and the nervous system'] },
         ] },
+        { k: 'box', title: 'Activity from the lecture', tone: 'life', blocks: [{ k: 'p', x: 'List all the factors linked to <b>substance misuse</b>, then sort them into groups — biological (genes, brain reward pathways), psychological (stress, beliefs, learned habits) and social (peers, family, availability). The exercise shows why no single approach explains the whole behaviour.' }] },
       ],
     },
     {
@@ -38,7 +40,7 @@ export const behaviouralParadigms: Hb1Lesson = {
       title: 'The psychodynamic approach',
       kicker: 'Freud and the unconscious',
       blocks: [
-        { k: 'p', x: '“Psychodynamic” refers to the <b>active forces within the personality</b> that drive behaviour, especially <b>unconscious conflict</b> between its parts. It includes Freud’s theory and those built on it by <b>Jung, Adler and Erikson</b>.' },
+        { k: 'p', x: '“Psychodynamic” refers to the <b>active forces within the personality</b> that drive behaviour, especially <b>unconscious conflict</b> between its parts. It includes Freud’s theory and those built on it by <b>Jung, Adler and Erikson</b>. Freud was interested in how the mind could cause <b>physical symptoms</b>; he experimented with <b>hypnosis</b> and, with his friend <b>Josef Breuer</b>, proposed that many <b>neuroses</b> (phobias, paranoia, hysterical paralysis and pain) begin in <b>traumatic childhood events</b> that have since been forgotten.' },
         { k: 'ul', items: [
           '<b>Psychic determinism</b>: all behaviour comes from childhood experiences held in the unconscious.',
           'Much behaviour is driven by <b>unconscious thoughts and desires</b>.',
@@ -110,7 +112,7 @@ export const behaviouralParadigms: Hb1Lesson = {
         { k: 'p', x: 'For Maslow, the main cause of psychopathology is <b>failure to satisfy fundamental needs</b>; a lower level must be largely met before the next motivates.' },
         { k: 'cards', items: [
           { title: 'Rogers’ person-centred approach', blocks: [{ k: 'p', x: 'Centred on the <b>self-concept</b>. When the self-concept matches the <b>ideal self</b>, self-esteem is high; a big mismatch (incongruence) causes distress. People can solve their own problems given the right conditions: <b>empathy</b>, <b>unconditional positive regard</b> and <b>congruence (genuineness)</b>.' }] },
-          { title: 'Evaluation', blocks: [{ k: 'ul', items: ['A collection of theories, not one', 'Hard to test empirically', 'Rogers’ core conditions are arguably what any good health worker does anyway'] }] },
+          { title: 'Evaluation', blocks: [{ k: 'ul', items: ['A collection of diverse theories with shared principles, made by people optimistic about human potential, not one comprehensive theory (Wilson et al., 1996)', 'Hard to test empirically', 'Rogers’ core conditions are arguably what any good health worker does anyway'] }] },
         ] },
       ],
     },
@@ -165,5 +167,7 @@ export const behaviouralParadigms: Hb1Lesson = {
     ['A therapy combining cognitive and behavioural principles is', 'CBT', ['Psychoanalysis', 'Person-centred therapy', 'Free association'], 'Cognitive behavioural therapy.', 'Cognitive'],
     ['A criticism of cognitive theories is that they', 'Rely on artificial laboratory settings', ['Deny that mental processes exist', 'Cannot be tested scientifically', 'Focus only on the unconscious'], 'Also ignore emotion and biology.', 'Cognitive'],
     ['The model combining biological, psychological and social factors is the', 'Biopsychosocial model', ['Medical model', 'Psychodynamic model', 'Stimulus–response model'], 'Often with a spiritual component.', 'Biopsychosocial'],
+    ['With whom did Freud develop the idea that neuroses come from forgotten childhood trauma?', 'Josef Breuer', ['Carl Jung', 'Alfred Adler', 'Erik Erikson'], 'After experimenting with hypnosis.', 'Psychodynamic'],
+    ['Freud first explored the unconscious through', 'Hypnosis', ['Brain imaging', 'Operant conditioning', 'Laboratory experiments'], 'Before free association.', 'Psychodynamic'],
   ],
 };

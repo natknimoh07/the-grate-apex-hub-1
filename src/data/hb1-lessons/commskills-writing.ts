@@ -3,7 +3,10 @@
 // topic lesson covered: paragraph types and topic sentences, summary writing, preposition usage with
 // transitive verbs, commonly misspelt words, the passive voice, conditionals and sequence of tenses,
 // and comprehension questions. Built from communication_skills_answered by Abanga (1).pdf and the
-// course grammars; teaching text in our own words. Practises the past-question sets.
+// course grammars; teaching text in our own words. Practises the past-question sets. On 2026-11-05
+// the lecture decks for spelling (LECTURE 4 final SPELLING IN ENGLISH SLIDES.pptx) and the paragraph
+// (LECTURE 5 finalPARAGRAPH LECTURE SLIDES.pptx) were found in the owner's Telegram downloads, and
+// a section from each was added.
 import type { Hb1Lesson } from '@/data/hb1-lessons';
 
 export const commskillsWriting: Hb1Lesson = {
@@ -12,7 +15,7 @@ export const commskillsWriting: Hb1Lesson = {
   title: 'Writing Skills: Paragraphs, Summaries, Usage and Comprehension',
   summary: 'The paragraph, its topic sentence, unity and coherence; the four paragraph types (descriptive, narrative, expository, argumentative) and ordering sentences into a paragraph; summary writing: neutrality, own words, signal words and the steps; preposition usage: transitive verbs that take no preposition and fixed phrases that need one; commonly misspelt words and the rules behind them; active and passive voice in every tense; conditional sentences and the sequence of tenses (“it is high time”); answering comprehension questions on meaning, word class and function, idioms and the writer’s purpose',
   minutes: 26,
-  source: 'communication_skills_answered by Abanga (1).pdf; Quirk & Greenbaum (1973)',
+  source: 'communication_skills_answered by Abanga (1).pdf; LECTURE 4 final SPELLING IN ENGLISH SLIDES.pptx; LECTURE 5 finalPARAGRAPH LECTURE SLIDES.pptx; Quirk & Greenbaum (1973)',
   quizId: 'cswr',
   quizName: 'Quiz · Writing Skills (lesson)',
   pastSets: ['s8', 's9'],
@@ -57,6 +60,93 @@ export const commskillsWriting: Hb1Lesson = {
           'Write them as connected sentences, then check against the passage and the word count.',
         ] }] },
         { k: 'box', title: 'Check the answer sheet', tone: 'red', blocks: [{ k: 'p', x: 'For “Why write in your own words in a summary?” the answered quiz shows <b>c</b> (“to exclude illustrations”) as selected but explains that the correct answer is <b>d</b>, “It helps us to achieve brevity”. Leaving out illustrations is a separate rule, not the reason for using your own words.' }] },
+      ],
+    },
+    {
+      id: 'wr-para-lecture',
+      title: 'Building a paragraph (Lecture 5)',
+      kicker: 'Unity, coherence, completeness',
+      blocks: [
+        { k: 'p', x: 'The word comes from the Greek <i>paragraphos</i>, a line marking a break in sense or a change of speaker. A paragraph is a <b>group of related sentences developing one main idea</b>: a self-contained unit of writing on one point, a <b>miniature essay</b>. It is shown either by <b>indentation</b> or as a <b>block</b> with a line space.' },
+        { k: 'h', x: 'When to start a new paragraph', l: 3 },
+        { k: 'ul', items: ['When you move from one major point to another.', 'When you move the reader to another time or place.', 'When you begin a new step in a process.', 'When you want to emphasise an important idea.', 'Each time a new person speaks in dialogue.', 'To mark the end of the introduction and the start of the conclusion.'] },
+        { k: 'cards', items: [
+          { title: 'Unity', blocks: [{ k: 'p', x: 'Every sentence supports the central idea directly or indirectly; a sentence not tied to it is meaningless there.' }] },
+          { title: 'Coherence (cohesion)', blocks: [{ k: 'p', x: 'Not a “forest of sentences” but a <b>chain</b> held by a thread: details ordered by space, time, importance or logic, joined by pronouns, repeated key words, <b>synonyms</b> and transitions.' }] },
+          { title: 'Completeness', blocks: [{ k: 'p', x: 'The idea is fully developed — not <b>under-developed</b>, not <b>over-developed</b> (repeating itself), and not <b>wrongly developed</b> (a different idea from the one stated).' }] },
+        ] },
+        { k: 'p', x: 'So a good paragraph is a <b>UCC</b> paragraph: unified, coherent, complete.' },
+        { k: 'table', head: ['Linkers that…', 'Examples'], rows: [
+          { c: ['Add or sequence', 'again, also, besides, first… second… third, furthermore, in addition, moreover, one… another, too'] },
+          { c: ['Show time', 'afterward, as soon as, at first, at the same time, before, earlier, finally, in the meantime, later, meanwhile, next, now, soon, subsequently, then, until'] },
+          { c: ['Compare', 'also, by the same token, in comparison, likewise, similarly'] },
+          { c: ['Contrast', 'although, but, despite, even though, however, in contrast, instead, nevertheless, nonetheless, on the contrary, on the one hand… on the other hand, still, whereas, yet, conversely'] },
+          { c: ['Introduce examples', 'for example, for instance, namely, specifically, thus'] },
+          { c: ['Narrow the focus', 'after all, indeed, in fact, in other words, in particular, that is'] },
+          { c: ['Conclude or sum up', 'as a result, consequently, in conclusion, in summary, therefore, thus, to conclude, finally'] },
+          { c: ['Concede', 'admittedly, certainly, granted, naturally, of course'] },
+          { c: ['Give causes or effects', 'accordingly, because, consequently, hence, since, so, then, therefore'] },
+        ] },
+        { k: 'h', x: 'The five functional sentences', l: 3 },
+        { k: 'table', head: ['Sentence', 'Job'], rows: [
+          { c: ['<b>Topic sentence</b>', 'States the main idea; the <b>most general</b> sentence. <b>Explicit</b> (stated, easy to underline; common in expository and argumentative writing) or <b>implied</b> (worked out by the reader; common in narrative and descriptive writing). It can sit at the start, middle or end, depending on style, formality, subject and purpose'] },
+          { c: ['<b>Major supporting sentence (MaSS)</b>', 'Develops the topic sentence <b>directly</b>; there may be several'] },
+          { c: ['<b>Minor supporting sentence (MiSS)</b>', 'Develops a major supporting sentence directly and the topic sentence only indirectly; a MaSS may have several'] },
+          { c: ['<b>Concluding sentence</b>', 'Usually last, optional but good: restates the topic sentence, sums up, or gives the writer’s final remark'] },
+          { c: ['<b>Transitional sentence</b>', 'Optional last sentence instead of a conclusion: closes this point and hints at the next paragraph'] },
+        ] },
+        { k: 'box', title: 'Spotting the topic sentence', tone: 'recall', blocks: [{ k: 'ul', items: ['It contains the topic itself.', 'It has <b>no details</b>; it is general.', 'It often ends in, or contains, a plural general noun (reasons, problems, factors) covering the details.', 'A sentence followed by a <b>contrast</b> term is not the topic sentence.', 'It never begins with an example transition (for instance, second, in addition).'] }] },
+        { k: 'table', head: ['Strategy for developing the topic sentence', 'How'], rows: [
+          { c: ['<b>Definition</b>', 'Say what the key term means (“CWA refers to…”)'] },
+          { c: ['<b>Explanation</b>', 'Break the idea into its kinds or causes (social, academic, financial, emotional)'] },
+          { c: ['<b>Exemplification</b>', 'Give instances: “for instance”, “for example”, “a case is…”'] },
+          { c: ['<b>Description</b>', 'Appeal to at least one of the reader’s senses'] },
+          { c: ['<b>Compare and contrast</b>', 'Bring out likenesses and differences with suitable conjunctions'] },
+        ] },
+        { k: 'p', x: 'The lecture also notes that real writing often mixes the four paragraph types, and that in a sense <b>all writing is persuasive</b>. In its rearranging exercise the answer is 2, 4, 1, 3, 5, 7, 6: the general claim about dictionaries first, then the doubt about knowing their contents, then each kind of information, with “Finally” and the summary last.' },
+      ],
+    },
+    {
+      id: 'wr-spelling-lecture',
+      title: 'Spelling rules (Lecture 4)',
+      kicker: 'Why English words are spelt as they are',
+      blocks: [
+        { k: 'p', x: 'Spelling is combining letters of the alphabet to form a written word. Errors in it are <b>misspellings</b>.' },
+        { k: 'table', head: ['Rule', 'Examples', 'Exceptions'], rows: [
+          { c: ['<b>Silent letters</b> are written but not said; some letter groups stand for another sound', 'knife, listen; tough (f), stomach (k)', '—'] },
+          { c: ['Break long words into <b>syllables</b> (units of speech sound)', 'wa-ter, ex-tra-or-di-na-ry', '—'] },
+          { c: ['A final <b>e</b> makes the vowel long', 'man → mane, pin → pine', 'live, give, come'] },
+          { c: ['A <b>double consonant</b> keeps a vowel short when a suffix is added', 'fog → foggy, win → winning, will → willing', '—'] },
+          { c: ['<b>f, l, s, z</b> double at the end of one-syllable words with a short vowel', 'cliff, toss, hull, jazz', 'chef, was, pal'] },
+          { c: ['<b>ck</b> acts as the double consonant after a short vowel in one-syllable words; no c is needed when another consonant follows the vowel', 'clock, tick, slack, kick; walk, silk, brisk', '—'] },
+          { c: ['<b>d</b> before a soft g keeps the vowel short', 'fudge, bridge, lodge', 'tragedy, rigid'] },
+          { c: ['For the sound /iː/, <b>i before e</b>', 'belief, siege, yield', 'seize, weird, protein'] },
+          { c: ['For the sound /eɪ/, <b>e before i</b>', 'reign, neigh, vein', '—'] },
+          { c: ['After <b>l</b>, i comes before e (“Alice”)', 'Alice', '—'] },
+        ] },
+        { k: 'h', x: 'Adding suffixes', l: 3 },
+        { k: 'ul', items: [
+          'Double the final consonant (b, d, g, l, m, n, p, r, t) before -ed, -ing, -er, -est after a short vowel: running, swimming, sobbed, bigger; also when a word ends consonant–vowel–consonant: travel → traveller.',
+          'In longer words, double only if the <b>last syllable is stressed</b>: begin → beginning, but open → opening.',
+          'Words ending in <b>l</b>: British English doubles it even when unstressed (fuelled); American English does not (fueled).',
+          'Verbs ending in <b>c</b> add k before -ing and -ed: picnic → picnicking, panic → panicked.',
+          'A silent final <b>e</b> is dropped before -ing (rhyme → rhyming, realise → realising) but <b>ee</b> stays (see → seeing, flee → fleeing).',
+          'Words ending in silent e, ie or a vowel + e add only <b>-d</b>: clothe → clothed, tiptoe → tiptoed, save → saved.',
+          'Consonant + <b>y</b>: change y to i before -ed (cry → cried, spy → spied) but keep y before -ing (fry → frying, spy → spying).',
+          'Vowel + <b>y</b>: keep the y (pray → prayed, survey → surveyed); exceptions pay → paid, say → said.',
+        ] },
+        { k: 'table', head: ['Misspelling', 'Detail'], rows: [
+          { c: ['Types', 'Wrongly repeated consonants, wrong vowel, wrong consonant, reversed double vowels, extra letters, missing letters'] },
+          { c: ['Causes', 'Mispronunciation, homophones, typing errors, different spelling versions, not knowing the correct form'] },
+          { c: ['Effects', 'Miscommunication; poorer understanding of the text'] },
+          { c: ['Remedies', 'Build vocabulary; use syllables, mnemonics, the sounds and stress of words, and a dictionary; do not spell purely by pronunciation'] },
+          { c: ['Common errors', 'achieve (not acheive), argument (not arguement), colleague (not collegue), committee (not commitee)'] },
+        ] },
+        { k: 'table', head: ['British', 'American'], rows: [
+          { c: ['analyse, defence, neighbour', 'analyze, defense, neighbor'] },
+          { c: ['travelled, centre, humour, litre', 'traveled, center, humor, liter'] },
+        ] },
+        { k: 'box', title: 'Strictly speaking', tone: 'gold', blocks: [{ k: 'p', x: 'The slide says the ie rule is for the sound /iː/ and then that “when the sound /iː/, e always comes before i”. The second rule is for the <b>/eɪ/</b> sound (as in <i>neighbour</i>, <i>weigh</i>): reign, neigh and vein all say “ay”. The deck opens with slides on <b>Turnitin</b>, the library’s plagiarism-checking software (creating a class and an assignment, enrolling students, submitting papers).' }] },
       ],
     },
     {
@@ -164,5 +254,13 @@ export const commskillsWriting: Hb1Lesson = {
     ['In “The answer may be varied”, “varied” functions as the', 'Complement', ['Subject', 'Direct object', 'Adverbial'], 'After be.', 'Comprehension'],
     ['“You could hear a pin drop” means the place was', 'Completely silent', ['Very crowded', 'Very untidy', 'Brightly lit'], 'Idiom.', 'Comprehension'],
     ['In a morbid context, “to succumb” means', 'To die', ['To rejoice', 'To recover', 'To argue'], 'Yield to death.', 'Comprehension'],
+    ['A good paragraph is described as a UCC paragraph: unity, coherence and', 'Completeness', ['Clarity', 'Correctness', 'Conciseness'], 'Lecture 5.', 'Paragraph'],
+    ['A sentence that develops a major supporting sentence directly is a', 'Minor supporting sentence', ['Topic sentence', 'Transitional sentence', 'Concluding sentence'], 'It develops the topic sentence only indirectly.', 'Paragraph'],
+    ['An implied topic sentence is most common in', 'Narrative and descriptive writing', ['Expository and argumentative writing', 'Scientific and legal writing', 'Business letters and reports'], 'Explicit ones are common in expository and argumentative writing.', 'Paragraph'],
+    ['Which linker introduces a concession?', 'Admittedly', ['Consequently', 'Meanwhile', 'Specifically'], 'Also granted, of course, naturally.', 'Paragraph'],
+    ['Which verb correctly doubles its final consonant before -ing?', 'Begin → beginning', ['Open → openning', 'Visit → visitting', 'Offer → offerring'], 'Double only when the last syllable is stressed.', 'Spelling'],
+    ['The correct -ing form of picnic is', 'Picnicking', ['Picnicing', 'Picnicqing', 'Picniking'], 'Verbs in c add k before -ing and -ed.', 'Spelling'],
+    ['Which is the American spelling?', 'Fueled', ['Fuelled', 'Travelled', 'Centre'], 'British English doubles the l even when unstressed.', 'Spelling'],
+    ['Which word is an exception to “i before e” for the /iː/ sound?', 'Seize', ['Belief', 'Siege', 'Yield'], 'Also weird and protein.', 'Spelling'],
   ],
 };

@@ -5739,7 +5739,7 @@
   {
    "id": "commskills",
    "name": "Communication Skills",
-   "total": 702,
+   "total": 710,
    "topics": [
     {
      "id": "'And' & Correlative Conjunctions",
@@ -6150,6 +6150,14 @@
      "unrated": 4
     },
     {
+     "id": "Paragraph",
+     "title": "Paragraph",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 4
+    },
+    {
      "id": "Paragraphs",
      "title": "Paragraphs",
      "easy": 0,
@@ -6339,7 +6347,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 4
+     "unrated": 8
     },
     {
      "id": "Structural",
@@ -11622,7 +11630,7 @@
   {
    "id": "behavioural",
    "name": "Behavioural Science",
-   "total": 705,
+   "total": 707,
    "topics": [
     {
      "id": "Amnesia",
@@ -12078,7 +12086,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 8
     },
     {
      "id": "Psychosexual stages",
@@ -12253,7 +12261,7 @@
   {
    "id": "entomology",
    "name": "Entomology",
-   "total": 993,
+   "total": 1002,
    "topics": [
     {
      "id": "Adaptations",
@@ -12341,7 +12349,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 7
     },
     {
      "id": "Blackflies",
@@ -12405,7 +12413,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 21
+     "unrated": 22
     },
     {
      "id": "Culicines",
@@ -12629,7 +12637,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 1
+     "unrated": 2
     },
     {
      "id": "Metamorphosis",
@@ -12661,7 +12669,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 7
+     "unrated": 8
     },
     {
      "id": "Mosquito control",
@@ -12693,7 +12701,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 8
+     "unrated": 10
     },
     {
      "id": "Nuisance",
@@ -12926,6 +12934,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 12
+    },
+    {
+     "id": "Vectors",
+     "title": "Vectors",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Venoms",

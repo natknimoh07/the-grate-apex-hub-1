@@ -1,4 +1,5 @@
-// Entomology → Cockroaches. From "11.Cockroaches.pptx" (SMS 164). Rewrites the original database
+// Entomology → Cockroaches. From "11.Cockroaches.pptx" (SMS 164), checked against the second
+// cockroach deck in the owner's Telegram downloads, "SMS164_Cockroaches.pdf" (B. Dinko), 2026-11-05. Rewrites the original database
 // lesson entomology-08 (same id, so progress is kept). Checked 2026-11-04; teaching text in our
 // own words. Practises Topic Quiz 8 (cockroaches).
 import type { Hb1Lesson } from '@/data/hb1-lessons';
@@ -93,6 +94,19 @@ export const entomologyCockroaches: Hb1Lesson = {
           { c: ['<b>Baits</b>', 'Insecticide plus food attractant, with <b>slow-acting</b> toxins (<b>boric acid</b>, abamectin) so the cockroach returns to the harbourage; others die from its faeces and vomit'] },
           { c: ['<b>Insect growth regulators (IGRs)</b>', 'Stop them reproducing: slow (<b>4–6 weeks</b> to see a fall) but longer lasting. Signs: <b>twisted wings</b> and more cockroaches seen by day, which means it is working'] },
         ] },
+        { k: 'h', x: 'What the SMS 164 cockroach deck adds', l: 3 },
+        { k: 'p', x: 'A second deck on the same lecture (Dr B. Dinko) gives these extra points:' },
+        { k: 'table', head: ['Topic', 'Detail'], rows: [
+          { c: ['Numbers and names', 'About <b>4000 species</b>, of which about <b>50</b> are domestic pests; also called roaches or <b>steambugs</b>; the name Blattaria comes from the Latin <b>blatta</b>, cockroach'] },
+          { c: ['Disease', 'Not true vectors like mosquitoes or fleas (no direct transmission), but they carry pathogens, typically of <b>gastroenteritis</b>, and drop them on food and equipment'] },
+          { c: ['Sizes', 'American about <b>30 mm</b>, Oriental about <b>25 mm</b>, German about <b>15 mm</b>'] },
+          { c: ['Body', 'Tough, smooth, shiny integument; pilose segmented cerci in both sexes; three pairs of spiny, bristly legs; mouthparts chew, gnaw and scrape — <b>no piercing stylets</b>, so they cannot bite to feed on blood; female wings usually shorter; hindwings rarely used in temperate climates'] },
+          { c: ['Habits', 'Like warmth (hide behind radiators and hot-water pipes by day); eat almost anything (paper, hair, excreta, shoes, cloth, dead insects, vegetables); survive <b>5–10 weeks without water</b> and many months without food'] },
+          { c: ['Instars', 'Usually <b>6</b> nymphal instars (<b>up to 13</b> in P. americana)'] },
+          { c: ['More pathogens', 'Bacteria: Staphylococcus aureus, <b>Klebsiella pneumoniae</b>. Virus: poliomyelitis. Protozoa: <b>Giardia</b> intestinalis (lamblia), Balantidium coli, Entamoeba histolytica. Fungi: <b>Aspergillus</b>. Nematodes: <b>Enterobius vermicularis</b>, Ascaris lumbricoides, <b>Trichuris trichiura</b>. Intermediate host of the acanthocephalan <b>Moniliformis moniliformis</b>. Allergy to cockroaches or their dried faecal pellets'] },
+          { c: ['Control', 'Chemical: spraying, dusting selected sites, <b>lacquers and varnishes with residual insecticide such as 1% cypermethrin</b> painted on walls. Non-chemical: <b>natural predators such as domestic birds</b>, gel baits, adhesive (sticky) traps'] },
+        ] },
+        { k: 'box', title: 'Check this slide', tone: 'red', blocks: [{ k: 'p', x: 'The two decks disagree on water: the SMS 164 deck says cockroaches survive <b>5–10 weeks without water</b>, while the IPM slide says a German cockroach lasts only about <b>12 days without water</b> (but 42 days without food). The IPM figures are for the German cockroach; larger species survive longer.' }] },
         { k: 'box', title: 'Lesson summary', tone: 'recall', blocks: [{ k: 'ul', items: [
           'Dictyoptera, Blattodea; American, Australian, German, Oriental.',
           'Flattened, shiny, pronotum over the head, tegmina + fan-shaped hindwings, cerci.',
@@ -135,5 +149,9 @@ export const entomologyCockroaches: Hb1Lesson = {
     ['A slow-acting toxin used in cockroach baits is', 'Boric acid', ['Pyrethrin', 'DEET', 'Chlorine'], 'Also abamectin.', 'Control'],
     ['Pyrethrin aerosols give', 'Rapid but short knockdown', ['Months of residual action', 'Sterility in adults', 'Twisted wings'], 'Non-residual.', 'Control'],
     ['Twisted wings in adult cockroaches show exposure to', 'Insect growth regulators', ['Slow-acting boric acid baits', 'Pyrethrin knockdown sprays', 'Glue-board sticky traps'], 'IGRs take 4–6 weeks.', 'Control'],
+    ['About how many cockroach species are domestic pests (SMS 164 deck)?', 'About 50', ['About 400', 'About 4000', 'About 5'], 'Of about 4000 known species.', 'Biology'],
+    ['Cockroaches cannot feed on blood because they lack', 'Piercing stylets', ['Compound eyes', 'Filiform antennae', 'A pair of cerci'], 'Their mouthparts chew, gnaw and scrape.', 'Morphology'],
+    ['Cockroaches are intermediate hosts of the acanthocephalan', 'Moniliformis moniliformis', ['Hymenolepis diminuta', 'Dipylidium caninum', 'Trichuris trichiura'], 'SMS 164 deck.', 'Medical importance'],
+    ['A residual insecticide painted on walls in lacquer for cockroach control is', '1% cypermethrin', ['5% boric acid', '10% DDT dust', '2% malathion'], 'SMS 164 deck.', 'Control'],
   ],
 };
