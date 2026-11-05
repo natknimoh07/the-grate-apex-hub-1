@@ -186,7 +186,7 @@
   {
    "id": "hb2-biochemistry",
    "name": "Biochemistry",
-   "total": 3906,
+   "total": 4109,
    "topics": [
     {
      "id": "fatty-acid-biosynthesis",
@@ -279,7 +279,7 @@
     {
      "id": "immunology",
      "title": "Immunology",
-     "easy": 136,
+     "easy": 339,
      "medium": 0,
      "hard": 0,
      "unrated": 114

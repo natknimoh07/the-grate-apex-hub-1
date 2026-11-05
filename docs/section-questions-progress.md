@@ -34,7 +34,7 @@ HB2 Biochemistry
 - [x] free-radicals-and-oxygen-toxicity — 22 sections, 110 questions
 - [x] amino-acid-metabolism — 33 sections, 165 questions
 - [x] nucleic-acids — 55 sections, 275 questions (two files, a and b)
-- [ ] immunology
+- [x] immunology — 41 sections, 205 questions (two files, a and b)
 
 HB2 Physiology
 - [ ] cardiovascular-physiology
