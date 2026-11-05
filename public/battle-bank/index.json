@@ -1512,7 +1512,7 @@
   {
    "id": "medgen",
    "name": "Basic Medical Genetics",
-   "total": 1982,
+   "total": 1996,
    "topics": [
     {
      "id": "Apoptosis & Programmed Cell Death",
@@ -1587,6 +1587,14 @@
      "unrated": 1
     },
     {
+     "id": "Cell cycle",
+     "title": "Cell cycle",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 1
+    },
+    {
      "id": "Cell Cycle, Mitosis & Meiosis",
      "title": "Cell Cycle, Mitosis & Meiosis",
      "easy": 0,
@@ -1616,7 +1624,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 5
+     "unrated": 6
     },
     {
      "id": "Chi-square",
@@ -1632,7 +1640,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 4
     },
     {
      "id": "Chromatin, Chromosome Structure & Karyotype",
@@ -1656,7 +1664,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 2
+     "unrated": 4
     },
     {
      "id": "Concepts",
@@ -1960,7 +1968,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 9
+     "unrated": 13
     },
     {
      "id": "Membrane",
@@ -2008,7 +2016,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 6
+     "unrated": 7
     },
     {
      "id": "Model phages",
@@ -2064,7 +2072,7 @@
      "easy": 0,
      "medium": 0,
      "hard": 0,
-     "unrated": 3
+     "unrated": 4
     },
     {
      "id": "Operon",
@@ -2233,6 +2241,14 @@
      "medium": 0,
      "hard": 0,
      "unrated": 7
+    },
+    {
+     "id": "Special chromosomes",
+     "title": "Special chromosomes",
+     "easy": 0,
+     "medium": 0,
+     "hard": 0,
+     "unrated": 3
     },
     {
      "id": "Statistics",
