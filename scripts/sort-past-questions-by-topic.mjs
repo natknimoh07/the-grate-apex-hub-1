@@ -119,6 +119,38 @@ const OVERRIDES = {
 const OPTIONS_WEIGHT = 1;
 const QUESTION_WEIGHT = 2;
 
+// Microanatomy (owner, 2026-11-05): a question sorted into Histology that is about one of the
+// systems with a Microanatomy topic goes to that topic instead (most matching words wins; the
+// question itself counts double). Lymphoid organs, glands and basic tissues stay in Histology.
+const MICRO_SPLIT = {
+  'hb2-anatomy': {
+    'cardiovascular-system-micro': ['heart (wall|valve)', 'endocard', 'myocard', 'epicard', 'purkinje', 'arter', 'aorta', '\\bveins?\\b|venule|venous', 'capillar', 'tunica (intima|media|adventitia)', 'elastic lamina|elastic membrane', 'vasa vasorum', 'endotheli', 'pericyte', 'lymphatic (vessel|capillar)'],
+    'respiratory-system-micro': ['olfactory', 'paranasal', 'nasal', 'laryn', 'vocal', 'epiglottis', 'trachea', 'bronch', 'alveol', 'pneumocyte', 'surfactant', 'club cell|clara', 'respiratory (epithel|mucosa|system|tract)', 'dust cell'],
+    'gastrointestinal-system-micro': ['oesophag|esophag', 'stomach|gastric', 'parietal cell', 'chief cell', 'duoden', 'jejun', 'ileum|ileal', 'colon', 'appendix', 'rectum|rectal|\\banal\\b|anus', 'vill(i|us)', 'crypt', 'Brunner', 'Peyer', 'tongue', 'lingual', 'taste bud', 'salivary|parotid|submandibular|sublingual', 'tooth|teeth|enamel|dentin|odontoblast|ameloblast|cementum', 'liver|hepat|Kupffer', 'gall ?bladder', 'pancrea', 'vermilion', 'oral (mucosa|cavity)', 'taeniae', 'digestive|alimentary|gastrointestinal|\\bgut\\b'],
+  },
+};
+const microCompiled = Object.fromEntries(
+  Object.entries(MICRO_SPLIT).map(([bank, topics]) => [bank, Object.entries(topics).map(([id, words]) => ({ id, res: words.map((w) => new RegExp(w, 'i')) }))])
+);
+/** The Microanatomy topic a Histology question belongs to, or null: judged on the question's own
+ *  stem only (options of a generic question often name several systems), and never for a stem
+ *  about another organ system. */
+const OTHER_SYSTEMS = /endocrine gland|lymphoid organ|muscle fib|unknown location|reproductive|endometri|uter|ovar|cervix|vagin|placent|renal|kidney|nephron|ureter|bladder|urethra|test(is|es)|prostat|epididym|thyroid|adrenal|pituitar|hypophys|pineal|\bskin\b|epiderm|dermis|bone|cartilag|spleen|thymus|lymph node/i;
+function microTopic(bankId, q) {
+  const topics = microCompiled[bankId];
+  if (!topics) return null;
+  const stem = plain(stemOf(q) ?? q.q);
+  if (OTHER_SYSTEMS.test(stem)) return null;
+  const total = {};
+  scores(stem, topics, 1, total);
+  if (/liver|hepat|Kupffer|gall ?bladder|pancrea/i.test(stem)) return 'gastrointestinal-system-micro';
+  if (/nostril|nasal/i.test(stem)) return 'respiratory-system-micro';
+  let topic = null;
+  let top = 0;
+  for (const { id } of topics) if ((total[id] ?? 0) > top) { top = total[id]; topic = id; }
+  return top >= 1 ? topic : null;
+}
+
 const compiled = Object.fromEntries(
   Object.entries(TOPICS).map(([bank, topics]) => [bank, Object.entries(topics).map(([id, words]) => ({ id, res: words.map((w) => new RegExp(w, 'i')) }))])
 );
@@ -195,6 +227,7 @@ for (const bankId of Object.keys(TOPICS)) {
       const corrected = group.items.map((q) => OVERRIDES[bankId][q.id]).find(Boolean);
       for (const q of group.items) {
         q.tp = corrected ?? group.smoothed ?? group.topic;
+        if (q.tp === 'histology' && !corrected) q.tp = microTopic(bankId, q) ?? q.tp;
         counts[q.tp] = (counts[q.tp] ?? 0) + 1;
         if (samplesFor === q.tp) console.log(`  [${set.id}] ${plain(q.q).replace(/\s+/g, ' ').slice(0, 150)}`);
       }

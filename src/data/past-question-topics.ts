@@ -18,8 +18,11 @@ export const PAST_TOPICS: Record<string, readonly PastTopic[]> = {
     { id: 'gastrointestinal-system-gross', title: 'Gastrointestinal System' },
     { id: 'upper-limb', title: 'Upper Limb' },
     { id: 'general-anatomy', title: 'General Anatomy: Bones, Joints and Body Systems' },
-    { id: 'embryology', title: 'Embryology' },
-    { id: 'histology', title: 'Histology' },
+    { id: 'cardiovascular-system-micro', title: 'Cardiovascular System (Micro)' },
+    { id: 'respiratory-system-micro', title: 'Respiratory System (Micro)' },
+    { id: 'gastrointestinal-system-micro', title: 'Gastrointestinal System (Micro)' },
+    { id: 'embryology', title: 'Early Embryology' },
+    { id: 'histology', title: 'Histology: Tissues and Other Organs' },
     { id: OTHER_PAST_TOPIC, title: 'Other topics' },
   ],
   'hb2-biochemistry': [
