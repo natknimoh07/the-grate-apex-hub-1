@@ -10,6 +10,7 @@ import { buildTopic } from '@/data/topics/build';
 import { assertionReasonQuestions } from '@/data/topics/oxygen-carriers/assertion-reason';
 import { lessons } from '@/data/topics/oxygen-carriers/lessons';
 import { questions } from '@/data/topics/oxygen-carriers/questions';
+import { thalassaemiaQuestions } from '@/data/topics/oxygen-carriers/thalassaemias';
 import {
   concepts,
   diagrams,
@@ -23,15 +24,15 @@ export const oxygenCarriers = buildTopic({
   courseId: 'biochemistry-lectures',
   title: 'Oxygen Carriers: Myoglobin and Haemoglobin',
   description:
-    'How myoglobin and haemoglobin hold haem, why the protein matters, co-operative binding, the Bohr effect, 2,3-BPG and fetal haemoglobin.',
+    'How myoglobin and haemoglobin hold haem, why the protein matters, co-operative binding, the Bohr effect, 2,3-BPG, fetal haemoglobin and the thalassaemias.',
   emoji: '💨',
   source: 'Lecture: Oxygen Carriers: Myoglobin and Haemoglobin — Edwin F. Laing',
   sourceFileIds:
     contentTopics.find((topic) => topic.id === TOPIC_ID)?.sourceFileIds ?? [],
-  contentVersion: 1,
+  contentVersion: 2,
   concepts,
   lessons,
-  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions],
+  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions, ...thalassaemiaQuestions],
   discrepancies,
   diagrams,
 });

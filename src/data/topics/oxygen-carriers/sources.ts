@@ -39,7 +39,14 @@ const L1 = `${TOPIC_ID}-1`;
 const L2 = `${TOPIC_ID}-2`;
 const L3 = `${TOPIC_ID}-3`;
 const L4 = `${TOPIC_ID}-4`;
-export const LESSON_IDS = [L1, L2, L3, L4] as const;
+const L5 = `${TOPIC_ID}-5`;
+export const LESSON_IDS = [L1, L2, L3, L4, L5] as const;
+
+// thal([21, 22]) → slides of the Thalassaemias deck (Telegram downloads, 31 slides; with an
+// appendix by E. F. Laing).
+export function thal(numbers: number[]): SourceReference[] {
+  return slides('o2c-thalassaemias', numbers);
+}
 
 // ─── Concepts ───────────────────────────────────────────────────────
 
@@ -127,6 +134,27 @@ export const concepts = {
   'fetal-haemoglobin': {
     lessonId: L4, name: 'Fetal haemoglobin', category: 'clinical', relevance: 'core',
     sourceRefs: [...ref([56, 57, 58]), ...leh(172)],
+  },
+  // Lesson 5 — The thalassaemias
+  'thal-basics': {
+    lessonId: L5, name: 'What thalassaemia is, where it occurs and how it damages red cells', category: 'clinical', relevance: 'core',
+    sourceRefs: thal([2, 3, 18, 19, 27]),
+  },
+  'alpha-thal': {
+    lessonId: L5, name: 'Alpha thalassaemia: gene deletions, HbH and Hb Barts', category: 'clinical', relevance: 'core',
+    sourceRefs: thal([4, 6, 7, 8, 15, 16, 29, 30, 31]),
+  },
+  'beta-thal': {
+    lessonId: L5, name: 'Beta thalassaemia minor, intermedia and major', category: 'clinical', relevance: 'core',
+    sourceRefs: thal([10, 11, 13, 21, 22, 23, 24]),
+  },
+  'thal-special': {
+    lessonId: L5, name: 'Hb Lepore, Hb Constant Spring and HPFH', category: 'clinical', relevance: 'supporting',
+    sourceRefs: thal([12, 14]),
+  },
+  'thal-management': {
+    lessonId: L5, name: 'Tests, treatment and prevention of thalassaemia', category: 'clinical', relevance: 'core',
+    sourceRefs: thal([20, 25, 26, 28]),
   },
 } satisfies Record<string, ConceptDraft>;
 

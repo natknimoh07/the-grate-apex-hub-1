@@ -32,6 +32,10 @@ import { notes as respiratorySystemGross } from '@/data/textbook-notes/respirato
 import { notes as specialSenses } from '@/data/textbook-notes/special-senses';
 import { notes as upperLimb } from '@/data/textbook-notes/upper-limb';
 import { notes as urinarySystemGross } from '@/data/textbook-notes/urinary-system-gross';
+import { notes as cardiovascularSystemMicro } from '@/data/textbook-notes/cardiovascular-system-micro';
+import { notes as respiratorySystemMicro } from '@/data/textbook-notes/respiratory-system-micro';
+import { notes as embryology } from '@/data/textbook-notes/embryology';
+import { notes as gastrointestinalSystemMicro } from '@/data/textbook-notes/gastrointestinal-system-micro';
 
 const byTopic: Record<string, TextbookNotes> = {
   'amino-acid-metabolism': aminoAcidMetabolism,
@@ -57,6 +61,10 @@ const byTopic: Record<string, TextbookNotes> = {
   'special-senses': specialSenses,
   'upper-limb': upperLimb,
   'urinary-system-gross': urinarySystemGross,
+  'cardiovascular-system-micro': cardiovascularSystemMicro,
+  'respiratory-system-micro': respiratorySystemMicro,
+  embryology,
+  'gastrointestinal-system-micro': gastrointestinalSystemMicro,
 };
 
 export const textbookNoteTopics = Object.keys(byTopic);

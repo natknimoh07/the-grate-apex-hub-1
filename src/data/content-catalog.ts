@@ -840,6 +840,17 @@ export const sourceFiles: SourceFile[] = [
     note: "Earlier version of na-1-nucleotide-metabolism-full-2025-2. Differences are kept, not merged silently.",
   },
   {
+    id: "o2c-thalassaemias",
+    path: "Downloads/Telegram Desktop/Thalassaemias(1).ppt",
+    format: "ppt",
+    topicId: "oxygen-carriers",
+    subjectFolder: "BIOCHEMISTRY",
+    role: "lecture",
+    title: "Thalassaemias (with an appendix by E. F. Laing)",
+    slideCount: 31,
+    textStatus: "partial",
+  },
+  {
     id: "o2c-oxygen-carriers25",
     path: "content/BIOCHEMISTRY/Oxygen Carriers-20260930T044124Z-1-001.zip",
     member: "Oxygen Carriers/Oxygen carriers25.ppt",
@@ -1717,11 +1728,12 @@ export const contentTopics: ContentTopic[] = [
     courseId: "biochemistry-lectures",
     folderSubject: "BIOCHEMISTRY",
     zip: "Oxygen Carriers",
-    sourceFileIds: ["o2c-oxygen-carriers25"],
+    sourceFileIds: ["o2c-oxygen-carriers25", "o2c-thalassaemias"],
     status: "published",
     emoji: "💨",
     outline: [
       { title: "Oxygen Carriers: Myoglobin and Haemoglobin", points: [], sourceRefs: [{ sourceId: "o2c-oxygen-carriers25" }] },
+      { title: "The Thalassaemias", points: [], sourceRefs: [{ sourceId: "o2c-thalassaemias" }] },
     ],
   },
   {

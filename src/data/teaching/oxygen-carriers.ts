@@ -105,4 +105,29 @@ export const teaching: Teaching = {
       'Since 2,3-BPG lowers oxygen affinity, binding less of it means fetal haemoglobin has a higher affinity for oxygen, and its dissociation curve lies to the left of the mother’s. At the oxygen pressures of the placenta, the mother’s haemoglobin releases oxygen and the fetal haemoglobin takes it up. After birth, γ chains are gradually replaced by β chains, and adult haemoglobin takes over.',
     ],
   },
+  'oxygen-carriers-5': {
+    0: [
+      'Adult haemoglobin is built from two α chains and two β chains, and the body normally makes the two kinds in exactly matched amounts. The thalassaemias are inherited conditions in which one kind of chain is made too slowly or not at all. They are not caused by an abnormal chain, as in sickle cell disease, but by too little of a normal one.',
+      'The harm comes as much from the chain that is in excess as from the one that is missing. Unpaired chains cannot form stable haemoglobin, so they clump and precipitate inside the developing red cells, damaging their membranes. Many of these cells are destroyed in the marrow before they are ever released, a process called ineffective erythropoiesis. The marrow then expands in an attempt to compensate.',
+      'The genes for thalassaemia are commonest in a band from the Mediterranean through Africa and the Middle East to India and Southeast Asia, matching the old range of falciparum malaria. Carriers are partly protected against severe malaria, so the genes became frequent there, in the same way as the sickle cell gene.',
+    ],
+    1: [
+      'Each person has four α-globin genes, two on each copy of chromosome 16, and alpha thalassaemia usually results from deleting some of them. The more genes are lost, the worse the condition. Losing one gene causes no illness. Losing two gives a mild trait with small red cells but little anaemia.',
+      'Losing three genes leaves too few α chains, so the surplus β chains group into fours, forming haemoglobin H. HbH holds oxygen too tightly and is unstable, so the cells break down, giving moderate anaemia, an enlarged liver and spleen, and jaundice. Losing all four genes means no α chains can be made at all. Before birth the fetus forms Hb Barts from four γ chains, which binds oxygen so tightly it cannot release it to the tissues, so the fetus develops severe swelling, hydrops fetalis, and dies in the womb.',
+    ],
+    2: [
+      'Beta thalassaemia usually comes from small point mutations rather than deletions. Some mutated genes still make a little β chain, written β⁺, and others make none, written β⁰. Because each person has two β genes, the severity depends on what both carry.',
+      'With one normal gene, the trait or minor form, a person is usually well, with mild anaemia and small red cells. It is easily mistaken for iron deficiency, but iron levels are normal and HbA₂ is raised, which is the key test. With two mildly reduced genes, the intermedia form gives moderate anaemia that does not need regular transfusion.',
+      'With two severely affected genes, the major form or Cooley’s anaemia, almost no normal adult haemoglobin is made. The child becomes severely anaemic in the first year as fetal haemoglobin declines. The marrow expands enormously, thickening the skull and facial bones, and blood is made outside the marrow in the liver and spleen. Regular transfusion is needed for life, and the iron it brings in builds up in the heart, liver and endocrine glands, eventually causing heart failure, diabetes and growth problems.',
+    ],
+    3: [
+      'A few rare variants are worth recognising. Haemoglobin Lepore contains an abnormal chain made of part of a δ chain fused to part of a β chain, which arises from unequal crossing-over between the neighbouring genes; it behaves like a β thalassaemia. Haemoglobin Constant Spring has an α chain that is too long, with 31 extra amino acids because its stop codon is mutated; it is unstable and made in small amounts, so it behaves like an α thalassaemia.',
+      'In hereditary persistence of fetal haemoglobin, the switch from γ to β chains after birth does not happen, so adults keep making fetal haemoglobin. This is usually harmless, and it shows why raising HbF can soften the effects of β thalassaemia.',
+    ],
+    4: [
+      'Diagnosis starts with a full blood count and film, which show small, pale red cells and target cells. Iron studies rule out iron deficiency. Haemoglobin electrophoresis and measurement of HbA₂ and HbF identify the type: a raised HbA₂ suggests β thalassaemia trait, and a very high HbF with no HbA suggests the major form.',
+      'Treatment of the major form rests on regular transfusion, which keeps the haemoglobin high enough for normal growth and switches off the overactive marrow. Because transfused iron cannot be excreted, chelating drugs such as desferrioxamine are given to bind it so it can leave in the urine, and vitamin C increases this excretion. An enlarged, overactive spleen may be removed, and hormone replacement treats the glands damaged by iron. A matched bone marrow transplant can cure the disease.',
+      'Because two carriers have a one-in-four chance with each pregnancy of a child with the major form, prevention relies on screening and genetic counselling of couples at risk, and on antenatal diagnosis from fetal blood or DNA so that parents can make an informed choice.',
+    ],
+  },
 };

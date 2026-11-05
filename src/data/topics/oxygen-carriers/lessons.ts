@@ -7,6 +7,7 @@
 //   ./sources.ts → diagrams; lessons teach from them.
 // - Lehninger (leh(...)) only explains or settles points WITHIN that scope.
 // - Unsettled points are 'check' notes and are never quizzed.
+import { thalassaemiaExtras, thalassaemiaInteractive, thalassaemiaLesson } from '@/data/topics/oxygen-carriers/thalassaemias';
 import type { LessonDraft } from '@/data/topics/build';
 import { interactive, readingExtras } from '@/data/topics/oxygen-carriers/interactive';
 import { leh, ref, type ConceptId } from '@/data/topics/oxygen-carriers/sources';
@@ -387,8 +388,11 @@ const lesson4: Draft = {
 // Each lesson gets its interactive layer (learn by answering) and its
 // reading extras (high-yield points, common confusions) from
 // ./interactive.ts.
-export const lessons: Draft[] = [lesson1, lesson2, lesson3, lesson4].map((lesson) => ({
-  ...lesson,
-  ...readingExtras[lesson.id],
-  interactive: interactive[lesson.id],
-}));
+export const lessons: Draft[] = [
+  ...[lesson1, lesson2, lesson3, lesson4].map((lesson) => ({
+    ...lesson,
+    ...readingExtras[lesson.id],
+    interactive: interactive[lesson.id],
+  })),
+  { ...thalassaemiaLesson, ...thalassaemiaExtras, interactive: thalassaemiaInteractive },
+];
