@@ -30,6 +30,7 @@ import type { ExplainItem } from '@/lib/ai-study-api';
 import {
   type Answer,
   correctAnswerText,
+  aiAcceptedReason,
   isAnswerCorrect,
   type Question,
   stableShuffle,
@@ -278,6 +279,13 @@ export function QuestionCard({
               {correctAnswerText(question)}
             </Text>
           )}
+
+          {correct && aiAcceptedReason(question.id, value) ? (
+            <Text style={styles.feedbackText}>
+              <Text style={styles.feedbackLabel}>Accepted after an AI check: </Text>
+              {aiAcceptedReason(question.id, value)} If this looks wrong, use “Report a problem with this question”.
+            </Text>
+          ) : null}
 
           {correct && question.takeaway ? (
             <Text style={styles.feedbackText}>

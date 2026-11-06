@@ -69,3 +69,12 @@ export async function gradeRecallWithAi(lesson: { title: string; text: string },
   const grade = await call<RecallGrade>({ mode: 'grade', lesson, item: { prompt: item.prompt, model: [...item.model], answer: item.answer } });
   return { ...grade, feedback: stripMarkdown(grade.feedback ?? ''), missing: (grade.missing ?? []).map(stripMarkdown), beyond: stripMarkdown(grade.beyond ?? '') };
 }
+
+/** A typed answer that missed the key: does the AI say it is nevertheless correct? Never throws a wrong "same": any failure is "different". */
+export async function judgeTypedAnswer(lesson: { title: string; text: string } | null, item: { prompt: string; accept: string[]; answer: string; explanation?: string }): Promise<{ verdict: 'same' | 'different'; reason: string } | null> {
+  try {
+    return await call<{ verdict: 'same' | 'different'; reason: string }>({ mode: 'judge', lesson: lesson ?? undefined, item });
+  } catch {
+    return null;
+  }
+}
