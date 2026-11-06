@@ -125,3 +125,39 @@ it('typed signed numbers keep their sign (report on legacy:algebra:eme29e:type, 
   for (const input of ['x = -5/8', '-5/8', 'x=-5/8', 'x = −5/8', '-0.625', 'x = -0.625', '-5 / 8']) assert.ok(typedAnswerMatches(input, accept), input);
   for (const input of ['5/8', 'x = 5/8', '-8/5', '0.625']) assert.ok(!typedAnswerMatches(input, accept), input);
 });
+
+describe('report 2026-11-05: legacy:bmc:alk17:type and legacy:bmc:alk25:type', () => {
+  const bank = JSON.parse(readFileSync('public/curriculum/bmc.json', 'utf8')).sets.flatMap((set) => set.questions);
+  const typedOf = (id, ansOk) => {
+    const target = bank.filter((q) => q.id === id);
+    assert.equal(target.length, 1);
+    for (let i = 0; i < 600; i++) {
+      for (const q of buildPractice(target, { course: 'bmc' }, 1, `seed-${i}`)) if (q.id.endsWith(':type')) return q;
+    }
+    return null;
+  };
+  it('n-, n and normal are accepted for the unbranched prefix', () => {
+    const q = typedOf('alk17');
+    assert.ok(q, 'a typed version was never made');
+    for (const input of ['n- (normal)', 'n-', 'n', 'normal', 'N-']) assert.ok(typedAnswerMatches(input, q.accept), input);
+    assert.ok(!typedAnswerMatches('iso', q.accept));
+    assert.ok(!typedAnswerMatches('neo', q.accept));
+  });
+  it('CH3Cl and HCl is accepted written other ways, but not other products', () => {
+    const q = typedOf('alk25');
+    assert.ok(q, 'a typed version was never made');
+    for (const input of ['CH₃Cl and HCl', 'CH3Cl and HCl', 'CH3Cl', 'HCl and CH3Cl', 'chloromethane and HCl', 'methyl chloride and hydrogen chloride']) assert.ok(typedAnswerMatches(input, q.accept), input);
+    assert.ok(!typedAnswerMatches('CCl4 and H2', q.accept));
+    assert.ok(!typedAnswerMatches('CH3OH and HCl', q.accept));
+  });
+});
+
+describe('report 2026-11-05: legacy:bmc:9rtdfc:type', () => {
+  it('"which formula" is never asked as a typed answer with its options hidden', () => {
+    const bank = JSON.parse(readFileSync('public/curriculum/bmc.json', 'utf8')).sets.flatMap((set) => set.questions);
+    const target = bank.filter((q) => q.id === '9rtdfc');
+    assert.equal(target.length, 1);
+    assert.match(target[0].q, /of the following/i);
+    for (let i = 0; i < 300; i++) for (const q of buildPractice(target, { course: 'bmc' }, 1, `seed-${i}`)) assert.ok(!q.id.endsWith(':type'), q.id);
+  });
+});
