@@ -17,6 +17,7 @@ import { Columns, Screen } from '@/components/ui/screen';
 import { isWeb } from '@/components/ui/web';
 import { isDesktopWidth, type ThemeColors } from '@/constants/theme';
 import type { AttemptMode } from '@/data/learning-sync';
+import { judgeAnswerWithAi, needsAiJudge } from '@/data/ai-judge';
 import { recordAnswer } from '@/data/learning/actions';
 import type { SelectionReason } from '@/data/learning/selection';
 import { formatDuration, secondsSince } from '@/data/learning/time';
@@ -124,6 +125,7 @@ export function QuestionSession({
   const [confirming, setConfirming] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  const [judging, setJudging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [startedAt] = useState(() => Date.now() - (initial?.elapsed ?? 0) * 1000);
   const [elapsed, setElapsed] = useState(initial?.elapsed ?? 0);
@@ -266,6 +268,12 @@ export function QuestionSession({
   async function check() {
     if (!question || !complete || isChecked) return;
     const answer = answers[question.id];
+    // A typed answer that is not in the key is checked by the AI first (counts as right only if it is).
+    if (needsAiJudge(question, answer)) {
+      setJudging(true);
+      await judgeAnswerWithAi(question, answer);
+      setJudging(false);
+    }
     const correct = isAnswerCorrect(question, answer);
     setChecked((previous) => new Set(previous).add(question.id));
     setRecorded((previous) => new Set(previous).add(question.id));
@@ -313,6 +321,8 @@ export function QuestionSession({
     setConfirming(false);
     setError(null);
     try {
+      // Typed answers not yet checked (submit-at-the-end mode) are checked by the AI now.
+      await Promise.all(items.map(({ question: asked }) => (needsAiJudge(asked, answers[asked.id]) ? judgeAnswerWithAi(asked, answers[asked.id]) : null)));
       await onSubmit({ answers, recordedIds: recorded, timeSeconds: secondsSince(startedAt), confidence });
     } catch (problem) {
       console.warn('Could not submit:', problem);
@@ -516,7 +526,7 @@ export function QuestionSession({
               isChecked ? (
                 <Button label={index === total - 1 ? 'Review & finish' : 'Next question'} trailing="→" onPress={() => go(index + 1)} shortcut={isWeb ? 'Enter' : undefined} />
               ) : (
-                <Button label="Check answer" onPress={() => void check()} disabled={!complete} shortcut={isWeb ? 'Enter' : undefined} />
+                <Button label={judging ? 'Checking with AI…' : 'Check answer'} onPress={() => void check()} disabled={!complete || judging} shortcut={isWeb ? 'Enter' : undefined} />
               )
             ) : (
               <Button
