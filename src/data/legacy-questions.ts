@@ -7,6 +7,10 @@ import { trueFalseStatement, typedAcceptVariants, wrongIsPartOfAnswer } from '@/
 const EXTRA_TYPED_ANSWERS: Record<string, string[]> = {
   // 0.61 x 560 / 1.4 = 244 nm, which the bank rounds to 240nm (its own explanation shows 244 nm).
   'legacy:cellstruct:1yhpue3': ['244 nm', '0.244 µm', '0.24 µm'],
+  // Reported 2026-11-05: the answer is the prefix n- (normal); "n", "n-" and "normal" mean the same.
+  'legacy:bmc:alk17': ['n-', 'n', 'normal', 'n- normal', 'n-normal'],
+  // Reported 2026-11-05: CH3Cl is chloromethane (methyl chloride) and HCl is hydrogen chloride.
+  'legacy:bmc:alk25': ['CH3Cl', 'CH3Cl + HCl', 'CH3Cl and hydrogen chloride', 'chloromethane and HCl', 'chloromethane and hydrogen chloride', 'methyl chloride and HCl', 'methyl chloride and hydrogen chloride', 'chloromethane', 'methyl chloride'],
 };
 
 export type BankQuestion = { id: string; q: string; o: string[]; a: number; e: string; t: string; p?: string[]; kind?: 'input'; ans?: string; img?: string; tp?: string };
