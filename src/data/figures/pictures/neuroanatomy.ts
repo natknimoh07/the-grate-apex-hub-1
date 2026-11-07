@@ -69,8 +69,10 @@ export const medialSurfaceGyri: LessonFigure = {
   caption: "From lecture slide 16.",
   sourceRefs: [{ sourceId: "anat-cns", slide: 16, visual: true }],
   spots: [
-    { id: "paracentral-lobule", label: "Paracentral lobule", x: 0.444, y: 0.072, boxes: [[0.462, 0.032, 0.155, 0.08]] },
-    { id: "precuneus", label: "Precuneus", x: 0.459, y: 0.101, boxes: [[0.294, 0.056, 0.147, 0.089]] },
+    // Pins at the start of each leader line (2026-11-07): the precuneus pin used to sit on the
+    // "Paracentral Lobule" text, beside that label's own pin.
+    { id: "paracentral-lobule", label: "Paracentral lobule", x: 0.533, y: 0.13, boxes: [[0.462, 0.032, 0.155, 0.08]] },
+    { id: "precuneus", label: "Precuneus", x: 0.375, y: 0.152, boxes: [[0.294, 0.056, 0.147, 0.089]] },
     { id: "cingulate-gyrus", label: "Cingulate gyrus", x: 0.693, y: 0.101, boxes: [[0.711, 0.056, 0.13, 0.089]] },
     { id: "cuneus", label: "Cuneus", x: 0.162, y: 0.268, boxes: [[0.037, 0.224, 0.107, 0.087]] },
     { id: "superior-frontal-gyrus", label: "Superior frontal gyrus", x: 0.844, y: 0.378, boxes: [[0.862, 0.312, 0.121, 0.133]] },

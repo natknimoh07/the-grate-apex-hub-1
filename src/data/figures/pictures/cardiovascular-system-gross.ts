@@ -54,9 +54,12 @@ export const greatVessels: LessonFigure = {
     { id: "brachiocephalic-veins", label: "Brachiocephalic veins", x: 0.283, y: 0.266, boxes: [[0.052, 0.246, 0.212, 0.041]] },
     { id: "aortic-arch", label: "Aortic arch", x: 0.734, y: 0.358, boxes: [[0.752, 0.341, 0.111, 0.034]] },
     { id: "superior-vena-cava", label: "Superior vena cava", x: 0.238, y: 0.379, boxes: [[0.034, 0.359, 0.186, 0.041]] },
-    { id: "left-pulmonary-artery", label: "Left pulmonary artery", x: 0.226, y: 0.506, boxes: [[0.002, 0.485, 0.206, 0.041]] },
+    // The slide had the two pulmonary arteries the wrong way round (owner, 2026-11-07): in this
+    // front view the patient's right is on the viewer's left, beside the superior vena cava.
+    // The printed words were swapped in the picture too.
+    { id: "right-pulmonary-artery", label: "Right pulmonary artery", x: 0.226, y: 0.506, boxes: [[0.002, 0.485, 0.212, 0.041]] },
     { id: "ligamentum-arteriosum", label: "Ligamentum arteriosum", x: 0.752, y: 0.496, boxes: [[0.77, 0.475, 0.228, 0.041]] },
-    { id: "right-pulmonary-artery", label: "Right pulmonary artery", x: 0.755, y: 0.598, boxes: [[0.773, 0.578, 0.22, 0.041]] },
+    { id: "left-pulmonary-artery", label: "Left pulmonary artery", x: 0.755, y: 0.598, boxes: [[0.773, 0.578, 0.2, 0.041]] },
     { id: "oesophagus", label: "Oesophagus", x: 0.187, y: 0.72, boxes: [[0.057, 0.7, 0.112, 0.04]] },
     { id: "left-pulmonary-veins", label: "Left pulmonary veins", x: 0.757, y: 0.724, boxes: [[0.775, 0.703, 0.202, 0.041]] },
     { id: "inferior-vena-cava", label: "Inferior vena cava", x: 0.207, y: 0.866, boxes: [[0.017, 0.849, 0.172, 0.034]] },
