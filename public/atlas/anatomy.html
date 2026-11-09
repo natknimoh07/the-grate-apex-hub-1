@@ -3116,6 +3116,8 @@ bool inRegion(vec3 p) {
       else if (window.parent && window.parent !== window) window.parent.postMessage(msg, window.location.origin);
     }
     function onHostMessage(ev) {
+      // Only the app itself (same site) may drive the atlas; the Android WebView sends no origin.
+      if (ev.origin && ev.origin !== location.origin) return;
       let m; try { m = JSON.parse(ev.data); } catch { return; }
       if (m.type === 'toggle') { for (const id of (m.id === 'visceral' ? ORGAN_SYSTEM_IDS : [m.id])) { const s = SYSTEMS.find(x => x.id === id); if (s) { s.input.checked = !!m.on; setSystem(s, !!m.on); } } }
       if (m.type === 'pins') { pinsOnEl.checked = !!m.on; pinsOn = !!m.on; refreshPins(); }

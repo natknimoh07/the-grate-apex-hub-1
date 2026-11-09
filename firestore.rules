@@ -392,9 +392,17 @@ service cloud.firestore {
         && request.resource.data.replyCount == 0
         && (!('media' in request.resource.data) || (request.resource.data.media is list && request.resource.data.media.size() <= 3))
         && (!('visibility' in request.resource.data) || request.resource.data.visibility in ['everyone', 'friends']);
-      // The author may edit their post. Anyone else may only add exactly 1 to
-      // the reply count (that's what happens when they reply).
-      allow update: if request.auth.uid == resource.data.authorUid
+      // The author may edit their post, but not who it is from (authorName decides the tick badge),
+      // when it was posted (the feed's order) or a poll's results (only the server counts votes);
+      // a renamed author may move the post to their own new username (2026-11-09 security review).
+      // Anyone else may only add exactly 1 to the reply count (that's what happens when they reply).
+      allow update: if (request.auth.uid == resource.data.authorUid
+          && request.resource.data.authorUid == resource.data.authorUid
+          && (request.resource.data.get('authorName', null) == resource.data.get('authorName', null)
+              || request.resource.data.get('authorName', null) ==
+                 get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username)
+          && request.resource.data.get('createdAt', null) == resource.data.get('createdAt', null)
+          && request.resource.data.get('poll', null) == resource.data.get('poll', null))
         || (postVisible(postId) && (
             (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['replyCount', 'lastActivityAt'])
             && request.resource.data.replyCount == resource.data.replyCount + 1)

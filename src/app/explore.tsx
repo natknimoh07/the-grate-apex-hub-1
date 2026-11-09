@@ -8,6 +8,7 @@ import { CardGrid } from '@/components/ui/card-grid';
 import { Icon } from '@/components/ui/icon';
 import { ExploreFeatureGroups } from '@/components/explore/feature-groups';
 import { FeatureGuideSimulator } from '@/components/explore/feature-guide-simulator';
+import { ApexExplainedSection } from '@/components/explore/apex-explained';
 import { GamesEntry } from '@/components/explore/games-section';
 import { OrganisationSimulator } from '@/components/explore/organisation-simulator';
 import { PwaInstallCard } from '@/components/pwa-install-card';
@@ -143,6 +144,9 @@ export default function ExploreScreen() {
 
       {/* Study games: one Games button opens the Games page (/games) with every game. */}
       <GamesEntry style={styles.firstSection} />
+
+      {/* Apex Explained: the team's YouTube lessons, by subject. */}
+      <ApexExplainedSection style={styles.section} />
 
       {weeklySession ? <SectionHeader title={`${upcoming ? 'Next week' : 'This week'} · ${weeklySession.title}`} subtitle={`${weeklySession.summary} Begins ${weekLabel}.`} style={styles.section} /> : null}
 
