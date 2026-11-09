@@ -135,3 +135,23 @@ describe('Android app download', () => {
     assert.match(readFileSync(new URL('../public/sw.js', import.meta.url), 'utf8'), /startsWith\('\/downloads\/'\)\) return;/);
   });
 });
+// Owner, 2026-11-07: "practice may show 112 questions but clicking it shows about just 60". The lesson's
+// count comes with the app, its questions from public/curriculum/<course>.json; the service worker used
+// to hand out the copy saved on the device first, so after a bank update the practice used the old bank.
+describe('Question banks are fresh', () => {
+  it('the service worker asks the network first and uses the saved copy only offline or when slow', () => {
+    const block = sw.slice(sw.indexOf("url.pathname.startsWith('/curriculum/')"), sw.indexOf("url.pathname.startsWith('/figures/')"));
+    assert.match(sw, /const BANK_WAIT_MS = \d+;/);
+    assert.match(block, /Promise\.race\(\[refresh/, 'the network copy must be tried before the saved one');
+    assert.match(block, /return fresh \|\| cached;/);
+  });
+
+  it('a lesson practice fetches the bank again when its copy lacks the lesson’s questions', async () => {
+    const { bankHasAll } = await import('@/data/legacy-study');
+    const bank = { id: 'x', name: 'X', sets: [{ id: 's1', name: 'S1', questions: [{ id: 'q1' }, { id: 'q2' }] }] };
+    assert.equal(bankHasAll(bank, ['q1', 'q2']), true);
+    assert.equal(bankHasAll(bank, ['q1', 'q3']), false);
+    assert.equal(bankHasAll(bank, []), true);
+    assert.match(read('src/app/learn/hb-practice.tsx'), /bankHasAll\(saved, listed\) \? saved : await loadLegacyBank\(course\.id, \{ fresh: true \}\)/);
+  });
+});

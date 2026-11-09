@@ -19,7 +19,7 @@ import { Type, type ThemeColors } from '@/constants/theme';
 import { APEX } from '@/data/learning/apex';
 import { dayKey } from '@/data/learning/time';
 import { XP_RULES } from '@/data/learning/xp-rules';
-import { bankQuestions, buildPractice, legacyCourse, lessonQuestionTest, loadLegacyBank, loadLegacyLessonList, toQuestion } from '@/data/legacy-study';
+import { bankHasAll, bankQuestions, buildPractice, legacyCourse, lessonQuestionTest, loadLegacyBank, loadLegacyLessonList, toQuestion } from '@/data/legacy-study';
 import { shuffleSeeded } from '@/data/legacy-questions';
 import { modeSettings, modeTitle, parsePracticeMode } from '@/data/practice-modes';
 import { pastTopicTitle } from '@/data/past-question-topics';
@@ -114,12 +114,17 @@ function LegacyPracticeAttempt() {
         setQuestions(settings.variants ? buildLocalPractice(source, take(source.length), seed) : shuffleSeeded(source, seed).slice(0, take(source.length)));
         return;
       }
-      const [bank, lessons] = await Promise.all([loadLegacyBank(course.id), lessonId || practice.kind === 'custom' ? loadLegacyLessonList() : Promise.resolve([])]);
+      const [saved, lessons] = await Promise.all([loadLegacyBank(course.id), lessonId || practice.kind === 'custom' ? loadLegacyLessonList() : Promise.resolve([])]);
+      if (!live) return;
+      const lesson = lessonId ? lessons.find((item) => item.id === lessonId) : undefined;
+      // The lessons come with the app, the bank as a separate file: a copy saved before the last update
+      // lacks the newest questions, and the practice would be much shorter than the lesson says. Get it again.
+      const listed = lesson ? (lesson.qids ?? []) : practice.kind === 'custom' ? lessons.filter((item) => practice.custom.lessons.includes(item.id)).flatMap((item) => item.qids ?? []) : [];
+      const bank = bankHasAll(saved, listed) ? saved : await loadLegacyBank(course.id, { fresh: true }).catch(() => saved);
       if (!live) return;
       const all = bankQuestions(bank);
       let source = all;
       const set = setId ? bank.sets.find((item) => item.id === setId) : undefined;
-      const lesson = lessonId ? lessons.find((item) => item.id === lessonId) : undefined;
       if (lessonId) {
         // Lessons written in the app also practise the course's past questions on their topic.
         source = all.filter(lessonQuestionTest(lesson ?? {}));
@@ -479,12 +484,18 @@ function LegacyPracticeAttempt() {
           <View style={styles.header}>
             <BackLink fallback={routes.legacyCourse(course.id)} />
             <Text style={styles.title} numberOfLines={2}>{reviewing ? `${title} · mistakes` : title}</Text>
-            <Text style={styles.sub}>{reviewing ? `${reviewing.questions.length} question${reviewing.questions.length === 1 ? '' : 's'} you missed, ${mode === 'submit' ? 'answers at the end' : 'answers shown as you go'}` : [`${questions.length} questions`, settings.seconds ? `${settings.seconds} seconds a question` : null, mode === 'submit' ? 'answers at the end, like the real paper' : 'answers after each question', settings.variants ? 'multiple choice, typing, true/false and matching' : null].filter(Boolean).join(' · ')}</Text>
+            <Text style={styles.sub}>{reviewing ? `${reviewing.questions.length} question${reviewing.questions.length === 1 ? '' : 's'} you missed, ${mode === 'submit' ? 'answers at the end' : 'answers shown as you go'}` : [questionCountLabel(questions), settings.seconds ? `${settings.seconds} seconds a question` : null, mode === 'submit' ? 'answers at the end, like the real paper' : 'answers after each question', settings.variants ? 'multiple choice, typing, true/false and matching' : null].filter(Boolean).join(' · ')}</Text>
           </View>
         }
       />
     </Screen>
   );
+}
+
+/** "110 questions": a matching round asks four at once, so it counts as four (as on the lesson's Practice button). */
+function questionCountLabel(questions: readonly Question[]) {
+  const asked = questions.reduce((sum, question) => sum + (question.type === 'match' ? question.pairs.length : 1), 0);
+  return asked === questions.length ? `${asked} questions` : `${asked} questions on ${questions.length} screens (a matching round asks several at once)`;
 }
 
 function createStyles(colors: ThemeColors) {

@@ -59,6 +59,8 @@ import { entomologyHarm } from '@/data/hb1-lessons/entomology-harm';
 import { entomologyVectorControl } from '@/data/hb1-lessons/entomology-vector-control';
 import { HB1_PRACTICE_IDS } from '@/data/hb1-lessons/practice-ids';
 import { withBmcPictures } from '@/data/hb1-lessons/bmc-pictures';
+import { sectionsWithFractions } from '@/data/hb1-lessons/fractions';
+import { sectionsWithAbbreviations } from '@/data/hb1-lessons/abbreviations';
 import { anatomyIntroduction } from '@/data/hb1-lessons/anatomy-introduction';
 import { anatomySkeleton } from '@/data/hb1-lessons/anatomy-skeleton';
 import { anatomyJoints } from '@/data/hb1-lessons/anatomy-joints';
@@ -239,6 +241,21 @@ export function hb1LocalLesson(id: string): Hb1Lesson | undefined {
   return HB1_LOCAL_LESSONS.find((lesson) => lesson.id === id);
 }
 
+const bodies = new Map<string, LegacyLessonBody>();
+
+/**
+ * The lesson's text as the learner reads it (owner, 2026-11-07): divisions drawn as fractions
+ * (fractions.ts), then every abbreviation spelled out the first time each section uses it
+ * (abbreviations.ts). Done when the lesson is opened, so start-up stays quick; the lesson files are unchanged.
+ */
 export function hb1LessonBody(lesson: Hb1Lesson): LegacyLessonBody {
-  return { sections: lesson.sections, extras: lesson.extras };
+  const hit = bodies.get(lesson.id);
+  if (hit) return hit;
+  const body = { sections: hb1ReadableSections(lesson), extras: lesson.extras };
+  bodies.set(lesson.id, body);
+  return body;
+}
+
+export function hb1ReadableSections(lesson: Pick<Hb1Lesson, 'id' | 'sections'>): LegacySection[] {
+  return sectionsWithAbbreviations(lesson.id, sectionsWithFractions(lesson.id, lesson.sections));
 }

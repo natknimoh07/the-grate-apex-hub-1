@@ -2,14 +2,15 @@ import { Image } from 'expo-image';
 import { IllustrationFigure } from '@/components/learning/illustration';
 import { FigureExplorer } from '@/components/learning/figure-view';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, type TextStyle, View, type ViewStyle } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
 import { Icon } from '@/components/ui/icon';
 import { Interactive } from '@/components/ui/interactive';
 import { Text } from '@/components/ui/text';
 import { Fonts, Type, type ThemeColors } from '@/constants/theme';
-import { type Block, loadLegacyImage, parseRich, type Run } from '@/data/legacy-study';
+import { type Block, loadLegacyImage, parseRich, plainText, type Run } from '@/data/legacy-study';
+import { tableColumnWidths } from '@/data/table-layout';
 import { useExperience } from '@/hooks/use-experience';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -28,12 +29,21 @@ const script = (text: string, map: Record<string, string>) => {
 };
 
 export function Rich({ x, style }: { x: string; style?: object | object[] }) {
-  const colors = useTheme();
-  const tip = useContext(TermContext);
   const runs = useMemo(() => parseRich(x), [x]);
   return (
     <Text style={style}>
+      <Runs runs={runs} style={style} />
+    </Text>
+  );
+}
+
+function Runs({ runs, style }: { runs: readonly Run[]; style?: object | object[] }) {
+  const colors = useTheme();
+  const tip = useContext(TermContext);
+  return (
+    <>
       {runs.map((run: Run, i) => {
+        if (run.frac) return <Fraction key={i} num={run.frac.num} den={run.frac.den} style={style} />;
         let text = run.t;
         const st: Record<string, unknown> = {};
         if (run.sub || run.sup) {
@@ -56,9 +66,38 @@ export function Rich({ x, style }: { x: string; style?: object | object[] }) {
           </Text>
         );
       })}
-    </Text>
+    </>
   );
 }
+
+// The text's font, size and colour, without its spacing (a paragraph's margin must not repeat inside a fraction).
+const TEXT_KEYS = ['color', 'fontFamily', 'fontSize', 'fontStyle', 'fontWeight', 'letterSpacing'] as const;
+
+/** A fraction in a line of text: the numerator over a bar over the denominator, the bar level with the middle of the line. */
+function Fraction({ num, den, style }: { num: readonly Run[]; den: readonly Run[]; style?: object | object[] }) {
+  const flat = (StyleSheet.flatten(style) ?? {}) as TextStyle;
+  const text: TextStyle = {};
+  for (const key of TEXT_KEYS) if (flat[key] !== undefined) (text as Record<string, unknown>)[key] = flat[key];
+  const size = typeof flat.fontSize === 'number' ? flat.fontSize : 15;
+  text.fontSize = Math.round(size * 0.92 * 10) / 10;
+  text.lineHeight = Math.round(size * 1.3);
+  const label = `${num.map((run) => run.t).join('')} over ${den.map((run) => run.t).join('')}`;
+  return (
+    <View style={fractionStyles.box} accessible accessibilityLabel={label}>
+      <Text style={[text, fractionStyles.part]}><Runs runs={num} style={style} /></Text>
+      <View style={[fractionStyles.bar, { backgroundColor: (flat.color as string | undefined) ?? '#888' }]} />
+      <Text style={[text, fractionStyles.part]}><Runs runs={den} style={style} /></Text>
+    </View>
+  );
+}
+
+const fractionStyles = StyleSheet.create({
+  // A box inside text sits in the line on the web (react-native-web gives it display: inline-flex);
+  // "middle" puts the bar near the middle of the letters around it.
+  box: { flexDirection: 'column', alignItems: 'center', marginHorizontal: 3, marginVertical: 2, verticalAlign: 'middle' } as ViewStyle,
+  part: { textAlign: 'center', paddingHorizontal: 2 },
+  bar: { alignSelf: 'stretch', height: 1, marginVertical: 1 },
+});
 
 function Figure({ block }: { block: Extract<Block, { k: 'fig' }> }) {
   const styles = useThemedStyles(createStyles);
@@ -100,6 +139,50 @@ function Figure({ block }: { block: Extract<Block, { k: 'fig' }> }) {
   );
 }
 
+/** A lesson table whose columns share the reading width (data/table-layout.ts); it scrolls sideways only when they cannot fit. */
+function LessonTable({ head, rows }: { head: readonly string[]; rows: readonly { c: readonly string[] }[] }) {
+  const styles = useThemedStyles(createStyles);
+  const [available, setAvailable] = useState(0);
+  const count = Math.max(head.length, ...rows.map((row) => row.c.length));
+  const widths = useMemo(() => {
+    const columns = Array.from({ length: count }, (_, k) => [head[k] ?? '', ...rows.map((row) => row.c[k] ?? '')].map((cell) => plainText(cell)));
+    // The table's 1 px border on each side.
+    return tableColumnWidths(columns, available - 2);
+  }, [head, rows, count, available]);
+  return (
+    <ScrollView
+      horizontal
+      style={styles.tableWrap}
+      showsHorizontalScrollIndicator
+      onLayout={(event) => {
+        const width = Math.floor(event.nativeEvent.layout.width);
+        if (Math.abs(width - available) > 1) setAvailable(width);
+      }}
+    >
+      <View style={styles.table}>
+        {head.length ? (
+          <View style={[styles.tr, styles.thRow]}>
+            {head.map((h, j) => (
+              <View key={j} style={[styles.cell, { width: widths[j] }, j === count - 1 && styles.cellLast]}>
+                <Rich x={h} style={styles.th} />
+              </View>
+            ))}
+          </View>
+        ) : null}
+        {rows.map((row, j) => (
+          <View key={j} style={[styles.tr, j % 2 === 1 && styles.trAlt]}>
+            {row.c.map((c, k) => (
+              <View key={k} style={[styles.cell, { width: widths[k] }, k === count - 1 && styles.cellLast]}>
+                <Rich x={c} style={styles.td} />
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+    </ScrollView>
+  );
+}
+
 function tone(colors: ThemeColors, name?: string) {
   if (name === 'red' || name === 'trap') return colors.error;
   if (name === 'life') return colors.success;
@@ -132,30 +215,7 @@ export function LegacyBlocks({ blocks }: { blocks: readonly Block[] }) {
               </View>
             );
           case 'table':
-            return (
-              <ScrollView key={i} horizontal style={styles.tableWrap} showsHorizontalScrollIndicator>
-                <View style={styles.table}>
-                  {b.head.length ? (
-                    <View style={[styles.tr, styles.thRow]}>
-                      {b.head.map((h, j) => (
-                        <View key={j} style={styles.cell}>
-                          <Rich x={h} style={styles.th} />
-                        </View>
-                      ))}
-                    </View>
-                  ) : null}
-                  {b.rows.map((row, j) => (
-                    <View key={j} style={[styles.tr, j % 2 === 1 && styles.trAlt]}>
-                      {row.c.map((c, k) => (
-                        <View key={k} style={styles.cell}>
-                          <Rich x={c} style={styles.td} />
-                        </View>
-                      ))}
-                    </View>
-                  ))}
-                </View>
-              </ScrollView>
-            );
+            return <LessonTable key={i} head={b.head} rows={b.rows} />;
           case 'term':
             return (
               <View key={i} style={styles.term}>
@@ -245,11 +305,12 @@ function createStyles(colors: ThemeColors) {
     liText: { flex: 1, marginBottom: 0 },
     bullet: { width: 22, fontSize: 15.5, lineHeight: 25, fontWeight: '700', color: colors.primaryText },
     tableWrap: { marginBottom: 14 },
-    table: { borderColor: colors.border, borderWidth: 1, borderRadius: 10, overflow: 'hidden', minWidth: 320 },
+    table: { borderColor: colors.border, borderWidth: 1, borderRadius: 10, overflow: 'hidden' },
     tr: { flexDirection: 'row' },
     thRow: { backgroundColor: colors.primary },
     trAlt: { backgroundColor: colors.surfaceMuted },
-    cell: { width: 160, padding: 10, borderColor: colors.border, borderRightWidth: StyleSheet.hairlineWidth },
+    cell: { padding: 10, borderColor: colors.border, borderRightWidth: StyleSheet.hairlineWidth },
+    cellLast: { borderRightWidth: 0 },
     th: { fontSize: 13, fontWeight: '700', color: colors.onPrimary },
     td: { fontSize: 13.5, lineHeight: 20, color: colors.text },
     term: { backgroundColor: colors.surfaceMuted, borderColor: colors.border, borderWidth: 1, borderRadius: 14, padding: 14, marginBottom: 10 },

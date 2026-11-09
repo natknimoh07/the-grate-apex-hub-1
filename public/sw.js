@@ -6,6 +6,8 @@ const OFFLINE_CACHE = 'grateapex-offline-v1';
 const CACHE_PREFIX = 'grateapex-pwa-';
 const APP_SHELL = ['/', '/manifest.webmanifest', '/icons/grateapex-192-v2.png', '/icons/grateapex-512-v2.png'];
 const CACHEABLE_DESTINATIONS = new Set(['font', 'image', 'script', 'style']);
+// How long a question bank may take from the network before the saved copy is shown instead.
+const BANK_WAIT_MS = 5000;
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
@@ -98,23 +100,26 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
 
-  // Question banks: show the saved copy straight away (the network can be slow or absent),
-  // and refresh it in the background (a cheap "has it changed?" check) for next time.
+  // Question banks: the newest copy from the network (a cheap "has it changed?" check), saved for
+  // offline study. The saved copy is used only when there is no connection, or when the network
+  // takes longer than BANK_WAIT_MS (the download then finishes in the background, for next time).
+  // Until 2026-11-07 the saved copy came first, so after a bank update a lesson's practice found
+  // only the questions the old copy had (the Blood lesson: "110 questions", then 60 in the quiz).
   // A request that explicitly asks for a fresh copy (Settings → Offline study) goes to the network.
   if (url.pathname.startsWith('/curriculum/') && url.pathname.endsWith('.json')) {
     if (request.cache === 'reload' || request.cache === 'no-store') return;
     event.respondWith((async () => {
       const cache = await caches.open(OFFLINE_CACHE);
-      const cached = await cache.match(request);
       const refresh = fetch(request.url, { cache: 'no-cache' }).then(async (response) => {
         if (response.ok) await cache.put(request, response.clone());
         return response;
       });
-      if (cached) {
-        event.waitUntil(refresh.catch(() => undefined));
-        return cached;
-      }
-      return refresh;
+      event.waitUntil(refresh.catch(() => undefined));
+      const cached = await cache.match(request);
+      if (!cached) return refresh;
+      const slow = new Promise((resolve) => setTimeout(() => resolve(null), BANK_WAIT_MS));
+      const fresh = await Promise.race([refresh.then((response) => (response.ok ? response : null), () => null), slow]);
+      return fresh || cached;
     })());
     return;
   }

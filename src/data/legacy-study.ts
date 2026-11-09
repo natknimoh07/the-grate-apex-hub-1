@@ -207,12 +207,19 @@ export function loadLegacyImage(name: string): Promise<string | null> {
 export type LegacyBank = { id: string; name: string; sets: { id: string; name: string; questions: BankQuestion[] }[] };
 
 const banks = new Map<string, Promise<LegacyBank>>();
+const freshBanks = new Set<string>();
 const BASE = SITE_BASE;
 
-export function loadLegacyBank(courseId: string): Promise<LegacyBank> {
+/**
+ * A course's question bank. `fresh`: straight from the network, past every saved copy (the browser's and
+ * the offline one) — for when a copy turns out older than the app (a lesson lists questions it lacks).
+ */
+export function loadLegacyBank(courseId: string, options: { fresh?: boolean } = {}): Promise<LegacyBank> {
   const hit = banks.get(courseId);
-  if (hit) return hit;
-  const promise = fetch(`${BASE}/curriculum/${courseId}.json`)
+  // A fresh copy is fetched at most once per visit (a lesson may list a question the bank no longer has).
+  if (hit && (!options.fresh || freshBanks.has(courseId))) return hit;
+  if (options.fresh) freshBanks.add(courseId);
+  const promise = fetch(`${BASE}/curriculum/${courseId}.json`, options.fresh ? { cache: 'reload' } : undefined)
     .then((response) => {
       if (!response.ok) throw new Error('The question bank could not be loaded.');
       return response.json() as Promise<LegacyBank>;
@@ -245,6 +252,13 @@ export async function loadCourseSets(courseId: string): Promise<{ id: string; na
 }
 
 export const bankQuestions = (bank: LegacyBank) => bank.sets.flatMap((set) => set.questions.map((q) => ({ ...q, set: set.id, setName: set.name })));
+
+/** Does the bank hold every one of these question ids? (No: it is a copy saved before the lessons were updated.) */
+export function bankHasAll(bank: LegacyBank, ids: readonly string[]) {
+  if (!ids.length) return true;
+  const have = new Set(bank.sets.flatMap((set) => set.questions.map((q) => q.id)));
+  return ids.every((id) => have.has(id));
+}
 
 /** Is a bank question one of the lesson's? Its own questions, plus (lessons written in the app) the course's past questions on its topics and whole sets. */
 export function lessonQuestionTest(lesson: Pick<LegacyLessonMeta, 'qids' | 'ptopics' | 'psets'>) {
