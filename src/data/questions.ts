@@ -169,6 +169,23 @@ function signedNumber(text: string): number | null {
   return (match[1] === '-' || match[1] === '−' ? -1 : 1) * (top / bottom);
 }
 
+// Typed answers the AI judged correct although they are not in the key (this visit only; the
+// result of the check is saved with the attempt as correct). Keyed by question id.
+const aiAccepted = new Map<string, Map<string, string>>();
+
+export function acceptTypedAnswer(questionId: string, typed: string, reason: string) {
+  const key = normalizeAnswer(typed);
+  if (!key) return;
+  const known = aiAccepted.get(questionId) ?? new Map<string, string>();
+  known.set(key, reason);
+  aiAccepted.set(questionId, known);
+}
+
+/** Why the AI accepted this typed answer, or null when it was not accepted that way. */
+export function aiAcceptedReason(questionId: string, typed: unknown): string | null {
+  return typeof typed === 'string' ? aiAccepted.get(questionId)?.get(normalizeAnswer(typed)) ?? null : null;
+}
+
 export function typedAnswerMatches(input: string, accept: string[]) {
   const typedNumber = signedNumber(input);
   if (typedNumber !== null) {
@@ -258,7 +275,7 @@ export function isAnswerCorrect(
       );
     }
     case 'type':
-      return typedAnswerMatches(answer as string, question.accept);
+      return typedAnswerMatches(answer as string, question.accept) || aiAcceptedReason(question.id, answer) !== null;
     // Compare text, not positions, so two identical items (e.g. two
     // "Reduction" steps) can be placed either way round.
     case 'order':

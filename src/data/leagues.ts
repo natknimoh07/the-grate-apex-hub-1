@@ -17,7 +17,7 @@
 // 0 when the shared total lagged), and kept some top learners from moving up.
 // Last week's result is checked again once with these rules; it can only move a
 // learner up, never down.
-import { collection, doc, getDoc, getDocFromServer, getDocs, limit, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, type DocumentReference, getDoc, getDocFromServer, getDocs, limit, query, runTransaction, updateDoc, where } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { getLeagueOutcome, type LeagueOutcome } from '@/data/ranks';
@@ -294,6 +294,30 @@ async function saveClosedWeekXp(uid: string, entry: LeagueEntry) {
   return { finalXp, nextXp };
 }
 
+/**
+ * The league entry when the read showed none: checked again in a transaction (always from the
+ * server) and created only when there really is none.
+ *
+ * 2026-11-06 ("#1 in Silver — promoted to Bronze"): a read of users/{uid} can hold only the
+ * start-up fields (see hooks/use-auth.tsx), so learners who already had a league looked like
+ * they had none. The app then saved a new Bronze entry with `merge: true`, which kept the old
+ * `prev`: learners the server had moved up to Gold were put back in Bronze, with the card still
+ * saying "promoted". Never put a learner who has a league back in Bronze; an entry that has lost
+ * its week takes the tier its last result earned.
+ */
+async function joinLeague(ref: DocumentReference, week: string, myXp: number): Promise<LeagueEntry> {
+  return runTransaction(db, async (tx) => {
+    const found = (await tx.get(ref)).data()?.league as Partial<LeagueEntry> | undefined;
+    if (found && typeof found.week === 'string' && typeof found.tier === 'number') return found as LeagueEntry;
+    const prev = found?.prev && typeof found.prev.tier === 'number' ? found.prev : undefined;
+    const tier = prev ? nextTier(prev.tier, prev.outcome) : clampTier(Number(found?.tier) || 0);
+    const entry: LeagueEntry = { week, tier, startXp: myXp, ...(prev ? { prev } : {}) };
+    // The whole league field, never merged into what is there.
+    tx.set(ref, { league: entry }, { mergeFields: ['league'] });
+    return entry;
+  });
+}
+
 async function readLeague(): Promise<LeagueView> {
   await auth.authStateReady();
   const uid = auth.currentUser?.uid;
@@ -309,10 +333,8 @@ async function readLeague(): Promise<LeagueView> {
   await waitForProgressSync().catch(() => {});
 
   const lastWeek = weekKey(Date.now() - 7 * 86_400_000);
-  if (!entry || typeof entry.week !== 'string') {
-    entry = { week, tier: 0, startXp: myXp };
-    await setDoc(ref, { league: entry }, { merge: true });
-  } else if (entry.week === lastWeek) {
+  if (!entry || typeof entry.week !== 'string') entry = await joinLeague(ref, week, myXp);
+  if (entry.week === lastWeek) {
     // The week that just ended is settled by the server for everyone at once (api/leagues.mjs,
     // at midnight and again every morning), never by the app: apps that settled it themselves
     // saw only part of the league when the free plan's reads were used up, so some moved up

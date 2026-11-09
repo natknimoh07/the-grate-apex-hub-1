@@ -9,6 +9,9 @@
 //     "Check my answer" on a recall step ("in your own words"): the learner's typed
 //     answer is marked against the lecture slides first, then the model answer.
 //     Replies { verdict: 'yes' | 'partial' | 'no', feedback, missing: [...], beyond }.
+//   { mode: 'judge',      lesson?: { title, text }, item: { prompt, accept: [answer, ...], answer, explanation? } }
+//     A typed quiz answer that did not match the key: is it nevertheless correct?
+//     Replies { verdict: 'same' | 'different', reason }. The app counts 'same' as right.
 //     "Explain with AI" on quiz / practice / review answers and flashcards: why the
 //     right answer is right (and the learner's pick is not), from the lecture text.
 //
@@ -28,6 +31,7 @@ import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 import { geminiCall, ModelCallError, openAiCompatibleCall } from './_ai-models.mjs';
 import { GRADE_RULES, gradeBlock, parseGrade } from './_grade.mjs';
+import { JUDGE_RULES, judgeBlock, parseJudge } from './_judge.mjs';
 
 const PROJECT = 'grate-apex';
 const KEYS = createRemoteJWKSet(new URL('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'));
@@ -249,7 +253,7 @@ export default async function handler(req, res) {
   const title = text(body?.lesson?.title, 200) || 'Lesson';
   const lessonText = text(body?.lesson?.text, MAX_LESSON_CHARS);
   // Explaining an answer works without lesson text (e.g. a past-paper question): the AI then says it is going beyond the slides.
-  if (!lessonText && mode !== 'explain') return res.status(400).json({ error: 'This lesson has no text to work from.', code: 'no-lesson' });
+  if (!lessonText && mode !== 'explain' && mode !== 'judge') return res.status(400).json({ error: 'This lesson has no text to work from.', code: 'no-lesson' });
   const lessonBlock = lessonText ? `LESSON: ${title}\n"""\n${lessonText}\n"""` : 'LESSON: (no lecture text was available for this item)';
 
   // The conversation must start with, and alternate from, a user turn.
@@ -290,6 +294,15 @@ export default async function handler(req, res) {
       const grade = parseGrade(raw);
       if (!grade) return res.status(502).json({ error: 'The AI could not mark that right now. Please try again.', code: 'bad-output' });
       return res.status(200).json(grade);
+    }
+
+    if (mode === 'judge') {
+      const item = judgeBlock(body?.item);
+      if (!item) return res.status(400).json({ error: 'There is no answer to check.', code: 'no-answer' });
+      const raw = await generate({ system: `${JUDGE_RULES}\n\n${lessonBlock}`, turns: [{ role: 'user', text: `${item}\n\nIs this answer correct?` }], maxTokens: 512, json: true });
+      const verdict = parseJudge(raw);
+      if (!verdict) return res.status(502).json({ error: 'The AI could not check that right now.', code: 'bad-output' });
+      return res.status(200).json(verdict);
     }
 
     if (mode === 'flashcards') {
