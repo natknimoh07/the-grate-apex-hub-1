@@ -16,16 +16,30 @@ const EXTRA_TYPED_ANSWERS: Record<string, string[]> = {
 export type BankQuestion = { id: string; q: string; o: string[]; a: number; e: string; t: string; p?: string[]; kind?: 'input'; ans?: string; img?: string; tp?: string };
 
 // ── Rich text (the original mini-markup: <b> <i> <sub> <sup> <term d="…">) ──
+// Plus fractions, drawn as a numerator over a bar over a denominator (owner, 2026-11-07: "use math
+// representations like the bar in divisions"): <frac><n>numerator</n><d>denominator</d></frac>.
+// Fractions do not nest. Where only plain text will do (Ask AI, the glossary), one is written on one
+// line, a/b, with brackets round a part of more than one term: (mass of solute)/(mass of solution).
 
-export type Run = { t: string; b?: boolean; i?: boolean; sub?: boolean; sup?: boolean; term?: string };
+export type Run = { t: string; b?: boolean; i?: boolean; sub?: boolean; sup?: boolean; term?: string; frac?: { num: Run[]; den: Run[] } };
 const unescape = (s: string) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
-export const plainText = (s: string) => unescape(s.replace(/<[^>]+>/g, ''));
+const FRACTION = /<frac><n>([\s\S]*?)<\/n><d>([\s\S]*?)<\/d><\/frac>/g;
+/** One side of a fraction on one line: in brackets when it has more than one term. */
+const fractionSide = (text: string) => {
+  const side = text.trim();
+  return /[\s+\-−×·÷/=]/.test(side) && !/^\([^()]*\)$/.test(side) ? `(${side})` : side;
+};
+const inlineFraction = (num: string, den: string) => `${fractionSide(num)}/${fractionSide(den)}`;
+export const plainText = (s: string) => unescape(s.replace(FRACTION, (_, num: string, den: string) => inlineFraction(num.replace(/<[^>]+>/g, ''), den.replace(/<[^>]+>/g, ''))).replace(/<[^>]+>/g, ''));
 
 export function parseRich(src: string): Run[] {
   const runs: Run[] = [];
   const state = { b: 0, i: 0, sub: 0, sup: 0 };
   let term: string | undefined;
-  const re = /<(\/?)(b|i|sub|sup|term)((?:\s+d="[^"]*")?)>|([^<]+)|(<)/g;
+  // Inside a fraction, text goes to its numerator or denominator.
+  let frac: { num: Run[]; den: Run[] } | null = null;
+  let target = runs;
+  const re = /<(\/?)(b|i|sub|sup|term|frac|n|d)((?:\s+d="[^"]*")?)>|([^<]+)|(<)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(src))) {
     const text = m[4] ?? m[5];
@@ -36,16 +50,26 @@ export function parseRich(src: string): Run[] {
       if (state.sub) run.sub = true;
       if (state.sup) run.sup = true;
       if (term) run.term = term;
-      runs.push(run);
+      target.push(run);
     } else {
       const close = m[1] === '/';
-      const tag = m[2] as 'b' | 'i' | 'sub' | 'sup' | 'term';
+      const tag = m[2] as 'b' | 'i' | 'sub' | 'sup' | 'term' | 'frac' | 'n' | 'd';
       if (tag === 'term') {
         if (close) term = undefined;
         else {
           const d = /d="([^"]*)"/.exec(m[3] || '');
           term = d ? unescape(d[1]) : undefined;
         }
+      } else if (tag === 'frac') {
+        if (!close) frac = { num: [], den: [] };
+        else if (frac) {
+          const side = (list: Run[]) => list.map((run) => run.t).join('');
+          runs.push({ t: inlineFraction(side(frac.num), side(frac.den)), frac });
+          frac = null;
+        }
+        target = runs;
+      } else if (tag === 'n' || tag === 'd') {
+        target = frac && !close ? (tag === 'n' ? frac.num : frac.den) : runs;
       } else state[tag] += close ? -1 : 1;
     }
   }
