@@ -8,7 +8,7 @@ import { thumbnailUrl, watchUrl } from '@/data/apex-explained';
 
 // Phones: the video's still frame; tapping opens it in YouTube.
 // (The web version, youtube-player.web.tsx, plays it inside the page.)
-export function YoutubePlayer({ id, title, start = 0 }: { id: string; title: string; start?: number }) {
+export function YoutubePlayer({ id, title, start = 0, end = 0 }: { id: string; title: string; start?: number; end?: number }) {
   return (
     <Interactive onPress={() => void Linking.openURL(watchUrl(id, start)).catch(() => {})} accessibilityRole="button" accessibilityLabel={`Play ${title}`} style={styles.frame}>
       <Image source={{ uri: thumbnailUrl(id) }} contentFit="cover" style={StyleSheet.absoluteFill} />

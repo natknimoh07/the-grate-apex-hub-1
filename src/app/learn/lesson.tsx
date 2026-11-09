@@ -23,6 +23,7 @@ import { classLessonCompletion, firstClassOffering, firstIncompleteClassBefore, 
 import { lessonToText } from '@/data/ai-study';
 import { hb2LessonById } from '@/data/hb2-study';
 import { LessonStartChoice } from '@/components/learning/lesson-start-choice';
+import { LessonVideoCard } from '@/components/learning/lesson-video';
 import { beginLesson, finishLesson, type LessonFinish } from '@/data/learning/actions';
 import { saveLessonSession, useLessonSessions } from '@/data/learning/lesson-sessions';
 import { describeDue } from '@/data/learning/time';
@@ -311,6 +312,9 @@ function LessonPlayer({
   const lessonMain = (
     <View style={styles.main}>
       {error ? <InlineNotice tone="error" title="SOMETHING WENT WRONG" message={error} /> : null}
+
+      {/* The Apex Explained video (or part of it) that matches this lesson, if there is one. */}
+      <LessonVideoCard lessonId={lesson.id} />
 
       {(finish?.awarded || (completed && finish)) ? (
         <Card style={styles.doneCard}>

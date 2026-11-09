@@ -76,6 +76,19 @@ export const APEX_VIDEOS: readonly ApexVideo[] = [
     subject: 'anatomy',
     title: 'The Cardiac Cycle (Part 1): Conduction, Filling & the Wiggers Diagram | Gross Anatomy',
     length: '27:03',
+    summary: 'The cardiovascular system in gross anatomy: the circulatory system, the mediastinum, the pericardium and the outside of the heart.',
+    chapters: [
+      { at: '0:00', label: 'Intro' },
+      { at: '0:44', label: 'Roadmap' },
+      { at: '1:16', label: 'Compact organs' },
+      { at: '3:09', label: 'Parenchyma arrangement' },
+      { at: '4:18', label: 'Tubular organ coats' },
+      { at: '6:52', label: 'Circulatory system' },
+      { at: '8:54', label: 'Mediastinum' },
+      { at: '14:31', label: 'Pericardium' },
+      { at: '19:31', label: 'The heart: outside' },
+      { at: '25:22', label: 'The heart: landmarks' },
+    ],
   },
   {
     id: 'f6IggA9kXCk',
@@ -95,9 +108,9 @@ export function chapterSeconds(at: string): number {
   return parts.reduce((total, n) => total * 60 + n, 0);
 }
 
-/** The in-app player address (YouTube's privacy-friendly embed, no related videos from other channels). */
-export const embedUrl = (id: string, start = 0) =>
-  `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1${start > 0 ? `&start=${Math.floor(start)}` : ''}`;
+/** The in-app player address (YouTube's privacy-friendly embed, no related videos from other channels). `start`/`end` are seconds. */
+export const embedUrl = (id: string, start = 0, end = 0) =>
+  `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1${start > 0 ? `&start=${Math.floor(start)}` : ''}${end > 0 ? `&end=${Math.floor(end)}` : ''}`;
 export const watchUrl = (id: string, start = 0) => `https://www.youtube.com/watch?v=${id}${start > 0 ? `&t=${Math.floor(start)}s` : ''}`;
 export const thumbnailUrl = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 
@@ -105,3 +118,73 @@ export const thumbnailUrl = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefa
 export function videosBySubject(videos: readonly ApexVideo[] = APEX_VIDEOS) {
   return APEX_SUBJECTS.map((subject) => ({ ...subject, videos: videos.filter((video) => video.subject === subject.id) })).filter((group) => group.videos.length > 0);
 }
+
+// ─── Videos inside Study lessons ───────────────────────────────────────────
+// A lesson that matches a video (or part of one) shows a "Watch this part" card
+// (src/components/learning/lesson-video.tsx). Each part plays from `start` to `end`
+// (m:ss); a part with no `end` plays to the end of the video. Times come from the
+// chapters in the video's YouTube description.
+
+export type VideoPart = { label: string; start: string; end?: string };
+export type LessonVideo = { videoId: string; parts?: readonly VideoPart[] };
+
+export const LESSON_VIDEOS: Readonly<Record<string, LessonVideo>> = {
+  // Biochemistry → Fatty Acid Biosynthesis (2ER-_917nJM)
+  'fatty-acid-biosynthesis-1': { videoId: '2ER-_917nJM', parts: [
+    { label: 'Synthase vs synthetase', start: '5:00', end: '5:32' },
+    { label: 'Enzymes', start: '5:32', end: '6:58' },
+  ] },
+  'fatty-acid-biosynthesis-2': { videoId: '2ER-_917nJM', parts: [
+    { label: 'Why make fat?', start: '1:54', end: '2:59' },
+    { label: 'When and where', start: '6:58', end: '9:43' },
+  ] },
+  'fatty-acid-biosynthesis-3': { videoId: '2ER-_917nJM', parts: [
+    { label: 'Citrate shuttle', start: '9:43', end: '12:10' },
+    { label: 'Step 1: mechanism and regulation', start: '12:10', end: '15:45' },
+  ] },
+  'fatty-acid-biosynthesis-4': { videoId: '2ER-_917nJM', parts: [
+    { label: 'Cast', start: '2:59', end: '5:00' },
+    { label: 'Step 2: the transfer', start: '17:22', end: '18:58' },
+  ] },
+  'fatty-acid-biosynthesis-5': { videoId: '2ER-_917nJM', parts: [
+    { label: 'Condensation, reduction, dehydration, reduction', start: '18:58', end: '21:21' },
+    { label: 'Palmitate synthesis', start: '21:21', end: '22:55' },
+  ] },
+  'fatty-acid-biosynthesis-6': { videoId: '2ER-_917nJM', parts: [
+    { label: 'Beta oxidation vs fatty acid synthesis', start: '22:55', end: '24:23' },
+  ] },
+  'fatty-acid-biosynthesis-7': { videoId: '2ER-_917nJM', parts: [
+    { label: 'Other fatty acid synthesis', start: '24:23', end: '25:35' },
+  ] },
+
+  // Physiology → Cardiovascular Physiology, lesson 1 (7eq3_OIhgIM)
+  'cardiovascular-physiology-1': { videoId: '7eq3_OIhgIM', parts: [
+    { label: 'Route of blood', start: '0:56', end: '2:37' },
+    { label: 'The heart', start: '2:37', end: '5:28' },
+    { label: 'The electrical trigger', start: '5:28', end: '9:19' },
+    { label: 'The conduction system', start: '9:19', end: '10:16' },
+    { label: 'A heartbeat', start: '10:16', end: '13:33' },
+    { label: 'Wiggers diagram', start: '13:33', end: '15:47' },
+    { label: 'Ventricular refill', start: '15:47', end: '18:50' },
+    { label: 'Atrial kick', start: '18:50', end: '20:34' },
+  ] },
+
+  // Anatomy → Cardiovascular System (gross), lessons 1 to 3 (81hQmQ9nuJk)
+  'cardiovascular-system-gross-1': { videoId: '81hQmQ9nuJk', parts: [
+    { label: 'Circulatory system', start: '6:52', end: '8:54' },
+    { label: 'Mediastinum', start: '8:54', end: '14:31' },
+  ] },
+  'cardiovascular-system-gross-2': { videoId: '81hQmQ9nuJk', parts: [
+    { label: 'Pericardium', start: '14:31', end: '19:31' },
+  ] },
+  'cardiovascular-system-gross-3': { videoId: '81hQmQ9nuJk', parts: [
+    { label: 'The heart: outside', start: '19:31', end: '25:22' },
+    { label: 'The heart: landmarks', start: '25:22' },
+  ] },
+
+  // HB1 → Alkenes (f6IggA9kXCk): the whole video, its description has no chapters
+  'bmc-05': { videoId: 'f6IggA9kXCk' },
+};
+
+export const lessonVideoFor = (lessonId?: string): LessonVideo | undefined => (lessonId ? LESSON_VIDEOS[lessonId] : undefined);
+export const videoById = (id: string) => APEX_VIDEOS.find((video) => video.id === id);

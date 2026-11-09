@@ -2,11 +2,11 @@ import { embedUrl } from '@/data/apex-explained';
 
 // Plays a YouTube lesson inside the page (web). The caller mounts it only when the
 // student taps play, so nothing from YouTube loads until then.
-export function YoutubePlayer({ id, title, start = 0 }: { id: string; title: string; start?: number }) {
+export function YoutubePlayer({ id, title, start = 0, end = 0 }: { id: string; title: string; start?: number; end?: number }) {
   return (
     <iframe
-      key={`${id}-${start}`}
-      src={embedUrl(id, start)}
+      key={`${id}-${start}-${end}`}
+      src={embedUrl(id, start, end)}
       title={title}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
       allowFullScreen

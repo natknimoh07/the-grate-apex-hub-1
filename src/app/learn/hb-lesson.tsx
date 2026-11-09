@@ -7,6 +7,7 @@ import { type ScrollView, StyleSheet, View } from 'react-native';
 import { useLayoutWidth } from '@/components/side-panel-store';
 import { QuizInProgressCard } from '@/components/learning/quiz-in-progress-card';
 import { LessonReferences } from '@/components/learning/lesson-references';
+import { LessonVideoCard } from '@/components/learning/lesson-video';
 import { findLesson } from '@/data/curriculum';
 import { LegacyBlocks, Rich, TermContext } from '@/components/learning/legacy-blocks';
 import { BackLink } from '@/components/learning/nav-bits';
@@ -244,6 +245,8 @@ function LegacyLessonScreen() {
           </View>
         </PressableCard>
       ) : null}
+      {/* The Apex Explained video that matches this lesson, if there is one. */}
+      <LessonVideoCard lessonId={meta.id} />
       <LessonToolTabs tabs={tabs} active={tab} onChange={(next) => {
         if (next === 'practice') {
           if (course) router.push(savedPractice ? resumeHref(savedPractice) : routes.legacyPractice({ course: course.id, lesson: meta.id }));

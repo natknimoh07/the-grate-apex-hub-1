@@ -1,8 +1,9 @@
-// Apex Explained: every video has a real YouTube id, a known subject and sane chapters.
+// Apex Explained: every video has a real YouTube id, a known subject and sane chapters,
+// and every Study lesson it is linked to exists.
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-const { APEX_SUBJECTS, APEX_VIDEOS, chapterSeconds, embedUrl, isYoutubeId, thumbnailUrl, videosBySubject, watchUrl } = await import('@/data/apex-explained');
+const { APEX_SUBJECTS, APEX_VIDEOS, LESSON_VIDEOS, chapterSeconds, embedUrl, isYoutubeId, lessonVideoFor, thumbnailUrl, videoById, videosBySubject, watchUrl } = await import('@/data/apex-explained');
 
 describe('Apex Explained videos', () => {
   it('has valid, unique YouTube ids', () => {
@@ -40,7 +41,36 @@ describe('Apex Explained videos', () => {
     assert.equal(isYoutubeId(undefined), false);
     assert.match(embedUrl('7eq3_OIhgIM'), /^https:\/\/www\.youtube-nocookie\.com\/embed\/7eq3_OIhgIM\?/);
     assert.match(embedUrl('7eq3_OIhgIM', 157), /&start=157$/);
+    assert.match(embedUrl('7eq3_OIhgIM', 157, 300), /&start=157&end=300$/);
     assert.equal(watchUrl('7eq3_OIhgIM', 157), 'https://www.youtube.com/watch?v=7eq3_OIhgIM&t=157s');
     assert.equal(thumbnailUrl('7eq3_OIhgIM'), 'https://i.ytimg.com/vi/7eq3_OIhgIM/hqdefault.jpg');
+  });
+});
+
+describe('videos inside Study lessons', () => {
+  it('point at a listed video, with parts that run forwards inside it', () => {
+    for (const [lessonId, link] of Object.entries(LESSON_VIDEOS)) {
+      const video = videoById(link.videoId);
+      assert.ok(video, `${lessonId}: no video ${link.videoId}`);
+      assert.equal(lessonVideoFor(lessonId), link);
+      const length = chapterSeconds(video.length);
+      for (const part of link.parts ?? []) {
+        const start = chapterSeconds(part.start);
+        assert.ok(part.label.trim(), lessonId);
+        assert.ok(start < length, `${lessonId}: ${part.label} starts after the video ends`);
+        if (part.end) {
+          assert.ok(chapterSeconds(part.end) > start, `${lessonId}: ${part.label} ends before it starts`);
+          assert.ok(chapterSeconds(part.end) <= length, `${lessonId}: ${part.label} ends after the video`);
+        }
+      }
+    }
+    assert.equal(lessonVideoFor('no-such-lesson'), undefined);
+    assert.equal(lessonVideoFor(undefined), undefined);
+  });
+  it('are only linked to lessons that exist', async () => {
+    const { builtTopics } = await import('../src/data/topics/index.ts');
+    const { HB1_LOCAL_LESSONS } = await import('@/data/hb1-lessons');
+    const real = new Set([...builtTopics.flatMap(({ topic }) => topic.lessons.map((lesson) => lesson.id)), ...HB1_LOCAL_LESSONS.map((lesson) => lesson.id)]);
+    for (const lessonId of Object.keys(LESSON_VIDEOS)) assert.ok(real.has(lessonId), `no lesson called ${lessonId}`);
   });
 });
