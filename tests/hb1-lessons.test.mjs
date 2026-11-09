@@ -62,7 +62,9 @@ describe('HB1 lessons written in the app', () => {
       for (const section of lesson.sections) {
         for (const text of texts(section.blocks)) {
           assert.ok(parseRich(text).length > 0, `${lesson.id}: empty text`);
-          assert.doesNotMatch(text, /<(?!\/?(b|i|sub|sup)>)/, `${lesson.id}: unknown markup in "${text.slice(0, 60)}"`);
+          assert.doesNotMatch(text, /<(?!\/?(b|i|sub|sup|frac|n|d)>)/, `${lesson.id}: unknown markup in "${text.slice(0, 60)}"`);
+          // Fractions (owner, 2026-11-07): <frac><n>…</n><d>…</d></frac>, never one inside another.
+          for (const fraction of text.match(/<frac>[\s\S]*?<\/frac>/g) ?? []) assert.match(fraction, /^<frac><n>(?:(?!<frac>)[\s\S])+<\/n><d>(?:(?!<frac>)[\s\S])+<\/d><\/frac>$/, `${lesson.id}: a fraction must be <frac><n>…</n><d>…</d></frac>: "${fraction}"`);
         }
       }
     }
