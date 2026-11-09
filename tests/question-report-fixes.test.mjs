@@ -161,3 +161,21 @@ describe('report 2026-11-05: legacy:bmc:9rtdfc:type', () => {
     for (let i = 0; i < 300; i++) for (const q of buildPractice(target, { course: 'bmc' }, 1, `seed-${i}`)) assert.ok(!q.id.endsWith(':type'), q.id);
   });
 });
+
+describe('report 2026-11-08/09: ethyne π bonds, Fick true/false, heart-skeleton pins', () => {
+  it('ethyne has two π bonds (answer key is "Two π-bonds")', () => {
+    const bank = JSON.parse(readFileSync('public/curriculum/bmc.json', 'utf8')).sets.flatMap((set) => set.questions);
+    const q = bank.find((item) => item.id === '11ywyzc');
+    assert.ok(q);
+    assert.equal(q.o[q.a], 'Two π-bonds');
+  });
+  it('the Fick true/false statement says systemic arteries', () => {
+    const src = readFileSync('src/data/topics/cardiovascular-physiology/section-questions-a.ts', 'utf8');
+    assert.match(src, /Systemic arterial blood has the same composition in every systemic artery/);
+  });
+  it('right fibrous trigone and septal cusp pins sit over their own leader lines (not swapped)', () => {
+    const src = readFileSync('src/data/figures/pictures/cardiovascular-system-gross.ts', 'utf8');
+    const x = (id) => Number(new RegExp(`id: "${id}", label: "[^"]+", x: ([0-9.]+)`).exec(src)[1]);
+    assert.ok(x('right-fibrous-trigone') < 0.5 && x('septal-cusp-of-tricuspid-valve') > 0.52);
+  });
+});

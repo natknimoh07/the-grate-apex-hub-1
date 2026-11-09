@@ -271,7 +271,7 @@ export const sectionQuestionsA: Q[] = [
   mcq('s3-6-2', 'fick-principle', 'What does Fick’s principle multiply by blood flow?', 'The arteriovenous concentration difference', ['The patient’s resting heart rate in beats per minute', 'The haematocrit', 'The body surface area'], {
     explanation: 'Uptake = A–V difference × flow.',
   }),
-  tf({ id: 's3-6-3', conceptId: 'fick-principle', statement: 'Arterial blood has the same composition in every artery.', answer: true, explanation: 'So any artery can be sampled.' }),
+  tf({ id: 's3-6-3', conceptId: 'fick-principle', statement: 'Systemic arterial blood has the same composition in every systemic artery.', answer: true, explanation: 'So any systemic artery can be sampled. The pulmonary artery is the exception: it carries mixed venous blood.' }),
   mcq('s3-6-4', 'fick-principle', 'Which substance is used for Fick’s principle in the lecture?', 'Oxygen', ['Glucose', 'Sodium', 'Urea'], {
     explanation: 'O₂ consumption = (arterial − venous O₂) × output.',
   }),
