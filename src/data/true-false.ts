@@ -150,3 +150,6 @@ export function typedAcceptVariants(answer: string): string[] {
   if (times) out.push(times[1]);
   return out;
 }
+
+/** "Which is an obstructive cause…": many answers fit, so it is never asked as a typed answer. */
+export const OPEN_WHICH = /^which (is|are|was|were) (a|an|one|some)\b/i;

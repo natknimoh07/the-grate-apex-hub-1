@@ -39,7 +39,7 @@ export const sectionQuestionsB: Q[] = [
   }),
 
   // ─── Lesson 5 · S3 Oedema ──────────────────────────────────────────
-  mcq('s5-3-1', 'oedema', 'Which cause of oedema increases capillary permeability?', 'Histamine', ['Heart failure raising venous pressure', 'Low plasma protein', 'Filarial worms'], {
+  mcq('s5-3-1', 'oedema', 'Which of these substances increases capillary permeability and so causes oedema?', 'Histamine', ['Heart failure raising venous pressure', 'Low plasma protein', 'Filarial worms'], {
     explanation: 'Substance P, histamine and bradykinins.',
   }),
   mcq('s5-3-2', 'oedema', 'Which surgery can cause oedema by lymphatic obstruction?', 'Radical mastectomy', ['Appendix removal through the abdomen', 'Tonsillectomy', 'Cataract surgery'], {
@@ -236,14 +236,14 @@ export const sectionQuestionsB: Q[] = [
   mcq('s7-2-1', 'orthostatic-hypotension', 'Which infection can damage nerves and cause orthostatic hypotension?', 'Syphilis', ['Common cold', 'Measles', 'Chickenpox'], {
     explanation: 'Nerve damage in diabetes or syphilis.',
   }),
-  mcq('s7-2-2', 'orthostatic-hypotension', 'What happens to noradrenaline on standing in this condition?', 'It does not rise', ['It doubles', 'It rises slowly', 'It falls to zero'], {
+  mcq('s7-2-2', 'orthostatic-hypotension', 'What happens to noradrenaline on standing in orthostatic hypotension?', 'It does not rise', ['It doubles', 'It rises slowly', 'It falls to zero'], {
     explanation: 'Slide 8.',
   }),
   tf({ id: 's7-2-3', conceptId: 'orthostatic-hypotension', statement: 'Sympatholytic drugs can cause orthostatic hypotension.', answer: true, explanation: 'Slide 8.' }),
   mcq('s7-2-4', 'orthostatic-hypotension', 'What is orthostatic hypotension?', 'A fall in BP on suddenly standing up', ['A rise in BP on lying down flat after standing', 'A fall in BP during sleep', 'A rise in BP with exercise'], {
     explanation: 'Slide 8.',
   }),
-  mcq('s7-2-5', 'orthostatic-hypotension', 'What is the common thread among its causes?', 'Disrupted sympathetic innervation', ['Too much blood volume', 'Overactive baroreceptors', 'Strong heart contractions'], {
+  mcq('s7-2-5', 'orthostatic-hypotension', 'What is the common thread among the causes of orthostatic hypotension?', 'Disrupted sympathetic innervation', ['Too much blood volume', 'Overactive baroreceptors', 'Strong heart contractions'], {
     explanation: 'Slide 8.',
   }),
 

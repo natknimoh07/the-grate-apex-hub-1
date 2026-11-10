@@ -11,7 +11,7 @@ import { describeTextbookRefs } from '@/data/source-labels';
 import { illustrationsFor } from '@/data/illustrations';
 import { chunkFigures, type Lesson, type LessonChunk, type LessonChunkKind, type SubjectId, type Topic } from '@/data/lesson-types';
 import type { Question } from '@/data/questions';
-import { trueFalseStatement, typedAcceptVariants, wrongIsPartOfAnswer } from '@/data/true-false';
+import { OPEN_WHICH, trueFalseStatement, typedAcceptVariants, wrongIsPartOfAnswer } from '@/data/true-false';
 
 /** The same shape as an original course (data/legacy-study.ts), marked with its subject. */
 export type LocalCourse = { id: string; name: string; icon: string; desc: string; classId: 'HB2'; semester: 1; gradient: readonly [string, string]; subject: SubjectId };
@@ -198,7 +198,7 @@ export function buildLocalPractice(source: readonly Question[], count: number, s
     if (question.type === 'choice' && question.options.length >= 3 && !question.fixedOrder && !/\bexcept\b|\bnot\b/i.test(question.prompt)) {
       const answer = question.options[question.answer];
       const roll = random();
-      if (roll < 0.15 && short(answer) && !/which of the following/i.test(question.prompt) && !question.prompt.includes('____')) {
+      if (roll < 0.15 && short(answer) && !/which of the following/i.test(question.prompt) && !OPEN_WHICH.test(question.prompt) && !question.prompt.includes('____')) {
         out.push({ ...question, id: `${question.id}:type`, type: 'type', accept: typedAcceptVariants(answer), label: 'Type the answer', reviewEligible: false } as Question);
         continue;
       }
