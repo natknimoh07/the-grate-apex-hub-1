@@ -1378,6 +1378,21 @@ export const sourceFiles: SourceFile[] = [
     title: "Gray's Anatomy for Students (4th Edition)",
     shortName: "Gray's",
   },
+  {
+    // Real dissection photos (owner, 2026-11-10): openly licensed photos, not
+    // lecture material, cited by the quiz questions made from them
+    // (data/figures/cadaver.ts). The files are in public/images/cadaver/.
+    id: "wikimedia-dissection-photos",
+    path: "public/images/cadaver",
+    format: "png",
+    topicId: "",
+    subjectFolder: "ANATOMY",
+    role: "reference",
+    title: "Dissection photos by Anatomist90 (Wikimedia Commons, CC BY-SA 3.0)",
+    shortName: "Dissection photo (Anatomist90, Wikimedia Commons)",
+    author: "Anatomist90 (Adrian Halga)",
+    note: "JPEG photos of real dissections with their printed labels, published on Wikimedia Commons under CC BY-SA 3.0. Used for picture questions only; each photo is shown with its credit. See docs/cadaver-photos.md.",
+  },
   // ── HB2 Gross Anatomy (Anatomy ZIP → Gross/) ──
   {
     id: "anat-cvs-gross-1",

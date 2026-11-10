@@ -13,6 +13,7 @@
 // the Read tab (reading-layer.tsx) and on HB2 lesson pages (hb2-study.ts).
 // tests/illustrations.test.mjs checks every picture and section exists.
 
+import { CADAVER_ILLUSTRATIONS, CADAVER_NOTES } from '@/data/cadaver-photos';
 import { ILLUSTRATION_NOTES } from '@/data/illustration-notes';
 
 export type Illustration = {
@@ -26,6 +27,10 @@ export type Illustration = {
   label?: string;
   /** What to notice in the picture (data/illustration-notes.ts). */
   note?: string;
+  /** The licence's own page, linked from the credit (CC BY-SA asks for it). */
+  licenseUrl?: string;
+  /** A photo of a real human body (data/cadaver-photos.ts): blurred until the learner taps it. */
+  realSpecimen?: boolean;
 };
 
 const CREDIT = 'OpenStax, Anatomy and Physiology · CC BY 4.0';
@@ -450,9 +455,11 @@ export const ILLUSTRATIONS: Record<string, Record<string, Illustration[]>> = {
 /** The pictures for one reading section of a lesson (none for most). */
 /** A section's pictures, each with its note and, given the section's number (1, 2, …), its figure number. */
 export function illustrationsFor(lessonId: string, sectionTitle: string, sectionNumber?: number): Illustration[] {
-  return (ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? []).map((item, index) => ({
+  // OpenStax drawings first, then the real dissection photos (data/cadaver-photos.ts).
+  const items = [...(ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? []), ...(CADAVER_ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? [])];
+  return items.map((item, index) => ({
     ...item,
-    note: ILLUSTRATION_NOTES[item.src.split('/').pop() ?? ''],
+    note: (item.realSpecimen ? CADAVER_NOTES : ILLUSTRATION_NOTES)[item.src.split('/').pop() ?? ''],
     ...(sectionNumber ? { label: `Figure ${sectionNumber}.${index + 1}` } : {}),
   }));
 }

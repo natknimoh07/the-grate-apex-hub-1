@@ -282,7 +282,7 @@ export function LegacyBlocks({ blocks }: { blocks: readonly Block[] }) {
           case 'lfig':
             return <FigureExplorer key={i} figureId={b.id} />;
           case 'illus':
-            return <IllustrationFigure key={i} item={{ src: b.src, width: b.w, height: b.h, caption: b.cap, credit: b.credit, sourceUrl: b.url, label: b.num, note: b.note }} />;
+            return <IllustrationFigure key={i} item={{ src: b.src, width: b.w, height: b.h, caption: b.cap, credit: b.credit, sourceUrl: b.url, label: b.num, note: b.note, licenseUrl: b.lic, realSpecimen: b.real }} />;
           default:
             return null;
         }

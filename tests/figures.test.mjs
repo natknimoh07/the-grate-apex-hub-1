@@ -23,7 +23,8 @@ describe('lecture figures', () => {
       ids.add(figure.id);
       assert.ok(existsSync(new URL(`../public${figure.src}`, import.meta.url)), `${figure.id}: missing public${figure.src}`);
       assert.ok(figure.width > 0 && figure.height > 0, `${figure.id}: size`);
-      assert.ok(figure.sourceRefs.length > 0, `${figure.id}: no source slide`);
+      // Lecture diagrams cite their slide; outside photos (data/figures/cadaver.ts) carry a credit instead.
+      assert.ok(figure.sourceRefs.length > 0 || figure.credit, `${figure.id}: no source slide or credit`);
       const spots = new Set();
       for (const spot of figure.spots) {
         assert.ok(!spots.has(spot.id), `${figure.id}: duplicate spot ${spot.id}`);

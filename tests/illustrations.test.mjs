@@ -2,6 +2,7 @@
 // - every picture file exists in public/ and has its size and a caption
 // - every lesson and reading-section title it names exists, so no picture is lost
 // - every picture is credited (CC BY 4.0 needs the credit shown)
+// (the dissection photos merged in by illustrationsFor are checked in cadaver-photos.test.mjs)
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { describe, it } from 'node:test';

@@ -223,7 +223,7 @@ export function spotQuestion<K extends string>(
     skill: 'terminology',
     label: 'Diagram',
     sourceRefs: figure.sourceRefs,
-    explanation: [`The lecture diagram labels this part “${target.label}”.`, target.note].filter(Boolean).join(' '),
+    explanation: [`The ${figure.credit ? 'dissection photo' : 'lecture diagram'} labels this part “${target.label}”.`, target.note].filter(Boolean).join(' '),
     ...extra,
     figure: { id: figure.id, spot: spotId },
   });

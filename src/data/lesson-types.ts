@@ -193,6 +193,18 @@ export type LessonFigure = {
   // spots' boxes in "Test yourself", "Label it" and quiz questions.
   // Filled in from data/figures/covers.ts.
   masks?: [x: number, y: number, w: number, h: number][];
+  // A photo from outside the lectures (e.g. a real dissection from Wikimedia
+  // Commons, data/figures/cadaver.ts): who made it and its licence, shown under
+  // the picture. Such figures have no lecture slide: their sourceRefs name
+  // the photo collection (a 'reference' entry in content-catalog.ts).
+  credit?: PhotoCredit;
+};
+
+export type PhotoCredit = {
+  author: string;
+  license: string; // e.g. 'CC BY-SA 3.0'
+  licenseUrl: string;
+  sourceUrl: string; // the photo's own page, e.g. on Wikimedia Commons
 };
 
 // ─── Lessons ────────────────────────────────────────────────────────

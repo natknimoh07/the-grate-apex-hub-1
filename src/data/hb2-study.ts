@@ -62,7 +62,7 @@ type Block =
   | { k: 'step'; n: string; title: string; tone?: string; blocks?: Block[] }
   | { k: 'lfig'; id: string }
   /** A picture beside the reading (data/illustrations.ts). */
-  | { k: 'illus'; src: string; w: number; h: number; cap: string; credit: string; url: string; num?: string; note?: string };
+  | { k: 'illus'; src: string; w: number; h: number; cap: string; credit: string; url: string; num?: string; note?: string; lic?: string; real?: boolean };
 export type LocalSection = { id: string; title: string; kicker?: string; blocks: Block[] };
 export type LocalExtras = { facts?: { h: string; lines: string[] }[] };
 
@@ -78,9 +78,9 @@ function sectionOf(chunk: LessonChunk, index: number, lesson: Lesson): LocalSect
   chunk.teach?.forEach((paragraph, n) => {
     blocks.push({ k: 'p', x: richWithTerms(paragraph, terms, used), ...(n === 0 ? { lede: 1 as const } : {}) });
     // Pictures after the opening paragraph, as in an encyclopaedia article.
-    if (n === 0) for (const item of pictures) blocks.push({ k: 'illus', src: item.src, w: item.width, h: item.height, cap: item.caption, credit: item.credit, url: item.sourceUrl, num: item.label, note: item.note });
+    if (n === 0) for (const item of pictures) blocks.push({ k: 'illus', src: item.src, w: item.width, h: item.height, cap: item.caption, credit: item.credit, url: item.sourceUrl, num: item.label, note: item.note, lic: item.licenseUrl, real: item.realSpecimen });
   });
-  if (!chunk.teach?.length) for (const item of pictures) blocks.push({ k: 'illus', src: item.src, w: item.width, h: item.height, cap: item.caption, credit: item.credit, url: item.sourceUrl, num: item.label, note: item.note });
+  if (!chunk.teach?.length) for (const item of pictures) blocks.push({ k: 'illus', src: item.src, w: item.width, h: item.height, cap: item.caption, credit: item.credit, url: item.sourceUrl, num: item.label, note: item.note, lic: item.licenseUrl, real: item.realSpecimen });
   if (chunk.teach?.length) blocks.push({ k: 'p', x: '<b>Key points from the lecture</b>' });
   for (const paragraph of chunk.paragraphs ?? []) blocks.push({ k: 'p', x: richWithTerms(paragraph, terms, used) });
   for (const id of chunkFigures(chunk)) blocks.push({ k: 'lfig', id });

@@ -30,6 +30,7 @@ import { figures as urinarySystemGrossPictures } from '@/data/figures/pictures/u
 import { figures as upperLimbPictures } from '@/data/figures/pictures/upper-limb';
 import { figures as headAndNeckPictures } from '@/data/figures/pictures/head-and-neck';
 import { figures as neuroanatomyPictures } from '@/data/figures/pictures/neuroanatomy';
+import { cadaverFigures } from '@/data/figures/cadaver';
 import { figureMasks, grownSpotBoxes } from '@/data/figures/covers';
 import type { FigureSpot, LessonFigure } from '@/data/lesson-types';
 
@@ -58,6 +59,8 @@ const lectureFigures: LessonFigure[] = [
   ...upperLimbPictures,
   ...headAndNeckPictures,
   ...neuroanatomyPictures,
+  // Real dissection photos (Wikimedia Commons, CC BY-SA 3.0): data/figures/cadaver.ts.
+  ...cadaverFigures,
 ];
 
 /** Adds the extra covers (data/figures/covers.ts) so no printed label gives an answer away. */

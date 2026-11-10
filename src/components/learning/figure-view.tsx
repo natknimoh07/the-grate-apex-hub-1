@@ -13,7 +13,7 @@
 import { LIVE_SITE } from '@/lib/live-site';
 import { Image } from 'expo-image';
 import { useMemo, useState, type ReactNode } from 'react';
-import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Linking, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -35,6 +35,8 @@ import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 const SITE = LIVE_SITE;
 const figureUri = (src: string) => (Platform.OS === 'web' ? src : `${SITE}${src}`);
 const pct = (fraction: number) => `${fraction * 100}%` as const;
+// A real dissection photo (data/figures/cadaver.ts) rather than a lecture slide's diagram.
+const kindOf = (figure: LessonFigure) => (figure.credit ? 'Dissection photo' : 'Lecture diagram');
 
 // Tall diagrams are kept short enough to see the picture and its panel
 // together; on big screens they get more of the window (owner, 2026-10-31).
@@ -224,14 +226,15 @@ export function FigureExplorer({ figureId }: { figureId: string }) {
       <Interactive
         onPress={() => setOpen(true)}
         accessibilityRole="button"
-        accessibilityLabel={`Lecture diagram: ${figure.title}. Opens the interactive diagram.`}
+        accessibilityLabel={`${kindOf(figure)}: ${figure.title}. Opens the interactive diagram.`}
         style={({ hovered }) => [styles.previewCard, hovered && styles.previewHover]}
       >
         <View style={[styles.previewImage, { width: Math.min(220, PREVIEW_HEIGHT * aspectRatio) }]}>
-          <Image source={{ uri: figureUri(figure.src) }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityIgnoresInvertColors transition={150} />
+          {/* A real body is only shown in full once the learner opens it. */}
+          <Image source={{ uri: figureUri(figure.src) }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityIgnoresInvertColors transition={150} blurRadius={figure.credit ? 30 : 0} />
         </View>
         <View style={styles.previewText}>
-          <Text style={styles.kicker}>LECTURE DIAGRAM</Text>
+          <Text style={styles.kicker}>{kindOf(figure).toUpperCase()}</Text>
           <Text style={styles.previewTitle} numberOfLines={2}>{figure.title}</Text>
           <Text style={styles.muted} numberOfLines={1}>{figure.spots.length} labelled parts · explore, test or label it</Text>
           <View style={styles.previewGo}>
@@ -240,7 +243,7 @@ export function FigureExplorer({ figureId }: { figureId: string }) {
           </View>
         </View>
       </Interactive>
-      <Sheet visible={open} onClose={() => setOpen(false)} title={figure.title} subtitle="Lecture diagram" width={1180}>
+      <Sheet visible={open} onClose={() => setOpen(false)} title={figure.title} subtitle={figure.credit ? 'Real dissection photo' : 'Lecture diagram'} width={1180}>
         <FigureExplorerBody figure={figure} />
       </Sheet>
     </>
@@ -259,9 +262,10 @@ export function FigureExplorerBody({ figure, initialMode = 'explore', onLabelled
   if (mode === 'label') {
     return (
       <View style={styles.block}>
-        <ModeRow mode={mode} onChange={(next) => { setMode(next); setSelected(null); setShown([]); }} />
+        <ModeRow figure={figure} mode={mode} onChange={(next) => { setMode(next); setSelected(null); setShown([]); }} />
         <LabelBoard key={figure.id} figure={figure} onDone={onLabelled} />
         {figure.caption ? <Text style={styles.caption}>{figure.caption}</Text> : null}
+        <FigureCredit figure={figure} />
       </View>
     );
   }
@@ -279,8 +283,8 @@ export function FigureExplorerBody({ figure, initialMode = 'explore', onLabelled
 
   return (
     <View style={styles.block}>
-      <ModeRow mode={mode} onChange={switchMode} />
-      <Canvas figure={figure} label={`${figure.title} — lecture diagram`}>
+      <ModeRow figure={figure} mode={mode} onChange={switchMode} />
+      <Canvas figure={figure} label={`${figure.title} — ${kindOf(figure).toLowerCase()}`}>
         {testing ? <Masks figure={figure} /> : null}
         {testing ? figure.spots.filter((item) => !isShown(item.id)).map((item) => <Covers key={item.id} spot={item} />) : null}
         {figure.spots.map((item, i) => (
@@ -322,15 +326,34 @@ export function FigureExplorerBody({ figure, initialMode = 'explore', onLabelled
         ) : null}
       </View>
       {figure.caption ? <Text style={styles.caption}>{figure.caption}</Text> : null}
+      <FigureCredit figure={figure} />
     </View>
   );
 }
 
-function ModeRow({ mode, onChange }: { mode: BoardMode; onChange: (mode: BoardMode) => void }) {
+/** Who took a photo and its licence (CC BY-SA asks for both, with links). Lecture diagrams have none. */
+function FigureCredit({ figure }: { figure: LessonFigure }) {
+  const styles = useThemedStyles(createStyles);
+  const credit = figure.credit;
+  if (!credit) return null;
+  const open = (url: string) => void Linking.openURL(url).catch(() => undefined);
+  return (
+    <View style={styles.creditRow}>
+      <Interactive onPress={() => open(credit.sourceUrl)} accessibilityRole="link">
+        <Text style={styles.credit}>{`Photo: ${credit.author}, Wikimedia Commons`}</Text>
+      </Interactive>
+      <Interactive onPress={() => open(credit.licenseUrl)} accessibilityRole="link">
+        <Text style={styles.credit}>{credit.license}</Text>
+      </Interactive>
+    </View>
+  );
+}
+
+function ModeRow({ figure, mode, onChange }: { figure: LessonFigure; mode: BoardMode; onChange: (mode: BoardMode) => void }) {
   const styles = useThemedStyles(createStyles);
   return (
     <View style={styles.headRow}>
-      <Text style={styles.kicker}>LECTURE DIAGRAM</Text>
+      <Text style={styles.kicker}>{kindOf(figure).toUpperCase()}</Text>
       <SegmentedControl
         options={[{ value: 'explore', label: 'Explore' }, { value: 'test', label: 'Test yourself' }, { value: 'label', label: 'Label it' }] as const}
         value={mode}
@@ -412,7 +435,7 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
 
   return (
     <>
-      <Canvas figure={figure} label={`${figure.title} — lecture diagram to label`}>
+      <Canvas figure={figure} label={`${figure.title} — ${kindOf(figure).toLowerCase()} to label`}>
         <Masks figure={figure} />
         {figure.spots.filter((item) => !placed.has(item.id)).map((item) => <Covers key={item.id} spot={item} />)}
         {figure.spots.map((item, i) => (
@@ -470,11 +493,13 @@ export function QuestionFigure({ figure: ref, revealed, onReady }: { figure: { i
   const target = getSpot(figure, ref.spot);
   return (
     <View style={styles.questionFigure}>
-      <Canvas figure={figure} maxHeight={questionHeight} onReady={onReady} label={`${figure.title} — lecture diagram${target ? ', one part marked' : ''}`}>
+      <Canvas figure={figure} maxHeight={questionHeight} onReady={onReady} label={`${figure.title} — ${kindOf(figure).toLowerCase()}${target ? ', one part marked' : ''}`}>
         <Masks figure={figure} />
         {figure.spots.filter((spot) => !(revealed && spot.id === target?.id)).map((spot) => <Covers key={spot.id} spot={spot} />)}
         {target ? <TargetMark spot={target} /> : null}
       </Canvas>
+      {/* A dissection photo must carry its credit wherever it is shown, quizzes included. */}
+      <FigureCredit figure={figure} />
     </View>
   );
 }
@@ -519,6 +544,8 @@ function createStyles(colors: ThemeColors) {
     body: { ...Type.callout, color: colors.textSecondary },
     muted: { ...Type.caption, color: colors.textTertiary },
     caption: { ...Type.caption, color: colors.textTertiary },
+    creditRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+    credit: { fontSize: 11, color: colors.textTertiary, textDecorationLine: 'underline' },
     questionFigure: { marginVertical: 4 },
     questionImage: { height: QUESTION_MAX_HEIGHT, marginVertical: 4 },
     pictureState: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', gap: 8, padding: 12 },

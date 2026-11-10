@@ -4,6 +4,7 @@
 //   interactive.ts — each lesson's interactive layer
 //   questions.ts   — the quiz bank (with Assertion–Reason questions)
 import { contentTopics } from '@/data/content-catalog';
+import { cadaverPictures } from '@/data/figures/cadaver';
 import { pictures } from '@/data/figures/pictures/respiratory-system-gross';
 import { buildTopic } from '@/data/topics/build';
 import { lessons } from '@/data/topics/respiratory-system-gross/lessons';
@@ -25,6 +26,6 @@ export const respiratoryGross = buildTopic({
   concepts,
   lessons,
   questions,
-  pictures,
+  pictures: [...pictures, ...cadaverPictures(TOPIC_ID)],
   discrepancies,
 });
