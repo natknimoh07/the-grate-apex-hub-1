@@ -1,1 +1,71 @@
-{"id":"/","name":"GrAte Apex Hub","short_name":"GrAte Apex Hub","description":"The learning and social app for medical students.","start_url":"/","scope":"/","display":"standalone","display_override":["standalone","minimal-ui"],"background_color":"#1436B8","theme_color":"#1436B8","orientation":"any","icons":[{"src":"/icons/grateapex-192-v2.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"/icons/grateapex-512-v2.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
+{
+  "id": "/",
+  "name": "GrAte Apex Hub",
+  "short_name": "GrAte Apex Hub",
+  "description": "The learning and social app for medical students.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#1436B8",
+  "theme_color": "#1436B8",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/grateapex-192-v2.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/grateapex-512-v2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Continue your streak",
+      "short_name": "Streak",
+      "description": "Pick up where you left off",
+      "url": "/learn?from=shortcut",
+      "icons": [
+        {
+          "src": "/icons/shortcut-streak.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Review what is due",
+      "short_name": "Review",
+      "description": "Spaced review of what you are about to forget",
+      "url": "/learn/review?focus=due&from=shortcut",
+      "icons": [
+        {
+          "src": "/icons/shortcut-review.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Daily 10",
+      "short_name": "Daily 10",
+      "description": "Ten mixed questions on what is due",
+      "url": "/learn?open=daily&from=shortcut",
+      "icons": [
+        {
+          "src": "/icons/shortcut-daily.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

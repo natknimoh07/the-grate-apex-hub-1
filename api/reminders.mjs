@@ -23,6 +23,9 @@ import webpush from 'web-push';
 import { adminToken, serviceAccount } from './_admin.mjs';
 import { inReminderHours, isSundayLocal, leagueNudge, leagueWeek, localDay, localWeekStart, mergeDevices, pushAddress, REVIEW_MIN_DUE, reviewDueCount, streakAtRisk, weeklySummary } from './_push-logic.mjs';
 
+// The live site: notification pictures must be full addresses.
+const SITE = 'https://grateapex.vercel.app';
+
 const PROJECT = 'grate-apex';
 const DB = `projects/${PROJECT}/databases/(default)/documents`;
 const FIRESTORE = `https://firestore.googleapis.com/v1/${DB}`;
@@ -171,7 +174,13 @@ async function streakJob(token, now) {
         title: `Your ${item.streak}-day streak is at risk`,
         body: 'Complete a lesson today to keep it going.',
         tag: `streak:${key}`,
-        href: '/learn',
+        href: '/learn?from=push',
+        // Shown like a small widget: the flame banner and two one-tap ways in (public/sw.js).
+        image: `${SITE}/images/push/streak.png`,
+        actions: [
+          { action: 'study', title: 'Continue lesson', href: '/learn?from=push' },
+          { action: 'daily', title: 'Daily 10', href: '/learn?open=daily&from=push' },
+        ],
       },
     });
   }
@@ -213,7 +222,9 @@ async function reviewJob(token, now) {
         title: `${due} topics are ready to review`,
         body: 'A few minutes of review now helps you remember them.',
         tag: `review:${key}`,
-        href: '/learn/review',
+        href: '/learn/review?focus=due&from=push',
+        image: `${SITE}/images/push/review.png`,
+        actions: [{ action: 'review', title: 'Review now', href: '/learn/review?focus=due&from=push' }],
       },
     });
   }

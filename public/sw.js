@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grateapex-pwa-v12';
+const CACHE_NAME = 'grateapex-pwa-v13';
 // Study material kept for offline revision (question banks, lecture diagrams, and what
 // Settings → Offline study saves: src/lib/offline-study.ts). A different prefix from
 // CACHE_PREFIX on purpose: an app update must never delete what a learner saved.
@@ -180,13 +180,19 @@ self.addEventListener('push', (event) => {
       apple = Boolean(subscription && new URL(subscription.endpoint).hostname.endsWith('apple.com'));
     } catch { /* treat as not Apple */ }
     if (!apple && windows.some((client) => client.visibilityState === 'visible' && client.focused)) return;
+    // Reminders (api/reminders.mjs) may carry a picture and action buttons, like a
+    // widget outside the app: each action has its own page to open.
+    const actions = Array.isArray(data.actions) ? data.actions.filter((a) => a && a.action && a.title).slice(0, 2) : [];
     await self.registration.showNotification(data.title || 'GrAte Apex Hub', {
       body: data.body || '',
       icon: '/icons/grateapex-192-v2.png',
-      badge: '/icons/grateapex-192-v2.png',
+      // The small monochrome mark Android shows in the status bar.
+      badge: '/icons/badge-flame.png',
+      image: data.image || undefined,
       tag: data.tag || undefined,
       renotify: Boolean(data.tag),
-      data: { href: data.href || '/' },
+      actions: actions.map((a) => ({ action: a.action, title: a.title })),
+      data: { href: data.href || '/', actionHrefs: Object.fromEntries(actions.map((a) => [a.action, a.href || data.href || '/'])) },
     });
     await syncBadge();
   })());
@@ -194,7 +200,8 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const href = event.notification.data?.href || '/';
+  const hrefs = event.notification.data?.actionHrefs || {};
+  const href = (event.action && hrefs[event.action]) || event.notification.data?.href || '/';
   event.waitUntil((async () => {
     await syncBadge();
     const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
