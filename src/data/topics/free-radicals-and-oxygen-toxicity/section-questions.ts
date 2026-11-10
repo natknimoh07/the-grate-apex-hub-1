@@ -1,7 +1,11 @@
 // Biochemistry → Free Radicals and Oxygen Toxicity: five more questions for every
 // reading section (owner, 2026-11-04), written from that section's lecture text.
-// IDs: sL-S-n = lesson L, section S, question n.
-import { fill, mcq, tf, type QuestionDraft } from '@/data/topics/build';
+// IDs: sL-S-n = lesson L, section S, question n (S as numbered on 2026-11-04).
+// When the 2026 deck was added (2026-11-10), new sections were inserted, so S no
+// longer always matches the section's position; the ids were kept so learners'
+// answer history is kept. The new sections' questions are in newSections below,
+// with ids sL-<section>-n.
+import { fill, mcq, multi, tf, type QuestionDraft } from '@/data/topics/build';
 import type { ConceptId } from '@/data/topics/free-radicals-and-oxygen-toxicity/sources';
 
 type Q = QuestionDraft<ConceptId>;
@@ -334,4 +338,122 @@ export const sectionQuestions: Q[] = [
   mcq('s5-5-5', 'ros-transplant', 'Which ratio is an antioxidant biomarker?', 'GSH/GSSG', ['MDA/H₂O₂', 'NO/O₂', 'Fe²⁺/Fe³⁺'], {
     explanation: 'The GSH/GSSG ratio is on the antioxidant side.',
   }),
+  ...newSections(),
 ];
+
+// Five questions for each reading section added from the 2026 deck (2026-11-10).
+function newSections(): Q[] {
+  return [
+    // ─── Lesson 1 · Not all bad: the useful side of reactive species ───
+    mcq('s1-useful-1', 'redox-biology', 'Which reactive species do neutrophils use in host defence?', 'Superoxide and HOCl', ['Nitric oxide and urate', 'Singlet oxygen and bilirubin', 'Hydroxyl radicals and vitamin C'], { explanation: '2026 slide 54: superoxide and HOCl in the respiratory burst.' }),
+    mcq('s1-useful-2', 'redox-biology', 'Which reactive species acts as a second messenger in cell signalling?', 'Hydrogen peroxide', ['Hydroxyl radical (·OH)', 'Peroxynitrite', 'Singlet oxygen'], { explanation: '2026 slide 54.' }),
+    mcq('s1-useful-3', 'redox-biology', 'Which reactive species regulates vascular tone?', 'Nitric oxide (NO·)', ['Superoxide (O₂·⁻)', 'Hypochlorous acid (HOCl)', 'Hydroxyl radical (·OH)'], { explanation: '2026 slide 54.' }),
+    tf({ id: 's1-useful-4', conceptId: 'redox-biology', statement: 'High concentrations of H₂O₂ induce apoptosis.', answer: true, explanation: '2026 slide 33: low concentrations promote survival.' }),
+    fill('s1-useful-5', 'redox-biology', 'The study of the useful roles of reactive species at physiological levels is called redox ____.', ['biology'], { explanation: '2026 slide 54.' }),
+
+    // ─── Lesson 2 · How radicals form ──────────────────────────────────
+    mcq('s2-form-1', 'radical-formation', 'What forms when a non-radical loses a single electron?', 'A radical cation', ['A radical anion', 'A neutral molecule', 'A hydride ion'], { explanation: '2026 slide 8: X − e⁻ → X·⁺.' }),
+    mcq('s2-form-2', 'radical-formation', 'In homolytic fission of a covalent bond, the two shared electrons…', 'Split, one going to each atom', ['Both go to the more electronegative atom', 'Both stay between the atoms as before', 'Are lost from the molecule as light'], { explanation: '2026 slide 8.' }),
+    mcq('s2-form-3', 'radical-formation', 'Radiolysis of water by ionising radiation gives…', 'H· and ·OH', ['H⁺ and OH⁻', 'H₂ and O₂', 'H₂O₂ and H₂'], { explanation: '2026 slide 8.' }),
+    mcq('s2-form-4', 'radical-formation', 'How many electrons does a hydroxyl radical have, and how many are unpaired?', 'Nine, one unpaired', ['Eight, none unpaired', 'Ten, two unpaired', 'Nine, three unpaired'], { explanation: '2026 slide 8: nine electrons, four pairs and one unpaired.' }),
+    tf({ id: 's2-form-5', conceptId: 'radical-formation', statement: 'The hydrogen radical (H·) carries a positive charge.', answer: false, explanation: '2026 slide 8: one proton, one electron, no charge.' }),
+
+    // ─── Lesson 2 · Nitric oxide and peroxynitrite ─────────────────────
+    mcq('s2-no-1', 'nitric-oxide-peroxynitrite', 'Which enzyme makes nitric oxide?', 'Nitric oxide synthase', ['Xanthine oxidase', 'NADPH oxidase', 'Soluble guanylate cyclase'], { explanation: '2026 slide 59.' }),
+    mcq('s2-no-2', 'nitric-oxide-peroxynitrite', 'Nitric oxide stimulates which enzyme in blood vessels?', 'Guanylate cyclase', ['Adenylate cyclase', 'Phospholipase C', 'Xanthine oxidase'], { explanation: '2026 slide 59: with protein kinases.' }),
+    mcq('s2-no-3', 'nitric-oxide-peroxynitrite', 'How does nitric oxide take part in redox regulation?', 'By nitrosylating proteins', ['By phosphorylating DNA', 'By methylating lipids', 'By hydrolysing ATP in the cytosol'], { explanation: '2026 slide 59.' }),
+    mcq('s2-no-4', 'nitric-oxide-peroxynitrite', 'Peroxynitrite’s reactivity is described as similar to that of…', 'Hypochlorous acid', ['Molecular oxygen', 'Reduced glutathione', 'Ascorbic acid'], { explanation: '2026 slide 59.' }),
+    tf({ id: 's2-no-5', conceptId: 'nitric-oxide-peroxynitrite', statement: 'Peroxynitrite is a free radical.', answer: false, explanation: '2026 slide 7: it is a reactive species, but not a radical; protonated, it splits into radicals.', skill: 'misconception' }),
+
+    // ─── Lesson 3 · Protein damage ─────────────────────────────────────
+    mcq('s3-protein-1', 'protein-damage', 'Which chemical groups in proteins are easily oxidised by reactive species?', 'Thiol groups', ['Amide groups', 'Peptide bonds', 'Carboxyl groups'], { explanation: '2026 slide 23.' }),
+    mcq('s3-protein-2', 'protein-damage', 'Why can surface methionine residues protect a protein?', 'They act as sinks that soak up reactive species', ['They hold the iron that catalyses the Fenton reaction', 'They make the protein too large for radicals to reach', 'They are cut off as soon as radicals appear'], { explanation: '2026 slide 23.' }),
+    multi('s3-protein-3', 'protein-damage', 'Which oxidise methionine to methionine sulphoxide? Select all that apply.', ['·OH', '¹O₂', 'HOCl', 'ONOOH'], ['Vitamin C'], { explanation: '2026 slide 23 (also HOBr).' }),
+    mcq('s3-protein-4', 'protein-damage', 'Which secondary products of lipid peroxidation damage proteins?', 'MDA and HNE', ['GSH and GSSG', 'ATP and ADP', 'NAD⁺ and NADH'], { explanation: '2026 slide 23.' }),
+    multi('s3-protein-5', 'protein-damage', 'Which can oxidative protein damage impair? Select all that apply.', ['Receptors', 'Antibodies', 'Enzymes', 'Transport proteins'], ['Dietary starch'], { explanation: '2026 slide 24.' }),
+
+    // ─── Lesson 3 · What happens to damaged DNA ────────────────────────
+    mcq('s3-dnafate-1', 'dna-repair-outcomes', 'Which enzyme removes uracil from DNA, leaving an abasic site?', 'Uracil DNA glycosylase (UNG)', ['Apurinic endonuclease 1 (APE1)', 'DNA ligase I', 'Telomerase'], { explanation: '2026 slide 37.' }),
+    mcq('s3-dnafate-2', 'dna-repair-outcomes', 'If a deaminated cytosine (now uracil) is simply copied, what does a daughter cell get in place of G·C?', 'An A·T pair', ['A C·G pair', 'A G·U pair', 'No base at all'], { explanation: '2026 slide 37: the uracil is read as thymine.' }),
+    mcq('s3-dnafate-3', 'dna-repair-outcomes', 'Which mismatch repair proteins recognise the mismatch in the 2026 figure?', 'MSH2–MSH6', ['BRCA1–BRCA2', 'Ku70–Ku80', 'XPA–XPC'], { explanation: '2026 slide 37: MutS homologues 2 and 6, with exonuclease I.' }),
+    mcq('s3-dnafate-4', 'dna-repair-outcomes', 'Which type of DNA damage is caused by UV irradiation?', 'Thymine dimers', ['Strand breaks', 'Depurination', 'Microsatellite variation'], { explanation: '2026 slide 38: X-irradiation causes strand breaks; heat causes depurination.' }),
+    multi('s3-dnafate-5', 'dna-repair-outcomes', 'Which repair double-strand breaks? Select all that apply.', ['Non-homologous end joining (NHEJ)', 'Homology-directed repair (HDR)'], ['Removal of the break by catalase'], { explanation: '2026 slide 38.' }),
+
+    // ─── Lesson 4 · Principles of antioxidant defence ──────────────────
+    mcq('s4-principles-1', 'antioxidant-principles', 'What is the simplest antioxidant defence of all?', 'Minimising exposure to oxygen', ['Eating vitamin C every day', 'Making more superoxide dismutase', 'Binding all the iron to ferritin'], { explanation: '2026 slide 28.' }),
+    mcq('s4-principles-2', 'antioxidant-principles', 'Carotenoids such as lycopene protect against singlet oxygen by acting as…', 'Physical quenchers', ['Sacrificial agents', 'Metal chelators', 'Catalytic enzymes'], { explanation: '2026 slide 26.' }),
+    multi('s4-principles-3', 'antioxidant-principles', 'Which act as sacrificial agents? Select all that apply.', ['GSH', 'α-Tocopherol', 'Ascorbate'], ['Catalase'], { explanation: '2026 slide 27.' }),
+    mcq('s4-principles-4', 'antioxidant-principles', 'Keeping iron ions away from H₂O₂ is an example of…', 'Compartmentalisation', ['Physical quenching of ¹O₂', 'Catalytic removal', 'Sacrificial defence'], { explanation: '2026 slide 27.' }),
+    mcq('s4-principles-5', 'antioxidant-principles', 'Which proteins minimise the availability of pro-oxidants such as iron, copper or haem?', 'Transferrins, albumin and metallothionein', ['Catalase, SOD and glutathione peroxidase', 'Chaperones and proteins that coat DNA', 'Uncoupling proteins of the mitochondria'], { explanation: '2026 slide 26.' }),
+
+    // ─── Lesson 4 · Protecting red cells: NADPH and glutathione ────────
+    mcq('s4-redcell-1', 'antioxidant-network', 'Which enzyme returns methaemoglobin to haemoglobin?', 'Methaemoglobin reductase', ['Glutathione reductase', 'Haem oxygenase in the red cell', 'Superoxide dismutase'], { explanation: '2026 slide 29: using NADH (or NADPH).' }),
+    mcq('s4-redcell-2', 'antioxidant-network', 'Which enzyme regenerates reduced glutathione (GSH) from GSSG?', 'Glutathione reductase', ['Glutathione peroxidase', 'Glutathione S-transferase', 'Thioredoxin reductase'], { explanation: '2026 slides 3, 29: using NADPH.' }),
+    multi('s4-redcell-3', 'antioxidant-network', 'Which remove hydrogen peroxide in red cells? Select all that apply.', ['Catalase', 'Glutathione peroxidase', 'Peroxiredoxins'], ['Methaemoglobin reductase'], { explanation: '2026 slide 29.' }),
+    mcq('s4-redcell-4', 'antioxidant-network', 'Which enzyme of the pentose phosphate pathway supplies NADPH for glutathione reductase?', 'Glucose 6-phosphate dehydrogenase', ['Glyceraldehyde 3-phosphate dehydrogenase', 'Lactate dehydrogenase', 'Pyruvate kinase'], { explanation: '2026 slide 3.' }),
+    tf({ id: 's4-redcell-5', conceptId: 'antioxidant-network', statement: 'Reduced glutathione keeps the cysteine thiol groups of enzymes reduced, reactivating enzymes inactivated by oxidative stress.', answer: true, explanation: '2026 slide 3.' }),
+
+    // ─── Lesson 4 · Stopping lipid peroxidation: antioxidants as a team ─
+    mcq('s4-team-1', 'chain-breaking', 'What does vitamin E become after it neutralises a lipid peroxyl radical?', 'The α-tocopheroxyl radical', ['Dehydroascorbate (DHA)', 'A stable lipid hydroperoxide', 'Oxidised glutathione'], { explanation: '2026 slides 22, 30.' }),
+    mcq('s4-team-2', 'chain-breaking', 'Which molecules regenerate vitamin E from its radical?', 'Vitamin C or ubiquinol', ['Catalase or SOD', 'Iron or copper ions', 'Malondialdehyde or HNE'], { explanation: '2026 slide 22.' }),
+    mcq('s4-team-3', 'chain-breaking', 'What does GPx4 turn lipid hydroperoxides (LOOH) into?', 'Harmless lipid alcohols (LOH)', ['Alkoxyl radicals (LO·)', 'Peroxyl radicals (LOO·)', 'Conjugated dienes in the membrane'], { explanation: '2026 slide 22.' }),
+    mcq('s4-team-4', 'chain-breaking', 'Without GPx4, iron turns lipid hydroperoxides into alkoxyl radicals, leading to a cell death called…', 'Ferroptosis', ['Necroptosis', 'Pyroptosis', 'Autophagy'], { explanation: '2026 slide 22.' }),
+    mcq('s4-team-5', 'chain-breaking', 'What does PON1 do?', 'Hydrolyses lipid hydroperoxides; protects LDL', ['Reduces vitamin E radicals back to vitamin E', 'Chelates the free iron that makes ·OH', 'Makes NADPH for glutathione reductase'], { explanation: '2026 slide 22.' }),
+
+    // ─── Lesson 5 · Cause or consequence? ──────────────────────────────
+    mcq('s5-cause-1', 'cause-or-consequence', 'Which disorder does the 2026 lecture say can sometimes be caused by oxidative stress?', 'Cancer', ['A broken bone', 'Haemophilia A', 'Colour blindness'], { explanation: '2026 slide 35.' }),
+    multi('s5-cause-2', 'cause-or-consequence', 'Which kinds of injury lead to oxidative stress? Select all that apply.', ['Heat', 'Trauma', 'Freezing', 'Radiation'], ['Restful sleep'], { explanation: '2026 slide 62.' }),
+    mcq('s5-cause-3', 'cause-or-consequence', 'After tissue injury, phospholipase A₂ releases which substrate for prostaglandin and leukotriene synthesis?', 'Arachidonic acid', ['Linoleic acid', 'Palmitic acid', 'Eicosapentaenoic acid'], { explanation: '2026 slide 62.' }),
+    mcq('s5-cause-4', 'cause-or-consequence', 'Haem proteins released from damaged cells can scavenge which molecule, reducing its antioxidant effects?', 'Nitric oxide', ['Vitamin E', 'Glucose', 'Ascorbic acid'], { explanation: '2026 slide 62.' }),
+    tf({ id: 's5-cause-5', conceptId: 'cause-or-consequence', statement: 'Tissue injury can lower the levels of GSH and ascorbate.', answer: true, explanation: '2026 slide 62.' }),
+
+    // ─── Lesson 5 · Cancer: p53 and the lung ───────────────────────────
+    mcq('s5-p53-1', 'p53-lung-cancer', 'After mild, reversible damage, normal p53 switches on…', 'Antioxidant genes, lowering ROS', ['Pro-oxidant genes, raising ROS', 'Oncogenes, speeding cell division', 'Nothing, because p53 stays inactive'], { explanation: '2026 slide 47.' }),
+    mcq('s5-p53-2', 'p53-lung-cancer', 'After extended stress or irreparable damage, abundant p53…', 'Raises ROS to eliminate the damaged cell', ['Lowers ROS so the damaged cell survives', 'Stops making any protein in the cell', 'Turns the cell into a stem cell'], { explanation: '2026 slide 47.' }),
+    mcq('s5-p53-3', 'p53-lung-cancer', 'What happens when p53 is mutant?', 'ROS rise and mutations accumulate', ['ROS fall and the cell dies at once', 'DNA repair becomes faster', 'The cell can no longer divide'], { explanation: '2026 slide 47: tumorigenesis.' }),
+    multi('s5-p53-4', 'p53-lung-cancer', 'Which are endogenous sources of oxidants in lung carcinogenesis? Select all that apply.', ['The respiratory chain', 'Xanthine oxidase', 'P450 oxidase', 'The cyclooxygenase pathway'], ['Tobacco smoke'], { explanation: '2026 slide 48.' }),
+    mcq('s5-p53-5', 'p53-lung-cancer', 'In cancer, ROS help tumours evade immunity by…', 'Killing cytotoxic T cells and NK cells', ['Making more antibodies against the tumour', 'Raising the number of activated macrophages', 'Increasing MHC class I on the tumour cells'], { explanation: '2026 slide 63: and recruiting immunosuppressive cells.' }),
+
+    // ─── Lesson 5 · Biomarkers of oxidative damage ─────────────────────
+    mcq('s5-markers-1', 'oxidative-biomarkers', 'Isoprostanes are biomarkers of oxidative damage to…', 'Lipids', ['DNA', 'Proteins', 'Carbohydrates'], { explanation: '2026 slide 53.' }),
+    mcq('s5-markers-2', 'oxidative-biomarkers', 'Aldehyde–DNA base adducts are measured in…', 'Cells and urine', ['Hair and nails', 'Saliva only', 'Sweat and tears'], { explanation: '2026 slide 53.' }),
+    multi('s5-markers-3', 'oxidative-biomarkers', 'Which are biomarkers of protein damage? Select all that apply.', ['–SH oxidation', 'Carbonyl formation', 'Nitrated tyrosine', 'Protein peroxides'], ['Isoprostanes'], { explanation: '2026 slide 53.' }),
+    mcq('s5-markers-4', 'oxidative-biomarkers', 'Nitrated, chlorinated or brominated tyrosine marks damage to…', 'Proteins', ['Lipids', 'DNA', 'Glycogen'], { explanation: '2026 slide 53.' }),
+    tf({ id: 's5-markers-5', conceptId: 'oxidative-biomarkers', statement: 'Deaminated and chlorinated bases in cells and urine are biomarkers of lipid damage.', answer: false, explanation: '2026 slide 53: they mark DNA damage.' }),
+
+    // ─── Lesson 6 · Atherosclerosis ────────────────────────────────────
+    mcq('s6-athero-1', 'atherosclerosis-ros', 'What do foam cells secrete that amplifies inflammation in the lesion?', 'Pro-inflammatory cytokines', ['Anti-inflammatory steroids', 'Antioxidant enzymes', 'Clotting inhibitors'], { explanation: '2026 slide 40.' }),
+    mcq('s6-athero-2', 'atherosclerosis-ros', 'Which cells mature into macrophages and then foam cells in the intima?', 'Monocytes', ['Neutrophils', 'Platelets', 'Fibroblasts'], { explanation: '2026 slides 41–42.' }),
+    multi('s6-athero-3', 'atherosclerosis-ros', 'Which appear in a progressing plaque in the 2026 figure? Select all that apply.', ['Migrating and dividing smooth muscle cells', 'Cholesterol crystals', 'Apoptotic macrophages', 'Small vessels (vasa vasorum)'], ['Cartilage cells'], { explanation: '2026 slide 42.' }),
+    mcq('s6-athero-4', 'atherosclerosis-ros', 'Heart failure linked to reactive species involves…', 'Cardiomyocyte apoptosis and less ATP', ['More ATP and stronger contraction of the heart', 'Faster healing of the heart muscle after injury', 'Loss of all the heart valves at once'], { explanation: '2026 slide 63: also mitochondrial damage and fibrosis.' }),
+    tf({ id: 's6-athero-5', conceptId: 'atherosclerosis-ros', statement: 'In myocardial infarction, reactive species damage cardiomyocytes through ischaemia–reperfusion injury.', answer: true, explanation: '2026 slide 63.' }),
+
+    // ─── Lesson 6 · Ischaemia–reperfusion injury ───────────────────────
+    mcq('s6-iri-1', 'iri-mechanism', 'In the ischaemic cell, what does anaerobic metabolism do to the pH?', 'Lowers it (acidification)', ['Raises it (alkalosis)', 'Leaves it unchanged', 'Makes it swing up and down'], { explanation: '2026 slide 44: glucose → pyruvate → lactate.' }),
+    mcq('s6-iri-2', 'iri-mechanism', 'Which ions build up in the cytosol during ischaemia through the two exchangers?', 'Na⁺ and then Ca²⁺', ['K⁺ and then Mg²⁺', 'Cl⁻ and then HCO₃⁻', 'Fe²⁺ and then Cu⁺'], { explanation: '2026 slide 44.' }),
+    mcq('s6-iri-3', 'iri-mechanism', 'Deamination in the ATP breakdown pathway turns adenosine into…', 'Inosine', ['Guanosine', 'Xanthine', 'Uridine'], { explanation: '2026 slide 43.' }),
+    mcq('s6-iri-4', 'iri-mechanism', 'What does xanthine oxidase produce when reperfusion restores O₂?', 'Superoxide, H₂O₂, xanthine and urate', ['Glucose, lactate and pyruvate', 'Nitric oxide and citrulline', 'Glutathione, NADPH and reduced vitamin C'], { explanation: '2026 slide 43.' }),
+    mcq('s6-iri-5', 'iri-mechanism', 'What triggers ischaemia of the heart or brain in the 2026 lecture?', 'Plaque rupture, then thrombosis blocking an artery', ['Breathing pure oxygen at sea level for a few minutes', 'A diet rich in fresh fruit and vegetables', 'Normal exercise of a healthy person'], { explanation: '2026 slide 43.' }),
+
+    // ─── Lesson 6 · Obesity and diabetes ───────────────────────────────
+    mcq('s6-diabetes-1', 'obesity-diabetes-ros', 'Obesity is associated with increased oxidative damage to…', 'Lipids and proteins', ['Bone and cartilage only', 'Hair and skin only', 'No molecules at all'], { explanation: '2026 slide 39.' }),
+    mcq('s6-diabetes-2', 'obesity-diabetes-ros', 'Which tissue releases IL-6 and TNF-α, linking obesity to oxidative stress?', 'White adipose tissue', ['Brown adipose tissue', 'Skeletal muscle', 'Red bone marrow'], { explanation: '2026 slide 39.' }),
+    multi('s6-diabetes-3', 'obesity-diabetes-ros', 'Through which does oxidative stress link to diabetes? Select all that apply.', ['β-Cell dysfunction', 'Insulin resistance', 'Vascular complications'], ['More antioxidant enzymes in β-cells'], { explanation: '2026 slide 55.' }),
+    mcq('s6-diabetes-4', 'obesity-diabetes-ros', 'Which diabetic complication involves activation of HIF-1α and VEGF and new vessel formation?', 'Diabetic retinopathy', ['Diabetic neuropathy', 'Diabetic nephropathy', 'Diabetic foot ulcer'], { explanation: '2026 slide 65.' }),
+    mcq('s6-diabetes-5', 'obesity-diabetes-ros', 'Diabetic nephropathy shows glomerular hypertrophy, tubulointerstitial fibrosis and…', 'Mesangial expansion', ['Retinal haemorrhage', 'Lewy body formation', 'Thymine dimer formation'], { explanation: '2026 slide 65.' }),
+
+    // ─── Lesson 6 · Alzheimer's, Parkinson's and the brain ─────────────
+    mcq('s6-brain-1', 'neurodegeneration-ros', 'Which caspases does the 2026 figure name for apoptosis after mitochondrial damage?', 'Caspases 3 and 9', ['Caspases 1 and 11', 'Caspases 2 and 6', 'Caspases 8 and 10'], { explanation: '2026 slide 49.' }),
+    mcq('s6-brain-2', 'neurodegeneration-ros', 'Which system fails to handle misfolded proteins in neurodegeneration?', 'The ubiquitin–proteasome system', ['The renin–angiotensin–aldosterone system', 'The complement system', 'The kallikrein–kinin system'], { explanation: '2026 slide 49.' }),
+    mcq('s6-brain-3', 'neurodegeneration-ros', 'Which free radicals does the 2026 table list for Parkinson’s disease?', 'Hydroxyl radicals and H₂O₂', ['Superoxide and RNS only', 'Singlet oxygen and HOCl', 'Thiyl and alkoxyl radicals'], { explanation: '2026 slide 64.' }),
+    mcq('s6-brain-4', 'neurodegeneration-ros', 'Huntington’s disease damages which neurons, and impairs what?', 'Motor neurons; axonal transport', ['Sensory neurons; myelin synthesis', 'Retinal cells; light detection', 'Hair cells; hearing'], { explanation: '2026 slide 64.' }),
+    mcq('s6-brain-5', 'neurodegeneration-ros', 'In multiple sclerosis, which cells does oxidative stress activate?', 'Microglia and astrocytes', ['Platelets and red cells', 'Hepatocytes and Kupffer cells', 'Osteoblasts and osteoclasts'], { explanation: '2026 slide 64.' }),
+
+    // ─── Lesson 6 · Free radicals and ageing ───────────────────────────
+    mcq('s6-ageing-1', 'ageing-theory', 'Harman’s theory says ageing results from…', 'Random, cumulative damage to tissues by free radicals', ['A fixed number of cell divisions, set for each cell at birth', 'Loss of all antioxidant vitamins at age forty', 'A single gene that switches the body off'], { explanation: '2026 slide 51.' }),
+    mcq('s6-ageing-2', 'ageing-theory', 'Which pathway is the 2026 lecture’s example of inappropriate signalling by reactive species?', 'The insulin pathway', ['The Wnt pathway', 'The Notch pathway', 'The Hedgehog pathway'], { explanation: '2026 slide 51.' }),
+    tf({ id: 's6-ageing-3', conceptId: 'ageing-theory', statement: 'Reactive species can only promote inflammation, never suppress it.', answer: false, explanation: '2026 slide 52: they may promote or suppress inflammation.', skill: 'misconception' }),
+    mcq('s6-ageing-4', 'ageing-theory', 'Which cells does the lecture single out when reactive species promote apoptosis or senescence?', 'Stem cells', ['Red cells', 'Fat cells', 'Mast cells'], { explanation: '2026 slide 51: impairing tissue renewal.' }),
+    mcq('s6-ageing-5', 'ageing-theory', 'Which could have complex, linked effects on lifespan and health span?', 'Genetic or epigenetic changes in ROS handling', ['Differences in blood group between healthy people', 'Changes in eye colour after childhood', 'The number of fingers on each hand'], { explanation: '2026 slide 52: changes in ROS production, defences, targets or repair.' }),
+  ];
+}

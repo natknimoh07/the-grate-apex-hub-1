@@ -10,10 +10,10 @@ export const textbookPages: TextbookPages = {
     1: [["guyton-hall-14e", [562]]], // What a free radical is
   },
   "free-radicals-and-oxygen-toxicity-3": {
-    3: [["guyton-hall-14e", [862, 863]]], // Oxidised LDL and atherosclerosis
+    5: [["guyton-hall-14e", [862, 863]]], // Oxidised LDL and atherosclerosis (section 3 until 2026-11-10)
   },
   "free-radicals-and-oxygen-toxicity-5": {
     0: [["guyton-hall-14e", [45, 46, 47]]], // Oxidative stress and disease
-    1: [["guyton-hall-14e", [45, 46, 47]]], // Carcinogenesis
+    2: [["guyton-hall-14e", [45, 46, 47]]], // Carcinogenesis (section 1 until 2026-11-10)
   },
 };

@@ -1,6 +1,7 @@
 // Biochemistry → Free Radicals and Oxygen Toxicity — the topic question bank.
 //
-// Rules: only what the lessons teach (the two lecture decks). Not asked:
+// Rules: only what the lessons teach (the lecture decks; questions from the
+// 2026 deck are in questions-2026.ts). Not asked:
 // whether NO is a radical, the charge on the oxygen made by dismutation
 // (see discrepancies), the open-ended "facts to know" and assignment
 // questions, or speaker-note annotations. IDs: qN-xx.
@@ -68,7 +69,7 @@ const lesson2: Q[] = [
   mcq('q2-12', 'fenton-haber-weiss', 'How many electrons reduce one O₂ to water?', 'Four, added one at a time', ['Two, added together at once', 'One, in a single step', 'Six, two at a time'], { explanation: 'HB slide 69.' }),
   // More questions (owner, 2026-11-02), from the same slides.
   mcq('q2-13', 'radical-reactions', 'When two radicals meet, they can…', 'Pair their electrons into a covalent bond', ['Release two new radicals every time they meet', 'Split into four oxygen atoms in the process', 'Turn into antioxidant enzymes such as SOD'], { explanation: 'HB slide 15; Fay slide 9.' }),
-  mcq('q2-14', 'radical-reactions', 'Superoxide reacting with nitrogen dioxide gives…', 'Peroxynitrite (ONOO⁻)', ['Hydrogen peroxide (H₂O₂)', 'Hypochlorous acid (HOCl)', 'Singlet oxygen (¹O₂)'], { explanation: 'HB slide 15.' }),
+  mcq('q2-14', 'radical-reactions', 'Superoxide reacting with nitric oxide gives…', 'Peroxynitrite (ONOO⁻)', ['Hydrogen peroxide (H₂O₂)', 'Hypochlorous acid (HOCl)', 'Singlet oxygen (¹O₂)'], { explanation: 'HB slide 15; 2026 slides 7, 59. The older decks write nitrogen dioxide here; the 2026 deck and the textbook give nitric oxide.' }),
   mcq('q2-15', 'radical-reactions', 'Radical attack on membranes or lipoproteins starts…', 'Lipid peroxidation', ['DNA mutation', 'Haemolysis by complement', 'Protein synthesis'], { explanation: 'HB slide 21.' }),
   tf({ id: 'q2-16', conceptId: 'radical-reactions', statement: 'How reactive a radical is depends on the radical and on the molecule it meets.', answer: true, explanation: 'HB slide 15; Fay slide 9.' }),
   multi('q2-17', 'major-ros', 'Which are among the biologically significant species? Select all that apply.', ['Peroxyl radical (ROO·)', 'Thiyl radical (RS·)', 'Hypochlorous acid (HOCl)'], ['Malondialdehyde (MDA)'], { explanation: 'HB slide 34.' }),
