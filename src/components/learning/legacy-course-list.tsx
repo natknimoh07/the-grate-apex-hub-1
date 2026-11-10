@@ -107,7 +107,7 @@ function createStyles(colors: ThemeColors) {
     column: { gap: 12 },
     header: { marginTop: 6 },
     card: { padding: 0, gap: 0, overflow: 'hidden', flexGrow: 1 },
-    main: { padding: 14, gap: 14, flexGrow: 1 },
+    main: { padding: 16, gap: 16, flexGrow: 1 },
     hovered: { backgroundColor: colors.surfaceMuted },
     top: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
     name: { ...Type.title3, color: colors.text },
@@ -116,7 +116,7 @@ function createStyles(colors: ThemeColors) {
     ringText: { fontSize: 13, fontWeight: '800', color: colors.text },
     count: { fontSize: 16, fontWeight: '800', color: colors.text },
     meta: { fontSize: 12, color: colors.textSecondary },
-    next: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 10, paddingHorizontal: 14, borderTopWidth: 1, borderTopColor: colors.border },
+    next: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 12, paddingHorizontal: 16, borderTopWidth: 1, borderTopColor: colors.border },
     nextLabel: { fontSize: 11.5, fontWeight: '700', color: colors.primaryText },
     nextTitle: { fontSize: 13.5, fontWeight: '600', color: colors.text },
   });

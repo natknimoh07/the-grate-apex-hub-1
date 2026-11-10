@@ -578,14 +578,16 @@ export default function LearnScreen() {
 
 function createStyles(colors: ThemeColors) {
   return StyleSheet.create({
-    column: { gap: 12 },
+    // Space between the big blocks of the page (courses, question of the day, quest…).
+    column: { gap: 16 },
     tutorCard: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', gap: 14, padding: 18 },
     tutorCopy: { flex: 1, minWidth: 230, gap: 4 },
     tutorEyebrow: { ...Type.overline, color: colors.primaryText },
     tutorTitle: { ...Type.headline, color: colors.text },
-    section: { marginTop: 14, marginBottom: 0 },
+    section: { marginTop: 20, marginBottom: 0 },
     toolGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 16, alignItems: 'flex-start' },
-    hubSection: { marginTop: 18, marginBottom: 2 },
+    // A clear pause before each section heading (docs/design-system.md: 24 between sections).
+    hubSection: { marginTop: 24, marginBottom: 4 },
     doneToday: { fontSize: 13, color: colors.successText, marginBottom: 6 },
     progressRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 16, alignItems: 'stretch' },
     progressWide: { flexGrow: 2, flexShrink: 1, flexBasis: 460, minWidth: 0, maxWidth: '100%' },
