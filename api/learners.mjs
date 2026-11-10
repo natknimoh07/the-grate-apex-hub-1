@@ -5,7 +5,7 @@
 // Firebase read per account per search session, on the free plan's daily read
 // allowance. The server reads it once and keeps it for everyone for a few hours;
 // brand-new accounts are still found by the app's own name-start lookups.
-// Only what search needs: names, picture and whether the learner can be found.
+// Only what search needs: names and picture, and only learners who let students find them.
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 import { adminToken, serviceAccount } from './_admin.mjs';
@@ -32,7 +32,10 @@ async function readDirectory(token) {
     for (const item of page.documents ?? []) {
       const data = plain({ mapValue: { fields: item.fields ?? {} } }) ?? {};
       if (!data.username && !data.displayName) continue;
+      // "Let students find me" turned off: not sent at all (2026-11-10 audit; the app used to
+      // receive them and only hide them). Friends still find them through the app's own lookups.
       const discoverable = data.discoverable !== false && data.preferences?.privacy_preferences?.discoverable !== false;
+      if (!discoverable) continue;
       out.push({ id: idOf(item), username: data.username ?? null, displayName: data.displayName ?? null, avatar_url: data.avatar_url ?? data.photo ?? null, discoverable });
     }
     pageToken = page.nextPageToken ?? '';

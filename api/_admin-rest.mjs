@@ -203,14 +203,28 @@ export function restAdmin() {
   };
 
   const auth = {
-    async verifyIdToken(token) {
+    /**
+     * Checks a sign-in token. With checkRevoked (account deletion) it also asks Firebase
+     * whether the account is disabled or its sign-ins were cancelled since this one (a
+     * password change does that), as firebase-admin does (2026-11-10 audit: it used to skip this).
+     */
+    async verifyIdToken(token, checkRevoked = false) {
+      let payload;
       if (emulatorAuth) {
-        const payload = decodeJwt(token);
-        return { ...payload, uid: payload.user_id ?? payload.sub };
+        payload = decodeJwt(token);
+        payload = { ...payload, sub: payload.sub ?? payload.user_id };
+      } else {
+        ({ payload } = await jwtVerify(token, KEYS, { issuer: `https://securetoken.google.com/${project}`, audience: project }));
       }
-      const { payload } = await jwtVerify(token, KEYS, { issuer: `https://securetoken.google.com/${project}`, audience: project });
       if (!payload.sub) throw new Error('No user in the token.');
-      return { ...payload, uid: payload.sub };
+      if (checkRevoked) {
+        const found = await call(`${authBase}/projects/${project}/accounts:lookup`, { method: 'POST', body: { localId: [payload.sub] }, scope: AUTH_SCOPE });
+        const user = found?.users?.[0];
+        if (!user) throw new Error('No such account.');
+        if (user.disabled) throw new Error('This account is disabled.');
+        if (Number(user.validSince || 0) > Number(payload.auth_time || 0)) throw new Error('This sign-in was cancelled.');
+      }
+      return { ...payload, uid: payload.user_id ?? payload.sub };
     },
     async deleteUser(uid) {
       try {

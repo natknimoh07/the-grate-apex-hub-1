@@ -12,6 +12,7 @@ import { useOriginalAutoHide } from '@/components/experience/legacy-navigation';
 import { useIsAdmin, useThemeLocks } from '@/components/experience/experience-sync';
 import { BackLink } from '@/components/learning/nav-bits';
 import { OfflineStudyCard } from '@/components/offline-study-card';
+import { BlockedPeople } from '@/components/social/blocked-people';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Interactive } from '@/components/ui/interactive';
@@ -392,17 +393,18 @@ export default function SettingsScreen() {
       </SettingsSection>
 
       <SettingsSection title="Privacy">
-        <Text style={styles.optionLabel}>Profile visibility</Text>
-        <Text style={styles.optionDescription}>This preference is saved to your account. Privacy filtering is being applied to social queries as that backend migration is enabled.</Text>
-        <View style={styles.zoomOptions}>{(['public', 'friends', 'private'] as const).map((value) => <Interactive key={value} onPress={() => void setPrivacyPreference('profileVisibility', value)} accessibilityRole="radio" accessibilityState={{ checked: privacy.profileVisibility === value }} style={[styles.zoomOption, privacy.profileVisibility === value && styles.zoomOptionSelected]}><Text style={[styles.zoomText, privacy.profileVisibility === value && styles.zoomTextSelected]}>{value[0].toUpperCase() + value.slice(1)}</Text></Interactive>)}</View>
         <PrivacySwitch label="Show my activity to friends" value={privacy.activityVisible} onChange={(value) => void setPrivacyPreference('activityVisible', value)} />
         <PrivacySwitch label="Show when I’m online and last seen" value={privacy.shareOnlineStatus} onChange={(value) => void setPrivacyPreference('shareOnlineStatus', value)} />
         <Text style={styles.optionDescription}>People you message see “Online” or when you were last seen. When this is off you can’t see theirs either. It turns off automatically when you sign out.</Text>
         <PrivacySwitch label="Read receipts" value={privacy.readReceipts} onChange={(value) => void setPrivacyPreference('readReceipts', value)} />
         <Text style={styles.optionDescription}>Blue ticks show when a message has been read. When this is off, others don’t see when you’ve read their messages and you don’t see theirs.</Text>
         <PrivacySwitch label="Let students find me" value={privacy.discoverable} onChange={(value) => void setPrivacyPreference('discoverable', value)} />
-        <View style={styles.optionRow}><View style={styles.flex}><Text style={styles.optionLabel}>Messages</Text><Text style={styles.optionDescription}>Choose who may start a conversation.</Text></View><View style={styles.zoomOptions}>{(['friends', 'everyone'] as const).map((value) => <Interactive key={value} onPress={() => void setPrivacyPreference('messagingPermission', value)} accessibilityRole="radio" accessibilityState={{ checked: privacy.messagingPermission === value }} style={[styles.zoomOption, privacy.messagingPermission === value && styles.zoomOptionSelected]}><Text style={[styles.zoomText, privacy.messagingPermission === value && styles.zoomTextSelected]}>{value}</Text></Interactive>)}</View></View>
-        <View style={styles.optionRow}><View style={styles.flex}><Text style={styles.optionLabel}>Friend requests</Text><Text style={styles.optionDescription}>Choose who may send you a request.</Text></View><View style={styles.zoomOptions}>{(['everyone', 'friends'] as const).map((value) => <Interactive key={value} onPress={() => void setPrivacyPreference('friendRequestPermission', value)} accessibilityRole="radio" accessibilityState={{ checked: privacy.friendRequestPermission === value }} style={[styles.zoomOption, privacy.friendRequestPermission === value && styles.zoomOptionSelected]}><Text style={[styles.zoomText, privacy.friendRequestPermission === value && styles.zoomTextSelected]}>{value}</Text></Interactive>)}</View></View>
+        <Text style={styles.optionDescription}>When this is off, you don’t show up when students who aren’t your friends search for people.</Text>
+        <BlockedPeople />
+        {/* Profile visibility, who may message you and who may send requests were saved but never
+            applied (security audit, 2026-11-10), so they are shown as coming soon (data honesty). */}
+        <Text style={[styles.optionLabel, { marginTop: 12 }]}>Coming soon</Text>
+        <Text style={styles.optionDescription}>Choosing who can see your profile, who can message you and who can send you friend requests is coming soon. Until then: any signed-in student can see your profile (name, picture, class and points), only friends can message you or add you to a group, and friends-only posts are seen only by your friends.</Text>
       </SettingsSection>
 
       <SettingsSection title="Navigation">

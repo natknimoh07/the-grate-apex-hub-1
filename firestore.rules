@@ -7,6 +7,9 @@
 // 2026-10-25: Apex Coins can only go up through users/{uid}/coinLog (see "Apex Coins" below).
 // 2026-10-27 (security audit): a new profile must use the username it claims in the registry; verified
 // names can't be claimed from the app; group notices and stamps can't be faked.
+// 2026-11-10 (security audit): friends-only posts keep their words in posts/{id}/private/content;
+// blocks/{blocker}_{blocked} is a real block list; bell notes must match something that happened;
+// a username entry's hidden login must be the account's own.
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -64,7 +67,8 @@ service cloud.firestore {
           && (request.method == 'delete' || (request.resource.data.cards is list && request.resource.data.cards.size() <= 20));
       }
 
-      // Activity feed items, e.g. "scored 18/25 in Biochemistry".
+      // Activity feed items, e.g. "scored 18/25 in Biochemistry". Someone this learner has
+      // blocked can't like or comment (blockedBy).
       match /activity/{id} {
         allow read: if request.auth != null;
         allow create: if request.auth.uid == uid
@@ -89,6 +93,7 @@ service cloud.firestore {
         match /likes/{liker} {
           allow read: if request.auth != null;
           allow create: if request.auth.uid == liker
+            && !blockedBy(uid)
             && request.resource.data.keys().hasOnly(['username', 'createdAt']);
           allow delete: if request.auth.uid == liker;
           allow update: if false;
@@ -96,6 +101,7 @@ service cloud.firestore {
         match /comments/{cid} {
           allow read: if request.auth != null;
           allow create: if request.auth.uid == request.resource.data.authorUid
+            && !blockedBy(uid)
             && request.resource.data.authorName ==
                get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username
             && request.resource.data.body is string
@@ -110,13 +116,17 @@ service cloud.firestore {
       }
 
       // Notifications ("X liked your post"). Whoever does the thing writes one for the recipient;
-      // only the recipient can read, mark as read, or delete them.
+      // only the recipient can read, mark as read, or delete them. Since 2026-11-10 a note must
+      // match something that really happened (notificationOk), and nobody can leave one for a
+      // learner who has blocked them.
       match /notifications/{nid} {
         allow read, delete: if request.auth.uid == uid;
         allow update: if request.auth.uid == uid
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
         allow create: if request.auth.uid == request.resource.data.from
           && request.auth.uid != uid
+          && !blockedBy(uid)
+          && notificationOk(uid, nid)
           && request.resource.data.type in ['like', 'comment', 'reshare', 'follow', 'reply', 'support', 'message', 'battle']
           && (request.resource.data.fromName ==
               get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username
@@ -160,9 +170,10 @@ service cloud.firestore {
       }
 
       // Stories: photo / video / text that disappears after 24 hours (the app hides
-      // anything older than that). Anyone signed in can read; only the owner posts.
+      // anything older than that). Anyone signed in can read, except someone the owner has
+      // blocked; only the owner posts.
       match /stories/{sid} {
-        allow read: if request.auth != null;
+        allow read: if request.auth != null && !blockedBy(uid);
         allow create: if request.auth.uid == uid
           && request.resource.data.username ==
              get(/databases/$(database)/documents/users/$(uid)).data.username
@@ -175,10 +186,58 @@ service cloud.firestore {
         match /views/{viewer} {
           allow read: if request.auth.uid == uid || request.auth.uid == viewer;
           allow create: if request.auth.uid == viewer
+            && !blockedBy(uid)
             && request.resource.data.keys().hasOnly(['username', 'at']);
           allow update, delete: if false;
         }
       }
+    }
+
+    // ─── Blocking (2026-11-10) ───────────────────────────────────────────────────
+    // blocks/{blocker}_{blocked}: the blocker's own private list (src/data/community.ts). The
+    // rules below look it up, so a blocked learner can't follow, comment, like, answer a stamp,
+    // see stories or leave a bell note for the learner who blocked them. Only the blocker can
+    // read or remove an entry; the blocked learner can't tell.
+    function blockedBy(owner) {
+      return exists(/databases/$(database)/documents/blocks/$(owner + '_' + request.auth.uid));
+    }
+    match /blocks/{id} {
+      allow read: if request.auth != null && resource.data.blocker == request.auth.uid;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['blocker', 'blocked', 'at'])
+        && request.resource.data.blocker == request.auth.uid
+        && request.resource.data.blocked is string
+        && request.resource.data.blocked.matches('^[A-Za-z0-9]{6,64}$')
+        && request.resource.data.blocked != request.auth.uid
+        && id == request.auth.uid + '_' + request.resource.data.blocked;
+      allow delete: if request.auth != null && resource.data.blocker == request.auth.uid;
+      allow update: if false;
+    }
+
+    // A bell note must match what it says happened (2026-11-10 audit: anyone could leave any
+    // text in anyone's bell). Its id says what it is about (src/data/community.ts, social.ts):
+    //   follow_<me>                    I follow them
+    //   like_<post>_<me>               I like their post
+    //   comment_<post>_<comment>       my comment on their post
+    //   reply_<post>_<comment>         my reply under their comment
+    // Shares, messages and battle challenges only between friends; support notes only from admins.
+    function notificationOk(uid, nid) {
+      let me = request.auth.uid;
+      let type = request.resource.data.type;
+      let part = nid.split('_');
+      return (type == 'follow' && nid == 'follow_' + me
+          && exists(/databases/$(database)/documents/follows/$(me + '_' + uid)))
+        || (type == 'like' && part.size() == 3 && part[0] == 'like' && part[2] == me
+          && get(/databases/$(database)/documents/posts/$(part[1])).data.authorUid == uid
+          && exists(/databases/$(database)/documents/posts/$(part[1])/likes/$(me)))
+        || (type == 'comment' && part.size() == 3 && part[0] == 'comment'
+          && get(/databases/$(database)/documents/posts/$(part[1])/replies/$(part[2])).data.authorUid == me
+          && get(/databases/$(database)/documents/posts/$(part[1])).data.authorUid == uid)
+        || (type == 'reply' && part.size() == 3 && part[0] == 'reply'
+          && get(/databases/$(database)/documents/posts/$(part[1])/replies/$(part[2])).data.authorUid == me
+          && get(/databases/$(database)/documents/posts/$(part[1])/replies/$(get(/databases/$(database)/documents/posts/$(part[1])/replies/$(part[2])).data.parentId)).data.authorUid == uid)
+        || (type in ['reshare', 'message', 'battle'] && areFriends(me, uid))
+        || (type == 'support' && exists(/databases/$(database)/documents/admins/$(me)));
     }
 
     // ─── Apex Coins (2026-10-25) ───────────────────────────────────────────────
@@ -259,6 +318,7 @@ service cloud.firestore {
       allow list: if request.auth != null;
       allow create: if request.auth.uid == request.resource.data.uid
         && request.resource.data.keys().hasOnly(['uid', 'login'])
+        && loginIsMine()
         && name.matches('^[a-z0-9_]{3,20}$')
         // The verified names (VERIFIED_USERNAMES and BLUE_VERIFIED_USERNAMES in src/data/verified.ts;
         // keep this list in step) can't be claimed from the app: their owners may predate the
@@ -268,8 +328,15 @@ service cloud.firestore {
              'grate_apex02', 'stickyfingers', 'retro', 'retr0', 'patricia_a', 'atu', 'grateapex_official', 'nate',
              'echocircuitnkn07', 'ev', 'drev', 'heisgoddey', 'dennis', 'yeezy', 'bevelyn', 'amtul', 'akua', 'cupid']);
       allow update: if resource.data.uid == request.auth.uid && request.resource.data.uid == request.auth.uid
-        && request.resource.data.keys().hasOnly(['uid', 'login']);
+        && request.resource.data.keys().hasOnly(['uid', 'login'])
+        && loginIsMine();
       allow delete: if false;
+    }
+    // An entry's hidden login (an original-app account signs in as <login>@grateapex.app) can only
+    // be the account's own (2026-11-10 audit: a made-up login stopped the real owner signing in).
+    function loginIsMine() {
+      return !('login' in request.resource.data)
+        || request.auth.token.email.lower() == request.resource.data.login + '@grateapex.app';
     }
 
     // Private progress (XP, streaks, quiz history): owner only.
@@ -371,27 +438,38 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow create: if request.auth.uid == request.resource.data.follower
         && id == request.resource.data.follower + '_' + request.resource.data.followee
-        && request.resource.data.follower != request.resource.data.followee;
-      allow delete: if request.auth.uid == resource.data.follower;
+        && request.resource.data.follower != request.resource.data.followee
+        // Not someone who has blocked me (2026-11-10).
+        && !blockedBy(request.resource.data.followee);
+      // The follower stops following, or the person followed removes a follower (blocking does both).
+      allow delete: if request.auth.uid == resource.data.follower || request.auth.uid == resource.data.followee;
       allow update: if false;
     }
 
     // Discussion board. Anyone signed in can read and post. Posts carry the
     // author's real username. Replies are a subcollection of the post.
     // Visibility: 'everyone' (default) or 'friends' (mutual follows).
+    // The list of posts is open to every signed-in learner (the feed can't be filtered by
+    // friendship), so since 2026-11-10 a new friends-only post is an empty shell here and its
+    // words and pictures are in posts/{id}/private/content, which only the author and their
+    // friends can open (src/data/community.ts). Posts from someone who blocked me can't be opened.
     match /posts/{postId} {
       allow get: if postVisible(postId);
       allow list: if request.auth != null;
       allow create: if request.auth.uid == request.resource.data.authorUid
         && request.resource.data.authorName ==
            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username
-        && request.resource.data.title is string
-        && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 120
-        && request.resource.data.body is string
-        && request.resource.data.body.size() >= 3 && request.resource.data.body.size() <= 2000
         && request.resource.data.replyCount == 0
-        && (!('media' in request.resource.data) || (request.resource.data.media is list && request.resource.data.media.size() <= 3))
-        && (!('visibility' in request.resource.data) || request.resource.data.visibility in ['everyone', 'friends']);
+        && (!('visibility' in request.resource.data) || request.resource.data.visibility in ['everyone', 'friends'])
+        && (request.resource.data.get('visibility', 'everyone') == 'friends'
+          ? (request.resource.data.get('title', '') == '' && request.resource.data.get('body', '') == ''
+             && !('media' in request.resource.data) && !('stump' in request.resource.data) && !('poll' in request.resource.data)
+             && existsAfter(/databases/$(database)/documents/posts/$(postId)/private/content))
+          : (request.resource.data.title is string
+             && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 120
+             && request.resource.data.body is string
+             && request.resource.data.body.size() >= 3 && request.resource.data.body.size() <= 2000
+             && (!('media' in request.resource.data) || (request.resource.data.media is list && request.resource.data.media.size() <= 3))));
       // The author may edit their post, but not who it is from (authorName decides the tick badge),
       // when it was posted (the feed's order) or a poll's results (only the server counts votes);
       // a renamed author may move the post to their own new username (2026-11-09 security review).
@@ -442,6 +520,26 @@ service cloud.firestore {
           || request.auth.uid == get(/databases/$(database)/documents/posts/$(postId)).data.authorUid;
         allow update: if false;
       }
+
+      // A friends-only post's words and pictures (see above). Written once, in the same batch
+      // as its new post; removed with it by the author.
+      match /private/{part} {
+        allow get: if postVisible(postId);
+        allow list: if false;
+        allow create: if request.auth != null && part == 'content'
+          && !exists(/databases/$(database)/documents/posts/$(postId))
+          && getAfter(/databases/$(database)/documents/posts/$(postId)).data.authorUid == request.auth.uid
+          && getAfter(/databases/$(database)/documents/posts/$(postId)).data.get('visibility', 'everyone') == 'friends'
+          && request.resource.data.keys().hasOnly(['title', 'body', 'media'])
+          && request.resource.data.title is string
+          && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 120
+          && request.resource.data.body is string
+          && request.resource.data.body.size() >= 3 && request.resource.data.body.size() <= 2000
+          && (!('media' in request.resource.data) || (request.resource.data.media is list && request.resource.data.media.size() <= 3));
+        allow delete: if request.auth != null
+          && get(/databases/$(database)/documents/posts/$(postId)).data.authorUid == request.auth.uid;
+        allow update: if false;
+      }
     }
 
     // Stump a friend answers on the feed (added 2026-10-18, src/data/stumps.ts). Private:
@@ -454,6 +552,7 @@ service cloud.firestore {
       allow list: if request.auth != null
         && request.auth.uid == get(/databases/$(database)/documents/posts/$(postId)).data.authorUid;
       allow create: if request.auth != null && request.auth.uid == uid
+        && postVisible(postId)
         && request.resource.data.keys().hasOnly(['username', 'pick', 'ok', 'at'])
         && (request.resource.data.username == null
             || (request.resource.data.username is string && request.resource.data.username.size() <= 30))
@@ -820,7 +919,9 @@ service cloud.firestore {
       return request.auth != null
         && (post.get('visibility', 'everyone') == 'everyone'
             || post.authorUid == request.auth.uid
-            || areFriends(request.auth.uid, post.authorUid));
+            || areFriends(request.auth.uid, post.authorUid))
+        // Not from someone who has blocked me (2026-11-10).
+        && !blockedBy(post.authorUid);
     }
     // Friend streaks (src/data/friend-streak-store.ts): the days a freeze or restore
     // covered, shared by the two friends. The id is the chat id (the two uids, sorted).

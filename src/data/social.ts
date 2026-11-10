@@ -338,8 +338,10 @@ export async function sendFriendRequest(targetUserId: string) {
     createdAt: serverTimestamp(),
   });
   if (myName) {
-    // Their bell (both apps). Best effort: the follow above is what matters.
-    await setDoc(doc(collection(db, 'users', targetUserId, 'notifications')), {
+    // Their bell (both apps). Best effort: the follow above is what matters. One note per
+    // follower (id follow_<me>, checked by the rules since 2026-11-10), so following and
+    // unfollowing again and again can't fill someone's bell.
+    await setDoc(doc(db, 'users', targetUserId, 'notifications', `follow_${me}`), {
       type: 'follow', from: me, fromName: myName, read: false, createdAt: Date.now(),
     }).catch(() => undefined);
     // And a push to their phone, if they have alerts on (best effort).
