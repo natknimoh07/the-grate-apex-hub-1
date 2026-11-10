@@ -1,9 +1,10 @@
-// Streak widget card — shown on the home screen and on the /widget page.
-// Compact on home, expanded on /widget. Features a breathing flame animation,
-// streak count, and a status message. The design mirrors the Dribbble streak
-// animation style: dark card, warm orange glow, animated flame.
+// Streak widget — the flame and day count shown on Study (compact button), on
+// My Progress (stat tile) and on the /widget page (full card). The flame is a
+// small illustration with a live flicker: the outer flame sways and stretches,
+// the inner tongue bobs on its own rhythm and a soft glow breathes behind it.
+// Once the streak has lapsed the flame is grey and still.
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Platform, Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { Text } from '@/components/ui/text';
 import Animated, {
@@ -16,51 +17,151 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Path, Defs, RadialGradient, Stop } from 'react-native-svg';
+import Svg, { Path, Defs, LinearGradient, Stop } from 'react-native-svg';
 import { router } from 'expo-router';
 
-import { MOTION, SPRING } from '@/constants/motion';
+import { SPRING } from '@/constants/motion';
+import { OControl, ORadius } from '@/constants/originate';
 import { Radius, elevation, Type, type ThemeColors } from '@/constants/theme';
-import { useThemedStyles } from '@/hooks/use-theme';
+import { useExperience } from '@/hooks/use-experience';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useProgress } from '@/data/progress';
 import { getStreakStatus } from '@/data/progression';
 import { routes } from '@/lib/routes';
 import { triggerStreakCelebration } from '@/components/streak-celebration';
+import { Interactive } from '@/components/ui/interactive';
 
-// ── Flame SVG (shared with modal but smaller) ─────────────────────────────────
+// ── Flame illustration ────────────────────────────────────────────────────────
+// The flame's own colours are part of the picture (like the organ colours in
+// lesson simulations), the same in every theme. Everything around it — the
+// button, the count, the glow — uses theme tokens.
 
-export function FlameSvg({ size }: { size: number }) {
+const FLAME = {
+  outerTop: '#FFC53D',
+  outerMid: '#FF7A1A',
+  outerBottom: '#E8431F',
+  innerTop: '#FFF6C2',
+  innerBottom: '#FFD24A',
+} as const;
+
+const OUTER_PATH = 'M50 4 C56 22 76 38 76 66 C76 88 64 106 50 112 C36 106 24 88 24 66 C24 52 31 44 35 32 C37 45 44 50 47 44 C42 34 44 18 50 4Z';
+const INNER_PATH = 'M50 56 C56 66 64 74 64 86 C64 97 57 104 50 106 C43 104 36 97 36 86 C36 74 44 66 50 56Z';
+
+function OuterFlame({ size, id }: { size: number; id: string }) {
   return (
-    <Svg width={size} height={size} viewBox="0 0 120 120">
+    <Svg width={size} height={size} viewBox="0 0 100 116">
       <Defs>
-        <RadialGradient id="wfg" cx="50%" cy="70%" r="55%">
-          <Stop offset="0%" stopColor="#FFF176" stopOpacity="1" />
-          <Stop offset="30%" stopColor="#FFA726" stopOpacity="1" />
-          <Stop offset="65%" stopColor="#F4511E" stopOpacity="1" />
-          <Stop offset="100%" stopColor="#BF360C" stopOpacity="0.9" />
-        </RadialGradient>
-        <RadialGradient id="wfi" cx="50%" cy="80%" r="40%">
-          <Stop offset="0%" stopColor="#FFF9C4" stopOpacity="1" />
-          <Stop offset="55%" stopColor="#FFCC02" stopOpacity="1" />
-          <Stop offset="100%" stopColor="#FF8C00" stopOpacity="0" />
-        </RadialGradient>
+        <LinearGradient id={`${id}o`} x1="0" y1="0" x2="0" y2="1">
+          <Stop offset="0%" stopColor={FLAME.outerTop} />
+          <Stop offset="55%" stopColor={FLAME.outerMid} />
+          <Stop offset="100%" stopColor={FLAME.outerBottom} />
+        </LinearGradient>
       </Defs>
-      <Path
-        d="M60 10 C60 10 82 36 84 56 C87 67 82 74 77 78
-           C80 66 74 56 64 53 C67 61 65 69 58 73
-           C60 65 56 56 48 53 C40 61 40 74 42 81
-           C36 75 32 66 36 53 C30 59 28 69 32 79
-           C24 71 20 57 26 43 C30 31 40 18 60 10Z"
-        fill="url(#wfg)"
-      />
-      <Path
-        d="M60 40 C60 40 71 54 71 63 C71 71 66 76 60 78
-           C54 76 49 71 49 63 C49 54 60 40 60 40Z"
-        fill="url(#wfi)"
-        opacity={0.88}
-      />
+      <Path d={OUTER_PATH} fill={`url(#${id}o)`} />
     </Svg>
   );
+}
+
+function InnerFlame({ size, id }: { size: number; id: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 100 116">
+      <Defs>
+        <LinearGradient id={`${id}i`} x1="0" y1="0" x2="0" y2="1">
+          <Stop offset="0%" stopColor={FLAME.innerTop} />
+          <Stop offset="100%" stopColor={FLAME.innerBottom} />
+        </LinearGradient>
+      </Defs>
+      <Path d={INNER_PATH} fill={`url(#${id}i)`} />
+    </Svg>
+  );
+}
+
+let flameIds = 0;
+
+/**
+ * The streak flame. `lit` draws it in colour with the flicker (unless the
+ * learner prefers reduced motion); otherwise it is grey and still. `glow` adds
+ * the breathing halo behind it (off by default inside small buttons).
+ */
+export function Flame({ size, lit = true, glow = false }: { size: number; lit?: boolean; glow?: boolean }) {
+  const colors = useTheme();
+  const reduced = useReducedMotion();
+  const sway = useSharedValue(0);
+  const stretch = useSharedValue(1);
+  const tongue = useSharedValue(1);
+  const halo = useSharedValue(0.6);
+  // Gradient ids must be unique per flame on the web, or every flame shares one.
+  const id = useFlameId();
+
+  useEffect(() => {
+    if (!lit || reduced) {
+      sway.value = withTiming(0);
+      stretch.value = withTiming(1);
+      tongue.value = withTiming(1);
+      halo.value = withTiming(0.6);
+      return;
+    }
+    const ease = Easing.inOut(Easing.sin);
+    sway.value = withRepeat(withSequence(withTiming(-4, { duration: 700, easing: ease }), withTiming(4, { duration: 700, easing: ease })), -1, true);
+    stretch.value = withRepeat(withSequence(withTiming(1.06, { duration: 520, easing: ease }), withTiming(0.96, { duration: 520, easing: ease })), -1, true);
+    tongue.value = withRepeat(withSequence(withTiming(1.14, { duration: 380, easing: ease }), withTiming(0.9, { duration: 380, easing: ease })), -1, true);
+    halo.value = withRepeat(withSequence(withTiming(1, { duration: 900, easing: ease }), withTiming(0.45, { duration: 900, easing: ease })), -1, true);
+  }, [lit, reduced, sway, stretch, tongue, halo]);
+
+  // The flame pivots around its base, so the top sways while the bottom stays put.
+  const outerStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: size * 0.45 },
+      { rotate: `${sway.value}deg` },
+      { scaleY: stretch.value },
+      { translateY: -size * 0.45 },
+    ],
+  }));
+  const innerStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: size * 0.45 },
+      { rotate: `${-sway.value * 0.6}deg` },
+      { scaleY: tongue.value },
+      { translateY: -size * 0.45 },
+    ],
+  }));
+  const haloStyle = useAnimatedStyle(() => ({
+    opacity: halo.value * 0.28,
+    transform: [{ scale: 0.85 + halo.value * 0.25 }],
+  }));
+
+  return (
+    <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+      {glow && lit ? (
+        <Animated.View
+          style={[
+            { position: 'absolute', width: size * 1.3, height: size * 1.3, borderRadius: size, backgroundColor: colors.accent },
+            haloStyle,
+          ]}
+        />
+      ) : null}
+      <Animated.View style={[outerStyle, !lit && { opacity: 0.3 }]}>
+        <OuterFlame size={size} id={id} />
+      </Animated.View>
+      <Animated.View style={[{ position: 'absolute' }, innerStyle, !lit && { opacity: 0.3 }]}>
+        <InnerFlame size={size} id={id} />
+      </Animated.View>
+    </View>
+  );
+}
+
+function useFlameId() {
+  const ref = useRef(0);
+  if (ref.current === 0) {
+    flameIds += 1;
+    ref.current = flameIds;
+  }
+  return `fl${ref.current}`;
+}
+
+/** Kept for older callers: the flame, still and lit. */
+export function FlameSvg({ size }: { size: number }) {
+  return <Flame size={size} lit glow={false} />;
 }
 
 // ── Status labels ──────────────────────────────────────────────────────────────
@@ -86,24 +187,6 @@ export type StreakStatTileProps = {
 export function StreakStatTile({ style, onPress }: StreakStatTileProps) {
   const styles = useThemedStyles(createStatTileStyles);
   const progress = useProgress();
-  const reduced = useReducedMotion();
-
-  const flameScale = useSharedValue(1);
-
-  useEffect(() => {
-    if (reduced) return;
-    flameScale.value = withRepeat(
-      withSequence(
-        withTiming(1.12, { duration: 900, easing: Easing.inOut(Easing.sin) }),
-        withTiming(0.94, { duration: 900, easing: Easing.inOut(Easing.sin) })
-      ),
-      -1,
-      true
-    );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const flameStyle = useAnimatedStyle(() => ({ transform: [{ scale: flameScale.value }] }));
 
   const status = getStreakStatus(progress.streak, progress.lastActivityDate, new Date(), progress.streakFreezes);
   const isLapsed = status === 'lapsed';
@@ -133,15 +216,7 @@ export function StreakStatTile({ style, onPress }: StreakStatTileProps) {
     >
       <View style={styles.valueRow}>
         <View style={styles.flameWrap}>
-          {hasStreak ? (
-            <Animated.View style={flameStyle}>
-              <FlameSvg size={22} />
-            </Animated.View>
-          ) : (
-            <View style={styles.coldFlame}>
-              <FlameSvg size={22} />
-            </View>
-          )}
+          <Flame size={24} lit={hasStreak} />
         </View>
         <Text style={[styles.statValue, isLapsed && styles.statValueLapsed]} numberOfLines={1}>
           {progress.streak}
@@ -155,7 +230,10 @@ export function StreakStatTile({ style, onPress }: StreakStatTileProps) {
   );
 }
 
-// ── Compact widget (for header areas like Learn page) ─────────────────────────
+// ── Compact streak button (page headers, e.g. Study) ───────────────────────────
+// A small warm chip: the flame beside the day count. The border turns to the
+// warning colour while today's study is still needed to keep the streak, and
+// the whole chip goes quiet once the streak has lapsed.
 
 type CompactProps = {
   onPress?: () => void;
@@ -164,28 +242,19 @@ type CompactProps = {
 
 export function StreakWidgetCompact({ onPress, style }: CompactProps) {
   const styles = useThemedStyles(createCompactStyles);
+  const originate = useExperience() === 'originate';
   const progress = useProgress();
-  const reduced = useReducedMotion();
-
-  const flameScale = useSharedValue(1);
-  const cardScale = useSharedValue(0.92);
-
+  // A small pop when the chip appears.
+  const enter = useSharedValue(0.9);
   useEffect(() => {
-    cardScale.value = withSpring(1, SPRING.pop);
-    if (reduced) return;
-    flameScale.value = withRepeat(withSequence(
-      withTiming(1.1, { duration: 900, easing: Easing.inOut(Easing.sin) }),
-      withTiming(0.94, { duration: 900, easing: Easing.inOut(Easing.sin) })
-    ), -1, true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const flameStyle = useAnimatedStyle(() => ({ transform: [{ scale: flameScale.value }] }));
-  const cardAnim = useAnimatedStyle(() => ({ transform: [{ scale: cardScale.value }] }));
+    enter.value = withSpring(1, SPRING.pop);
+  }, [enter]);
+  const enterStyle = useAnimatedStyle(() => ({ transform: [{ scale: enter.value }] }));
 
   const status = getStreakStatus(progress.streak, progress.lastActivityDate, new Date(), progress.streakFreezes);
   const isLapsed = status === 'lapsed';
   const hasStreak = progress.streak > 0 && !isLapsed;
+  const atRisk = hasStreak && status === 'continueToday';
   const label = getStatusText(progress.streak, status);
 
   function handlePress() {
@@ -197,29 +266,26 @@ export function StreakWidgetCompact({ onPress, style }: CompactProps) {
   }
 
   return (
-    <Animated.View style={[cardAnim, styles.wrapper, style]}>
-      <Pressable
+    <Animated.View style={[enterStyle, styles.wrapper, style]}>
+      <Interactive
         onPress={handlePress}
-        accessibilityRole="button"
         accessibilityLabel={`Streak: ${progress.streak} days. ${label}.`}
-        style={({ pressed }) => [{ opacity: pressed ? 0.88 : 1 }]}
+        accessibilityHint="Opens your progress"
+        style={({ hovered, pressed }) => [
+          styles.chip,
+          originate ? styles.chipOriginate : styles.chipLegacy,
+          hasStreak ? styles.chipLit : styles.chipQuiet,
+          atRisk && styles.chipAtRisk,
+          hovered && styles.chipHover,
+          pressed && styles.chipPressed,
+        ]}
       >
-        {/* The flame over the day count, with nothing around it (the label is read out, not shown). */}
-        <View style={[styles.card, !hasStreak && styles.cardLapsed]}>
-          {hasStreak ? (
-            <Animated.View style={flameStyle}>
-              <FlameSvg size={26} />
-            </Animated.View>
-          ) : (
-            <View style={styles.coldFlame}>
-              <FlameSvg size={26} />
-            </View>
-          )}
-          <Text style={[styles.count, !hasStreak && styles.countLapsed]} numberOfLines={1}>
-            {progress.streak}
-          </Text>
-        </View>
-      </Pressable>
+        <Flame size={22} lit={hasStreak} glow={hasStreak} />
+        <Text style={[styles.count, !hasStreak && styles.countQuiet]} numberOfLines={1}>
+          {progress.streak}
+        </Text>
+        {atRisk ? <View style={styles.riskDot} /> : null}
+      </Interactive>
     </Animated.View>
   );
 }
@@ -231,16 +297,11 @@ export function StreakWidgetFull() {
   const progress = useProgress();
   const reduced = useReducedMotion();
 
-  const flameScale = useSharedValue(1);
   const glowScale = useSharedValue(1);
   const glowOpacity = useSharedValue(0.55);
 
   useEffect(() => {
     if (reduced) return;
-    flameScale.value = withRepeat(withSequence(
-      withTiming(1.08, { duration: 1000, easing: Easing.inOut(Easing.sin) }),
-      withTiming(0.95, { duration: 1000, easing: Easing.inOut(Easing.sin) })
-    ), -1, true);
     glowScale.value = withRepeat(withSequence(
       withTiming(1.2, { duration: 1100, easing: Easing.inOut(Easing.sin) }),
       withTiming(0.9, { duration: 1100, easing: Easing.inOut(Easing.sin) })
@@ -252,7 +313,6 @@ export function StreakWidgetFull() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const flameStyle = useAnimatedStyle(() => ({ transform: [{ scale: flameScale.value }] }));
   const glowStyle = useAnimatedStyle(() => ({ opacity: glowOpacity.value, transform: [{ scale: glowScale.value }] }));
 
   const status = getStreakStatus(progress.streak, progress.lastActivityDate, new Date(), progress.streakFreezes);
@@ -267,9 +327,7 @@ export function StreakWidgetFull() {
 
       {/* Flame */}
       <View style={styles.flameArea}>
-        <Animated.View style={[styles.flameInner, hasStreak ? flameStyle : null, !hasStreak && styles.flameGrey]}>
-          <FlameSvg size={90} />
-        </Animated.View>
+        <Flame size={90} lit={hasStreak} />
       </View>
 
       {/* Count */}
@@ -365,67 +423,34 @@ function createStatTileStyles(colors: ThemeColors) {
 // ── Compact styles ─────────────────────────────────────────────────────────────
 
 function createCompactStyles(colors: ThemeColors) {
-  // No ring and no filled circle: just the flame over the day count, in the
-  // theme's own reward text colour (muted once the streak has lapsed), so it
-  // sits naturally on every theme's page.
   return StyleSheet.create({
-    wrapper: {
-      alignSelf: 'flex-start',
-    },
-    card: {
-      minWidth: 48,
-      minHeight: 48,
-      paddingHorizontal: 4,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    cardLapsed: {},
-    glow: {
-      position: 'absolute',
-      width: 58,
-      height: 58,
-      borderRadius: 29,
-      backgroundColor: colors.accent,
-      opacity: 0.12,
-    },
-    left: {
+    wrapper: { alignSelf: 'flex-start' },
+    chip: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 6,
+      paddingLeft: 8,
+      paddingRight: 12,
+      borderWidth: 1,
     },
-    flameWrap: { width: 28, height: 28, alignItems: 'center', justifyContent: 'center' },
-    coldFlame: { opacity: 0.28 },
+    // Originate: a control-shaped chip (radius 8, 34 tall). Legacy: a capsule.
+    chipOriginate: { height: OControl.sm, borderRadius: ORadius.control },
+    chipLegacy: { height: 38, borderRadius: Radius.pill, ...elevation(colors, 1) },
+    chipLit: { backgroundColor: colors.accentSubtle, borderColor: colors.accent + '66' },
+    chipQuiet: { backgroundColor: colors.surfaceMuted, borderColor: colors.border },
+    chipAtRisk: { borderColor: colors.warning },
+    chipHover: { borderColor: colors.accent },
+    chipPressed: { transform: [{ scale: 0.96 }], opacity: 0.9 },
     count: {
       ...Type.numeral,
       fontSize: 16,
       fontWeight: '800',
       color: colors.accentText,
-      lineHeight: 18,
+      lineHeight: 20,
     },
-    countLapsed: { color: colors.textTertiary },
-    right: { minWidth: 0, gap: 1 },
-    dayLabel: {
-      ...Type.overline,
-      color: '#FFA726',
-      letterSpacing: 2,
-      fontSize: 9,
-    },
-    dayLabelLapsed: { color: colors.textTertiary },
-    statusText: {
-      fontSize: 12,
-      fontWeight: '500',
-      color: 'rgba(255,255,255,0.72)',
-      lineHeight: 15,
-    },
-    statusTextLapsed: { color: colors.textSecondary },
-    dot: {
-      width: 7,
-      height: 7,
-      borderRadius: 3.5,
-      marginLeft: 2,
-    },
-    dotActive: { backgroundColor: '#FFA726' },
-    dotInactive: { backgroundColor: colors.textDisabled },
+    countQuiet: { color: colors.textTertiary },
+    // A small dot: study today to keep the streak.
+    riskDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.warning, marginLeft: -2 },
   });
 }
 
