@@ -119,12 +119,13 @@ function TitleSync() {
       };
     }
 
+    // A new service worker took over (it came with a new version of the app). The page is not
+    // reloaded here (owner, 2026-11-10: learners choose when to update): the update watcher
+    // (components/app-update-watcher.tsx) checks, and offers "Update ready" with what is new.
     const wasControlled = Boolean(navigator.serviceWorker.controller);
-    let reloadingForUpdate = false;
     const onControllerChange = () => {
-      if (!wasControlled || reloadingForUpdate) return;
-      reloadingForUpdate = true;
-      window.location.reload();
+      if (!wasControlled) return;
+      window.dispatchEvent(new Event('grateapex:update-check'));
     };
     const checkForUpdate = () => {
       if (document.visibilityState !== 'visible') return;

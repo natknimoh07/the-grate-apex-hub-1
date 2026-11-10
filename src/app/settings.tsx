@@ -11,6 +11,7 @@ import { ATMOSPHERE } from '@/components/atmosphere/config';
 import { useOriginalAutoHide } from '@/components/experience/legacy-navigation';
 import { useIsAdmin, useThemeLocks } from '@/components/experience/experience-sync';
 import { BackLink } from '@/components/learning/nav-bits';
+import { AppUpdatesRow } from '@/components/app-update-watcher';
 import { OfflineStudyCard } from '@/components/offline-study-card';
 import { BlockedPeople } from '@/components/social/blocked-people';
 import { Button } from '@/components/ui/button';
@@ -493,10 +494,11 @@ export default function SettingsScreen() {
       </SettingsSection>
 
       <SettingsSection title="Help">
+        <AppUpdatesRow />
         <Interactive
           onPress={() => router.push(routes.onboarding({ replay: true }))}
           accessibilityLabel="Replay the introduction"
-          style={({ hovered }) => [styles.optionRow, hovered && styles.rowHover]}
+          style={({ hovered }) => [styles.optionRow, styles.rowDivider, hovered && styles.rowHover]}
         >
           <Icon name="play" size={18} color={colors.primaryText} />
           <View style={styles.flex}>
