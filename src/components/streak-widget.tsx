@@ -21,9 +21,7 @@ import Svg, { Path, Defs, LinearGradient, Stop } from 'react-native-svg';
 import { router } from 'expo-router';
 
 import { SPRING } from '@/constants/motion';
-import { OControl, ORadius } from '@/constants/originate';
 import { Radius, elevation, Type, type ThemeColors } from '@/constants/theme';
-import { useExperience } from '@/hooks/use-experience';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useProgress } from '@/data/progress';
 import { getStreakStatus } from '@/data/progression';
@@ -230,10 +228,11 @@ export function StreakStatTile({ style, onPress }: StreakStatTileProps) {
   );
 }
 
-// ── Compact streak button (page headers, e.g. Study) ───────────────────────────
-// A small warm chip: the flame beside the day count. The border turns to the
-// warning colour while today's study is still needed to keep the streak, and
-// the whole chip goes quiet once the streak has lapsed.
+// ── Compact streak (page headers, e.g. Study) ───────────────────────────────
+// Just the flame beside the day count, in the theme's own reward colour, with
+// nothing around it (owner, 2026-11-10: no outline or box), so it blends into
+// every theme's page. The flame flickers while the streak is alive and goes
+// grey once it has lapsed.
 
 type CompactProps = {
   onPress?: () => void;
@@ -242,9 +241,9 @@ type CompactProps = {
 
 export function StreakWidgetCompact({ onPress, style }: CompactProps) {
   const styles = useThemedStyles(createCompactStyles);
-  const originate = useExperience() === 'originate';
   const progress = useProgress();
-  // A small pop when the chip appears.
+
+  // A small pop when it appears.
   const enter = useSharedValue(0.9);
   useEffect(() => {
     enter.value = withSpring(1, SPRING.pop);
@@ -254,7 +253,6 @@ export function StreakWidgetCompact({ onPress, style }: CompactProps) {
   const status = getStreakStatus(progress.streak, progress.lastActivityDate, new Date(), progress.streakFreezes);
   const isLapsed = status === 'lapsed';
   const hasStreak = progress.streak > 0 && !isLapsed;
-  const atRisk = hasStreak && status === 'continueToday';
   const label = getStatusText(progress.streak, status);
 
   function handlePress() {
@@ -271,20 +269,12 @@ export function StreakWidgetCompact({ onPress, style }: CompactProps) {
         onPress={handlePress}
         accessibilityLabel={`Streak: ${progress.streak} days. ${label}.`}
         accessibilityHint="Opens your progress"
-        style={({ hovered, pressed }) => [
-          styles.chip,
-          originate ? styles.chipOriginate : styles.chipLegacy,
-          hasStreak ? styles.chipLit : styles.chipQuiet,
-          atRisk && styles.chipAtRisk,
-          hovered && styles.chipHover,
-          pressed && styles.chipPressed,
-        ]}
+        style={({ pressed }) => [styles.row, pressed && styles.pressed]}
       >
-        <Flame size={22} lit={hasStreak} glow={hasStreak} />
+        <Flame size={26} lit={hasStreak} glow={hasStreak} />
         <Text style={[styles.count, !hasStreak && styles.countQuiet]} numberOfLines={1}>
           {progress.streak}
         </Text>
-        {atRisk ? <View style={styles.riskDot} /> : null}
       </Interactive>
     </Animated.View>
   );
@@ -425,32 +415,16 @@ function createStatTileStyles(colors: ThemeColors) {
 function createCompactStyles(colors: ThemeColors) {
   return StyleSheet.create({
     wrapper: { alignSelf: 'flex-start' },
-    chip: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 6,
-      paddingLeft: 8,
-      paddingRight: 12,
-      borderWidth: 1,
-    },
-    // Originate: a control-shaped chip (radius 8, 34 tall). Legacy: a capsule.
-    chipOriginate: { height: OControl.sm, borderRadius: ORadius.control },
-    chipLegacy: { height: 38, borderRadius: Radius.pill, ...elevation(colors, 1) },
-    chipLit: { backgroundColor: colors.accentSubtle, borderColor: colors.accent + '66' },
-    chipQuiet: { backgroundColor: colors.surfaceMuted, borderColor: colors.border },
-    chipAtRisk: { borderColor: colors.warning },
-    chipHover: { borderColor: colors.accent },
-    chipPressed: { transform: [{ scale: 0.96 }], opacity: 0.9 },
+    row: { flexDirection: 'row', alignItems: 'center', gap: 4, minHeight: 40, paddingHorizontal: 4 },
+    pressed: { opacity: 0.8 },
     count: {
       ...Type.numeral,
-      fontSize: 16,
+      fontSize: 17,
       fontWeight: '800',
       color: colors.accentText,
       lineHeight: 20,
     },
     countQuiet: { color: colors.textTertiary },
-    // A small dot: study today to keep the streak.
-    riskDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.warning, marginLeft: -2 },
   });
 }
 

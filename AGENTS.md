@@ -514,6 +514,12 @@ The full redesign rationale is in `docs/redesign-notes.md`.
   * a small resized photo data URI (`src/lib/avatar-upload.ts`)
   * nothing, which shows initials
 
+### Streak flame, confetti and reminders outside the app (owner, 2026-11-10)
+
+* **Streak flame** (`Flame` in `src/components/streak-widget.tsx`): a two-tone illustration that flickers (outer sway, inner tongue, soft glow); grey and still once the streak lapses or with reduced motion. On Study it is just the flame and the day count, no box or outline (owner's choice), in the theme's reward colour. The Progress tile and `/widget` use the same flame.
+* **Confetti after every quiz** (`src/components/confetti.tsx`, shown by `results.tsx`): a three-second shower when the attempt was handed in within the last minute (an old result opened from history stays calm); fuller at 80%+. Theme colours only; skipped with reduced motion; never takes taps.
+* **Outside the app**: long-press icon shortcuts (`public/manifest.webmanifest`: Continue your streak, Review what is due, Daily 10 — `/learn?open=daily` starts the Daily 10 once its questions are known) and reminder pushes with a banner (`public/images/push/`) and action buttons (`api/reminders.mjs` → `public/sw.js`, status-bar mark `public/icons/badge-flame.png`). A real Duolingo-style **home-screen widget needs a native build** (the Android app is a TWA): the plan is in the owner's doc "GrAte Apex home-screen widget: native build plan", parked until December 2026.
+
 ### Legends badge (owner, 2026-11-05)
 
 * The top 5 lifetime XP learners since the original app (July 2026) get a blue star with a check instead of a tick, everywhere a tick is shown: `LEGEND_USERNAMES` in `src/data/verified.ts` (outranks gold and blue; `higherTier`), drawn by `VerifiedBadge`. Gold-list members still appear in "Suggested for you".
