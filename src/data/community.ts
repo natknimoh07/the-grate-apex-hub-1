@@ -23,6 +23,7 @@ import {
 } from 'firebase/firestore';
 
 import { type Poll, type PollDef, pollOf } from '@/data/polls';
+import { isFriendsShell, PRIVATE_PART, splitFriendsPost, withPrivateWords } from '@/data/private-posts';
 import { auth, db } from '@/lib/firebase';
 import { findMyUsername } from '@/lib/my-username';
 import { cleanMedia, optimized, safeUrl, uploadMedia, uploadVoiceNote } from '@/lib/media';
@@ -274,22 +275,59 @@ const postText = (d: Record<string, any>) => {
   return title && !body.startsWith(title) ? `${title}\n\n${body}` : body;
 };
 
-/** Learners hidden on this device. The shared rules have no block list, so blocking is per device. */
+// The learners I blocked: kept in the database (blocks/{me}_{them}, 2026-11-10), so the block
+// follows me to other devices and the rules stop them following, commenting, liking, seeing my
+// stories or leaving me bell notes. Also kept on this device, as before, so a block made
+// before the rules were published still hides them here. Read once per session (one query).
+let blockedOnline: { uid: string; list: Promise<string[]> } | null = null;
+function blockedInDatabase(uid: string): Promise<string[]> {
+  if (blockedOnline?.uid !== uid) {
+    const entry = {
+      uid,
+      list: getDocs(query(collection(db, 'blocks'), where('blocker', '==', uid), limit(200)))
+        .then((snap) => snap.docs.map((item) => String(item.data().blocked)))
+        .catch(() => [] as string[]),
+    };
+    blockedOnline = entry;
+  }
+  return blockedOnline.list;
+}
+
+/** Learners I blocked (on any device, plus this device's own list). */
 export async function blockedLearners(): Promise<Set<string>> {
   await auth.authStateReady();
-  try {
-    const uid = auth.currentUser?.uid;
-    const saved = uid ? await AsyncStorage.getItem(`${BLOCKED_KEY}:${uid}`) : null;
-    return new Set(saved ? (JSON.parse(saved) as string[]) : []);
-  } catch {
-    return new Set();
-  }
+  const uid = auth.currentUser?.uid;
+  if (!uid) return new Set();
+  const [saved, online] = await Promise.all([
+    AsyncStorage.getItem(`${BLOCKED_KEY}:${uid}`).then((raw) => (raw ? (JSON.parse(raw) as string[]) : []), () => [] as string[]),
+    blockedInDatabase(uid),
+  ]);
+  return new Set([...saved, ...online]);
 }
 
 export async function listCommunityFeed(limitCount = 50): Promise<CommunityPost[]> {
   await auth.authStateReady();
   const [snap, blocked] = await Promise.all([getDocs(query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(limitCount))), blockedLearners()]);
   return postsFrom(snap.docs.filter((item) => !blocked.has(String(item.data().authorUid))));
+}
+
+// The private words of friends-only posts (data/private-posts.ts), kept for 10 minutes: a post's
+// words never change, and a refused read (not a friend) costs a read on the free plan too.
+const privateWords = new Map<string, { at: number; words: DocumentData | null }>();
+const PRIVATE_KEEP_MS = 10 * 60_000;
+
+/** A post's data as shown, or null when it is a friends-only post I may not see. */
+async function visiblePostData(id: string, data: DocumentData): Promise<DocumentData | null> {
+  if (!isFriendsShell(data)) return data;
+  const hit = privateWords.get(id);
+  let words = hit && Date.now() - hit.at < PRIVATE_KEEP_MS ? hit.words : undefined;
+  if (words === undefined) {
+    const snap = await getDoc(doc(db, 'posts', id, 'private', PRIVATE_PART)).catch(() => null);
+    words = snap?.exists() ? snap.data() : null;
+    privateWords.set(id, { at: Date.now(), words });
+    if (privateWords.size > 300) privateWords.delete(privateWords.keys().next().value!);
+  }
+  return words ? withPrivateWords(data, words) : null;
 }
 
 // Whether I liked each post, remembered for the session: checking costs one read per post,
@@ -301,8 +339,10 @@ function likedPostsOf(uid: string) {
   return likedPosts.known;
 }
 
-/** Post documents as shown: with my like, and the original of a reshare. */
-async function postsFrom(rows: readonly { id: string; data: () => DocumentData }[]): Promise<CommunityPost[]> {
+/** Post documents as shown: with my like, and the original of a reshare. Friends-only posts I may not see are left out. */
+async function postsFrom(found: readonly { id: string; data: () => DocumentData }[]): Promise<CommunityPost[]> {
+  const shown = await Promise.all(found.map(async (item) => ({ id: item.id, d: await visiblePostData(item.id, item.data()) })));
+  const rows = shown.filter((row): row is { id: string; d: DocumentData } => row.d !== null);
   const userId = auth.currentUser?.uid ?? null;
   const known = userId ? likedPostsOf(userId) : new Map<string, boolean>();
   const liked = await Promise.all(rows.map((item) => {
@@ -313,13 +353,14 @@ async function postsFrom(rows: readonly { id: string; data: () => DocumentData }
   }));
   const originals = new Map<string, Record<string, any>>();
   await Promise.all(
-    [...new Set(rows.map((item) => item.data().resharedPostId).filter((id): id is string => typeof id === 'string'))].map(async (id) => {
+    [...new Set(rows.map((item) => item.d.resharedPostId).filter((id): id is string => typeof id === 'string'))].map(async (id) => {
       const original = await getDoc(doc(db, 'posts', id)).catch(() => null);
-      if (original?.exists()) originals.set(id, original.data());
+      const data = original?.exists() ? await visiblePostData(id, original.data()) : null;
+      if (data) originals.set(id, data);
     })
   );
   return rows.map((item, index) => {
-    const d = item.data();
+    const d = item.d;
     const original = typeof d.resharedPostId === 'string' ? originals.get(d.resharedPostId) : undefined;
     const media = Array.isArray(d.media) ? d.media[0] : null;
     // A reshare shows the original post's photo or video.
@@ -434,7 +475,7 @@ export async function createCommunityPost(
   const firstLine = text.split('\n')[0].trim();
   const title = (firstLine.length >= 3 ? firstLine : text).slice(0, 120);
   const ref = doc(collection(db, 'posts'));
-  await setDoc(ref, {
+  await writePost(ref, {
     board: 'general',
     title,
     body: text,
@@ -458,12 +499,17 @@ export async function createCommunityPost(
   };
 }
 
-/** A poll on the feed (data/polls.ts). Its question is also the post's title and text. */
-export async function createPollPost(poll: PollDef, visibility: 'everyone' | 'friends' = 'everyone'): Promise<CommunityPost> {
+/**
+ * A poll on the feed (data/polls.ts). Its question is also the post's title and text. Polls are
+ * always public: the server writes their results into the post itself (server/poll-referee.mjs),
+ * which every signed-in learner can list, so a friends-only poll could not stay private.
+ */
+export async function createPollPost(poll: PollDef, _visibility: 'everyone' | 'friends' = 'everyone'): Promise<CommunityPost> {
+  const visibility = 'everyone' as 'everyone' | 'friends';
   const me = await myUsername();
   const text = poll.q.padEnd(3, PAD);
   const ref = doc(collection(db, 'posts'));
-  await setDoc(ref, {
+  await writePost(ref, {
     board: 'general',
     title: text.slice(0, 120),
     body: text,
@@ -501,7 +547,7 @@ export async function createVoicePost(
   const firstLine = text.split('\n')[0].trim();
   const title = (firstLine.length >= 3 ? firstLine : text).slice(0, 120);
   const ref = doc(collection(db, 'posts'));
-  await setDoc(ref, {
+  await writePost(ref, {
     board: 'general',
     title,
     body: text,
@@ -523,9 +569,37 @@ export async function createVoicePost(
   };
 }
 
-/** Only the author can delete their post (rules). */
+/**
+ * Writes a new post. A friends-only post goes up as an empty shell plus its private words
+ * (data/private-posts.ts, rules of 2026-11-10). Until those rules are published that is
+ * refused, so it goes up the old way, with its words in the post.
+ */
+async function writePost(ref: ReturnType<typeof doc>, data: DocumentData) {
+  if (data.visibility !== 'friends') {
+    await setDoc(ref, data);
+    return;
+  }
+  const { shell, content } = splitFriendsPost(data);
+  const batch = writeBatch(db);
+  batch.set(ref, shell);
+  batch.set(doc(db, 'posts', ref.id, 'private', PRIVATE_PART), content);
+  try {
+    await batch.commit();
+    privateWords.set(ref.id, { at: Date.now(), words: content });
+  } catch (error) {
+    if ((error as { code?: string })?.code !== 'permission-denied') throw error;
+    await setDoc(ref, data);
+  }
+}
+
+/** Only the author can delete their post (rules); a friends-only post's private words go with it. */
 export async function deleteCommunityPost(postId: string) {
-  await deleteDoc(doc(db, 'posts', postId));
+  const batch = writeBatch(db);
+  batch.delete(doc(db, 'posts', postId, 'private', PRIVATE_PART));
+  batch.delete(doc(db, 'posts', postId));
+  // Before the 2026-11-10 rules are published the private part can't be touched: delete the post alone.
+  await batch.commit().catch(() => deleteDoc(doc(db, 'posts', postId)));
+  privateWords.delete(postId);
 }
 
 /**
@@ -589,8 +663,9 @@ async function notifyAboutComment(postId: string, commentId: string, me: { uid: 
     const postAuthor = typeof post.data()?.authorUid === 'string' ? (post.data()!.authorUid as string) : null;
     const parentAuthor = typeof parent?.data()?.authorUid === 'string' ? (parent!.data()!.authorUid as string) : null;
     const push = { kind: 'comment', post: postId, comment: commentId };
-    if (parentAuthor && parentAuthor !== me.uid) await notifyAccount(parentAuthor, me, 'reply', text, push);
-    if (postAuthor && postAuthor !== me.uid && postAuthor !== parentAuthor) await notifyAccount(postAuthor, me, 'comment', text, push);
+    // The note's id names the comment, so the rules can check it is real (2026-11-10).
+    if (parentAuthor && parentAuthor !== me.uid) await notifyAccount(parentAuthor, me, 'reply', text, push, `reply_${postId}_${commentId}`);
+    if (postAuthor && postAuthor !== me.uid && postAuthor !== parentAuthor) await notifyAccount(postAuthor, me, 'comment', text, push, `comment_${postId}_${commentId}`);
   } catch {
     // the comment is posted; the alert is a bonus
   }
@@ -624,14 +699,36 @@ export async function reportCommunityContent(
   });
 }
 
-/** Hides a learner on this device and stops following them (the shared rules have no block list). */
+/**
+ * Blocks a learner: saved in the database (blocks/{me}_{them}; the rules then stop them
+ * following me, commenting, liking, seeing my stories or leaving bell notes) and on this
+ * device, and both follows between us are removed, which ends the friendship and the chat.
+ * Before the 2026-11-10 rules are published the database parts are refused: the block then
+ * works on this device only, as it did before.
+ */
 export async function blockCommunityUser(blockedId: string, friendshipId?: string | null) {
   const uid = await signedInUserId();
   const blocked = await blockedLearners();
   blocked.add(blockedId);
   await AsyncStorage.setItem(`${BLOCKED_KEY}:${uid}`, JSON.stringify([...blocked]));
-  await deleteDoc(doc(db, 'follows', `${uid}_${blockedId}`)).catch(() => undefined);
+  await setDoc(doc(db, 'blocks', `${uid}_${blockedId}`), { blocker: uid, blocked: blockedId, at: serverTimestamp() }).catch(() => undefined);
+  await Promise.all([
+    deleteDoc(doc(db, 'follows', `${uid}_${blockedId}`)).catch(() => undefined),
+    deleteDoc(doc(db, 'follows', `${blockedId}_${uid}`)).catch(() => undefined),
+  ]);
+  blockedOnline = null;
+  storiesCache = null;
   void friendshipId;
+}
+
+/** Undoes a block (Settings → Privacy → Blocked people). Following again is up to each of them. */
+export async function unblockCommunityUser(blockedId: string) {
+  const uid = await signedInUserId();
+  const saved = await AsyncStorage.getItem(`${BLOCKED_KEY}:${uid}`).then((raw) => (raw ? (JSON.parse(raw) as string[]) : []), () => [] as string[]);
+  await AsyncStorage.setItem(`${BLOCKED_KEY}:${uid}`, JSON.stringify(saved.filter((id) => id !== blockedId)));
+  await deleteDoc(doc(db, 'blocks', `${uid}_${blockedId}`)).catch(() => undefined);
+  blockedOnline = null;
+  storiesCache = null;
 }
 
 export async function listPostComments(postId: string) {

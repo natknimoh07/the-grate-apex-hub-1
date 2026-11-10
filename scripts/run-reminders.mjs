@@ -1,10 +1,10 @@
 // Runs api/reminders.mjs on YOUR computer (no Vercel), to test the streak and league reminders.
 //
-//   node --env-file=.env.local scripts/run-reminders.mjs streak        (dry run: counts only, sends nothing)
-//   node --env-file=.env.local scripts/run-reminders.mjs league      (also: review, weekly)
-//   node --env-file=.env.local scripts/run-reminders.mjs streak send   (REALLY sends the push notifications)
+//   node --env-file=.env.server scripts/run-reminders.mjs streak        (dry run: counts only, sends nothing)
+//   node --env-file=.env.server scripts/run-reminders.mjs league      (also: review, weekly)
+//   node --env-file=.env.server scripts/run-reminders.mjs streak send   (REALLY sends the push notifications)
 //
-// .env.local (never commit it) needs these four lines:
+// .env.server (never commit it; Expo never reads it, so it is not copied into Expo logs) needs these four lines:
 //   CRON_SECRET=anything-you-like
 //   VAPID_PUBLIC_KEY=...
 //   VAPID_PRIVATE_KEY=...

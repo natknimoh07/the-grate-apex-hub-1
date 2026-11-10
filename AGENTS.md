@@ -103,6 +103,17 @@ Everything uses Firebase Auth (`src/lib/firebase.ts`, `src/lib/firebase-auth.ts`
 
 There is intentionally no `src/app/learn/_layout.tsx` unless the project owner specifically asks for one.
 
+## Security (audit 2026-11-07, fixes 2026-11-10)
+
+* **Friends-only posts:** every signed-in learner can list `posts`, so a new friends-only post is an empty shell there (title and body `''`, no media) and its words and pictures are in `posts/{id}/private/content`, which only the author and their friends can open (`src/data/private-posts.ts`; `writePost` and `visiblePostData` in `community.ts`). Polls, stamps and reposts are always public. Older friends-only posts are moved by `scripts/security/move-friends-posts.mjs` (run only after the 2026-11-10 rules are published).
+* **Blocking is in the database:** `blocks/{blocker}_{blocked}` (also kept on the device). The rules (`blockedBy`) stop a blocked learner following, commenting, liking, answering stamps, opening the blocker's posts, seeing their stories or leaving bell notes; `api/push.mjs` and `api/battle.mjs` check it too. Blocking removes both follows (the followee may delete a follow). Undo: Settings → Privacy → Blocked people (`components/social/blocked-people.tsx`).
+* **Bell notes must match what happened** (`notificationOk` in `firestore.rules`): ids `follow_<me>`, `like_<post>_<me>`, `comment_<post>_<comment>`, `reply_<post>_<comment>`; message, share and battle notes only between friends; support notes only from admins. A new kind of note needs a rule there.
+* **Username entries:** a `login` must be the account's own hidden login (`loginIsMine`). `scripts/security/fill-username-registry.mjs` gives names from before the registry their entry.
+* **Privacy settings:** profile visibility, who may message and who may send requests were never applied, so Settings shows them as coming soon. "Let students find me" off: `api/learners.mjs` leaves the learner out of search.
+* **Secrets on this computer:** the service account and `CRON_SECRET` are in `.env.server` (git-ignored, never read by Expo: Expo copies `.env` and `.env.local` into `.expo/dev/logs`). Run admin scripts with `node --env-file=.env.server`. Never print lines of `.env*` files; print setting names only.
+* **Checks:** `tests/rules/security.rules-test.mjs` on the local Firestore emulator (Java at `C:\Users\User\AppData\Local\GrateApexAndroid\jdk\bin\java.exe`, jar in `~/.cache/firebase/emulators/`, started with `--rules firestore.rules --port 8085`; it accepts unsigned tokens, no Auth emulator needed); `tests/security-fixes.test.mjs` runs in `npm test`.
+* **Known limits:** battle questions are also in the study banks every device downloads for offline study, so their answers can't be hidden from a determined cheater; XP, leagues and coins are written by the learner's own app (scoring on the server is a later job).
+
 ## Current data structure
 
 Inventory of every file in `content/` (topics, sources, annotations, outlines):

@@ -114,10 +114,22 @@ export default async function handler(req, res) {
   try {
     const store = firestoreStore(admin.db);
     const base = origin(req);
-    // The challenger's name comes from their own profile, not from what the app sends.
+    // Both players' names come from their own profiles, never from what the app sends, and a
+    // learner can't challenge someone who has blocked them (2026-11-10 audit).
     if (body.action === 'create') {
-      const profile = await admin.db.doc(`users/${uid}`).get().catch(() => null);
-      body = { ...body, name: profile?.data?.()?.username ?? body.name ?? null };
+      const opponentUid = String(body.opponent?.uid ?? '');
+      const known = /^[A-Za-z0-9]{6,64}$/.test(opponentUid);
+      const [profile, other, blocked] = await Promise.all([
+        admin.db.doc(`users/${uid}`).get().catch(() => null),
+        known ? admin.db.doc(`users/${opponentUid}`).get().catch(() => null) : null,
+        known ? admin.db.doc(`blocks/${opponentUid}_${uid}`).get().catch(() => null) : null,
+      ]);
+      if (blocked?.exists) return res.status(403).json({ error: 'You can’t challenge this learner.' });
+      const nameOf = (snap) => {
+        const name = snap?.data?.()?.username;
+        return typeof name === 'string' && name ? name : null;
+      };
+      body = { ...body, name: nameOf(profile), opponent: { ...(body.opponent ?? {}), name: nameOf(other) } };
     }
     const reply = await handleBattle({ uid, body, store, loadBank: (course) => loadBank(base, course) });
     return res.status(200).json(reply);

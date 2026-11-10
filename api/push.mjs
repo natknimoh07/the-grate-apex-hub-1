@@ -116,10 +116,17 @@ export default async function handler(req, res) {
   // Private push addresses (pushDevices/{uid}) are readable only with the service account.
   const admin = await adminTokenOrNull();
 
-  /** A learner's profile (read with the sender's token) plus their devices from both places. */
+  /**
+   * A learner's profile (read with the sender's token) plus their devices from both places.
+   * Null when they have blocked the sender (blocks/{them}_{sender}, 2026-11-10): no push then.
+   */
   async function person(uid) {
-    const [profile, own] = await Promise.all([read(`users/${uid}`, token), admin ? read(`pushDevices/${uid}`, admin) : null]);
-    if (!profile && !own) return null;
+    const [profile, own, blocked] = await Promise.all([
+      read(`users/${uid}`, token),
+      admin ? read(`pushDevices/${uid}`, admin) : null,
+      admin && uid !== sender ? read(`blocks/${uid}_${sender}`, admin) : null,
+    ]);
+    if (blocked || (!profile && !own)) return null;
     return { ...(profile ?? {}), webPush: mergeDevices(own?.webPush, profile?.webPush) };
   }
 
@@ -321,7 +328,9 @@ export default async function handler(req, res) {
     if (!post) return res.status(404).json({ error: 'Post not found.' });
     const [recipient, profile] = await Promise.all([person(to), read(`users/${sender}`, token)]);
     const username = typeof profile?.username === 'string' ? `@${profile.username}` : 'Someone';
-    const subject = String(post.title || post.body || '').slice(0, 100);
+    // A friends-only post keeps its words in posts/{id}/private/content (2026-11-10); the sender may open it.
+    const words = post.visibility === 'friends' && !post.title && !post.body ? await read(`posts/${postId}/private/content`, token) : null;
+    const subject = String(words?.title || words?.body || post.title || post.body || '').slice(0, 100);
 
     if (kind === 'like') {
       // The like is a document the sender wrote, on a post that belongs to the recipient.
