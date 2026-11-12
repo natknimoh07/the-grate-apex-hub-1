@@ -49,7 +49,8 @@ describe('what is new in each update', () => {
     assert.match(watcher, /label="Later"/);
     const store = read('src/data/app-update.ts');
     assert.equal(store.match(/location\.reload/g)?.length, 1, 'only applyAppUpdate reloads');
-    assert.match(store, /export function applyAppUpdate\(\) \{\n[^\n]*location\.reload\(\)/);
+    // (\r?\n: files checked out on Windows have CRLF line endings.)
+    assert.match(store, /export function applyAppUpdate\(\) \{\r?\n[^\n]*location\.reload\(\)/);
     // A new service worker only asks for a check.
     const html = read('src/app/+html.tsx');
     const onChange = html.slice(html.indexOf('const onControllerChange'), html.indexOf('const checkForUpdate'));

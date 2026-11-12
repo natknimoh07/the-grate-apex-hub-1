@@ -104,6 +104,7 @@ function ConfettiPiece({ piece, progress, width, height }: { piece: Piece; progr
 }
 
 const styles = StyleSheet.create({
-  layer: { ...StyleSheet.absoluteFillObject, overflow: 'hidden', zIndex: 50 },
+  // absoluteFill, as elsewhere in the app (absoluteFillObject is gone from React Native 0.86).
+  layer: { ...StyleSheet.absoluteFill, overflow: 'hidden', zIndex: 50 },
   piece: { position: 'absolute', top: 0, left: 0 },
 });

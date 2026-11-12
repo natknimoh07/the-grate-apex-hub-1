@@ -1,7 +1,7 @@
 import { BackLink } from '@/components/learning/nav-bits';
 import { StreakWidgetCompact } from '@/components/streak-widget';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 
@@ -332,13 +332,15 @@ export default function LearnScreen() {
     if (dailyIds.length > 0) router.push(routes.exam({ kind: 'daily' }, dailyIds));
   };
   // /learn?open=daily (the app icon's "Daily 10" shortcut and the streak reminder's
-  // button): start today's Daily 10 as soon as its questions are known, once.
+  // button): start today's Daily 10 as soon as its questions are known, once — and only
+  // while Study is on screen (it stays mounted as a hidden tab, and must never pull the
+  // learner off another tab when the questions finish loading; tests/navigation-redirects).
   const openedFromLink = useRef(false);
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     if (openedFromLink.current || param(params.open) !== 'daily' || dailyIds.length === 0) return;
     openedFromLink.current = true;
     router.replace(routes.exam({ kind: 'daily' }, dailyIds));
-  }, [params.open, dailyIds]);
+  }, [params.open, dailyIds]));
   function questStep(step: 'daily' | 'label' | 'study') {
     if (step === 'daily') openDaily();
     else if (step === 'label') router.push(routes.labelDiagram());
