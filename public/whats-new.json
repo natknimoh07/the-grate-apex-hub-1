@@ -2,6 +2,16 @@
   "about": "What is new in each update, shown to learners in the 'Update ready' popup and in Settings → Help → App updates. Newest first. Each update: a unique id, the date, a short title (up to 48 characters) and 1–3 plain points (up to 120 characters each). Add one whenever you push something learners will notice.",
   "updates": [
     {
+      "id": "2026-11-12-organology",
+      "date": "2026-11-12",
+      "title": "New in Anatomy: Organology",
+      "points": [
+        "Organology is now the first Gross Anatomy topic, before the Cardiovascular System.",
+        "Every picture from the lecture gets its own page: the organ, how many coats it has, and why.",
+        "Practise naming organs and counting their coats from the lecture pictures."
+      ]
+    },
+    {
       "id": "2026-11-12-explain-simply",
       "date": "2026-11-12",
       "title": "“Explain it more simply” works again",
