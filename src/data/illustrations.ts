@@ -15,6 +15,7 @@
 
 import { CADAVER_ILLUSTRATIONS, CADAVER_NOTES } from '@/data/cadaver-photos';
 import { ILLUSTRATION_NOTES } from '@/data/illustration-notes';
+import { SLIDE_PICTURES } from '@/data/slide-pictures';
 
 export type Illustration = {
   src: string; // path under public/
@@ -31,6 +32,11 @@ export type Illustration = {
   licenseUrl?: string;
   /** A photo of a real human body (data/cadaver-photos.ts): blurred until the learner taps it. */
   realSpecimen?: boolean;
+  /**
+   * A lecture-slide picture (data/slide-pictures.ts) and the slide it comes from:
+   * one picture per page, shown beside the whole page's text on wide screens.
+   */
+  slide?: number;
 };
 
 const CREDIT = 'OpenStax, Anatomy and Physiology · CC BY 4.0';
@@ -455,11 +461,16 @@ export const ILLUSTRATIONS: Record<string, Record<string, Illustration[]>> = {
 /** The pictures for one reading section of a lesson (none for most). */
 /** A section's pictures, each with its note and, given the section's number (1, 2, …), its figure number. */
 export function illustrationsFor(lessonId: string, sectionTitle: string, sectionNumber?: number): Illustration[] {
-  // OpenStax drawings first, then the real dissection photos (data/cadaver-photos.ts).
-  const items = [...(ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? []), ...(CADAVER_ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? [])];
+  // OpenStax drawings first, then the real dissection photos (data/cadaver-photos.ts),
+  // then lecture-slide pictures (data/slide-pictures.ts, which carry their own notes).
+  const items = [
+    ...(ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? []),
+    ...(CADAVER_ILLUSTRATIONS[lessonId]?.[sectionTitle] ?? []),
+    ...(SLIDE_PICTURES[lessonId]?.[sectionTitle] ?? []),
+  ];
   return items.map((item, index) => ({
     ...item,
-    note: (item.realSpecimen ? CADAVER_NOTES : ILLUSTRATION_NOTES)[item.src.split('/').pop() ?? ''],
+    note: item.note ?? (item.realSpecimen ? CADAVER_NOTES : ILLUSTRATION_NOTES)[item.src.split('/').pop() ?? ''],
     ...(sectionNumber ? { label: `Figure ${sectionNumber}.${index + 1}` } : {}),
   }));
 }

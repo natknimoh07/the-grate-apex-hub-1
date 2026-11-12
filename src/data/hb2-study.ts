@@ -61,8 +61,8 @@ type Block =
   | { k: 'box'; title: string; tone?: string; blocks: Block[] }
   | { k: 'step'; n: string; title: string; tone?: string; blocks?: Block[] }
   | { k: 'lfig'; id: string }
-  /** A picture beside the reading (data/illustrations.ts). */
-  | { k: 'illus'; src: string; w: number; h: number; cap: string; credit: string; url: string; num?: string; note?: string; lic?: string; real?: boolean };
+  /** A picture beside the reading (data/illustrations.ts); `side`: beside the whole section on wide screens (a lecture-slide picture page). */
+  | { k: 'illus'; src: string; w: number; h: number; cap: string; credit: string; url: string; num?: string; note?: string; lic?: string; real?: boolean; side?: 1 };
 export type LocalSection = { id: string; title: string; kicker?: string; blocks: Block[] };
 export type LocalExtras = { facts?: { h: string; lines: string[] }[] };
 
@@ -74,13 +74,17 @@ function sectionOf(chunk: LessonChunk, index: number, lesson: Lesson): LocalSect
     blocks.push({ k: 'box', title: 'What you’ll learn', tone: 'recall', blocks: [{ k: 'ul', items: lesson.objectives.map(escape) }] });
   }
   // The section taught in full first (data/teaching/), then the lecture's key points.
-  const pictures = illustrationsFor(lesson.id, chunk.title, index + 1);
+  const pictures = illustrationsFor(lesson.id, chunk.title, index + 1).map((item): Block => ({
+    k: 'illus', src: item.src, w: item.width, h: item.height, cap: item.caption, credit: item.credit, url: item.sourceUrl, num: item.label, note: item.note, lic: item.licenseUrl, real: item.realSpecimen,
+    // A lecture-slide picture page (organology): the picture sits beside the whole section on wide screens.
+    ...(item.slide ? { side: 1 as const } : {}),
+  }));
   chunk.teach?.forEach((paragraph, n) => {
     blocks.push({ k: 'p', x: richWithTerms(paragraph, terms, used), ...(n === 0 ? { lede: 1 as const } : {}) });
     // Pictures after the opening paragraph, as in an encyclopaedia article.
-    if (n === 0) for (const item of pictures) blocks.push({ k: 'illus', src: item.src, w: item.width, h: item.height, cap: item.caption, credit: item.credit, url: item.sourceUrl, num: item.label, note: item.note, lic: item.licenseUrl, real: item.realSpecimen });
+    if (n === 0) blocks.push(...pictures);
   });
-  if (!chunk.teach?.length) for (const item of pictures) blocks.push({ k: 'illus', src: item.src, w: item.width, h: item.height, cap: item.caption, credit: item.credit, url: item.sourceUrl, num: item.label, note: item.note, lic: item.licenseUrl, real: item.realSpecimen });
+  if (!chunk.teach?.length) blocks.push(...pictures);
   if (chunk.teach?.length) blocks.push({ k: 'p', x: '<b>Key points from the lecture</b>' });
   for (const paragraph of chunk.paragraphs ?? []) blocks.push({ k: 'p', x: richWithTerms(paragraph, terms, used) });
   for (const id of chunkFigures(chunk)) blocks.push({ k: 'lfig', id });

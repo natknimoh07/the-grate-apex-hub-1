@@ -14,6 +14,7 @@ import { drills as cardiovascular } from './cardiovascular-system-gross';
 import { drills as gastrointestinal } from './gastrointestinal-system-gross';
 import { drills as headAndNeck } from './head-and-neck';
 import { drills as neuroanatomy } from './neuroanatomy';
+import { drills as organology } from './organology';
 import { drills as respiratory } from './respiratory-system-gross';
 import type { HitCase, LayerDrill, TopicDrills, WhyCard } from './types';
 import { drills as upperLimb } from './upper-limb';
@@ -22,7 +23,7 @@ import { drills as urinary } from './urinary-system-gross';
 export type { HitCase, LayerDrill, TopicDrills, WhyCard } from './types';
 
 /** In course order (as builtTopics). */
-export const allDrills: readonly TopicDrills[] = [cardiovascular, respiratory, gastrointestinal, urinary, upperLimb, headAndNeck, neuroanatomy];
+export const allDrills: readonly TopicDrills[] = [organology, cardiovascular, respiratory, gastrointestinal, urinary, upperLimb, headAndNeck, neuroanatomy];
 
 export const drillsFor = (topicId: string | undefined | null): TopicDrills | undefined =>
   allDrills.find((item) => item.topicId === topicId);

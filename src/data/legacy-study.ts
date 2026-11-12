@@ -82,8 +82,11 @@ export type Block =
   | { k: 'fig'; svg?: string; img?: string; w?: number; h?: number; cap?: Rich; alt?: string }
   /** A tappable lecture diagram (data/figures/), in lessons built from this app's topics. */
   | { k: 'lfig'; id: string }
-  /** A picture beside the reading (data/illustrations.ts), in lessons built from this app's topics. */
-  | { k: 'illus'; src: string; w: number; h: number; cap: string; credit: string; url: string; num?: string; note?: string; lic?: string; real?: boolean };
+  /**
+   * A picture beside the reading (data/illustrations.ts), in lessons built from this app's topics.
+   * `side`: a lecture-slide picture page — beside the whole section on wide screens, first on phones.
+   */
+  | { k: 'illus'; src: string; w: number; h: number; cap: string; credit: string; url: string; num?: string; note?: string; lic?: string; real?: boolean; side?: 1 };
 export type LegacySection = { id: string; title: Rich; kicker?: string; blocks: Block[] };
 export type LegacyExtras = { mnemonics?: { h: Rich; lines: Rich[] }[]; facts?: { h: Rich; lines: Rich[] }[]; steps?: { title: string; items: { t: Rich; d: Rich }[] } };
 export type LegacyLessonBody = { sections: LegacySection[]; extras?: LegacyExtras };

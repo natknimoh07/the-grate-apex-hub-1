@@ -24,6 +24,7 @@ import { notes as hormonesEndocrineBiochemistry } from '@/data/textbook-notes/ho
 import { notes as immunology } from '@/data/textbook-notes/immunology';
 import { notes as neuroanatomy } from '@/data/textbook-notes/neuroanatomy';
 import { notes as nucleicAcids } from '@/data/textbook-notes/nucleic-acids';
+import { notes as organology } from '@/data/textbook-notes/organology';
 import { notes as oxygenCarriers } from '@/data/textbook-notes/oxygen-carriers';
 import { notes as renalPhysiology } from '@/data/textbook-notes/renal-physiology';
 import { notes as reproductivePhysiology } from '@/data/textbook-notes/reproductive-physiology';
@@ -53,6 +54,7 @@ const byTopic: Record<string, TextbookNotes> = {
   'immunology': immunology,
   'neuroanatomy': neuroanatomy,
   'nucleic-acids': nucleicAcids,
+  organology,
   'oxygen-carriers': oxygenCarriers,
   'renal-physiology': renalPhysiology,
   'reproductive-physiology': reproductivePhysiology,

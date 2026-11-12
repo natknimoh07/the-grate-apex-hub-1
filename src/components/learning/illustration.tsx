@@ -22,8 +22,11 @@ const uriOf = (src: string) => (Platform.OS === 'web' ? src : `${LIVE_SITE}${src
 
 // Wide enough for text and a picture side by side (the lesson page also has
 // its outline column on desktop, so this is the window, not the text column).
-const SIDE_BY_SIDE = 1180;
+export const SIDE_BY_SIDE = 1180;
 const SIDE_WIDTH = 320;
+// Lecture-slide picture pages (data/slide-pictures.ts): the picture is the page's
+// subject (owner, 2026-11-12), so it gets a wider column.
+export const SLIDE_SIDE_WIDTH = 420;
 
 export function IllustrationFigure({ item, side = false }: { item: Illustration; side?: boolean }) {
   const styles = useThemedStyles(createStyles);
@@ -98,7 +101,7 @@ export function WithIllustrations({ items, lead, rest }: { items: Illustration[]
     return (
       <View style={styles.row}>
         <View style={styles.text}>{lead}{rest}</View>
-        <View style={styles.side}>
+        <View style={[styles.side, items.some((item) => item.slide) && { width: SLIDE_SIDE_WIDTH }]}>
           {items.map((item) => <IllustrationFigure key={item.src} item={item} side />)}
         </View>
       </View>

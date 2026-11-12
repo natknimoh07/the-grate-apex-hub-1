@@ -20,6 +20,7 @@ import { hemeMetabolism } from '@/data/topics/heme-metabolism';
 import { hormones } from '@/data/topics/hormones-endocrine-biochemistry';
 import { inbornErrors } from '@/data/topics/inborn-errors-of-metabolism';
 import { neuroanatomy } from '@/data/topics/neuroanatomy';
+import { organology } from '@/data/topics/organology';
 import { oxygenCarriers } from '@/data/topics/oxygen-carriers';
 import { respiratoryGross } from '@/data/topics/respiratory-system-gross';
 import { upperLimb } from '@/data/topics/upper-limb';
@@ -37,5 +38,5 @@ import { respiratoryMicro } from '@/data/topics/respiratory-system-micro';
 import { embryology } from '@/data/topics/embryology';
 import { gastrointestinalMicro } from '@/data/topics/gastrointestinal-system-micro';
 
-// Anatomy topics are in HB2 Gross Anatomy course order.
-export const builtTopics: BuiltTopic[] = [fattyAcidBiosynthesis, cholesterolAndBileBiosynthesis, hemeMetabolism, oxygenCarriers, bloodCoagulation, hormones, inbornErrors, collagenAndElastin, freeRadicals, aminoAcidMetabolism, nucleicAcids, immunology, cardiovascularPhysiology, respiratoryPhysiology, centralNervousSystem, endocrinology, gastrointestinalPhysiology, renalPhysiology, reproductivePhysiology, specialSenses, cardiovascularGross, respiratoryGross, gastrointestinalGross, urinaryGross, upperLimb, headAndNeck, neuroanatomy, cardiovascularMicro, respiratoryMicro, gastrointestinalMicro, embryology];
+// Anatomy topics are in HB2 Gross Anatomy course order (Organology first: owner, 2026-11-12).
+export const builtTopics: BuiltTopic[] = [fattyAcidBiosynthesis, cholesterolAndBileBiosynthesis, hemeMetabolism, oxygenCarriers, bloodCoagulation, hormones, inbornErrors, collagenAndElastin, freeRadicals, aminoAcidMetabolism, nucleicAcids, immunology, cardiovascularPhysiology, respiratoryPhysiology, centralNervousSystem, endocrinology, gastrointestinalPhysiology, renalPhysiology, reproductivePhysiology, specialSenses, organology, cardiovascularGross, respiratoryGross, gastrointestinalGross, urinaryGross, upperLimb, headAndNeck, neuroanatomy, cardiovascularMicro, respiratoryMicro, gastrointestinalMicro, embryology];

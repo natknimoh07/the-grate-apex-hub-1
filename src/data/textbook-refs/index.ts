@@ -23,6 +23,7 @@ import { textbookPages as hormonesEndocrineBiochemistry } from '@/data/textbook-
 import { textbookPages as immunology } from '@/data/textbook-refs/immunology';
 import { textbookPages as neuroanatomy } from '@/data/textbook-refs/neuroanatomy';
 import { textbookPages as nucleicAcids } from '@/data/textbook-refs/nucleic-acids';
+import { textbookPages as organology } from '@/data/textbook-refs/organology';
 import { textbookPages as oxygenCarriers } from '@/data/textbook-refs/oxygen-carriers';
 import { textbookPages as renalPhysiology } from '@/data/textbook-refs/renal-physiology';
 import { textbookPages as reproductivePhysiology } from '@/data/textbook-refs/reproductive-physiology';
@@ -52,6 +53,7 @@ const byTopic: Record<string, TextbookPages> = {
   "immunology": immunology,
   "neuroanatomy": neuroanatomy,
   "nucleic-acids": nucleicAcids,
+  organology,
   "oxygen-carriers": oxygenCarriers,
   "renal-physiology": renalPhysiology,
   "reproductive-physiology": reproductivePhysiology,

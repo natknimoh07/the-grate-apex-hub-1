@@ -28,6 +28,7 @@ import { teaching as immunology } from '@/data/teaching/immunology';
 import { teaching as inbornErrorsOfMetabolism } from '@/data/teaching/inborn-errors-of-metabolism';
 import { teaching as neuroanatomy } from '@/data/teaching/neuroanatomy';
 import { teaching as nucleicAcids } from '@/data/teaching/nucleic-acids';
+import { teaching as organology } from '@/data/teaching/organology';
 import { teaching as oxygenCarriers } from '@/data/teaching/oxygen-carriers';
 import { teaching as renalPhysiology } from '@/data/teaching/renal-physiology';
 import { teaching as reproductivePhysiology } from '@/data/teaching/reproductive-physiology';
@@ -61,6 +62,7 @@ const byTopic: Record<string, Teaching> = {
   'inborn-errors-of-metabolism': inbornErrorsOfMetabolism,
   'neuroanatomy': neuroanatomy,
   'nucleic-acids': nucleicAcids,
+  organology,
   'oxygen-carriers': oxygenCarriers,
   'renal-physiology': renalPhysiology,
   'reproductive-physiology': reproductivePhysiology,

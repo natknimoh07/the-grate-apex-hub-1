@@ -1395,6 +1395,21 @@ export const sourceFiles: SourceFile[] = [
   },
   // ── HB2 Gross Anatomy (Anatomy ZIP → Gross/) ──
   {
+    // Added by the owner on 2026-11-12 to the extracted Anatomy folder. Slides
+    // 1–74 are Organology (topic "organology"); slides 75–263 are a newer copy of
+    // the cardiovascular lecture (anat-cvs-gross-1), which keeps its own topic.
+    id: "anat-organology-cvs-gross-1-2026",
+    path: "content/Anatomy-20261003T001157Z-1-002/Anatomy/Gross/Cardiovascular/Cardiovascular System Gross 1, (2).pptx",
+    format: "pptx",
+    topicId: "organology",
+    subjectFolder: "ANATOMY",
+    role: "lecture",
+    title: "Cardiovascular System Gross 1 (2): Organology (slides 1–74) and the cardiovascular system",
+    slideCount: 263,
+    textStatus: "partial",
+    note: "Slides 75–263 are a newer copy of anat-cvs-gross-1. Most Organology slides are pictures without labels; the organ on each was named from the picture (lessons mark the uncertain ones). Slide 2 (a Bible verse) and slide 11 (a repeat of slide 8) are not used as pictures.",
+  },
+  {
     id: "anat-cvs-gross-1",
     path: "content/Anatomy-20261003T001157Z-1-002.zip",
     member: "Anatomy/Gross/Cardiovascular/Cardiovascular System Gross 1.pptx",
@@ -1910,6 +1925,25 @@ export const contentTopics: ContentTopic[] = [
       { title: "Visual System", points: [], sourceRefs: [{ sourceId: "senses-visual-system" }] },
       { title: "Auditory and Vestibular Systems", points: [], sourceRefs: [{ sourceId: "senses-auditory-and-vestibular-systems" }] },
       { title: "Chemical Senses", points: [], sourceRefs: [{ sourceId: "senses-chemical-senses" }] },
+    ],
+  },
+  {
+    id: "organology",
+    title: "Organology",
+    subject: "anatomy",
+    courseId: "anatomy-lectures",
+    folderSubject: "ANATOMY",
+    zip: "Anatomy",
+    sourceFileIds: ["anat-organology-cvs-gross-1-2026"],
+    status: "published",
+    emoji: "🔬",
+    note: "HB2 Gross Anatomy, first topic (owner, 2026-11-12). Slides 1–74 of “Cardiovascular System Gross 1, (2)”, kept apart from the Cardiovascular System topic.",
+    outline: [
+      { title: "Compact Organs", points: [], sourceRefs: [{ sourceId: "anat-organology-cvs-gross-1-2026" }] },
+      { title: "Tubular Organs and Their Coats", points: [], sourceRefs: [{ sourceId: "anat-organology-cvs-gross-1-2026" }] },
+      { title: "Counting the Coats, System by System", points: [], sourceRefs: [{ sourceId: "anat-organology-cvs-gross-1-2026" }] },
+      { title: "Name the Organ, Count the Coats (1)", points: [], sourceRefs: [{ sourceId: "anat-organology-cvs-gross-1-2026" }] },
+      { title: "Name the Organ, Count the Coats (2)", points: [], sourceRefs: [{ sourceId: "anat-organology-cvs-gross-1-2026" }] },
     ],
   },
   {

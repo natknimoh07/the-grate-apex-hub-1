@@ -109,7 +109,10 @@ export function lessonReferences(lesson: Lesson): ReferenceGroup[] {
     });
   }
 
-  const pictures = lesson.chunks.flatMap((chunk) => illustrationsFor(lesson.id, chunk.title));
+  const allPictures = lesson.chunks.flatMap((chunk) => illustrationsFor(lesson.id, chunk.title));
+  // Lecture-slide pictures (data/slide-pictures.ts) come from the lecture, not OpenStax.
+  const pictures = allPictures.filter((item) => !item.slide);
+  const slidePictures = allPictures.length - pictures.length;
   const diagrams = lesson.chunks.some((chunk) => chunkFigures(chunk).length > 0);
   const sims = (lesson.interactive ?? []).flatMap((step) => (step.type === 'simulate' ? [step.sim as string] : []));
   const media: ReferenceItem[] = [];
@@ -117,6 +120,7 @@ export function lessonReferences(lesson: Lesson): ReferenceGroup[] {
     media.push({ text: OPENSTAX, detail: `${pictures.length} figure${pictures.length === 1 ? '' : 's'} in this lesson, resized; captions and notes are our own words.`, url: OPENSTAX_URL });
   }
   if (diagrams) media.push({ text: 'Lecture diagrams are cropped from the lecture slides listed above, for study within the course.' });
+  if (slidePictures) media.push({ text: `${slidePictures} picture${slidePictures === 1 ? ' is' : 's are'} taken from the lecture slides listed above, resized, for study within the course.` });
   if (sims.some((sim) => SIMULATIONS_3D.has(sim))) media.push({ text: Z_ANATOMY, url: Z_ANATOMY_URL });
   if (sims.some((sim) => SIMULATIONS_HUBMAP.has(sim))) media.push({ text: HUBMAP, url: HUBMAP_URL });
   if (media.length) groups.push({ heading: 'Pictures and models', items: media });

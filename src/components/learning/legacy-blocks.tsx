@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { IllustrationFigure } from '@/components/learning/illustration';
+import { IllustrationFigure, SIDE_BY_SIDE, SLIDE_SIDE_WIDTH } from '@/components/learning/illustration';
+import { useLayoutWidth } from '@/components/side-panel-store';
 import { FigureExplorer } from '@/components/learning/figure-view';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { Linking, ScrollView, StyleSheet, type TextStyle, View, type ViewStyle } from 'react-native';
@@ -190,7 +191,45 @@ function tone(colors: ThemeColors, name?: string) {
   return colors.primaryText;
 }
 
+type IllusBlock = Extract<Block, { k: 'illus' }>;
+const toIllustration = (b: IllusBlock) => ({ src: b.src, width: b.w, height: b.h, caption: b.cap, credit: b.credit, sourceUrl: b.url, label: b.num, note: b.note, licenseUrl: b.lic, realSpecimen: b.real });
+
+/**
+ * A section's blocks. A lecture-slide picture page (an `illus` block with `side`,
+ * owner 2026-11-12: "one image gets one page and is shown on the right") puts the
+ * picture beside all of the section's text on wide screens, and first on phones.
+ */
 export function LegacyBlocks({ blocks }: { blocks: readonly Block[] }) {
+  const width = useLayoutWidth();
+  const beside = blocks.filter((b): b is IllusBlock => b.k === 'illus' && b.side === 1);
+  if (!beside.length) return <BlockList blocks={blocks} />;
+  const rest = blocks.filter((b) => !(b.k === 'illus' && b.side === 1));
+  const pictures = beside.map((b, i) => <IllustrationFigure key={`side-${i}`} item={toIllustration(b)} side={width >= SIDE_BY_SIDE} />);
+  if (width >= SIDE_BY_SIDE) {
+    return (
+      <View style={sideLayout.row}>
+        <View style={sideLayout.text}>
+          <BlockList blocks={rest} />
+        </View>
+        <View style={sideLayout.side}>{pictures}</View>
+      </View>
+    );
+  }
+  return (
+    <>
+      {pictures}
+      <BlockList blocks={rest} />
+    </>
+  );
+}
+
+const sideLayout = StyleSheet.create({
+  row: { flexDirection: 'row', alignItems: 'flex-start', gap: 20 },
+  text: { flex: 1, minWidth: 0 },
+  side: { width: SLIDE_SIDE_WIDTH, gap: 12 },
+});
+
+function BlockList({ blocks }: { blocks: readonly Block[] }) {
   const styles = useThemedStyles(createStyles);
   // Originate: lesson text is set in Source Serif, like a textbook (docs/design-system.md).
   const serif = useExperience() === 'originate' ? styles.serif : null;
