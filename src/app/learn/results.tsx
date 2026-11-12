@@ -21,6 +21,7 @@ import { ProgressRing } from '@/components/ui/progress-ring';
 import { Columns, Screen, SectionHeader } from '@/components/ui/screen';
 import { ErrorScreen, InlineNotice, LoadingState } from '@/components/ui/state-views';
 import { takePendingXpReward, type XpReward, XpToast } from '@/components/xp-toast';
+import { Confetti } from '@/components/confetti';
 import { Type, type ThemeColors } from '@/constants/theme';
 import {
   conceptKey,
@@ -136,6 +137,11 @@ function ResultsView({ attempt }: { attempt: QuizAttempt }) {
   const [xpReward, setXpReward] = useState<XpReward | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [stumpQuestion, setStumpQuestion] = useState<ChoiceQuestion | null>(null);
+  // Confetti right after finishing (owner, 2026-11-10: "so the user feels good after a quiz"):
+  // only when the attempt was handed in within the last minute, so opening an old
+  // result from history stays calm. A fuller shower for a strong score.
+  const [confetti, setConfetti] = useState(() => !attempt.id.startsWith('legacy:') && Date.now() - attempt.completedAt < 60_000);
+  const onConfettiDone = useCallback(() => setConfetti(false), []);
 
   // Show the reward once, right after submitting.
   useFocusEffect(
@@ -537,6 +543,7 @@ function ResultsView({ attempt }: { attempt: QuizAttempt }) {
         </Text>
         <Columns main={main} side={side} sideWidth={360} />
       </Screen>
+      {confetti ? <Confetti count={attempt.percentage >= 80 ? 80 : 48} onDone={onConfettiDone} /> : null}
       <XpToast reward={xpReward} onHide={() => setXpReward(null)} />
       <StumpComposer question={stumpQuestion} onClose={() => setStumpQuestion(null)} />
     </View>

@@ -141,7 +141,10 @@ export function Eyebrow({ children, style }: { children: string; style?: StylePr
   );
 }
 
-// Two columns on desktop (main + side), stacked on narrow screens.
+// Two columns on desktop (main + side), stacked on narrow screens. The same views at every
+// width, only their styles change: opening the Ask AI side panel narrows the page, and a
+// different tree there rebuilt everything inside, so "Explain it more simply" closed the
+// panel it had just opened and a half-typed answer was lost (owner, 2026-11-12).
 export function Columns({
   main,
   side,
@@ -155,19 +158,12 @@ export function Columns({
   gap?: number;
   sideFirstOnMobile?: boolean;
 }) {
-  const width = useLayoutWidth();
-  if (!isDesktopWidth(width)) {
-    return (
-      <View style={{ gap }}>
-        {sideFirstOnMobile ? side : main}
-        {sideFirstOnMobile ? main : side}
-      </View>
-    );
-  }
+  const desktop = isDesktopWidth(useLayoutWidth());
+  const mainColumn = <View key="main" style={desktop ? { flex: 1, minWidth: 0 } : undefined}>{main}</View>;
+  const sideColumn = <View key="side" style={desktop ? { width: sideWidth } : undefined}>{side}</View>;
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap }}>
-      <View style={{ flex: 1, minWidth: 0 }}>{main}</View>
-      <View style={{ width: sideWidth }}>{side}</View>
+    <View style={desktop ? { flexDirection: 'row', alignItems: 'flex-start', gap } : { gap }}>
+      {!desktop && sideFirstOnMobile ? [sideColumn, mainColumn] : [mainColumn, sideColumn]}
     </View>
   );
 }
