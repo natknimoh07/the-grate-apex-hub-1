@@ -38,12 +38,16 @@ export function ChatShell({ friendId, groupId, name }: { friendId?: string | nul
   const { width, height: windowHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const viewportArea = useVisibleViewport();
-  // Settings → page zoom scales the whole page (CSS zoom), but the window's size is
-  // measured unzoomed: divide by the zoom, or a zoomed-in page is taller than the
-  // screen and the message bar falls off the bottom.
+  // Settings → page zoom scales the whole page (CSS zoom). The window size from
+  // useWindowDimensions is already corrected for it (lib/web-zoom.ts, for the whole app),
+  // so it is used as it is: dividing it again made the chat taller than the screen at
+  // 80–90% zoom, and the message box fell below the bottom edge (owner, 2026-11-12:
+  // "the area where I type … still cannot be seen"; tests/chat-zoom.test.mjs). The
+  // browser's visual viewport (the part above a phone keyboard) is not corrected there,
+  // so that one is divided by the zoom here.
   const pageZoom = usePageZoomPreference();
   const zoom = Platform.OS === 'web' ? pageZoom / 100 : 1;
-  const height = windowHeight / zoom;
+  const height = windowHeight;
   const visible = viewportArea ? { height: viewportArea.height / zoom, top: viewportArea.top / zoom } : null;
   const { goBack } = useBackNavigation();
   const wide = width >= 900;
