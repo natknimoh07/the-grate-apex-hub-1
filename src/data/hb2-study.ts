@@ -218,7 +218,8 @@ export function buildLocalPractice(source: readonly Question[], count: number, s
           continue;
         }
       }
-      if (roll < 0.42 && short(answer) && question.prompt.length <= 140) {
+      // A picture question needs its picture, which a matching round cannot show (report 2026-11-13).
+      if (roll < 0.42 && !question.image && short(answer) && question.prompt.length <= 140) {
         matchable.push(question);
         continue;
       }
