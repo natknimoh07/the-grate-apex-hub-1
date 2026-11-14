@@ -90,6 +90,8 @@ export function topicMonogram(title: string) {
 // A picture for each topic, from words in its title (first match wins); a topic
 // with none of them gets its subject's picture.
 const TOPIC_PICTURES: readonly [RegExp, string][] = [
+  // Organology: how organs are built, taught from microscope slides of organ walls.
+  [/organology/i, '🔬'],
   [/cardio|heart/i, '🫀'],
   [/respirat|lung|thora/i, '🫁'],
   [/gastro|digest|abdom|\bgi\b/i, '🍽️'],
