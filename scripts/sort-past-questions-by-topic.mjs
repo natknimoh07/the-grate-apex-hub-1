@@ -59,6 +59,10 @@ const TOPICS = {
     'cardiovascular-system-gross': ['heart', 'cardiac', 'pericardi', 'coronary', 'aort', 'ventric', 'atri(um|al|a)\\b', 'mitral|tricuspid', 'vena cava', 'artery|arteries', 'vein', 'circulat'],
     'respiratory-system-gross': ['lung', 'pleura', 'diaphragm', 'thoracic (cage|wall|cavity)', 'mediastin', 'intercostal', 'nasal cavity', 'pharynx'],
     'gastrointestinal-system-gross': ['stomach', 'oesophag|esophag', 'duoden', 'jejun', 'ileum', 'caecum|cecum', 'appendix', 'colon', 'rectum', 'anal canal', 'liver', 'gall ?bladder', 'pancrea', 'peritone', 'mesentery', 'omentum', 'intestin', 'barium', 'abdominal', 'inguinal', 'hernia'],
+    // Organology (owner, 2026-11-14): only words that name the lecture's own ideas, so organ-
+    // specific microanatomy stays in its system's topic. Most of its past questions are hand-picked
+    // in OVERRIDES below.
+    organology: ['organology', 'hollow (organ|viscus|viscera)', 'compact organ', 'solid organ', 'parenchymatous', 'tubular organ', 'number of (coats|layers)', 'serosa or (an )?adventitia', 'stroma and parenchyma|parenchyma and stroma'],
   },
 };
 
@@ -113,6 +117,15 @@ const OVERRIDES = {
     '02b2ec': 'general-anatomy', c4fb3b: 'general-anatomy', '9e56f6': 'general-anatomy', '602c7b': 'general-anatomy', d6b5b6: 'general-anatomy', def0e8: 'general-anatomy', '7a23d3': 'general-anatomy', '99fe1e': 'general-anatomy', '817db4': 'general-anatomy', '6f7c28': 'general-anatomy', '9799b3': 'general-anatomy', f6085d: 'general-anatomy',
     '20b7b6': 'histology',
     '6126ff': 'gastrointestinal-system-gross', '0d8d66': 'gastrointestinal-system-gross',
+    // Organology (owner, 2026-11-14), each checked against the Organology lessons:
+    // "two specimens from unknown locations": name the bladder and ureter from their coats and star-shaped lumen (lesson 4)
+    '1ae5d5': 'organology', cc687e: 'organology', '782203': 'organology', '9a95be': 'organology', '595670': 'organology',
+    // "a muscularis mucosae and the myenteric plexus are present in all except": which organs have the gut's four coats (lesson 3)
+    '22be58': 'organology', f6dab7: 'organology', '97b01c': 'organology', eaf553: 'organology', b936ac: 'organology',
+    // "Ureter: …": star-shaped lumen, transitional lining, no submucosa or muscularis mucosae (lessons 3–4)
+    ec0ea4: 'organology', '6f9aa4': 'organology', cb811e: 'organology', '402010': 'organology', '014061': 'organology',
+    // "Urinary bladder: …": a stretchy reservoir with a thick muscle wall and no star-shaped lumen (lesson 4)
+    '8943ff': 'organology', '6a7608': 'organology', f5fd53: 'organology', a1bdde: 'organology', '583a68': 'organology',
   },
 };
 
