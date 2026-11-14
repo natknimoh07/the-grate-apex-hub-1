@@ -7,6 +7,7 @@ import { getQuestion, getTopicQuestions, publishedTopics } from '@/data/curricul
 import type { ExamSettings } from '@/data/exam-practice-rules';
 import { weakestQuestionIds, localDay } from '@/data/learning/weakest';
 import { ensureDrillQuestions } from '@/data/anatomy-drills';
+import { hb1MicroSpotterQuestions } from '@/data/hb1-micro-spotter';
 import type { MemoryModel } from '@/data/learning/memory';
 import type { SubjectId } from '@/data/lesson-types';
 import { pastCourseForSubject } from '@/data/past-question-topics';
@@ -17,6 +18,8 @@ export * from '@/data/exam-practice-rules';
 
 // Anatomy drill questions are found by id like any other (quiz, results, weakest 20).
 ensureDrillQuestions();
+// So are the HB1 atlas micrographs asked in a spotter.
+hb1MicroSpotterQuestions();
 
 export const EXAM_SUBJECTS: readonly SubjectId[] = ['anatomy', 'physiology', 'biochemistry'];
 /** The HB2 past-paper banks (one per subject). */
@@ -48,8 +51,10 @@ export function spotterPool(subject: SubjectId | 'all'): Question[] {
     .flatMap((topic) => getTopicQuestions(topic.id))
     .filter((question) => question.figure?.spot && question.type === 'choice');
   const pictures = subjects.flatMap((item) => allPastQuestions(pastCourseForSubject(item))).filter((question) => Boolean(question.image));
+  // The HB1 micrograph atlas (anatomy): every identified micrograph is a station too.
+  const micrographs = subjects.includes('anatomy') ? hb1MicroSpotterQuestions() : [];
   const seen = new Set<string>();
-  return [...diagrams, ...pictures].filter((question) => (seen.has(question.id) ? false : (seen.add(question.id), true)));
+  return [...diagrams, ...pictures, ...micrographs].filter((question) => (seen.has(question.id) ? false : (seen.add(question.id), true)));
 }
 
 /** "Your weakest 20": the most-missed questions the app can still show. */

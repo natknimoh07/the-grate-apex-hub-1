@@ -309,6 +309,7 @@ function blocksWithFractions(blocks: readonly Block[], slashes: boolean): Block[
       case 'table': return { ...block, head: block.head.map(fix), rows: block.rows.map((row) => ({ c: row.c.map(fix) })) };
       case 'term': return { ...block, def: fix(block.def) };
       case 'box': return { ...block, blocks: blocksWithFractions(block.blocks, slashes) };
+      case 'reveal': return { ...block, blocks: blocksWithFractions(block.blocks, slashes) };
       case 'step': return block.blocks ? { ...block, blocks: blocksWithFractions(block.blocks, slashes) } : block;
       case 'cards': return { ...block, items: block.items.map((item) => ({ ...item, blocks: blocksWithFractions(item.blocks, slashes) })) };
       default: return block;

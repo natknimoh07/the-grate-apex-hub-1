@@ -221,6 +221,14 @@ export const COURSE_ABBREVIATIONS: Record<string, Meanings> = {
   },
   anatomy: {
     AP: 'action potential',
+    // Micrograph atlas (2026-11-13)
+    EM: 'electron microscopy',
+    LS: 'longitudinal section',
+    TS: 'transverse section',
+    GC: 'granulosa cells',
+    ZP: 'zona pellucida',
+    UG: 'urogenital',
+    UGD: 'urogenital diaphragm',
     PPE: 'personal protective equipment',
     GIT: 'gastrointestinal tract',
     SPECT: 'single-photon emission computed tomography',
@@ -411,6 +419,22 @@ export const LESSON_ABBREVIATIONS: Record<string, Meanings> = {
   'anatomy-01': { AP: 'anteroposterior, the X-ray beam passing from front to back', PA: 'posteroanterior, the X-ray beam passing from back to front' },
   // Connective Tissue: CT is the tissue, not the scanner.
   'anatomy-05': { CT: 'connective tissue' },
+  'anatomy-03a': { CT: 'connective tissue' },
+  'anatomy-04a': { CT: 'connective tissue' },
+  'anatomy-04b': { CT: 'connective tissue' },
+  'anatomy-04c': { CT: 'connective tissue' },
+  'anatomy-05a': { CT: 'connective tissue' },
+  'anatomy-05b': { CT: 'connective tissue' },
+  'anatomy-06a': { CT: 'connective tissue' },
+  'anatomy-07a': { CT: 'connective tissue' },
+  'anatomy-07b': { CT: 'connective tissue' },
+  'anatomy-07c': { CT: 'connective tissue' },
+  'anatomy-08a': { CT: 'connective tissue' },
+  'anatomy-08b': { CT: 'connective tissue' },
+  'anatomy-08c': { CT: 'connective tissue' },
+  'anatomy-09a': { CT: 'connective tissue' },
+  'anatomy-09b': { CT: 'connective tissue' },
+  'anatomy-09c': { CT: 'connective tissue' },
   // Concord: the two rules, singular subject with singular verb and plural with plural.
   'commskills-04': { SS: 'singular subject', SV: 'singular verb', PS: 'plural subject', PV: 'plural verb', SSS: 'singular antecedent, singular pronoun, singular verb', PPP: 'plural antecedent, plural pronoun, plural verb' },
   // The Sentence: the basic clause patterns.
@@ -582,6 +606,7 @@ function blocksWithAbbreviations(blocks: readonly Block[], walk: Walk): Block[] 
         return { ...block, def: fix(block.def) };
       }
       case 'box': return { ...block, blocks: blocksWithAbbreviations(block.blocks, walk) };
+      case 'reveal': return { ...block, blocks: blocksWithAbbreviations(block.blocks, walk) };
       case 'step': return block.blocks ? { ...block, blocks: blocksWithAbbreviations(block.blocks, walk) } : block;
       case 'cards': return { ...block, items: block.items.map((item) => ({ ...item, blocks: blocksWithAbbreviations(item.blocks, walk) })) };
       case 'illus': return { ...block, cap: fix(block.cap), ...(block.note ? { note: fix(block.note) } : {}) };

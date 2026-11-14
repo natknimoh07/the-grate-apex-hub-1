@@ -43,7 +43,7 @@ const texts = (blocks, out = []) => {
     else if (b.k === 'ul') out.push(...b.items);
     else if (b.k === 'table') for (const r of b.rows) out.push(...r.c);
     else if (b.k === 'term') out.push(b.def);
-    else if (b.k === 'box' || b.k === 'step') texts(b.blocks, out);
+    else if (b.k === 'box' || b.k === 'step' || b.k === 'reveal') texts(b.blocks, out);
     else if (b.k === 'cards') for (const c of b.items) texts(c.blocks, out);
     else if (b.k === 'illus') { out.push(b.cap); if (b.note) out.push(b.note); }
   }

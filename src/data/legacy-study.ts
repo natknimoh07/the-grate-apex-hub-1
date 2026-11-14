@@ -78,6 +78,8 @@ export type Block =
   | { k: 'table'; head: Rich[]; rows: { c: Rich[] }[] }
   | { k: 'term'; name: Rich; def: Rich }
   | { k: 'box'; title: Rich; tone?: string; blocks: Block[] }
+  // Hidden until tapped: "guess first, then tap to reveal" (micrograph atlas pages).
+  | { k: 'reveal'; title: Rich; blocks: Block[] }
   | { k: 'step'; n: string; title: Rich; tone?: string; tags?: string[]; blocks?: Block[] }
   | { k: 'cards'; items: { title: Rich; blocks: Block[] }[] }
   | { k: 'video'; url: string; title: Rich; desc: Rich; tag?: string }

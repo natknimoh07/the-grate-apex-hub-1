@@ -229,6 +229,22 @@ const sideLayout = StyleSheet.create({
   side: { width: SLIDE_SIDE_WIDTH, gap: 12 },
 });
 
+// "Guess first, then tap to reveal": the answer stays hidden until tapped (micrograph atlas pages).
+function RevealBlock({ title, blocks }: { title: string; blocks: readonly Block[] }) {
+  const styles = useThemedStyles(createStyles);
+  const colors = useTheme();
+  const [open, setOpen] = useState(false);
+  return (
+    <View style={[styles.box, { borderLeftColor: colors.accentText }]}>
+      <Interactive onPress={() => setOpen((value) => !value)} accessibilityRole="button" accessibilityState={{ expanded: open }} style={styles.revealHead}>
+        <Rich x={title} style={[styles.boxTitle, styles.revealTitle, { color: colors.accentText }]} />
+        <Text style={[styles.revealHint, { color: colors.accentText }]}>{open ? 'Hide' : 'Tap to reveal'}</Text>
+      </Interactive>
+      {open ? <LegacyBlocks blocks={blocks} /> : null}
+    </View>
+  );
+}
+
 function BlockList({ blocks }: { blocks: readonly Block[] }) {
   const styles = useThemedStyles(createStyles);
   // Originate: lesson text is set in Source Serif, like a textbook (docs/design-system.md).
@@ -271,6 +287,8 @@ function BlockList({ blocks }: { blocks: readonly Block[] }) {
               </View>
             );
           }
+          case 'reveal':
+            return <RevealBlock key={i} title={b.title} blocks={b.blocks} />;
           case 'step':
             return (
               <View key={i} style={styles.step}>
@@ -357,6 +375,9 @@ function createStyles(colors: ThemeColors) {
     termDef: { fontSize: 14.5, lineHeight: 22, color: colors.text },
     box: { backgroundColor: colors.surfaceMuted, borderColor: colors.border, borderWidth: 1, borderLeftWidth: 4, borderRadius: 14, padding: 14, marginBottom: 14 },
     boxTitle: { fontSize: 12.5, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 8 },
+    revealHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+    revealTitle: { flex: 1, marginBottom: 0 },
+    revealHint: { fontSize: 12.5, fontWeight: '700' },
     step: { flexDirection: 'row', backgroundColor: colors.surfaceMuted, borderColor: colors.border, borderWidth: 1, borderRadius: 14, padding: 14, marginBottom: 12, gap: 12 },
     stepNum: { width: 30, height: 30, borderRadius: 15, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
     stepNumText: { fontSize: 14, fontWeight: '800', color: colors.onPrimary },

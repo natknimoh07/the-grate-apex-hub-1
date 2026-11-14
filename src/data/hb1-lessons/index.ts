@@ -71,6 +71,23 @@ import { anatomyNervousTissue } from '@/data/hb1-lessons/anatomy-nervous-tissue'
 import { anatomyFemaleReproductive } from '@/data/hb1-lessons/anatomy-female-reproductive';
 import { anatomyMaleReproductive } from '@/data/hb1-lessons/anatomy-male-reproductive';
 import { anatomyEmbryology } from '@/data/hb1-lessons/anatomy-embryology';
+// Micrograph atlas (owner 2026-11-13): one page per slide or practical picture.
+import { anatomyAtlasCartilageBone } from '@/data/hb1-lessons/anatomy-atlas-cartilage-bone';
+import { anatomyAtlasCervixBreast } from '@/data/hb1-lessons/anatomy-atlas-cervix-breast';
+import { anatomyAtlasConnective } from '@/data/hb1-lessons/anatomy-atlas-connective';
+import { anatomyAtlasEpitheliumLayered } from '@/data/hb1-lessons/anatomy-atlas-epithelium-layered';
+import { anatomyAtlasEpitheliumSimple } from '@/data/hb1-lessons/anatomy-atlas-epithelium-simple';
+import { anatomyAtlasGlands } from '@/data/hb1-lessons/anatomy-atlas-glands';
+import { anatomyAtlasGut } from '@/data/hb1-lessons/anatomy-atlas-gut';
+import { anatomyAtlasLookalikes } from '@/data/hb1-lessons/anatomy-atlas-lookalikes';
+import { anatomyAtlasMaleDucts } from '@/data/hb1-lessons/anatomy-atlas-male-ducts';
+import { anatomyAtlasMuscle } from '@/data/hb1-lessons/anatomy-atlas-muscle';
+import { anatomyAtlasNervous } from '@/data/hb1-lessons/anatomy-atlas-nervous';
+import { anatomyAtlasOrgans } from '@/data/hb1-lessons/anatomy-atlas-organs';
+import { anatomyAtlasOvary } from '@/data/hb1-lessons/anatomy-atlas-ovary';
+import { anatomyAtlasTestis } from '@/data/hb1-lessons/anatomy-atlas-testis';
+import { anatomyAtlasUterus } from '@/data/hb1-lessons/anatomy-atlas-uterus';
+import { anatomyReadingMicrographs } from '@/data/hb1-lessons/anatomy-reading-micrographs';
 import { behaviouralOverview } from '@/data/hb1-lessons/behavioural-overview';
 import { behaviouralParadigms } from '@/data/hb1-lessons/behavioural-paradigms';
 import { behaviouralBiological } from '@/data/hb1-lessons/behavioural-biological';
@@ -190,6 +207,7 @@ export const HB1_LOCAL_LESSONS: Hb1Lesson[] = [
   // Biochem practicals (owner, 2026-11-05): their own section on the course path.
   biochemistryPracLabSkills, biochemistryPracUnits, biochemistryPracBloodTubes, biochemistryPracAmylase, biochemistryPracCarbohydrates, biochemistryPracGlucose, biochemistryPracUrinalysis,
   anatomyIntroduction, anatomySkeleton, anatomyJoints, anatomyEpithelium, anatomyConnectiveTissue, anatomyMuscleTissue, anatomyNervousTissue, anatomyFemaleReproductive, anatomyMaleReproductive, anatomyEmbryology,
+  anatomyAtlasCartilageBone, anatomyAtlasCervixBreast, anatomyAtlasConnective, anatomyAtlasEpitheliumLayered, anatomyAtlasEpitheliumSimple, anatomyAtlasGlands, anatomyAtlasGut, anatomyAtlasLookalikes, anatomyAtlasMaleDucts, anatomyAtlasMuscle, anatomyAtlasNervous, anatomyAtlasOrgans, anatomyAtlasOvary, anatomyAtlasTestis, anatomyAtlasUterus, anatomyReadingMicrographs,
   entomologyIntroduction, entomologyMosquitoes, entomologyAnophelineCulicine, entomologyLiceBedbugs, entomologySandfliesScabies, entomologyTsetseMidges, entomologyTicks, entomologyCockroaches, entomologyMyiasis, entomologyCollecting,
   entomologyVectorControl, entomologyFleas, entomologyBlackflies, entomologyHarm,
   cellstructMicroscopy, cellstructTechniques, cellstructCell, cellstructOrganelles, cellstructMembrane,
