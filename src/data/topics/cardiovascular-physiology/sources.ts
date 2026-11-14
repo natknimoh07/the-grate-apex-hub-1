@@ -43,6 +43,11 @@ export const c5 = deck(C5, VISUAL5);
 
 // The reference textbook (clarifications only).
 export const GUYTON: SourceReference[] = [{ sourceId: 'guyton-hall-14e' }];
+export const COSTANZO: SourceReference[] = [{ sourceId: 'costanzo-physiology' }];
+// Syllabus gap-fill (owner, 2026-11-13): sections the official HB2 physiology
+// syllabus (5.3–5.14) lists but the slides do not teach are written from the
+// reference textbooks and marked origin: 'textbook'.
+export const BOOKS: SourceReference[] = [...GUYTON, ...COSTANZO];
 
 const L = (n: number) => `${TOPIC_ID}-${n}`;
 export const LESSON_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(L);
@@ -129,6 +134,40 @@ export const concepts = {
   'ecg-rate': { lessonId: L(9), name: 'ECG paper and heart rate', category: 'core', relevance: 'core', sourceRefs: c5([15, 16, 17]) },
   'cardiac-rhythms': { lessonId: L(9), name: 'Sinus rhythm and sinus arrhythmia', category: 'core', relevance: 'core', sourceRefs: c5([18, 19]) },
   'heart-block': { lessonId: L(9), name: 'Heart block', category: 'clinical', relevance: 'core', sourceRefs: c5([20, 21, 22, 23, 24, 25, 26]) },
+
+  // ─── Gap-fill, 2026-11-13: lecture details and syllabus items the lessons lacked ───
+  // Lesson 1
+  'cardiac-action-potentials': { lessonId: L(1), name: 'Cardiac action potentials and the beat', category: 'core', relevance: 'supporting', sourceRefs: BOOKS },
+  // Lesson 2
+  'pulse-abnormalities': { lessonId: L(2), name: 'The pulse in different situations', category: 'clinical', relevance: 'supporting', sourceRefs: BOOKS },
+  // Lesson 3
+  'co-dilution': { lessonId: L(3), name: 'Indicator and thermal dilution', category: 'core', relevance: 'supporting', sourceRefs: BOOKS },
+  'stroke-work-laplace': { lessonId: L(3), name: 'Stroke work, efficiency and Laplace in the heart', category: 'core', relevance: 'supporting', sourceRefs: BOOKS },
+  // Lesson 4
+  'windkessel-pressures': { lessonId: L(4), name: 'What sets systolic, diastolic and pulse pressure', category: 'core', relevance: 'supporting', sourceRefs: [...c1([82, 91]), ...BOOKS] },
+  'critical-closing-aneurysm': { lessonId: L(4), name: 'Critical closing pressure and aneurysms', category: 'core', relevance: 'supporting', sourceRefs: [...c2([11, 12]), ...BOOKS] },
+  'organ-flow-methods': { lessonId: L(4), name: 'Measuring organ blood flow', category: 'core', relevance: 'supporting', sourceRefs: [...c1([57, 67]), ...BOOKS] },
+  // Lesson 5
+  'capillary-transport-routes': { lessonId: L(5), name: 'Routes across the capillary wall', category: 'core', relevance: 'supporting', sourceRefs: [...c1([93]), ...BOOKS] },
+  'venous-pressure-posture': { lessonId: L(5), name: 'Venous pressure, posture and CVP', category: 'core', relevance: 'supporting', sourceRefs: [...c1([109, 110]), ...BOOKS] },
+  // Lesson 6
+  'hyperaemia': { lessonId: L(6), name: 'Reactive and active hyperaemia', category: 'core', relevance: 'core', sourceRefs: [...c2([13, 14]), ...BOOKS] },
+  'circulating-hormones': { lessonId: L(6), name: 'Circulating vasoactive hormones', category: 'core', relevance: 'supporting', sourceRefs: [...c2([15, 16]), ...BOOKS] },
+  'other-cv-reflexes': { lessonId: L(6), name: 'Chemoreceptor and cardiopulmonary reflexes', category: 'core', relevance: 'supporting', sourceRefs: [...c2([33, 35]), ...BOOKS] },
+  'bp-short-long-term': { lessonId: L(6), name: 'Short-term and long-term control of blood pressure', category: 'core', relevance: 'supporting', sourceRefs: [...c3([4]), ...BOOKS] },
+  // Lesson 7
+  'shock-vicious-cycle': { lessonId: L(7), name: 'The vicious cycle of irreversible shock', category: 'visual-process', relevance: 'core', sourceRefs: c3([27]) },
+  'haemorrhage-hb': { lessonId: L(7), name: 'Hb and haematocrit after a haemorrhage', category: 'clinical', relevance: 'core', sourceRefs: [...c3([24]), ...BOOKS] },
+  // Lesson 8
+  'brain-support-fuel': { lessonId: L(8), name: 'Supporting the brain, CSF taps and brain fuel', category: 'core', relevance: 'core', sourceRefs: c4([15, 17, 18, 24]) },
+  'coronary-flow-detail': { lessonId: L(8), name: 'Coronary flow through the cardiac cycle', category: 'core', relevance: 'supporting', sourceRefs: [...c4([27, 28]), ...BOOKS] },
+  'fetal-shunts': { lessonId: L(8), name: 'Fetal shunts and changes at birth', category: 'visual-process', relevance: 'core', sourceRefs: [...c4([43, 44, 46]), ...BOOKS] },
+  'renal-muscle-circulation': { lessonId: L(8), name: 'Renal and skeletal muscle circulations', category: 'core', relevance: 'supporting', sourceRefs: BOOKS },
+  'skin-heat-shock': { lessonId: L(8), name: 'Skin blood flow in heat, cold and shock', category: 'core', relevance: 'supporting', sourceRefs: [...c4([39, 41]), ...BOOKS] },
+  // Lesson 9
+  'limb-leads': { lessonId: L(9), name: 'Limb leads and Einthoven’s triangle', category: 'visual-process', relevance: 'core', sourceRefs: c5([3, 4, 5]) },
+  'ap-to-ecg': { lessonId: L(9), name: 'From action potentials to the ECG; ectopic beats', category: 'core', relevance: 'supporting', sourceRefs: BOOKS },
+  'flutter-fibrillation': { lessonId: L(9), name: 'Flutter and fibrillation', category: 'clinical', relevance: 'supporting', sourceRefs: [...c5([28]), ...BOOKS] },
 } satisfies Record<string, ConceptDraft>;
 
 export type ConceptId = keyof typeof concepts;
@@ -192,6 +231,16 @@ export const discrepancies: SourceDiscrepancy[] = [
     ],
     note: 'The two slides give different CSF volumes (perhaps total versus intracranial). The 150 mL figure is quizzed only as the slide-14 total.',
   },
+  {
+    id: 'gravity-head-pressure',
+    concept: 'Arterial pressure at head level in the gravity diagram',
+    status: 'unresolved',
+    statements: [
+      { text: 'Homeostasis, slide 2 (picture): with no compensation, pressure is labelled 60/75 at the head, 120/80 at the heart and 180/ at the feet.', sourceRefs: c3([2]) },
+      { text: 'Guyton: in the upright adult, arterial pressure at head level is roughly 30–40 mmHg lower than at heart level, and at the feet roughly 80–90 mmHg higher (about 0.77 mmHg per cm).', sourceRefs: GUYTON },
+    ],
+    note: '“60/75” reads as systolic lower than diastolic, so it is probably a slip. Only the direction (lower above the heart, higher below) and the 180 mmHg feet figure are quizzed.',
+  },
 ];
 
 // ─── Diagram knowledge ──────────────────────────────────────────────
@@ -221,6 +270,32 @@ export const diagrams: SourceDiagram[] = [
     shows: [
       '↑BP → carotid sinus and aortic arch stretched → more afferent discharge (IX, X) to the nucleus of the tractus solitarius → depressor area excited, vasomotor centre inhibited, vagus stimulated → slower heart, less sympathetic tone → BP falls.',
       '↓BP → less stretch → less discharge → pressor area released → more sympathetic discharge, less vagal tone → tachycardia, positive inotropy, vasoconstriction → BP rises.',
+    ],
+  },
+  {
+    id: 'irreversible-shock-cycle',
+    title: 'The vicious cycle of irreversible shock (Homeostasis slide 27)',
+    sourceRefs: c3([27]),
+    shows: [
+      'Inadequate perfusion → cell hypoxia → energy deficit → anaerobic metabolism, lactic acid accumulation and a fall in pH → metabolic acidosis → cell membrane dysfunction and failure of the sodium pump (K⁺ leaves; Na⁺ and water enter) → lysosomes release digestive enzymes → toxic substances enter the circulation → capillary endothelium damaged → further destruction, dysfunction and cell death.',
+      'Side arm: vasoconstriction → failure of the precapillary sphincters → peripheral pooling of blood.',
+    ],
+  },
+  {
+    id: 'fetal-circulation-labels',
+    title: 'Fetal circulation (Regional Circulation slide 43)',
+    sourceRefs: c4([43]),
+    shows: [
+      'Placenta → umbilical vein (oxygen-rich) → ductus venosus (bypassing the liver) → IVC → right atrium → foramen ovale → left heart → aorta; pulmonary artery → ductus arteriosus → aorta (bypassing the lungs); umbilical arteries return blood to the placenta.',
+    ],
+  },
+  {
+    id: 'limb-leads',
+    title: 'Limb leads (ECG slides 3–4)',
+    sourceRefs: c5([3, 4]),
+    shows: [
+      'Lead I: RA (−) to LA (+); lead II: RA (−) to LL (+); lead III: LA (−) to LL (+); right leg = ground. Einthoven’s triangle.',
+      'Axes: I 0°, II +60°, III +120°, aVR −150°, aVL −30°, aVF +90°.',
     ],
   },
   {

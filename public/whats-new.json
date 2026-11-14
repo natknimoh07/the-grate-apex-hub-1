@@ -2,6 +2,16 @@
   "about": "What is new in each update, shown to learners in the 'Update ready' popup and in Settings → Help → App updates. Newest first. Each update: a unique id, the date, a short title (up to 48 characters) and 1–3 plain points (up to 120 characters each). Add one whenever you push something learners will notice.",
   "updates": [
     {
+      "id": "2026-11-14-cvs-physiology-gap-fill",
+      "date": "2026-11-14",
+      "title": "Cardiovascular Physiology: 23 new sections",
+      "points": [
+        "New sections on action potentials, measuring flow and output, fetal circulation, arrhythmias and more.",
+        "Every lesson gains questions on its new material, with textbook pages and notes.",
+        "If you were partway through a lesson, it starts again from the beginning."
+      ]
+    },
+    {
       "id": "2026-11-14-lesson-quizzes-and-slides",
       "date": "2026-11-14",
       "title": "Lesson quizzes stick to their lesson",

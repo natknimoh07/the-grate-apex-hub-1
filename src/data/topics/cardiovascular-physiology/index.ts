@@ -3,6 +3,7 @@
 //   lessons.ts      — the nine lessons (reading layer)
 //   interactive.ts  — each lesson's interactive layer + reading extras
 //   questions.ts    — the topic question bank (quiz layer)
+import { gapQuestions } from '@/data/topics/cardiovascular-physiology/gap-questions';
 import { sectionQuestions } from '@/data/topics/cardiovascular-physiology/section-questions';
 import { contentTopics } from '@/data/content-catalog';
 import { buildTopic } from '@/data/topics/build';
@@ -17,14 +18,14 @@ export const cardiovascularPhysiology = buildTopic({
   courseId: 'physiology-lectures',
   title: 'Cardiovascular Physiology',
   description:
-    'The cardiac cycle, heart sounds, cardiac output, haemodynamics, capillaries and oedema, regulation of BP, shock, regional circulations and the ECG.',
+    'The cardiac cycle and action potentials, pulse and heart sounds, cardiac output and its measurement, haemodynamics, capillaries and oedema, short- and long-term regulation of BP, shock, regional and fetal circulations, the ECG and arrhythmias.',
   emoji: '🫀',
   source: 'Lectures: Circulation 1–5',
   sourceFileIds: contentTopics.find((topic) => topic.id === TOPIC_ID)?.sourceFileIds ?? [],
-  contentVersion: 3, // 3: simulations added to every lesson
+  contentVersion: 4, // 3: simulations added to every lesson; 4: gap-fill against the slides and HB2 syllabus (2026-11-13)
   concepts,
   lessons,
-  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions],
+  questions: [...questions, ...assertionReasonQuestions, ...sectionQuestions, ...gapQuestions],
   discrepancies,
   diagrams,
 });
