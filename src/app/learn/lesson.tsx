@@ -23,6 +23,8 @@ import { classLessonCompletion, firstClassOffering, firstIncompleteClassBefore, 
 import { lessonToText } from '@/data/ai-study';
 import { hb2LessonById } from '@/data/hb2-study';
 import { LessonStartChoice } from '@/components/learning/lesson-start-choice';
+import { LectureSource } from '@/components/learning/lecture-source';
+import { lessonLectureLabel } from '@/data/lesson-lecture';
 import { LessonVideoCard } from '@/components/learning/lesson-video';
 import { beginLesson, finishLesson, type LessonFinish } from '@/data/learning/actions';
 import { saveLessonSession, useLessonSessions } from '@/data/learning/lesson-sessions';
@@ -177,6 +179,7 @@ function LessonPlayer({
         kicker={topic.title}
         title={lesson.title}
         description={lesson.description}
+        source={lessonLectureLabel(lesson)}
         steps={lesson.interactive?.length ?? 0}
         sections={lesson.chunks.length}
         completed={completed}
@@ -457,6 +460,7 @@ function LessonPlayer({
           {lesson.title}
         </Text>
         <Text style={styles.description}>{lesson.description}</Text>
+        <LectureSource text={lessonLectureLabel(lesson)} style={styles.lectureSource} />
         <View style={styles.headerPills}>
           {completed ? <Pill label="Completed" tone="success" /> : null}
           {lesson.estimatedMinutes ? <Pill label={`~${lesson.estimatedMinutes} min`} /> : null}
@@ -525,6 +529,7 @@ function createStyles(colors: ThemeColors) {
     crumbs: { marginBottom: 12 },
     title: { fontSize: 28, fontWeight: '800', lineHeight: 35, color: colors.text },
     description: { fontSize: 15, lineHeight: 22, color: colors.textSecondary, marginTop: 4 },
+    lectureSource: { marginTop: 8 },
     headerPills: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 },
     objectives: { marginTop: 16, gap: 4 },
     objective: { fontSize: 14, lineHeight: 21, color: colors.text },

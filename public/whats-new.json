@@ -12,6 +12,15 @@
       ]
     },
     {
+      "id": "2026-11-14-lesson-quizzes-and-slides",
+      "date": "2026-11-14",
+      "title": "Lesson quizzes stick to their lesson",
+      "points": [
+        "A lesson's quiz and practice now ask only about that lesson, never about other lessons.",
+        "Every lesson now shows which lecture slides it was built from, before you open it."
+      ]
+    },
+    {
       "id": "2026-11-14-organology-past-questions",
       "date": "2026-11-14",
       "title": "Organology past questions",

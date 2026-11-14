@@ -516,7 +516,7 @@ export function buildTopic<K extends string>(draft: TopicDraft<K>): BuiltTopic {
     const quizCount = quizQuestions.filter((question) => question.lessonId === lesson.id).length;
     if (quizCount < TARGET_QUIZ_QUESTIONS_PER_LESSON) {
       problems.push(
-        `Lesson "${lesson.id}" has ${quizCount} quiz questions (target ${TARGET_QUIZ_QUESTIONS_PER_LESSON}; quizzes top up from earlier lessons)`
+        `Lesson "${lesson.id}" has ${quizCount} quiz questions (target ${TARGET_QUIZ_QUESTIONS_PER_LESSON}; its quiz asks only its own questions)`
       );
     }
   }

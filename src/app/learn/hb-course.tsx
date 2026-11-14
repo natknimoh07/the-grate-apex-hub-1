@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { BackLink } from '@/components/learning/nav-bits';
+import { LectureSource } from '@/components/learning/lecture-source';
 import { SimulationLibrary } from '@/components/learning/simulation-library';
 import { SkeletonAtlas } from '@/components/learning/skeleton-atlas';
 import { TopicGlyph } from '@/components/learning/glyphs';
@@ -285,6 +286,7 @@ export default function LegacyCourseScreen() {
                       <Pill label={isDone ? 'Completed' : started ? 'In progress' : 'Not started'} tone={isDone ? 'success' : started ? 'primary' : 'neutral'} />
                     </View>
                   </View>
+                  <LectureSource text={lesson.lecture} lines={2} />
                   {lesson.summary ? <Text style={styles.summary} numberOfLines={3}>{plainText(lesson.summary)}</Text> : null}
                   <View style={styles.progressRow}>
                     <ProgressBar value={lesson.sections.length ? read / lesson.sections.length : 0} height={5} style={styles.flex} label={`${lesson.title} sections read`} />

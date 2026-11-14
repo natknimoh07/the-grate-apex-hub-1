@@ -285,7 +285,7 @@ function buildPlan(input: {
       title: found.lesson.title,
       subtitle: isCheck
         ? `Already know this? Score ${XP_RULES.masteryCheckPercent}% or more and the lesson is completed for you.`
-        : 'Each 30-question attempt draws a fresh mix: new questions first, then the ones you found hard. Earlier lessons can top it up when needed.',
+        : 'Every question is from this lesson. Each attempt draws a fresh mix of up to 30: new questions first, then the ones you found hard.',
       lessonId,
       topicId: found.topic.id,
       request: { scope: { kind: 'lesson', lessonId }, size: LESSON_QUIZ_SIZE },
@@ -512,9 +512,11 @@ function QuizScreen({
           (!plan.topicId || attempt.topicId === plan.topicId)
       );
       const memoryNow = currentMemoryModel(now);
-      // A sprint asks only about lessons the learner has really studied.
+      // A sprint asks only about lessons the learner has really studied, and so does a topic quiz
+      // (owner, 2026-11-14: "questions from other lessons"; a concept met only in an Apex Challenge
+      // or the Daily 10 no longer brings its unstudied lesson into the topic quiz).
       const request: QuizPlan['request'] =
-        exam?.kind === 'sprint'
+        exam?.kind === 'sprint' || plan.kind === 'topic'
           ? { ...plan.request, filters: { ...plan.request.filters, studiedLessons: studiedLessonIds(progress.completedLessons, memoryNow) } }
           : plan.request;
       const selected = selectQuestions({ ...request, seed: nextSeed, now, recentIds: previous?.questionIds }, memoryNow);

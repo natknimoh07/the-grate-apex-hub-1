@@ -234,6 +234,7 @@ export function hb1LessonMeta(lesson: Hb1Lesson): LegacyLessonMeta {
     ptopics: lesson.pastTopics,
     psets: lesson.pastSets,
     section: lesson.section,
+    lecture: lesson.source,
   };
 }
 
