@@ -13,6 +13,7 @@ export const OTHER_PAST_TOPIC = 'other';
 
 export const PAST_TOPICS: Record<string, readonly PastTopic[]> = {
   'hb2-anatomy': [
+    { id: 'organology', title: 'Organology' },
     { id: 'cardiovascular-system-gross', title: 'Cardiovascular System' },
     { id: 'respiratory-system-gross', title: 'Respiratory System' },
     { id: 'gastrointestinal-system-gross', title: 'Gastrointestinal System' },

@@ -2,6 +2,15 @@
   "about": "What is new in each update, shown to learners in the 'Update ready' popup and in Settings → Help → App updates. Newest first. Each update: a unique id, the date, a short title (up to 48 characters) and 1–3 plain points (up to 120 characters each). Add one whenever you push something learners will notice.",
   "updates": [
     {
+      "id": "2026-11-14-organology-past-questions",
+      "date": "2026-11-14",
+      "title": "Organology past questions",
+      "points": [
+        "Past questions on organ walls and coats now sit under Organology: practise them from the topic's card in Custom quiz.",
+        "They are also under Organology in the past question bank (By topic), and Organology has its own topic picture."
+      ]
+    },
+    {
       "id": "2026-11-13-chat-message-box",
       "date": "2026-11-13",
       "title": "Chats: the message box is back on screen",
