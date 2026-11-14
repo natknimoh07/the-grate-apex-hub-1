@@ -185,3 +185,19 @@ it('picture questions are never put in a matching round (report on match:cardiov
   assert.match(src, /matchable\.push/);
   assert.match(src, /!question\.figure/);
 });
+
+describe('report 2026-11-10: cardiovascular physiology wording and typed answers', () => {
+  const src = readFileSync('src/data/topics/cardiovascular-physiology/section-questions-b.ts', 'utf8');
+  it('orthostatic hypotension questions name the condition', () => {
+    assert.match(src, /noradrenaline on standing in orthostatic hypotension\?/);
+    assert.match(src, /common thread among the causes of orthostatic hypotension\?/);
+  });
+  it('the oedema permeability question asks about substances', () => {
+    assert.match(src, /Which of these substances increases capillary permeability and so causes oedema\?/);
+  });
+  it('"Which is an obstructive cause…" is never a typed question', async () => {
+    const { OPEN_WHICH } = await import('../src/data/true-false.ts');
+    assert.ok(OPEN_WHICH.test('Which is an OBSTRUCTIVE cause of shock?'));
+    assert.ok(!OPEN_WHICH.test('Which enzyme removes water?'));
+  });
+});

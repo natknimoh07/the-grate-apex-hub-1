@@ -1,7 +1,7 @@
 // Pure helpers for the original app's lessons and questions (no React Native,
 // no Firebase), so the tests can check them. Used by data/legacy-study.ts.
 import type { Question } from '@/data/questions';
-import { trueFalseStatement, typedAcceptVariants, wrongIsPartOfAnswer } from '@/data/true-false';
+import { OPEN_WHICH, trueFalseStatement, typedAcceptVariants, wrongIsPartOfAnswer } from '@/data/true-false';
 
 // Other correct answers a learner reported (by question id), e.g. the calculated value behind a rounded answer.
 const EXTRA_TYPED_ANSWERS: Record<string, string[]> = {
@@ -131,7 +131,7 @@ export function buildPractice(source: readonly (BankQuestion & { setName?: strin
     // A question about a picture is asked as written (a matching round or typed answer would drop the picture).
     if (original.type === 'choice' && !q.img && q.o.length >= 3 &&!/\bexcept\b|\bnot\b/i.test(q.q)) {
       const answer = plainText(q.o[q.a]);
-      if (roll < 0.15 && short(answer) && !/which of the following/i.test(q.q)) {
+      if (roll < 0.15 && short(answer) && !/which of the following/i.test(q.q) && !OPEN_WHICH.test(q.q)) {
         out.push({ ...original, id: `${original.id}:type`, type: 'type', accept: [...typedAcceptVariants(answer), ...(EXTRA_TYPED_ANSWERS[original.id] ?? [])], label: 'Type the answer' } as Question);
         continue;
       }

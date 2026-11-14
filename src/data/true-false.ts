@@ -165,3 +165,6 @@ export function typedAcceptVariants(answer: string): string[] {
   if (pair) for (const pick of [pair[1], pair[2]]) out.push(answer.replace(alt, pick));
   return [...new Set(out.filter((item) => item.length > 0))];
 }
+
+/** "Which is an obstructive cause…": many answers fit, so it is never asked as a typed answer. */
+export const OPEN_WHICH = /^which (is|are|was|were) (a|an|one|some)\b/i;
