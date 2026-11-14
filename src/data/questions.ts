@@ -186,7 +186,16 @@ export function aiAcceptedReason(questionId: string, typed: unknown): string | n
   return typeof typed === 'string' ? aiAccepted.get(questionId)?.get(normalizeAnswer(typed)) ?? null : null;
 }
 
+// "It is the mitochondria", "The answer is ATP" → the answer itself (owner, 2026-11-04).
+const ANSWER_LEAD = /^\s*(?:the\s+answer\s+is|answer\s*[:=-]|it\s+is|it's|its|this\s+is|that\s+is|they\s+are|these\s+are|is|are)\s+/i;
+
 export function typedAnswerMatches(input: string, accept: string[]) {
+  const bare = input.replace(ANSWER_LEAD, '');
+  if (bare !== input && bare.trim() && typedAnswerMatchesExactly(bare, accept)) return true;
+  return typedAnswerMatchesExactly(input, accept);
+}
+
+function typedAnswerMatchesExactly(input: string, accept: string[]) {
   const typedNumber = signedNumber(input);
   if (typedNumber !== null) {
     const numbers = accept.map(signedNumber);

@@ -179,3 +179,9 @@ describe('report 2026-11-08/09: ethyne π bonds, Fick true/false, heart-skeleton
     assert.ok(x('right-fibrous-trigone') < 0.5 && x('septal-cusp-of-tricuspid-valve') > 0.52);
   });
 });
+
+it('picture questions are never put in a matching round (report on match:cardiovascular-physiology:fig-…, 2026-11-04)', () => {
+  const src = readFileSync('src/data/hb2-study.ts', 'utf8');
+  assert.match(src, /matchable\.push/);
+  assert.match(src, /!question\.figure/);
+});

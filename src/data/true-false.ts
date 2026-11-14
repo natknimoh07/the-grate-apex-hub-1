@@ -148,5 +148,20 @@ export function typedAcceptVariants(answer: string): string[] {
   if (bare && bare !== answer) out.push(bare);
   const times = /^(\d[\d,.]*)\s*[x×]$/i.exec(bare);
   if (times) out.push(times[1]);
-  return out;
+  // Other ways the learner may write the same answer (owner, 2026-11-04: "the user may say it in a
+  // different way … but it is correct"). Only words are swapped, never numbers, so "1 or 2" is untouched.
+  const word = '[A-Za-z][A-Za-z-]{2,}';
+  const paren = new RegExp(`\\s*\\((${word})\\)`);
+  const bracket = paren.exec(answer);
+  if (bracket) {
+    // "Condyloid (ellipsoid)": either name alone, and the name in the bracket in place.
+    out.push(answer.replace(paren, '').trim(), bracket[1], answer.replace(new RegExp(`\\S+\\s*\\((${word})\\)`), '$1').trim(), answer.replace(/\s*\((.*?)\)/, ' $1').replace(/\s+/g, ' ').trim());
+  } else if (/\(/.test(answer)) {
+    // A longer bracket ("Leg (front side)") is a hint: the answer without it counts.
+    out.push(answer.replace(/\s*\([^)]*\)/g, '').replace(/\s+/g, ' ').trim());
+  }
+  const alt = new RegExp(`\\b(${word})(?:\\s*/\\s*|\\s+or\\s+)(${word})\\b`);
+  const pair = alt.exec(answer);
+  if (pair) for (const pick of [pair[1], pair[2]]) out.push(answer.replace(alt, pick));
+  return [...new Set(out.filter((item) => item.length > 0))];
 }
