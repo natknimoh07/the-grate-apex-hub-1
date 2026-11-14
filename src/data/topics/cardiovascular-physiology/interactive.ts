@@ -2,7 +2,7 @@
 // reading-layer extras. Checkpoint IDs: cN-xx; recall prompts: rN-xx.
 import type { LessonConfusion } from '@/data/lesson-types';
 import { ask, fill, learn, match, mcq, multi, order, recall, type InteractiveDraft } from '@/data/topics/build';
-import { c1, c2, c3, c4, c5, type ConceptId } from '@/data/topics/cardiovascular-physiology/sources';
+import { BOOKS, c1, c2, c3, c4, c5, type ConceptId } from '@/data/topics/cardiovascular-physiology/sources';
 
 type Steps = InteractiveDraft<ConceptId>[];
 
@@ -51,6 +51,13 @@ export const interactive: Record<string, Steps> = {
       'In inspiration, negative intrathoracic pressure increases venous return and lowers pulmonary impedance, prolonging right ventricular ejection.',
       'So the pulmonary valve closes after the aortic valve — the basis of splitting of S2.',
     ]),
+    learn('Cardiac action potentials', ['Ventricular muscle: phase 0 fast Na⁺ in, plateau Ca²⁺ in balanced by K⁺ out, phase 3 K⁺ out. SA node: no resting potential — the funny current and T-type Ca²⁺ drift it to threshold (about −40 mV), then L-type Ca²⁺ fires it.', 'The plateau keeps the muscle refractory until it relaxes, so the heart cannot be tetanised. QRS ↔ phase 0, ST ↔ plateau, T ↔ phase 3.'], { sourceRefs: [...c1([20]), ...BOOKS] }),
+    ask(
+      mcq('c1-g1', 'cardiac-action-potentials', 'Noradrenaline speeds the heart mainly by:', 'Steepening phase 4 of the SA node potential', ['Lengthening the ventricular plateau phase', 'Hyperpolarising the SA node cells further', 'Slowing conduction through the AV node'], {
+        explanation: 'More funny current and Ca²⁺ current → threshold reached sooner.',
+        skill: 'cause-effect',
+      })
+    ),
   ],
 
   // ─── Lesson 2 — Pulse, JVP, sounds and murmurs ─────────────────────
@@ -95,6 +102,12 @@ export const interactive: Record<string, Steps> = {
       'S2: aortic and pulmonary valves closing, at the end of systole/beginning of diastole.',
       'S2 is loud when aortic or pulmonary artery pressure is high, because the valves close briskly.',
     ]),
+    learn('Abnormal pulses', ['Collapsing (water-hammer) → aortic regurgitation; slow-rising → aortic stenosis; alternans → left ventricular failure; paradoxus (falls >10 mmHg on inspiration) → tamponade; irregularly irregular with a pulse deficit → atrial fibrillation; radio-femoral delay → coarctation.'], { sourceRefs: BOOKS }),
+    ask(
+      mcq('c2-g1', 'pulse-abnormalities', 'A large pulse that rises and falls away quickly, with a wide pulse pressure, suggests:', 'Aortic regurgitation', ['Aortic stenosis', 'Cardiac tamponade', 'Coarctation of the aorta'], {
+        explanation: 'The collapsing (water-hammer) pulse.',
+      })
+    ),
   ],
 
   // ─── Lesson 3 — Cardiac output ─────────────────────────────────────
@@ -132,6 +145,19 @@ export const interactive: Record<string, Steps> = {
       'Pressure (afterload) work needs more O₂ than volume (preload) work.',
       'Aortic stenosis raises afterload; incompetence raises preload — so stenosis increases O₂ demand more, and angina is commoner.',
     ]),
+    learn('Measuring CO by dilution', ['Inject a known amount of indicator; the more blood flows past, the more it is diluted. CO = dose ÷ area under the first-pass curve. Dye recirculates, so the tail is extrapolated; cold saline (thermodilution) does not, so it can be repeated.'], { sourceRefs: [...c1([57]), ...BOOKS] }),
+    ask(
+      mcq('c3-g1', 'co-dilution', 'In thermodilution, the indicator is:', 'Cold saline injected into the right atrium', ['A dye injected into the left ventricle', 'Inhaled nitrous oxide measured in the blood', 'Oxygen measured in mixed venous blood'], {
+        explanation: 'A thermistor in the pulmonary artery records the temperature change.',
+      })
+    ),
+    learn('Work, efficiency and Laplace', ['Stroke work = SV × mean ejection pressure; efficiency is at most about 20–25%. O₂ use follows wall tension × time, so pressure work costs more than volume work.', 'Laplace: wall tension ∝ pressure × radius ÷ wall thickness — a dilated heart needs more tension; hypertrophy thickens the wall.'], { sourceRefs: [...c1([58]), ...BOOKS] }),
+    ask(
+      mcq('c3-g2', 'stroke-work-laplace', 'Why is a dilated failing ventricle inefficient?', 'Its larger radius needs more wall tension for the same pressure', ['Its smaller radius needs more wall tension for the same pressure', 'Its thicker wall takes up most of the oxygen supply', 'Its stroke volume rises above the venous return'], {
+        explanation: 'Law of Laplace.',
+        skill: 'application',
+      })
+    ),
   ],
 
   // ─── Lesson 4 — Vessels, flow and pressure ─────────────────────────
@@ -178,6 +204,25 @@ export const interactive: Record<string, Steps> = {
       'As vessels divide, total cross-sectional area increases, so velocity falls toward the capillaries.',
       'It rises again as veins join into fewer, larger vessels.',
     ]),
+    learn('Pulse pressure', ['Pulse pressure grows with stroke volume and with stiffer arteries. A faster heart rate or higher peripheral resistance raises diastolic pressure. The biggest drop in mean pressure is across the arterioles.'], { sourceRefs: [...c1([82, 91]), ...BOOKS] }),
+    ask(
+      mcq('c4-g1', 'windkessel-pressures', 'Which change narrows the pulse pressure?', 'A faster heart rate with the same stroke volume', ['Stiffer, less compliant arteries with age', 'A larger stroke volume each beat', 'Aortic regurgitation'], {
+        explanation: 'Less diastolic run-off → diastolic rises.',
+        skill: 'prediction',
+      })
+    ),
+    learn('Critical closing pressure and aneurysms', ['Below about 20 mmHg small vessels snap shut (critical closing pressure). In an aneurysm, a larger radius means more wall tension at the same pressure (T = P × r), so it keeps stretching.'], { sourceRefs: [...c2([11, 12]), ...BOOKS] }),
+    ask(
+      mcq('c4-g2', 'critical-closing-aneurysm', 'By Laplace’s law, as an aneurysm widens, its wall tension at the same pressure:', 'Rises', ['Falls', 'Stays the same', 'Falls to zero'], {
+        explanation: 'T = P × r.',
+      })
+    ),
+    learn('Measuring organ flow', ['Fick/clearance (uptake ÷ A–V difference; PAH for renal plasma flow; N₂O for brain), venous occlusion plethysmography (stop venous outflow, measure swelling), Doppler (frequency shift → velocity), electromagnetic flowmeter (vessel exposed).'], { sourceRefs: [...c1([57, 67]), ...BOOKS] }),
+    ask(
+      mcq('c4-g3', 'organ-flow-methods', 'Which method measures limb blood flow by blocking venous outflow only?', 'Venous occlusion plethysmography', ['Electromagnetic flowmeter', 'Doppler ultrasound', 'PAH clearance'], {
+        explanation: 'Cuff at about 40–50 mmHg.',
+      })
+    ),
   ],
 
   // ─── Lesson 5 — Capillaries, oedema, lymph, veins ──────────────────
@@ -219,6 +264,18 @@ export const interactive: Record<string, Steps> = {
       'Reduced plasma oncotic pressure — e.g. liver disease, kidney disease, malnutrition.',
       'Lymphatic obstruction — e.g. filariasis, radical mastectomy.',
     ]),
+    learn('Crossing the capillary wall', ['Lipid-soluble O₂ and CO₂ cross the whole cell surface; water-soluble glucose and ions use the clefts; proteins barely cross. Arteriolar constriction lowers capillary pressure (fluid drawn in); raised venous pressure pushes fluid out.'], { sourceRefs: [...c1([93, 100]), ...BOOKS] }),
+    ask(
+      mcq('c5-g1', 'capillary-transport-routes', 'Which substance crosses the capillary wall over the whole endothelial surface?', 'Carbon dioxide', ['Glucose', 'Albumin', 'Sodium ions'], {
+        explanation: 'It is lipid-soluble.',
+      })
+    ),
+    learn('Venous pressure and posture', ['Standing still: about 90 mmHg in the foot veins; walking with competent valves drops it below about 25 mmHg. Neck veins collapse when upright; dural sinuses can go negative. CVP rises in heart failure and falls after haemorrhage.'], { sourceRefs: [...c1([109, 110]), ...BOOKS] }),
+    ask(
+      mcq('c5-g2', 'venous-pressure-posture', 'Which is most likely to LOWER central venous pressure?', 'Haemorrhage', ['Right heart failure', 'Cardiac tamponade', 'Rapid blood transfusion'], {
+        explanation: 'Less blood returning to the heart.',
+      })
+    ),
   ],
 
   // ─── Lesson 6 — Regulation ─────────────────────────────────────────
@@ -263,6 +320,25 @@ export const interactive: Record<string, Steps> = {
       'Ischaemia, hypoxia and hypercapnia stimulate the VMC directly → sympathetic discharge → BP rises, restoring medullary flow.',
       'The baroreceptors sense the high BP → reflex bradycardia.',
     ]),
+    learn('Hyperaemia', ['Active hyperaemia: flow rises with activity. Reactive hyperaemia: flow overshoots after an occlusion, the longer the occlusion the bigger the overshoot. Both are local and work without nerves.'], { sourceRefs: [...c2([13, 14]), ...BOOKS] }),
+    ask(
+      mcq('c6-g1', 'hyperaemia', 'A red flush of the arm after a blood-pressure cuff is released is:', 'Reactive hyperaemia', ['Active hyperaemia', 'The white reaction', 'Cold vasodilatation'], {
+        explanation: 'Overshoot after occlusion.',
+      })
+    ),
+    learn('Hormones and reflexes', ['Adrenaline: β1 heart, β2 dilatation in muscle; noradrenaline: α constriction with reflex bradycardia. Angiotensin II and ADH constrict. Chemoreceptors back up BP below about 80 mmHg; the CNS ischaemic response is the strongest pressor response.'], { sourceRefs: [...c2([15, 16, 35, 36]), ...BOOKS] }),
+    ask(
+      mcq('c6-g2', 'circulating-hormones', 'Why does an infusion of noradrenaline usually slow the heart?', 'Its rise in BP triggers the baroreceptor reflex', ['It blocks β1 receptors in the SA node', 'It stimulates muscarinic receptors directly', 'It lowers venous return to the heart'], {
+        explanation: 'The reflex vagal effect overrides its β1 action.',
+        skill: 'cause-effect',
+      })
+    ),
+    learn('Short vs long-term BP control', ['Seconds: baroreceptors (reset in 1–2 days). Minutes–hours: renin–angiotensin, ADH, capillary fluid shift. Days: the kidney excretes salt and water when pressure is high (pressure natriuresis).'], { sourceRefs: [...c3([4]), ...BOOKS] }),
+    ask(
+      mcq('c6-g3', 'bp-short-long-term', 'Which mechanism sets blood pressure in the long term?', 'Renal salt and water excretion (pressure natriuresis)', ['The arterial baroreceptor reflex acting through the vagus', 'The CNS ischaemic response to brainstem hypoxia', 'Peripheral chemoreceptor activity in the carotid bodies'], {
+        explanation: 'Baroreceptors reset, so the kidney decides the long-term level.',
+      })
+    ),
   ],
 
   // ─── Lesson 7 — Gravity, shock and heart failure ───────────────────
@@ -304,6 +380,19 @@ export const interactive: Record<string, Steps> = {
       'Myocardial ischaemia makes the shock worse.',
       'Precapillary sphincters relax while venules stay constricted → stasis, raised hydrostatic pressure, fluid loss into the interstitium.',
     ]),
+    learn('The vicious cycle (slide 27)', ['Poor perfusion → hypoxia → lactic acidosis → sodium-pump failure (K⁺ out, Na⁺ and water in) → lysosomal enzymes → toxins → capillary damage → worse perfusion. Side arm: precapillary sphincters fail → blood pools.'], { sourceRefs: c3([26, 27]) }),
+    ask(
+      order('c7-g1', 'shock-vicious-cycle', 'Order the start of the irreversible-shock cycle.', ['Inadequate perfusion', 'Cell hypoxia', 'Energy deficit', 'Lactic acid accumulation and fall in pH'], {
+        explanation: 'Homeostasis slide 27.',
+      })
+    ),
+    learn('Hb after a bleed (slide 24)', ['Immediately: unchanged, because cells and plasma are lost together. Over hours to days: falls as tissue fluid dilutes the blood. Back to normal in 4–5 weeks via erythropoietin. Burns concentrate the blood instead.'], { sourceRefs: [...c3([23, 24, 28]), ...BOOKS] }),
+    ask(
+      mcq('c7-g2', 'haemorrhage-hb', 'A patient’s Hb is normal 20 minutes after a large bleed. Why?', 'Red cells and plasma were lost in the same proportion', ['The spleen has already released enough new red cells', 'Erythropoietin has already restored the red cells', 'Fluid from the tissues has already diluted the blood'], {
+        explanation: 'Dilution, and the fall in Hb, only come later.',
+        skill: 'application',
+      })
+    ),
   ],
 
   // ─── Lesson 8 — Regional circulations ──────────────────────────────
@@ -342,6 +431,25 @@ export const interactive: Record<string, Steps> = {
       'Fluid moves into the space of Disse and lymph and leaks from the liver surface into the peritoneal cavity.',
       'Sinusoidal pores let protein through, so the fluid is protein-rich and its osmotic pull draws more fluid from the gut and mesentery.',
     ]),
+    learn('Brain support and fuel', ['Dura on bone; brain hung from the arachnoid by trabeculae; CSF and trabeculae check movement in trauma; CSF removal can cause headache. Sustained BBB breakdown: tumours, inflammation, oedema. Starvation: the brain switches largely to ketone bodies.'], { sourceRefs: c4([15, 17, 18, 24]) }),
+    ask(
+      mcq('c8-g1', 'brain-support-fuel', 'What checks movement of the brain in head trauma (slide 15)?', 'The CSF and the arachnoid trabeculae', ['The dural venous sinuses between the dural layers', 'The blood–brain barrier', 'The choroid plexus'], {
+        explanation: 'Regional Circulation slide 15.',
+      })
+    ),
+    learn('Coronary flow and the fetal circulation', ['Left ventricular coronary flow stops in systole and peaks in early diastole; the subendocardium is most at risk; the heart extracts 70–75% of the O₂ at rest.', 'Fetus: umbilical vein → ductus venosus → IVC → right atrium → foramen ovale → left heart; pulmonary trunk → ductus arteriosus → aorta. At birth the foramen ovale and ductus close.'], { sourceRefs: [...c4([27, 43]), ...BOOKS] }),
+    ask(
+      mcq('c8-g2', 'fetal-shunts', 'Which fetal shunt carries blood from the pulmonary trunk to the aorta?', 'Ductus arteriosus', ['Ductus venosus', 'Foramen ovale', 'Umbilical vein'], {
+        explanation: 'It bypasses the high-resistance fetal lungs.',
+      })
+    ),
+    learn('Kidney, muscle and skin', ['Kidney: about 20% of CO, two capillary beds in series, strong autoregulation. Muscle: flow up 15–25× in exercise, controlled by metabolites. Skin: AV shunts under sympathetic control for temperature; in shock, pressure control wins and the skin clamps down.'], { sourceRefs: [...c4([39, 41]), ...BOOKS] }),
+    ask(
+      mcq('c8-g3', 'skin-heat-shock', 'In haemorrhagic shock on a hot day, the skin is usually:', 'Pale and cool, because skin vessels constrict', ['Flushed and warm, because skin vessels dilate', 'Unchanged, because skin has strong autoregulation', 'Blue only in the fingers, from the AV shunts'], {
+        explanation: 'Answer to Regional Circulation slide 41.',
+        skill: 'application',
+      })
+    ),
   ],
 
   // ─── Lesson 9 — The ECG ───────────────────────────────────────────
@@ -383,6 +491,18 @@ export const interactive: Record<string, Steps> = {
       'The ventricles beat slowly in an idioventricular rhythm; P waves and QRS complexes have no fixed relationship.',
       'Low cerebral blood flow causes fainting and dizziness — Stokes–Adams syndrome.',
     ]),
+    learn('Limb leads', ['Lead I: RA (−) → LA (+), 0°. Lead II: RA → LL, +60°. Lead III: LA → LL, +120°. aVR −150°, aVL −30°, aVF +90°. Right leg = ground. Einthoven: II = I + III.'], { sourceRefs: c5([3, 4]) }),
+    ask(
+      fill('c9-g1', 'limb-leads', 'Lead II connects the right arm (−) to the left ____ (+).', ['leg', 'foot', 'left leg'], {
+        explanation: 'ECG slide 3.',
+      })
+    ),
+    learn('Ectopics, flutter and fibrillation', ['Ventricular ectopic: early, wide, bizarre QRS, no P, compensatory pause. Atrial flutter: saw-tooth waves with 2:1 or 3:1 block. Atrial fibrillation: no P waves, irregularly irregular. Ventricular fibrillation: no QRS, no output — defibrillate. Most are re-entry.'], { sourceRefs: [...c5([20, 28]), ...BOOKS] }),
+    ask(
+      mcq('c9-g2', 'flutter-fibrillation', 'An ECG shows no P waves and an irregularly irregular QRS rhythm. This is:', 'Atrial fibrillation', ['Atrial flutter with 2:1 block', 'Ventricular fibrillation', 'Complete heart block'], {
+        explanation: 'ECG homework (slide 28).',
+      })
+    ),
   ],
 };
 
