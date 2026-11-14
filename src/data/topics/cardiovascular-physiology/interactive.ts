@@ -33,8 +33,8 @@ export const interactive: Record<string, Steps> = {
       })
     ),
     ask(
-      fill('c1-04', 'cycle-volumes', 'With an end-diastolic volume of about 130 mL, the ejection fraction is about ____%.', ['65', '65%'], {
-        explanation: 'Slide 16: EDV ≈ 130 mL, stroke volume ≈ 70–90 mL, ejection fraction ≈ 65%.',
+      fill('c1-04', 'cycle-volumes', 'With an end-diastolic volume of about 130 mL and a stroke volume of about 85 mL, the ejection fraction is about ____%.', ['65', '65%'], {
+        explanation: 'Slide 16: EDV ≈ 130 mL, stroke volume ≈ 70–90 mL, ejection fraction ≈ 65% (85 ÷ 130).',
       })
     ),
     learn('Tachycardia steals diastole', ['A faster rate shortens systole a little but diastole much more — and diastole is when the ventricles fill and the coronary arteries flow.'], {

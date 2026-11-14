@@ -201,3 +201,44 @@ describe('report 2026-11-10: cardiovascular physiology wording and typed answers
     assert.ok(!OPEN_WHICH.test('Which enzyme removes water?'));
   });
 });
+
+describe('report 2026-11-13: bmc statement keys, organology q4-11, ejection fraction c1-04, picture matching', () => {
+  const bmc = () => JSON.parse(readFileSync('public/curriculum/bmc.json', 'utf8')).sets.flatMap((set) => set.questions);
+  const keyed = (id) => {
+    const q = bmc().find((item) => item.id === id);
+    assert.ok(q, `${id} is missing from bmc.json`);
+    return q.o[q.a];
+  };
+  it('1m7gm5z is keyed "All three statements are true", like its twin nutayo', () => {
+    assert.equal(keyed('1m7gm5z'), 'All three statements are true');
+    assert.equal(keyed('nutayo'), 'All three statements are true');
+  });
+  it('xta25i is keyed "Only one of the statements is true"', () => {
+    assert.equal(keyed('xta25i'), 'Only one of the statements is true');
+  });
+  it('organology q4-11 no longer gives the answer away in its stem', () => {
+    const line = readFileSync('src/data/topics/organology/questions.ts', 'utf8').split('\n').find((text) => text.includes("'q4-11'"));
+    assert.ok(line, 'q4-11 is missing');
+    assert.doesNotMatch(line, /serosa \(the visceral serous pericardium\)/);
+    assert.match(line, /Which layer of the heart’s wall is a serosa\?/);
+  });
+  it('c1-04 gives the stroke volume, so the ejection fraction can be worked out', () => {
+    const line = readFileSync('src/data/topics/cardiovascular-physiology/interactive.ts', 'utf8').split('\n').find((text) => text.includes("'c1-04'"));
+    assert.ok(line, 'c1-04 is missing');
+    assert.match(line, /stroke volume of about 85 mL/);
+  });
+  it('a picture question is never put into a matching round', async () => {
+    const { buildLocalPractice } = await import('@/data/hb2-study');
+    const make = (image) => Array.from({ length: 8 }, (_, i) => ({
+      id: `pic-${i}`, type: 'choice', prompt: `What is the marked part ${i}?`, options: [`Part ${i}`, `Other ${i}a`, `Other ${i}b`, `Other ${i}c`], answer: 0,
+      concept: 'Parts', usage: 'quiz', reviewEligible: false, ...(image ? { image: `/figures/test/${i}.png` } : {}),
+    }));
+    let matchedWithout = 0;
+    for (let i = 0; i < 300; i++) {
+      for (const q of buildLocalPractice(make(true), 8, `seed-${i}`)) assert.notEqual(q.type, 'match', `seed-${i}: a matching round was made from picture questions`);
+      if (buildLocalPractice(make(false), 8, `seed-${i}`).some((q) => q.type === 'match')) matchedWithout += 1;
+    }
+    // The same questions without pictures do get matching rounds, so the check above means something.
+    assert.ok(matchedWithout > 0, 'no matching round was made even without pictures: the test needs other questions');
+  });
+});

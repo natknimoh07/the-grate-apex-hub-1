@@ -222,8 +222,8 @@ export function buildLocalPractice(source: readonly Question[], count: number, s
           continue;
         }
       }
-      // A question about a picture is never put in a matching round (the pairs have no picture).
-      if (roll < 0.42 && short(answer) && question.prompt.length <= 140 && !question.figure && !(question as { img?: string }).img) {
+      // A question with a picture is never put in a matching round: the pairs cannot show it (reports 2026-11-04 and 2026-11-13).
+      if (roll < 0.42 && short(answer) && question.prompt.length <= 140 && !question.figure && !question.image && !(question as { img?: string }).img) {
         matchable.push(question);
         continue;
       }

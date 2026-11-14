@@ -82,7 +82,7 @@ const lesson4: Q[] = [
   mcq('q4-08', 'identify-tubes', 'Which coat is missing from the gallbladder wall?', 'Submucosa', ['Mucosa', 'Muscularis', 'Outer coat'], { explanation: 'Slide 63.' }),
   mcq('q4-09', 'identify-tubes', 'In a section, large lymphoid nodules arranged in a ring around a narrow lumen suggest the:', 'Appendix', ['Ureter', 'Oesophagus', 'Ductus deferens'], { explanation: 'Slide 58.', skill: 'application' }),
   pic(mcq('q4-10', 'heart-coats', 'This is the heart. How many layers make up its wall?', 'Three', ['Four', 'Two', 'Varied'], { explanation: 'Slide 65: endocardium, myocardium and epicardium.' }), 65),
-  mcq('q4-11', 'heart-coats', 'Which layer of the heart’s wall is a serosa (the visceral serous pericardium)?', 'Epicardium', ['Endocardium', 'Myocardium', 'Fibrous pericardium'], { explanation: 'Slide 65.' }),
+  mcq('q4-11', 'heart-coats', 'Which layer of the heart’s wall is a serosa?', 'Epicardium', ['Endocardium', 'Myocardium', 'Fibrous pericardium'], { explanation: 'Slide 65.' }),
   pic(mcq('q4-12', 'heart-coats', 'In this section of the heart, which layer makes the left ventricle wall much thicker than the right?', 'Myocardium', ['Endocardium', 'Epicardium', 'Pericardial cavity'], { explanation: 'Slide 66.' }), 66),
   match('q4-13', 'heart-coats', 'Match each layer of the heart to the tunic of a vessel it corresponds to:', [['Endocardium', 'Tunica intima'], ['Myocardium', 'Tunica media'], ['Epicardium', 'Tunica adventitia (outer coat)']], { explanation: 'Slides 31 and 65.' }),
   tf({ id: 'q4-14', conceptId: 'identify-tubes', statement: 'The gallbladder has four coats because it is part of the digestive system.', answer: false, explanation: 'The gallbladder has no submucosa, so it has three coats (slide 63).' }),
