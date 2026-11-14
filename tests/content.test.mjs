@@ -5,8 +5,8 @@
 // - every answer index is valid (checkQuestion) and options are unique
 // - every source reference names a catalogued file (traceability)
 // - every lesson has all three layers: interactive, reading, quiz
-// - a lesson quiz can always reach 25 questions (its own bank, topped up
-//   from earlier lessons of the topic)
+// - a lesson quiz asks only that lesson's questions (its quiz bank, topped
+//   up with its own checkpoints), never an earlier lesson's
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
@@ -92,10 +92,11 @@ for (const built of builtTopics) {
         assert.ok(lesson.chunks.length > 0, 'reading layer missing');
         const bank = curriculum.getLessonQuizBank(lesson.id);
         assert.ok(bank.length >= 12, `quiz bank too small (${bank.length})`);
-        const quiz = selection.selectQuestions({ scope: { kind: 'lesson', lessonId: lesson.id }, size: 25, seed: 't', now: Date.now() }, empty);
-        const index = topic.lessons.indexOf(lesson);
-        // The first lesson cannot top up from earlier lessons.
-        if (index > 0) assert.ok(quiz.length >= 25, `a quiz only reaches ${quiz.length} questions`);
+        const quiz = selection.selectQuestions({ scope: { kind: 'lesson', lessonId: lesson.id }, size: 30, seed: 't', now: Date.now() }, empty);
+        // Owner, 2026-11-14: a lesson quiz asks only that lesson's questions (it used to top up from earlier lessons).
+        const strays = quiz.filter((item) => item.question.lessonId !== lesson.id).map((item) => item.question.id);
+        assert.deepEqual(strays, [], 'the lesson quiz asks questions from other lessons');
+        assert.ok(quiz.length >= Math.min(30, bank.length), `a quiz only reaches ${quiz.length} of its ${bank.length} questions`);
       });
     }
   });

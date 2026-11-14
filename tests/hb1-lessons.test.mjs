@@ -8,7 +8,7 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
 const { HB1_LOCAL_LESSONS, hb1QuizQuestions, hb1LessonMeta } = await import('@/data/hb1-lessons');
-const { LEGACY_COURSES } = await import('@/data/legacy-study');
+const { LEGACY_COURSES, lessonQuestionTest } = await import('@/data/legacy-study');
 const { HB1_PRACTICE_IDS } = await import('@/data/hb1-lessons/practice-ids');
 const { parseRich } = await import('@/data/legacy-questions');
 
@@ -25,11 +25,33 @@ describe('HB1 lessons written in the app', () => {
       ids.add(lesson.id);
       const sections = lesson.sections.map((section) => section.id);
       assert.equal(new Set(sections).size, sections.length, `${lesson.id}: repeated section id`);
-      // At least 20 questions to practise: its own quiz, or with earlier sets of the bank (rewritten lessons).
+      // At least 12 questions to practise: its own quiz, or with earlier sets of the bank (rewritten lessons).
       const practised = HB1_PRACTICE_IDS[lesson.id] ?? [];
-      assert.ok(lesson.quiz.length >= 8 && practised.length >= 20, `${lesson.id}: ${lesson.quiz.length} quiz questions, ${practised.length} to practise`);
+      assert.ok(lesson.quiz.length >= 8 && practised.length >= 12, `${lesson.id}: ${lesson.quiz.length} quiz questions, ${practised.length} to practise`);
       for (const question of hb1QuizQuestions(lesson)) assert.ok(practised.includes(question.id), `${lesson.id}: practice-ids.ts out of date — run scripts/hb1-review/lesson-sets.mjs`);
     }
+  });
+
+  // Owner, 2026-11-14: a lesson's practice is about that lesson only. A past-question topic or quiz
+  // set shared by several lessons is split between them (scripts/hb1-review/practice-owner.mjs).
+  it('never practise the same question in two lessons', () => {
+    const owner = new Map();
+    for (const lesson of HB1_LOCAL_LESSONS) {
+      const course = lesson.id.split('-')[0];
+      for (const id of HB1_PRACTICE_IDS[lesson.id] ?? []) {
+        const key = `${course}:${id}`;
+        assert.ok(!owner.has(key), `${id} is practised by both ${owner.get(key)} and ${lesson.id} — run scripts/hb1-review/lesson-sets.mjs`);
+        owner.set(key, lesson.id);
+      }
+    }
+  });
+
+  it('practise only the questions they list (no shared topic or set added on top)', () => {
+    const lesson = HB1_LOCAL_LESSONS.find((item) => (item.pastTopics ?? []).length > 0);
+    const meta = hb1LessonMeta(lesson);
+    const test = lessonQuestionTest(meta);
+    assert.equal(test({ id: 'not-listed', tp: lesson.pastTopics[0], set: lesson.pastSets?.[0] ?? 's1' }), false);
+    assert.equal(test({ id: meta.qids[0] }), true);
   });
 
   it('have their quiz in the course bank, as written', () => {

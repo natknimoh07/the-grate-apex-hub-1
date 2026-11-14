@@ -83,7 +83,7 @@ export type SelectionReason =
   | 'due' // its concept is due for review
   | 'weak' // its concept is struggling
   | 'new' // never answered
-  | 'cumulative' // from an earlier lesson / the wider topic
+  | 'cumulative' // from an earlier lesson (no longer chosen: lesson quizzes keep to their lesson; kept for old attempts)
   | 'reinforce' // keeping a known concept fresh
   | 'challenge'
   | 'practice';
@@ -140,7 +140,8 @@ export function seededShuffle<T>(items: readonly T[], seed: string): T[] {
 type Candidate = {
   question: Question;
   conceptKey?: string;
-  origin: 'primary' | 'cumulative';
+  // checkpoint: one of the lesson's own step-by-step questions, used to top up its quiz.
+  origin: 'primary' | 'checkpoint';
 };
 
 const isQuizUsage = (question: Question) => question.usage !== 'learn';
@@ -155,13 +156,13 @@ function poolFor(scope: SelectionScope): Candidate[] {
 
   switch (scope.kind) {
     case 'lesson': {
-      const found = findLesson(scope.lessonId);
-      if (!found) return [];
+      // Only this lesson's questions (owner, 2026-11-14: "the take test in a lesson [must]
+      // display questions based on that lesson"). Earlier lessons used to top it up, and the
+      // one-question-per-concept pass let them fill up to half the quiz. Its quiz bank comes
+      // first; its own step-by-step checkpoints top it up when the bank is short.
+      if (!findLesson(scope.lessonId)) return [];
       const own = getLessonQuestions(scope.lessonId);
-      const earlier = found.topic.lessons
-        .slice(0, found.index)
-        .flatMap((lesson) => getLessonQuestions(lesson.id).filter(isQuizUsage));
-      return [...wrap(own.filter(isQuizUsage)), ...wrap(earlier, 'cumulative'), ...wrap(own.filter((q) => !isQuizUsage(q)), 'cumulative')];
+      return [...wrap(own.filter(isQuizUsage)), ...wrap(own.filter((q) => !isQuizUsage(q)), 'checkpoint')];
     }
     case 'topic': {
       const topic = getTopic(scope.topicId);
@@ -261,7 +262,7 @@ function weigh(
   if (strategy === 'random') return { weight: 1, reason: scope === 'challenge' ? 'challenge' : 'new' };
 
   let weight = 1;
-  let reason: SelectionReason = scope === 'challenge' ? 'challenge' : candidate.origin === 'cumulative' ? 'cumulative' : 'reinforce';
+  let reason: SelectionReason = scope === 'challenge' ? 'challenge' : 'reinforce';
 
   if (!qm) {
     weight *= scope === 'review' ? 1.2 : scope === 'challenge' ? 1 : 3;
@@ -287,7 +288,7 @@ function weigh(
     weight *= 0.05;
   }
 
-  if (candidate.origin === 'cumulative') weight *= scope === 'lesson' ? 0.6 : 1;
+  if (candidate.origin === 'checkpoint') weight *= 0.6;
   if (recent.has(question.id)) weight *= 0.2;
   weight *= bias[question.difficulty ?? 'introductory'];
 
@@ -408,7 +409,7 @@ export function spaceOutConcepts<T>(items: T[], keyOf: (item: T) => string): T[]
 }
 
 // How many questions a lesson quiz will ask (its lesson bank, topped up
-// from earlier lessons of the topic).
+// with the lesson's own checkpoint questions).
 export function plannedQuizSize(scope: SelectionScope, target: number) {
   return Math.min(target, poolFor(scope).filter((candidate) => isQuizUsage(candidate.question) || scope.kind === 'lesson').length);
 }

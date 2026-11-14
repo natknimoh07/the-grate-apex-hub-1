@@ -8,6 +8,7 @@
 // Pure (no React Native, no Firebase), for tests.
 import { getLessonQuizBank, getSubjectTopics } from '@/data/curriculum';
 import { describeTextbookRefs } from '@/data/source-labels';
+import { lessonLectureLabel } from '@/data/lesson-lecture';
 import { illustrationsFor } from '@/data/illustrations';
 import { chunkFigures, type Lesson, type LessonChunk, type LessonChunkKind, type SubjectId, type Topic } from '@/data/lesson-types';
 import type { Question } from '@/data/questions';
@@ -119,6 +120,8 @@ export type LocalLessonMeta = {
   sections: { id: string; title: string }[]; qids: string[]; qcount: number; group: string; subject: SubjectId; xp: number;
   /** The part of the subject the topic belongs to (e.g. Gross Anatomy). */
   section?: string;
+  /** The lecture slides the lesson was built from (data/lesson-lecture.ts). */
+  lecture?: string;
 };
 
 const topicsOf = (course: LocalCourse): Topic[] => getSubjectTopics(course.subject);
@@ -147,6 +150,7 @@ export function hb2Lessons(courseId: string): LocalLessonMeta[] {
         subject: course.subject,
         xp: lesson.xp,
         ...(topic.section ? { section: topic.section } : {}),
+        lecture: lessonLectureLabel(lesson) ?? undefined,
       };
     })
   );

@@ -402,7 +402,11 @@ Lesson pages should be scrollable.
 
 Important content should not be hidden behind bottom navigation.
 
+**"Built from: …" on every lesson** (owner, 2026-11-14: learners could not tell which lecture slides a lesson came from): `LectureSource` (`components/learning/lecture-source.tsx`) shows e.g. "Built from: CIRCULATION 1 (slides 41–58)" on topic-page lesson cards, HB1 course-path cards, the "How do you want to study" screen and both lesson page headers. HB2 lessons: `lessonLectureLabel` (`src/data/lesson-lecture.ts`) from the lecture files their sections cite (file name without extension; slides at most `SPAN_GAP` = 4 apart join one span). HB1 lessons written in the app: their `source` (meta `lecture`). `tests/lesson-lecture.test.mjs`.
+
 ## Quiz system
+
+**A lesson's quiz and practice ask only that lesson's questions** (owner, 2026-11-14: learners got questions from other lessons). The lesson quiz (`scope: lesson` in `selection.ts`) no longer tops up from earlier lessons (the one-per-concept pass let them fill up to half the quiz): its quiz bank first, then its own step-by-step checkpoints. The topic quiz asks only about studied lessons (`studiedLessons`). HB1 lesson practice uses only its `qids` (`lessonQuestionTest`); `scripts/hb1-review/lesson-sets.mjs` gives a question claimed by several lessons (a shared `pastTopics` / `pastSets`, e.g. Female, Male Reproductive and Embryology all on "embryology") to the one lesson whose text it matches best, or to none (`practice-owner.mjs`; it stays in past papers, By topic and the custom quiz). `tests/content.test.mjs` and `tests/hb1-lessons.test.mjs` check both.
 
 The quiz system currently supports:
 

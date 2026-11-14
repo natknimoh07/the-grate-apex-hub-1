@@ -1,6 +1,7 @@
 import { type Href } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
+import { LectureSource } from '@/components/learning/lecture-source';
 import { BackLink } from '@/components/learning/nav-bits';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { PressableCard } from '@/components/ui/interactive';
@@ -17,6 +18,7 @@ export function LessonStartChoice({
   kicker,
   title,
   description,
+  source,
   steps,
   sections,
   completed,
@@ -27,6 +29,8 @@ export function LessonStartChoice({
   kicker: string;
   title: string;
   description?: string;
+  /** The lecture slides the lesson was built from (data/lesson-lecture.ts). */
+  source?: string | null;
   steps: number;
   sections: number;
   completed: boolean;
@@ -42,6 +46,7 @@ export function LessonStartChoice({
         <Text style={styles.kicker}>{kicker}</Text>
         <Text style={styles.title} accessibilityRole="header">{title}</Text>
         {description ? <Text style={styles.description}>{description}</Text> : null}
+        <LectureSource text={source} style={styles.source} />
       </View>
       <Text style={styles.question}>How do you want to study this lesson?</Text>
       <View style={styles.options}>
@@ -84,6 +89,7 @@ function createStyles(colors: ThemeColors) {
     kicker: { ...Type.overline, color: colors.primaryText },
     title: { ...Type.title1, color: colors.text },
     description: { fontSize: 15, lineHeight: 22, color: colors.textSecondary },
+    source: { marginTop: 2 },
     question: { ...Type.headline, color: colors.text, marginBottom: 10 },
     options: { gap: 12 },
     option: { flexDirection: 'row', alignItems: 'center', gap: 14 },

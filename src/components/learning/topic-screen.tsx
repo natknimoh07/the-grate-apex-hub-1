@@ -11,6 +11,8 @@ import { DrillLaunchers } from '@/components/learning/anatomy-drills';
 import { drillsFor } from '@/data/anatomy-drills';
 import { Breadcrumbs, StatTile, BackLink } from '@/components/learning/nav-bits';
 import { NextActionHero } from '@/components/learning/next-action-card';
+import { LectureSource } from '@/components/learning/lecture-source';
+import { lessonLectureLabel } from '@/data/lesson-lecture';
 import { Button } from '@/components/ui/button';
 import { Card, Interactive } from '@/components/ui/interactive';
 import { Pill } from '@/components/ui/pill';
@@ -224,6 +226,7 @@ function LessonRow({ lesson, now }: { lesson: LessonProgress; now: number }) {
           <Text style={styles.lessonDescription} numberOfLines={2}>
             {lesson.lesson.description}
           </Text>
+          <LectureSource text={lessonLectureLabel(lesson.lesson)} lines={2} />
           <View style={styles.lessonPills}>
             <Pill label={LESSON_STATUS_LABEL[lesson.status]} tone={tone} />
             {lesson.bestQuizPercent !== null ? <Pill label={`Best quiz ${lesson.bestQuizPercent}%`} /> : null}

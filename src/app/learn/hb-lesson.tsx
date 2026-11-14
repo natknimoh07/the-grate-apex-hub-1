@@ -7,6 +7,7 @@ import { type ScrollView, StyleSheet, View } from 'react-native';
 import { useLayoutWidth } from '@/components/side-panel-store';
 import { QuizInProgressCard } from '@/components/learning/quiz-in-progress-card';
 import { LessonReferences } from '@/components/learning/lesson-references';
+import { LectureSource } from '@/components/learning/lecture-source';
 import { LessonVideoCard } from '@/components/learning/lesson-video';
 import { findLesson } from '@/data/curriculum';
 import { LegacyBlocks, Rich, TermContext } from '@/components/learning/legacy-blocks';
@@ -226,6 +227,7 @@ function LegacyLessonScreen() {
         <View style={styles.flex}>
           <Text style={styles.title}>{meta.title}</Text>
           {meta.sub ? <Text style={styles.sub}>{meta.sub}</Text> : null}
+          <LectureSource text={meta.lecture} style={styles.lecture} />
         </View>
         {done ? <Pill label="Completed" tone="success" /> : <Pill label={`${Math.min(readCount, total)}/${total} sections`} tone="primary" />}
       </View>
@@ -352,6 +354,7 @@ function createStyles(colors: ThemeColors) {
     icon: { fontSize: 38 },
     title: { ...Type.title1, color: colors.text },
     sub: { fontSize: 14, color: colors.textSecondary, marginTop: 2 },
+    lecture: { marginTop: 6 },
     columns: { flexDirection: 'row', gap: 24, alignItems: 'flex-start', justifyContent: 'center' },
     modeCard: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14, marginBottom: 18, borderWidth: 1.5, borderColor: colors.primaryBorder },
     modeIcon: { width: 42, height: 42, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primary },

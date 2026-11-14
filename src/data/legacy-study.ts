@@ -67,6 +67,8 @@ export type LegacyLessonMeta = {
   ptopics?: string[];
   /** …and whole sets of the course bank (ids) practised with it. */
   psets?: string[];
+  /** The lecture slides the lesson was built from, shown before it is opened ("Built from: …"; owner, 2026-11-14). */
+  lecture?: string;
 };
 export type Rich = string;
 export type Block =
@@ -263,12 +265,16 @@ export function bankHasAll(bank: LegacyBank, ids: readonly string[]) {
   return ids.every((id) => have.has(id));
 }
 
-/** Is a bank question one of the lesson's? Its own questions, plus (lessons written in the app) the course's past questions on its topics and whole sets. */
-export function lessonQuestionTest(lesson: Pick<LegacyLessonMeta, 'qids' | 'ptopics' | 'psets'>) {
+/**
+ * Is a bank question one of the lesson's? Only the questions it lists (`qids`). For lessons written in the
+ * app that list already holds the past questions on its topics and whole sets (`ptopics`, `psets`), each
+ * given to one lesson only (scripts/hb1-review/lesson-sets.mjs): matching `ptopics` / `psets` here as well
+ * put a topic shared by several lessons into every one of them (owner, 2026-11-14: a lesson's practice
+ * must be about that lesson).
+ */
+export function lessonQuestionTest(lesson: Pick<LegacyLessonMeta, 'qids'>) {
   const ids = new Set(lesson.qids ?? []);
-  const topics = new Set(lesson.ptopics ?? []);
-  const sets = new Set(lesson.psets ?? []);
-  return (q: { id: string; tp?: string; set: string }) => ids.has(q.id) || (q.tp !== undefined && topics.has(q.tp)) || sets.has(q.set);
+  return (q: { id: string }) => ids.has(q.id);
 }
 
 // ── Progress ────────────────────────────────────────────────────────
