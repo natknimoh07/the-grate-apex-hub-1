@@ -9,13 +9,22 @@ import {
   getAuthenticatedLearningUserId,
   loadCloudProgress,
   readLearningCache,
-  recordCloudXpAdjustment,
   resetCloudLearningProgress,
   saveCloudProgress,
-  saveCloudXpEvent,
   subscribeToLearningAuthChanges,
+  uploadCloudXpEvents,
   writeLearningCache,
 } from '@/data/learning-sync';
+import {
+  type CloudLedger,
+  cloudLedgerOf,
+  LEDGER_LIMIT,
+  type LedgerUpload,
+  localXp,
+  mergeLedger,
+  type XpEntry,
+  type XpSourceType,
+} from '@/data/learning/xp-ledger';
 import { ensureEventsLoaded, resetLearningEvents } from '@/data/learning/events';
 import { ensureLessonSessionsLoaded, resetLessonSessions } from '@/data/learning/lesson-sessions';
 import { ensurePowerupsLoaded, resetPowerups } from '@/data/learning/powerups';
@@ -52,26 +61,18 @@ import { db } from '@/lib/firebase';
 // The learning engine (data/learning/) derives memory and review
 // schedules from the completion times — nothing is scheduled here.
 //
-// XP is kept with a small ledger of recent awards so every reward is
-// one-off per source and the results screen can show what was earned or
-// lost. Penalties (negative XP) stay queued locally (`pendingPenalty`)
-// until synced.
+// XP is kept with a ledger of recent awards so every reward is one-off per
+// source and the results screen can show what was earned or lost. The ledger is
+// the account's, shared by every device (data/learning/xp-ledger.ts, 2026-11-14):
+// each award is sent to the account in a transaction that pays a key once for the
+// whole account, and this device's XP is the account's total plus the entries it
+// has not managed to send yet (offline). Penalties are ordinary negative entries.
 
 type Subject = SubjectId;
 
 const SUBJECTS: Subject[] = ['anatomy', 'biochemistry', 'physiology'];
-const LEDGER_LIMIT = 300;
 
-export type XpSourceType = 'lesson' | 'quiz' | 'practice' | 'review' | 'apex' | 'milestone';
-
-export type XpEntry = {
-  key: string; // `${sourceType}:${sourceId}` — unique per reward
-  sourceType: XpSourceType;
-  sourceId: string;
-  amount: number; // signed
-  label: string;
-  at: number;
-};
+export type { XpEntry, XpSourceType } from '@/data/learning/xp-ledger';
 
 export type ProgressData = {
   xp: number;
@@ -81,9 +82,11 @@ export type ProgressData = {
   lastActivityDate: string | null; // local YYYY-MM-DD
   completedLessons: string[];
   lessonCompletedAt: Record<string, number>;
-  xpLedger: XpEntry[]; // newest first
+  xpLedger: XpEntry[]; // newest first; `synced: false` while an entry waits to be sent
   awardedKeys: string[]; // every reward key ever given (milestones, quizzes…)
-  pendingPenalty: number; // negative XP not yet stored in the cloud (≥ 0)
+  cloudXp: number; // the account's XP as last seen (xp = cloudXp + unsent entries)
+  cloudSeq: number; // the account ledger's change count as last seen (older copies are ignored)
+  ledgerBackfilled: boolean; // this device's older entries have been recorded on the account once
   // Streak protection (rules: data/learning/streak-rules.ts).
   streakFreezes: number; // 0..MAX_FREEZES, used automatically for missed days
   freezeWeeks: string[]; // weeks (Monday keys) that already earned a freeze
@@ -137,7 +140,9 @@ const progress: ProgressData = {
   lessonCompletedAt: {},
   xpLedger: [],
   awardedKeys: [],
-  pendingPenalty: 0,
+  cloudXp: 0,
+  cloudSeq: 0,
+  ledgerBackfilled: false,
   streakFreezes: 0,
   freezeWeeks: [],
   lostStreak: null,
@@ -194,9 +199,20 @@ async function loadProgress() {
         : [];
       progress.lessonsCompleted = progress.completedLessons.length;
       progress.lessonCompletedAt = asNumberRecord(data.lessonCompletedAt);
-      progress.xpLedger = Array.isArray(data.xpLedger) ? data.xpLedger.slice(0, LEDGER_LIMIT) : [];
+      // A copy saved before the shared ledger (no cloudXp): its total was the account's
+      // as far as this device knew, and every entry in it was already counted there.
+      const shared = typeof data.cloudXp === 'number';
+      progress.xpLedger = (Array.isArray(data.xpLedger) ? (data.xpLedger as XpEntry[]) : [])
+        .filter((entry) => entry && typeof entry.key === 'string' && typeof entry.amount === 'number' && typeof entry.at === 'number')
+        .map((entry) => ({ ...entry, synced: shared ? entry.synced !== false : true }))
+        .slice(0, LEDGER_LIMIT * 2);
       progress.awardedKeys = Array.isArray(data.awardedKeys) ? data.awardedKeys : progress.xpLedger.map((entry) => entry.key);
-      progress.pendingPenalty = Math.max(0, Number(data.pendingPenalty) || 0);
+      progress.cloudXp = shared ? Math.max(0, Number(data.cloudXp) || 0) : progress.xp;
+      progress.cloudSeq = Math.max(0, Number(data.cloudSeq) || 0);
+      progress.ledgerBackfilled = data.ledgerBackfilled === true;
+      if (!shared) legacyFloorXp = progress.xp;
+      progress.xp = localXp(progress.cloudXp, progress.xpLedger);
+      progress.level = levelFor(progress.xp);
       progress.streakFreezes = clampFreezes(data.streakFreezes);
       progress.freezeWeeks = Array.isArray(data.freezeWeeks) ? data.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string').slice(-30) : [];
       progress.lostStreak = parseLost(data.lostStreak);
@@ -302,9 +318,9 @@ async function syncProgressWithCloud(hasLocalProgress: boolean) {
   }
   progress.lessonsCompleted = progress.completedLessons.length;
 
-  const remoteXp = Math.max(0, (remote.stats?.total_xp ?? 0) - progress.pendingPenalty);
-  progress.xp = Math.max(progress.xp, remoteXp);
-  progress.level = levelFor(progress.xp);
+  // The account's ledger and total; anything this device earned meanwhile is still
+  // counted on top until it has been sent (below).
+  applyCloudLedger(remote.ledger);
   progress.streak = streak;
   progress.lastActivityDate = activityDate;
   if (remote.streak) {
@@ -327,12 +343,69 @@ async function syncProgressWithCloud(hasLocalProgress: boolean) {
   if (hasLocalProgress || repaired || remote.completedLessons.length > 0) {
     await saveCloudProgress(cloudLessonRows(), cloudStats());
   }
-  // XP records already carry stable source keys. Replaying them after an
-  // offline session is safe because the server rejects duplicate keys.
-  await Promise.all(progress.xpLedger
-    .filter((entry) => entry.amount > 0 && entry.sourceType !== 'lesson')
-    .map((entry) => saveCloudXpEvent(cloudSourceType(entry.sourceType), entry.key, entry.amount, cloudStats())));
-  void flushPendingPenalty();
+  // Entries earned while offline are sent now (one transaction; keys the account already
+  // holds are not paid again). The first time this device uses the shared ledger, its older
+  // entries are recorded too, without changing the XP, so "XP today" and "Your week" show the
+  // same on every device from the start; the total it had is kept as a floor once (the old
+  // rule, where the highest total any device had was the account's).
+  await pushXpEvents();
+}
+
+// The total a device had before it moved to the shared ledger, kept as a floor for the
+// account once (the old rule). Read at load, so it is right even if the live listener
+// brought the account's figures in before the first sync.
+let legacyFloorXp: number | undefined;
+
+/** The account's ledger as just read (a sync, the live listener or an upload): merged into this device's. */
+function applyCloudLedger(cloud: CloudLedger) {
+  // An older copy of the ledger than the one already applied (a listener running behind an upload).
+  if (cloud.xpSeq < progress.cloudSeq) return;
+  progress.xpLedger = mergeLedger(progress.xpLedger, cloud.xpEvents);
+  progress.awardedKeys = [...new Set([...progress.awardedKeys, ...Object.keys(cloud.xpEvents)])];
+  progress.cloudXp = cloud.xp;
+  progress.cloudSeq = cloud.xpSeq;
+  progress.xp = localXp(progress.cloudXp, progress.xpLedger);
+  progress.level = levelFor(progress.xp);
+}
+
+// Unsent entries go to the account one transaction at a time (a second request while one
+// is in flight waits for it, then sends whatever is still unsent).
+let pushing: Promise<void> | null = null;
+
+function pushXpEvents(): Promise<void> {
+  const run = async () => {
+    const pending = progress.xpLedger.filter((entry) => entry.synced === false);
+    const backfill = progress.ledgerBackfilled ? [] : progress.xpLedger.filter((entry) => entry.synced !== false);
+    const floorXp = progress.ledgerBackfilled ? undefined : legacyFloorXp;
+    if (!pending.length && !backfill.length && floorXp === undefined) return;
+    const uploads: LedgerUpload[] = [
+      ...pending.map((entry) => ({ key: entry.key, amount: entry.amount, at: entry.at, label: entry.label, type: entry.sourceType, countXp: true })),
+      ...backfill.map((entry) => ({ key: entry.key, amount: entry.amount, at: entry.at, label: entry.label, type: entry.sourceType, countXp: false })),
+    ];
+    let result;
+    try {
+      result = await uploadCloudXpEvents(uploads, cloudStats(), floorXp);
+    } catch (error) {
+      console.warn('Could not send XP to the account (kept on this device for now):', error);
+      return;
+    }
+    if (!result) return;
+    // Paid on another device already: this device's copy goes (the account's entry arrives with the ledger).
+    if (result.duplicates.length) {
+      const duplicates = new Set(result.duplicates.filter((key) => pending.some((entry) => entry.key === key)));
+      progress.xpLedger = progress.xpLedger.filter((entry) => !(entry.synced === false && duplicates.has(entry.key)));
+    }
+    for (const entry of progress.xpLedger) if (pending.some((sent) => sent.key === entry.key)) entry.synced = true;
+    progress.ledgerBackfilled = true;
+    legacyFloorXp = undefined;
+    applyCloudLedger(result);
+    await saveProgress();
+    notify();
+  };
+  const next = (pushing ?? Promise.resolve()).then(run, run);
+  pushing = next;
+  void next.finally(() => { if (pushing === next) pushing = null; });
+  return next;
 }
 
 // From 2026-10-09 to 2026-10-13 every study day set the streak back to 1 (a
@@ -402,17 +475,15 @@ export function watchCloudProgress(userId: string): () => void {
       if (!data) return;
       void ensureProgressLoaded().then(async () => {
         if ((await getAuthenticatedLearningUserId()) !== userId) return;
-        const remoteXp = Math.max(0, (Number(data.xp) || 0) - progress.pendingPenalty);
         const moreLessons = (Number(data.lessonsDone) || 0) > progress.completedLessons.length;
-        if (remoteXp > progress.xp) {
-          // Shown at once, and anything saved from here on carries the higher XP (a save
-          // from this device with its old XP used to lower the account's XP).
-          progress.xp = remoteXp;
-          progress.level = levelFor(progress.xp);
+        // The account's ledger as it is now: XP earned on another device shows here at once.
+        const before = `${progress.xp}|${progress.cloudSeq}`;
+        applyCloudLedger(cloudLedgerOf(data));
+        if (before !== `${progress.xp}|${progress.cloudSeq}`) {
           await saveProgress();
           notify();
-          syncSoon(moreLessons);
-        } else if (moreLessons) syncSoon(true);
+        }
+        if (moreLessons) syncSoon(true);
       });
     },
     () => undefined // offline or signed out: the sync on return still runs
@@ -421,17 +492,6 @@ export function watchCloudProgress(userId: string): () => void {
     stop();
     if (timer) clearTimeout(timer);
   };
-}
-
-async function flushPendingPenalty() {
-  if (progress.pendingPenalty <= 0) return;
-  const amount = progress.pendingPenalty;
-  const stored = await recordCloudXpAdjustment(-amount, `penalty-batch:${Date.now()}`);
-  if (stored) {
-    progress.pendingPenalty = Math.max(0, progress.pendingPenalty - amount);
-    await saveProgress();
-    notify();
-  }
 }
 
 function ensureProgressLoaded() {
@@ -552,8 +612,14 @@ async function awardStreakPowerups(previous: number, current: number) {
   }
 }
 
-function cloudSourceType(sourceType: XpSourceType): 'lesson' | 'quiz' {
-  return sourceType === 'lesson' ? 'lesson' : 'quiz';
+/** A reward earned on this device: counted at once, sent to the account in the background. */
+function addLedgerEntry(entry: Omit<XpEntry, 'synced'>) {
+  progress.awardedKeys.push(entry.key);
+  progress.xpLedger = [{ ...entry, synced: false }, ...progress.xpLedger.filter((item) => item.key !== entry.key)];
+  const before = progress.xp;
+  progress.xp = localXp(progress.cloudXp, progress.xpLedger);
+  progress.level = levelFor(progress.xp);
+  return progress.xp - before;
 }
 
 export function hasAward(key: string) {
@@ -578,27 +644,14 @@ export async function awardXp(input: {
   }
 
   const net = typeof input.amount === 'number' ? Math.round(input.amount) : input.amount.net;
-  const before = progress.xp;
-  progress.xp = Math.max(0, progress.xp + net);
-  const applied = progress.xp - before;
-  progress.level = levelFor(progress.xp);
   if (input.countsAsActivity !== false) await updateStreak();
-
-  progress.awardedKeys.push(key);
-  progress.xpLedger = [
-    { key, sourceType: input.sourceType, sourceId: input.sourceId, amount: applied, label: input.label, at: Date.now() },
-    ...progress.xpLedger,
-  ].slice(0, LEDGER_LIMIT);
-  if (applied < 0) progress.pendingPenalty += -applied;
+  // A penalty never takes the total below 0 (the account applies the same rule).
+  const amount = Math.max(net, -progress.xp);
+  const applied = addLedgerEntry({ key, sourceType: input.sourceType, sourceId: input.sourceId, amount, label: input.label, at: Date.now() });
 
   await saveProgress();
   notify();
-
-  if (applied > 0) {
-    void saveCloudXpEvent(cloudSourceType(input.sourceType), key, applied, cloudStats());
-  } else if (applied < 0) {
-    void flushPendingPenalty();
-  }
+  void pushXpEvents();
   return applied;
 }
 
@@ -671,18 +724,13 @@ export async function completeLesson(lessonId: string, _subject: Subject, xp: nu
 
   const key = `lesson:${lessonId}`;
   if (!progress.awardedKeys.includes(key)) {
-    progress.xp += xp;
-    progress.level = levelFor(progress.xp);
-    progress.awardedKeys.push(key);
     const label = findLesson(lessonId)?.lesson.title ?? title ?? 'Lesson';
-    progress.xpLedger = [
-      { key, sourceType: 'lesson' as const, sourceId: lessonId, amount: xp, label: `Lesson completed · ${label}`, at },
-      ...progress.xpLedger,
-    ].slice(0, LEDGER_LIMIT);
+    addLedgerEntry({ key, sourceType: 'lesson', sourceId: lessonId, amount: xp, label: `Lesson completed · ${label}`, at });
   }
 
   await saveProgress();
   notify();
+  void pushXpEvents();
   void saveCloudProgress(cloudLessonRows(), cloudStats());
   // +10 Apex Coins for a first completion (data/apex-coins.ts; loaded here on demand because
   // apex-coins imports this module). Best effort: a failed reward never fails the lesson.
@@ -702,7 +750,10 @@ function resetProgress() {
   progress.lessonCompletedAt = {};
   progress.xpLedger = [];
   progress.awardedKeys = [];
-  progress.pendingPenalty = 0;
+  progress.cloudXp = 0;
+  progress.cloudSeq = 0;
+  progress.ledgerBackfilled = true;
+  legacyFloorXp = undefined;
   progress.streakFreezes = 0;
   progress.freezeWeeks = [];
   progress.lostStreak = null;

@@ -699,6 +699,37 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ─── Live league tables (2026-11-14) ─────────────────────────────────────────
+    // leagueTables/{week}_{tier}: one document per tier per week, `rows.{uid} = { username,
+    // weeklyXp, at }`, listened to by every league card (src/data/leagues.ts). A learner may
+    // write only their own row, with their own username, and only into the table of the week
+    // and tier their league entry (users/{uid}.league) says they are in. The server seeds the
+    // new week's tables when it settles a week (api/leagues.mjs).
+    function myLeagueRowOk(tableId) {
+      let row = request.resource.data.rows[request.auth.uid];
+      let me = get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+      return row.keys().hasOnly(['username', 'weeklyXp', 'at'])
+        && row.username == me.username
+        && row.weeklyXp is int && row.weeklyXp >= 0 && row.weeklyXp <= 1000000
+        && row.at == request.time
+        && tableId == me.league.week + '_' + string(me.league.tier);
+    }
+    match /leagueTables/{tableId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && tableId.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]$')
+        && request.resource.data.keys().hasOnly(['week', 'tier', 'rows'])
+        && request.resource.data.week == tableId.split('_')[0]
+        && request.resource.data.tier == int(tableId.split('_')[1])
+        && request.resource.data.rows.keys().hasOnly([request.auth.uid])
+        && myLeagueRowOk(tableId);
+      allow update: if request.auth != null
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rows'])
+        && request.resource.data.rows.diff(resource.data.rows).affectedKeys().hasOnly([request.auth.uid])
+        && myLeagueRowOk(tableId);
+      allow delete: if false;
+    }
+
     // Groups I left: my own private list entry, so the chat stays in my list until I delete it.
     match /users/{uid}/leftGroups/{gid} {
       allow read: if request.auth.uid == uid;

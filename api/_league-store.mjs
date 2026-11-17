@@ -47,10 +47,31 @@ export async function usersWhere(call, field, week) {
     structuredQuery: {
       from: [{ collectionId: 'users' }],
       where: { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value: { stringValue: week } } },
-      select: { fields: [{ fieldPath: 'league' }] },
+      select: { fields: [{ fieldPath: 'league' }, { fieldPath: 'username' }] },
     },
   });
-  return rows.filter((row) => row.document).map((row) => ({ id: idOf(row.document), updateTime: row.document.updateTime, league: plain(row.document.fields?.league) ?? {} }));
+  return rows.filter((row) => row.document).map((row) => ({ id: idOf(row.document), updateTime: row.document.updateTime, league: plain(row.document.fields?.league) ?? {}, username: plain(row.document.fields?.username) ?? null }));
+}
+
+/**
+ * The shared live table of one tier for one week, leagueTables/{week}_{tier} (2026-11-14):
+ * `rows.{uid} = { username, weeklyXp }`. Each learner's app writes only its own row (the
+ * rules allow nothing else); the league card listens to the document. When a week is
+ * settled, the server seeds the new week's tables with everyone's row, so nobody is
+ * missing until their app next saves. Returns one write per table, merging only the
+ * rows given (`rows.<uid>` field paths: uids are plain letters and digits).
+ */
+export function leagueTableWrites(week, rowsByTier) {
+  const writes = [];
+  for (const [tier, rows] of rowsByTier) {
+    if (!rows.length) continue;
+    const fields = { week: encode(week), tier: encode(Number(tier)), rows: encode(Object.fromEntries(rows.map((row) => [row.uid, { username: row.username ?? null, weeklyXp: Math.max(0, Math.round(row.weeklyXp) || 0) }]))) };
+    writes.push({
+      update: { name: `${DB}/leagueTables/${week}_${tier}`, fields },
+      updateMask: { fieldPaths: ['week', 'tier', ...rows.map((row) => `rows.${row.uid}`)] },
+    });
+  }
+  return writes;
 }
 
 /** Lifetime XP from the shared leaderboard (scores/{uid}.xp), 100 at a time. */

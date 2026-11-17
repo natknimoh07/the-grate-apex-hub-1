@@ -25,6 +25,7 @@ import {
 } from '@/data/lesson-completions';
 import { mergeAppLessons } from '@/data/legacy-lessons';
 import { isLegacyLessonId } from '@/data/legacy-ids';
+import { applyUploads, type CloudLedger, cloudLedgerOf, type LedgerUpload } from '@/data/learning/xp-ledger';
 import { auth, db } from '@/lib/firebase';
 
 const LEGACY_CACHE_OWNER_KEY = 'grateapex_learning_cache_owner';
@@ -55,6 +56,8 @@ export type CloudProgress = {
   completedLessons: CloudLessonRow[];
   /** Saved streak protection; absent on accounts that never saved it. */
   streak?: { freezes: number; freezeWeeks: string[]; lost: unknown };
+  /** The account's XP ledger (data/learning/xp-ledger.ts): total, recent events, change count. */
+  ledger: CloudLedger;
 };
 
 export type AttemptMode =
@@ -235,6 +238,7 @@ export async function loadCloudProgress(): Promise<CloudProgress | null> {
             lost: d.lostStreak ?? null,
           }
         : undefined,
+      ledger: cloudLedgerOf(d),
     };
   } catch (error) {
     console.warn('Could not load learning progress from Firestore:', error);
@@ -316,6 +320,8 @@ export async function resetCloudLearningProgress() {
   const snap = await getDoc(progressDocRef);
   const update: Record<string, unknown> = {
     xp: 0,
+    xpEvents: deleteField(),
+    xpSeq: deleteField(),
     streak: 0,
     lastActivityDate: null,
     savedAt: serverTimestamp(),
@@ -342,7 +348,9 @@ async function saveLeaderboardSummary(userId: string, totalXp: number, stats?: C
     const scoreRef = doc(db, 'scores', userId);
     await runTransaction(db, async (transaction) => {
       const current = await transaction.get(scoreRef);
-      const xp = Math.max(0, Number(current.data()?.xp) || 0, Math.min(1_000_000, Math.max(0, Math.round(totalXp))));
+      // The account's XP as it is (2026-11-14): it used to keep the highest figure ever
+      // written, which left the leaderboard above the account after a penalty or a reset.
+      const xp = Math.min(1_000_000, Math.max(0, Math.round(totalXp)));
       transaction.set(scoreRef, {
         username,
         xp,
@@ -358,20 +366,15 @@ async function saveLeaderboardSummary(userId: string, totalXp: number, stats?: C
   }
 }
 
-/**
- * The progress document is shared by every signed-in device. A normal merged
- * write can arrive after another device's newer total and lower XP again, so
- * compare it on Firestore before saving. This preserves the account's highest
- * earned total while the local stores catch up through the live listener.
- */
-async function saveProgressSummary(userId: string, values: Record<string, unknown>, totalXp: number) {
-  const progressDocRef = doc(db, 'progress', userId);
-  return runTransaction(db, async (transaction) => {
-    const current = await transaction.get(progressDocRef);
-    const xp = Math.max(0, Number(current.data()?.xp) || 0, totalXp);
-    transaction.set(progressDocRef, { ...values, xp }, { merge: true });
-    return xp;
-  });
+/** The streak and activity fields every progress save carries (never the XP: see uploadCloudXpEvents). */
+function summaryFields(stats: CloudLearningStats) {
+  return {
+    streak: stats.current_streak,
+    lastActivityDate: stats.last_activity_date,
+    ...streakFields(stats),
+    savedAt: serverTimestamp(),
+    updatedAt: Date.now(),
+  };
 }
 
 export async function saveCloudProgress(
@@ -382,21 +385,20 @@ export async function saveCloudProgress(
   if (!userId) return;
 
   try {
-    // Only this app's own fields, merged: the shared `lessons` map is not written.
-    const savedXp = await saveProgressSummary(
-      userId,
+    // Only this app's own fields, merged: the shared `lessons` map is not written, and the
+    // XP is not either (2026-11-14): it is a sum of the events in the shared ledger, changed
+    // only by uploadCloudXpEvents. Before, every save wrote "the higher of the account's and
+    // this device's total", which undid penalties and paid day rewards once per device.
+    const progressDocRef = doc(db, 'progress', userId);
+    await setDoc(
+      progressDocRef,
       {
         // How many lessons are done: another device that sees more than it has reads them again.
         ...(completedLessons.length ? { lessonsDone: completedLessons.length } : {}),
-        streak: stats.current_streak,
-        lastActivityDate: stats.last_activity_date,
-        ...streakFields(stats),
-        savedAt: serverTimestamp(),
-        updatedAt: Date.now(),
+        ...summaryFields(stats),
       },
-      stats.total_xp
+      { merge: true }
     );
-    void saveLeaderboardSummary(userId, savedXp, { ...stats, total_xp: savedXp });
     if (completedLessons.length === 0) return;
 
     const stored = await readCompletionDocs(userId);
@@ -415,7 +417,6 @@ export async function saveCloudProgress(
 
     // The completions rule is not deployed yet: keep the earlier, protected
     // behaviour (this app's objects in the shared map; numbers never replaced).
-    const progressDocRef = doc(db, 'progress', userId);
     const snap = await getDoc(progressDocRef);
     // Never the original app's own lessons: that map holds its section counts.
     await setDoc(progressDocRef, { lessons: mergeAppLessons(snap.data()?.lessons, completedLessons.filter((lesson) => !isLegacyLessonId(lesson.lessonId))) }, { merge: true });
@@ -424,51 +425,36 @@ export async function saveCloudProgress(
   }
 }
 
-export async function saveCloudXpEvent(
-  sourceType: 'lesson' | 'quiz',
-  sourceId: string,
-  amount: number,
-  stats: CloudLearningStats
-) {
-  if (amount <= 0) return;
+export type LedgerUploadResult = CloudLedger & { duplicates: string[] };
+
+/**
+ * Records XP events on the account, in one transaction (data/learning/xp-ledger.ts,
+ * `applyUploads`): a key the account already holds is a duplicate — paid on another
+ * device, not paid again — and a new one is added to the account's XP. Returns the
+ * account ledger as committed (null when signed out). Throws when offline, so the
+ * caller keeps the entries and tries again later. One read and one write however
+ * many entries are sent, so a device coming back online costs the same as one award.
+ */
+export async function uploadCloudXpEvents(uploads: readonly LedgerUpload[], stats: CloudLearningStats, floorXp?: number): Promise<LedgerUploadResult | null> {
   const userId = await getUserId();
-  if (!userId) return;
-
-  try {
-    const savedXp = await saveProgressSummary(
-      userId,
-      {
-        streak: stats.current_streak,
-        lastActivityDate: stats.last_activity_date,
-        ...streakFields(stats),
-        savedAt: serverTimestamp(),
-        updatedAt: Date.now(),
-      },
-      stats.total_xp
-    );
-    void saveLeaderboardSummary(userId, savedXp, { ...stats, total_xp: savedXp });
-  } catch (error) {
-    console.warn('Could not save XP event to Firestore:', error);
-  }
-}
-
-export async function recordCloudXpAdjustment(amount: number, sourceId: string): Promise<boolean> {
-  const userId = await getUserId();
-  if (!userId || amount === 0) return false;
-
-  try {
-    const progressDocRef = doc(db, 'progress', userId);
-    const snap = await getDoc(progressDocRef);
-    const currentXp = Number(snap.data()?.xp ?? 0);
-    await updateDoc(progressDocRef, {
-      xp: Math.max(0, currentXp + amount),
-      updatedAt: Date.now(),
-    });
-    return true;
-  } catch (error) {
-    console.warn('Could not adjust XP in Firestore:', error);
-    return false;
-  }
+  if (!userId) return null;
+  const progressDocRef = doc(db, 'progress', userId);
+  const result = await runTransaction(db, async (transaction) => {
+    const current = await transaction.get(progressDocRef);
+    const next = applyUploads(cloudLedgerOf(current.data()), uploads, floorXp);
+    if (next.changed) {
+      // The event map is replaced whole (mergeFields), so entries trimmed from it go;
+      // keys hold ':' and are written as plain object keys, never as field paths.
+      transaction.set(
+        progressDocRef,
+        { xp: next.xp, xpEvents: next.xpEvents, xpSeq: next.xpSeq, ...summaryFields(stats) },
+        { mergeFields: ['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'savedAt', 'updatedAt', ...Object.keys(streakFields(stats))] }
+      );
+    }
+    return next;
+  });
+  if (result.changed) void saveLeaderboardSummary(userId, result.xp, { ...stats, total_xp: result.xp });
+  return { xp: result.xp, xpEvents: result.xpEvents, xpSeq: result.xpSeq, duplicates: result.duplicates };
 }
 
 // ─── Quiz attempts ───────────────────────────────────────────────────

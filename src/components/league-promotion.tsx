@@ -22,9 +22,10 @@ import { useThemedStyles } from '@/hooks/use-theme';
 
 const KEY = 'grateapex_league_congrats'; // the last promotion week congratulated
 const WEEK_CHECK_MS = 30 * 60_000; // notices a new week while the app stays open (no reads)
-// My weekly XP is saved on my league entry this long after it last changed, so the shared league
-// table (api/league.mjs) is up to date without reading everyone's leaderboard entry. A write, no reads.
-const WEEKLY_XP_SAVE_MS = 2 * 60_000;
+// My weekly XP is saved on my league entry and in the shared live table this long after it last
+// changed, so everyone's league table is up to date without reading anyone's leaderboard entry.
+// A write, no reads (20 s, not 2 min: owner, 2026-11-14, the table should feel live).
+const WEEKLY_XP_SAVE_MS = 20_000;
 
 let items: AppNotification[] = [];
 const listeners = new Set<() => void>();
@@ -59,13 +60,14 @@ export function LeaguePromotionWatcher() {
   const profileLoaded = user?.profileLoaded ?? false;
   const league = user?.profile?.league;
   const leagueKey = JSON.stringify(league ?? null);
+  const username = typeof user?.profile?.username === 'string' ? user.profile.username : null;
   const xp = useProgress().xp;
   useEffect(() => {
     if (!uid || !league) return;
-    const timer = setTimeout(() => void saveWeeklyLeagueXp(league).catch(() => {}), WEEKLY_XP_SAVE_MS);
+    const timer = setTimeout(() => void saveWeeklyLeagueXp(league, username).catch(() => {}), WEEKLY_XP_SAVE_MS);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `league` is followed through leagueKey
-  }, [uid, xp, leagueKey]);
+  }, [uid, xp, leagueKey, username]);
   const [week, setWeek] = useState(weekKey);
   useEffect(() => {
     const timer = setInterval(() => setWeek(weekKey()), WEEK_CHECK_MS);
@@ -83,7 +85,7 @@ export function LeaguePromotionWatcher() {
       try {
         const saved = savedLeague(league, week);
         const promotion = promotionOf(saved.settled ? saved : await loadLeague());
-        if (saved.settled) void saveWeeklyLeagueXp(league);
+        if (saved.settled) void saveWeeklyLeagueXp(league, username);
         if (!live || !promotion) return;
         const tier = LEAGUE_TIERS[promotion.tier];
         setItems([{

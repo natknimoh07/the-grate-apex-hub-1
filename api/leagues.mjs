@@ -14,7 +14,7 @@
 // that changed after it was read is left to that learner's app (never overwritten).
 // Needs FIREBASE_SERVICE_ACCOUNT (like api/reminders.mjs).
 import { adminToken, serviceAccount } from './_admin.mjs';
-import { DB, encode, firestore, lifetimeXp, savedWeeklyXp, usersWhere, weeklyContributionTotal } from './_league-store.mjs';
+import { DB, encode, firestore, leagueTableWrites, lifetimeXp, savedWeeklyXp, usersWhere, weeklyContributionTotal } from './_league-store.mjs';
 import { leagueFinalPlaces, leagueWeek, nextLeagueTier, settledLeagueFix } from './_push-logic.mjs';
 
 /** Settles one finished week. Returns what changed (or would, when dry). */
@@ -42,6 +42,8 @@ export async function settleLeagueWeek(call, week, newWeek, dry) {
 
   const writes = [];
   const counts = { promoted: 0, stays: 0, relegated: 0, corrected: 0 };
+  // The new week's shared live tables (leagueTables/{newWeek}_{tier}): everyone's row from the start.
+  const newTables = new Map(); // new tier → [{ uid, username, weeklyXp }]
   for (const [tier, rows] of tiers) {
     const places = leagueFinalPlaces(rows);
     for (const row of rows) {
@@ -76,8 +78,11 @@ export async function settleLeagueWeek(call, week, newWeek, dry) {
         updateMask: { fieldPaths: ['league'] },
         currentDocument: { updateTime: row.person.updateTime },
       });
+      if (!newTables.has(league.tier)) newTables.set(league.tier, []);
+      newTables.get(league.tier).push({ uid: row.uid, username: row.person.username ?? null, weeklyXp: since ?? 0 });
     }
   }
+  writes.push(...leagueTableWrites(newWeek, newTables));
 
   let written = 0;
   let skipped = 0;

@@ -17,8 +17,13 @@
 // 0 when the shared total lagged), and kept some top learners from moving up.
 // Last week's result is checked again once with these rules; it can only move a
 // learner up, never down.
-import { collection, doc, type DocumentReference, getDoc, getDocFromServer, getDocs, limit, query, runTransaction, updateDoc, where } from 'firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//
+// The live table (owner, 2026-11-14: the league differed between devices and was never
+// up to date): everyone in a tier shares one document, leagueTables/{week}_{tier}, with
+// one row per learner. A learner's app writes only its own row (the rules allow nothing
+// else), 20 s after its XP last changed; the league card listens to that one document,
+// so every device shows the same table, and a change costs one read per viewer.
+import { collection, doc, type DocumentReference, getDoc, getDocFromServer, getDocs, limit, onSnapshot, query, runTransaction, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 
 import { getLeagueOutcome, type LeagueOutcome } from '@/data/ranks';
 import { auth, db } from '@/lib/firebase';
@@ -71,36 +76,77 @@ function weekRange(key: string) {
   return { start: start.getTime(), end: end.getTime() };
 }
 
-/** XP I earned in a week, from my own XP history (the league card's figure). */
-function myXpInWeek(key: string) {
+/** XP earned in a week, from the account's XP ledger (shared by every device; the league card's figure). */
+export function myXpInWeek(key: string, ledger = getProgressSnapshot().xpLedger) {
   const { start, end } = weekRange(key);
-  return getProgressSnapshot().xpLedger.filter((item) => item.at >= start && item.at < end).reduce((sum, item) => sum + Math.max(0, item.amount), 0);
+  return ledger.filter((item) => item.at >= start && item.at < end).reduce((sum, item) => sum + Math.max(0, item.amount), 0);
 }
 
 /**
- * Weekly XP must be an account value, not just this device's local history.
- * A phone and laptop keep separate ledgers, so use the best figure already
- * saved on the account and the synced lifetime-XP baseline as well.
+ * This week's XP: the account's ledger, or the figure already saved for this week if
+ * that is higher (a device whose ledger has not caught up never lowers it). Never
+ * "lifetime XP − the start point" (2026-11-14): the start point was written from two
+ * different lifetime figures (the leaderboard's and the device's), and each round
+ * between them pushed the weekly XP up by the gap.
  */
-function currentWeeklyXp(entry: LeagueEntry | undefined, lifetime: number, week: string) {
+function currentWeeklyXp(entry: LeagueEntry | undefined, week: string) {
   const saved = entry?.xpWeek === week && typeof entry.weeklyXp === 'number' ? Math.max(0, entry.weeklyXp) : 0;
-  const fromStart = Number(entry?.startXp) > 0 || saved > 0
-    ? Math.max(0, lifetime - (Number(entry?.startXp) || 0))
-    : 0;
-  return Math.max(myXpInWeek(week), saved, fromStart);
+  return Math.max(myXpInWeek(week), saved);
 }
 
 const clampTier = (tier: number) => Math.max(0, Math.min(LEAGUE_TIERS.length - 1, Math.round(tier)));
-const DEVICE_KEY = 'grateapex_league_device';
-let deviceId: Promise<string> | null = null;
-function leagueDeviceId() {
-  if (!deviceId) deviceId = AsyncStorage.getItem(DEVICE_KEY).then((saved) => {
-    if (saved && /^[a-z0-9]{16,40}$/.test(saved)) return saved;
-    const next = globalThis.crypto?.randomUUID?.().replace(/-/g, '') ?? `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`;
-    void AsyncStorage.setItem(DEVICE_KEY, next);
-    return next;
+
+/** The shared table document of one tier for one week. */
+export const leagueTableId = (week: string, tier: number) => `${week}_${clampTier(tier)}`;
+
+type TableRow = { username?: unknown; weeklyXp?: unknown };
+
+/** Rows of a shared table document (anything odd is left out). */
+export function tableRows(data: unknown, me: string): LeagueRow[] {
+  const rows = (data as { rows?: unknown } | undefined)?.rows;
+  if (!rows || typeof rows !== 'object') return [];
+  return Object.entries(rows as Record<string, TableRow>).flatMap(([userId, row]) => {
+    if (!row || typeof row !== 'object' || !/^[A-Za-z0-9]{6,64}$/.test(userId)) return [];
+    return [{ userId, username: typeof row.username === 'string' ? row.username : null, weeklyXp: Math.max(0, Math.min(1_000_000, Math.round(Number(row.weeklyXp) || 0))), isMe: userId === me }];
   });
-  return deviceId;
+}
+
+/**
+ * Listens to the shared table of a tier (one read to open, one per change) while a league
+ * card is on screen. Rows that are not in it yet (a learner whose app has not saved this
+ * week) come from the server table the card loaded, so nobody is missing.
+ */
+export function watchLeagueTable(week: string, tier: number, onRows: (rows: LeagueRow[]) => void, onError?: (error: unknown) => void) {
+  const me = auth.currentUser?.uid ?? '';
+  return onSnapshot(
+    doc(db, 'leagueTables', leagueTableId(week, tier)),
+    (snap) => onRows(tableRows(snap.data(), me)),
+    (error) => onError?.(error)
+  );
+}
+
+/** Rows from the live table replace the server's for the same learner; the rest are kept. */
+export function mergeTableRows(base: readonly LeagueRow[], live: readonly LeagueRow[]): LeagueRow[] {
+  const byId = new Map(base.map((row) => [row.userId, row]));
+  for (const row of live) byId.set(row.userId, { ...row, username: row.username ?? byId.get(row.userId)?.username ?? null });
+  return standings([...byId.values()]);
+}
+
+let lastRowWrite = '';
+
+/** My row in the shared table (the rules let me write only this one). Skipped without a username. */
+async function saveMyTableRow(uid: string, week: string, tier: number, weeklyXp: number, username: string | null | undefined) {
+  if (!username) return;
+  const mark = `${uid}|${week}|${tier}|${weeklyXp}`;
+  if (mark === lastRowWrite) return;
+  lastRowWrite = mark;
+  try {
+    await setDoc(doc(db, 'leagueTables', leagueTableId(week, tier)), { week, tier: clampTier(tier), rows: { [uid]: { username, weeklyXp, at: serverTimestamp() } } }, { merge: true });
+  } catch (error) {
+    lastRowWrite = '';
+    // The rules are not published yet, or offline: the server table still shows the saved figure.
+    if ((error as { code?: string } | null)?.code !== 'permission-denied') console.warn('Could not update the league table:', error);
+  }
 }
 
 /** The tier after a finish: one up when promoted, one down when relegated. */
@@ -232,11 +278,11 @@ export function savedLeague(value: unknown, week = weekKey()): { settled: boolea
 }
 
 /**
- * Keeps this week's XP on the learner's own league entry up to date (others'
- * league tables read it), with no reads: the entry comes from the live account
- * and the XP from this device's XP history. Same figures as readLeague writes.
+ * Keeps this week's XP on the learner's own league entry and in the shared table up to
+ * date (others' league tables read them), with no reads: the entry comes from the live
+ * account and the XP from the account's ledger. Same figures as readLeague writes.
  */
-export async function saveWeeklyLeagueXp(value: unknown) {
+export async function saveWeeklyLeagueXp(value: unknown, username?: string | null) {
   const uid = auth.currentUser?.uid;
   const saved = savedLeague(value);
   if (!uid) return;
@@ -252,28 +298,26 @@ export async function saveWeeklyLeagueXp(value: unknown) {
   await waitForProgressSync().catch(() => {});
   const progress = getProgressSnapshot();
   const week = weekKey();
-  const weeklyXp = currentWeeklyXp(entry, progress.xp, week);
+  const weeklyXp = currentWeeklyXp(entry, week);
   const startXp = Math.max(0, progress.xp - weeklyXp);
-  const device = await leagueDeviceId();
-  const mine = myXpInWeek(week);
-  if (progress.xp <= 0 || (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week && entry.weeklyByDevice?.[device] === mine)) return;
+  if (progress.xp <= 0) return;
+  await saveMyTableRow(uid, week, entry.tier, weeklyXp, username);
+  if (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week) return;
   // Only the XP figures, never the whole entry: a stale copy must not put back an old league.
-  await updateDoc(doc(db, 'users', uid), { 'league.startXp': startXp, 'league.weeklyXp': weeklyXp, 'league.xpWeek': week, [`league.weeklyByDevice.${device}`]: mine }).catch(() => {});
+  await updateDoc(doc(db, 'users', uid), { 'league.startXp': startXp, 'league.weeklyXp': weeklyXp, 'league.xpWeek': week }).catch(() => {});
 }
 
 /**
- * A phone may hold XP from a finished week that the laptop never saw. If the
- * server settled that week using the lower figure, keep the phone's exact
- * history on `prev` too; the scheduled league repair then recalculates the
- * whole tier and restores the earned tier instead of leaving it in Bronze.
+ * A finished week whose figure on `prev` is below what the account's ledger shows for it
+ * (a device that never sent its XP before the shared ledger existed): keep the exact
+ * figure on `prev`; the scheduled league repair then recalculates the tier.
  */
 async function repairPreviousLeagueXp(uid: string, entry: LeagueEntry | null) {
   const previous = entry?.prev;
   if (!previous || previous.week === weekKey()) return;
   const exactXp = myXpInWeek(previous.week);
   if (exactXp <= previous.weeklyXp) return;
-  const device = await leagueDeviceId();
-  await updateDoc(doc(db, 'users', uid), { 'league.prev.weeklyXp': exactXp, [`league.prev.weeklyByDevice.${device}`]: exactXp }).catch(() => {});
+  await updateDoc(doc(db, 'users', uid), { 'league.prev.weeklyXp': exactXp }).catch(() => {});
 }
 
 /**
@@ -327,10 +371,11 @@ async function readLeague(): Promise<LeagueView> {
   // From the server, never a copy kept in the browser: what is written below depends on it.
   const mine = (await getDocFromServer(ref)).data() ?? {};
   let entry = mine.league as LeagueEntry | undefined;
-  const myXp = (await lifetimeXp([uid])).get(uid)?.xp ?? 0;
 
-  // My XP history first: a finished week is settled with it.
+  // The account's XP ledger first: a finished week is settled with it, and the lifetime
+  // figure is the account's (one figure everywhere, never the leaderboard's copy).
   await waitForProgressSync().catch(() => {});
+  const myXp = getProgressSnapshot().xp;
 
   const lastWeek = weekKey(Date.now() - 7 * 86_400_000);
   if (!entry || typeof entry.week !== 'string') entry = await joinLeague(ref, week, myXp);
@@ -349,16 +394,17 @@ async function readLeague(): Promise<LeagueView> {
     entry = { week, tier: clampTier(entry.tier), startXp: myXp };
     await updateDoc(ref, { league: entry });
   }
-  // My weekly XP comes from my own XP history (earned since Monday), so it is
+  // My weekly XP comes from the account's XP ledger (earned since Monday), so it is
   // never mixed up with lifetime XP; the start point others use is corrected to
   // match (it was 0 for anyone who joined before their XP had loaded).
-  const ledgerWeekly = currentWeeklyXp(entry, myXp, week);
+  const ledgerWeekly = currentWeeklyXp(entry, week);
   const fixedStart = Math.max(0, myXp - ledgerWeekly);
   if (myXp > 0 && (fixedStart !== entry.startXp || entry.weeklyXp !== ledgerWeekly || entry.xpWeek !== week)) {
     entry = { ...entry, startXp: fixedStart, weeklyXp: ledgerWeekly, xpWeek: week };
     // Only the XP figures: the league itself is the server's to change.
     await updateDoc(ref, { 'league.startXp': fixedStart, 'league.weeklyXp': ledgerWeekly, 'league.xpWeek': week }).catch(() => {});
   }
+  if (myXp > 0) await saveMyTableRow(uid, week, entry.tier, ledgerWeekly, typeof mine.username === 'string' ? mine.username : null);
   const rows = standings((await tierRows(week, entry.tier, uid)).map((row) => (row.isMe ? { ...row, weeklyXp: ledgerWeekly } : row)));
   if (!rows.some((row) => row.isMe)) rows.push({ userId: uid, username: mine.username ?? null, weeklyXp: ledgerWeekly, isMe: true });
   return { week, tier: entry.tier, endsAt: weekEnds(), rows: standings(rows), prev: entry.prev && entry.prev.week !== week ? entry.prev : null };

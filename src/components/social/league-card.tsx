@@ -1,5 +1,5 @@
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PersonAvatar } from '@/components/social/profile-card';
@@ -11,7 +11,8 @@ import { SectionHeader } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { useNow } from '@/data/learning/use-learning';
-import { LEAGUE_TIERS, type LeagueView, loadLeague, outcomeFor } from '@/data/leagues';
+import { LEAGUE_TIERS, type LeagueRow, type LeagueView, loadLeague, mergeTableRows, myXpInWeek, outcomeFor, watchLeagueTable } from '@/data/leagues';
+import { useProgress } from '@/data/progress';
 import { useAuth } from '@/hooks/use-auth';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { routes } from '@/lib/routes';
@@ -20,22 +21,48 @@ import { friendlyError } from '@/lib/errors';
 // Connect → League: this week's league with everyone in your tier (friends
 // and strangers), ranked by XP earned this week. Top 20% move up a tier, the
 // bottom 20% move down, when the week ends (Monday 00:00).
+//
+// Live (2026-11-14): while the card is on screen it listens to the tier's shared table
+// document (leagueTables/{week}_{tier}, one read per change), so every device shows the
+// same table at the same moment; my own row comes straight from the account's XP ledger.
 export function LeagueCard() {
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
   const now = useNow();
   const [view, setView] = useState<LeagueView | null>(null);
+  const [liveRows, setLiveRows] = useState<LeagueRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const ledger = useProgress().xpLedger;
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (fresh = false) => {
     try {
-      setView(await loadLeague());
+      setView(await loadLeague({ fresh }));
       setError(null);
     } catch (problem) {
       setError(friendlyError(problem, 'The league could not be loaded.'));
     }
   }, []);
   useFocusEffect(useCallback(() => { void refresh(); }, [refresh]));
+
+  // The shared table, only while this card is on screen and the week is running.
+  const liveWeek = view && !view.settling ? view.week : null;
+  const liveTier = view?.tier ?? 0;
+  const [focused, setFocused] = useState(false);
+  useFocusEffect(useCallback(() => { setFocused(true); return () => setFocused(false); }, []));
+  useEffect(() => {
+    if (!focused || !liveWeek) { setLiveRows(null); return; }
+    const stop = watchLeagueTable(liveWeek, liveTier, setLiveRows, () => setLiveRows(null));
+    return () => { stop(); };
+  }, [focused, liveWeek, liveTier]);
+
+  const rows = useMemo(() => {
+    if (!view) return [];
+    const merged = liveRows ? mergeTableRows(view.rows, liveRows) : view.rows;
+    const me = merged.find((row) => row.isMe);
+    if (view.settling || !me) return merged;
+    // My row: the account's ledger, the moment it changes.
+    return mergeTableRows(merged, [{ ...me, weeklyXp: Math.max(myXpInWeek(view.week, ledger), me.weeklyXp) }]);
+  }, [view, liveRows, ledger]);
 
   // Until the table loads (or when it cannot be, e.g. the database's free daily limit is used up),
   // show the league saved on the learner's own account, never Bronze (owner, 2026-11-05: everyone
@@ -46,7 +73,7 @@ export function LeagueCard() {
   const msLeft = view ? Math.max(0, view.endsAt - now) : 0;
   const days = Math.floor(msLeft / 86_400_000);
   const hours = Math.floor((msLeft % 86_400_000) / 3_600_000);
-  const size = view?.rows.length ?? 0;
+  const size = rows.length;
   const prevTier = view?.prev ? LEAGUE_TIERS[view.prev.tier] : null;
 
   return (
@@ -58,7 +85,7 @@ export function LeagueCard() {
         <View style={styles.flex}>
           <SectionHeader title={tier ? `${tier.name} League` : 'Your league'} subtitle={view ? (view.settling ? `Last week's final table · ${size} learner${size === 1 ? '' : 's'}` : `${size} learner${size === 1 ? '' : 's'} · ends in ${days}d ${hours}h`) : error ? 'The table could not be loaded' : 'Loading…'} style={styles.noMargin} />
         </View>
-        <Button label="Refresh" variant="ghost" size="sm" onPress={() => void refresh()} />
+        <Button label="Refresh" variant="ghost" size="sm" onPress={() => void refresh(true)} />
       </View>
       {view?.prev && prevTier ? (
         <View style={[styles.prev, view.prev.outcome === 'promoted' ? styles.prevUp : view.prev.outcome === 'relegated' ? styles.prevDown : null]}>
@@ -72,7 +99,7 @@ export function LeagueCard() {
       {view?.settling ? <Text style={styles.rules}>{`Last week's results are being finalised for everyone (by 10:00 at the latest). You will then move to the league your place earned. This week started on Monday at 00:00: your ${(view.thisWeekXp ?? 0).toLocaleString()} XP since then counts for this week.`}</Text> : null}
       <Text style={styles.rules}>Top 20% move up a league, the bottom 20% move down. Earn XP this week to climb.</Text>
       <View style={styles.list}>
-        {view?.rows.slice(0, 30).map((row, index) => {
+        {rows.slice(0, 30).map((row, index) => {
           const position = index + 1;
           const zone = outcomeFor(position, size, row.weeklyXp);
           return (

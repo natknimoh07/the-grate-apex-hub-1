@@ -257,3 +257,18 @@ test('weekly league XP includes separate phone and laptop contributions', async 
   assert.equal(weeklyContributionTotal({ weeklyXp: 60, xpWeek: week, weeklyByDevice: { phone: 20 } }, week, true), 60);
   assert.equal(weeklyContributionTotal({ weeklyXp: 90, xpWeek: '2026-10-26', weeklyByDevice: { phone: 90 } }, week, true), 0);
 });
+
+test('settling a week seeds the new week\'s live league tables, one write per tier', async () => {
+  const { leagueTableWrites } = await import('../api/_league-store.mjs');
+  const writes = leagueTableWrites('2026-11-16', new Map([
+    [1, [{ uid: 'abc123', username: 'ama', weeklyXp: 0 }, { uid: 'def456', username: null, weeklyXp: 12.6 }]],
+    [0, []],
+  ]));
+  assert.equal(writes.length, 1);
+  assert.ok(writes[0].update.name.endsWith('/leagueTables/2026-11-16_1'));
+  assert.deepEqual(writes[0].updateMask.fieldPaths, ['week', 'tier', 'rows.abc123', 'rows.def456']);
+  const rows = writes[0].update.fields.rows.mapValue.fields;
+  assert.equal(rows.abc123.mapValue.fields.username.stringValue, 'ama');
+  assert.equal(rows.def456.mapValue.fields.weeklyXp.integerValue, '13');
+  assert.deepEqual(rows.def456.mapValue.fields.username, { nullValue: null });
+});
