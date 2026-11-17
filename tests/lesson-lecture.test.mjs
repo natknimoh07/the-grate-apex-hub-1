@@ -18,9 +18,9 @@ describe('lesson lecture labels', () => {
     assert.equal(slideSpans([23]), '23');
   });
 
-  it('name the deck and its slides, e.g. Cardiac Output and Its Control', () => {
+  it('name the deck and its slides, e.g. Circulation 1, Part 3', () => {
     const lesson = lessons.find((item) => item.id === 'cardiovascular-physiology-3');
-    assert.equal(lesson.title, 'Cardiac Output and Its Control');
+    assert.equal(lesson.title, 'Circulation 1, Part 3 (Cardiac Output and Its Control)');
     assert.equal(lessonLectureLabel(lesson), 'CIRCULATION 1 (slides 41–58)');
   });
 

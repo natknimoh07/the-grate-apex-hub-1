@@ -12,7 +12,7 @@ type Draft = LessonDraft<ConceptId>;
 
 const lesson1: Draft = {
   id: 'cardiovascular-physiology-1',
-  title: 'The Heart: Conduction and the Cardiac Cycle',
+  title: 'Circulation 1, Part 1 (The Heart: Conduction and the Cardiac Cycle)',
   description: 'How the impulse spreads from the SA node, and the pressure and volume changes of systole and diastole.',
   xp: 25,
   sourceRefs: c1([4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
@@ -147,7 +147,7 @@ const lesson1: Draft = {
 
 const lesson2: Draft = {
   id: 'cardiovascular-physiology-2',
-  title: 'Pulse, JVP, Heart Sounds and Murmurs',
+  title: 'Circulation 1, Part 2 (Pulse, JVP, Heart Sounds and Murmurs)',
   description: 'The arterial pulse, the waves of the jugular venous pulse, the four heart sounds and how murmurs are timed.',
   xp: 25,
   sourceRefs: c1([24, 25, 26, 27, 28, 30, 31, 33, 34, 35, 36, 38, 40]),
@@ -272,7 +272,7 @@ const lesson2: Draft = {
 
 const lesson3: Draft = {
   id: 'cardiovascular-physiology-3',
-  title: 'Cardiac Output and Its Control',
+  title: 'Circulation 1, Part 3 (Cardiac Output and Its Control)',
   description: 'CO = HR × SV, the Frank–Starling law, contractility, Fick’s principle and the work of the heart.',
   xp: 25,
   sourceRefs: c1([41, 42, 44, 45, 48, 49, 50, 51, 52, 53, 54, 57, 58]),
@@ -426,7 +426,7 @@ const lesson3: Draft = {
 
 const lesson4: Draft = {
   id: 'cardiovascular-physiology-4',
-  title: 'Vessels, Flow and Blood Pressure',
+  title: 'Circulation 1, Part 4 (Vessels, Flow and Blood Pressure)',
   description: 'Vessel structure, flow = pressure ÷ resistance, Poiseuille, turbulence, viscosity, and measuring blood pressure.',
   xp: 30,
   sourceRefs: c1([60, 61, 62, 63, 65, 66, 67, 70, 71, 72, 73, 74, 75, 77, 78, 79, 81, 82, 85, 86, 87, 91]),
@@ -628,7 +628,7 @@ const lesson4: Draft = {
 
 const lesson5: Draft = {
   id: 'cardiovascular-physiology-5',
-  title: 'Capillaries, Oedema, Lymph and Veins',
+  title: 'Circulation 1, Part 5 (Capillaries, Oedema, Lymph and Veins)',
   description: 'Starling’s forces across the capillary wall, the causes of oedema, lymphatic drainage and venous return.',
   xp: 25,
   sourceRefs: c1([62, 93, 94, 95, 97, 99, 100, 101, 102, 106, 107, 109, 110]),
@@ -768,7 +768,7 @@ const lesson5: Draft = {
 
 const lesson6: Draft = {
   id: 'cardiovascular-physiology-6',
-  title: 'Regulation of the Cardiovascular System',
+  title: 'Circulation 2 (Regulation of the Cardiovascular System)',
   description: 'Local autoregulation, humoral and nervous control, the vasomotor centre, baroreceptors and Cushing’s reflex.',
   xp: 30,
   sourceRefs: c2([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 28, 31, 32, 33, 34, 35, 36, 37, 38, 40]),
@@ -985,7 +985,7 @@ const lesson6: Draft = {
 
 const lesson7: Draft = {
   id: 'cardiovascular-physiology-7',
-  title: 'Gravity, Shock and Heart Failure',
+  title: 'Circulation 3 (Gravity, Shock and Heart Failure)',
   description: 'Compensating for standing up, orthostatic hypotension, g forces, the types and signs of shock, and forward and backward heart failure.',
   xp: 30,
   sourceRefs: c3([3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30, 31, 32, 33]),
@@ -1161,7 +1161,7 @@ const lesson7: Draft = {
 
 const lesson8: Draft = {
   id: 'cardiovascular-physiology-8',
-  title: 'Regional Circulations',
+  title: 'Circulation 4 (Regional Circulations)',
   description: 'The brain (CSF, blood–brain barrier, cerebral flow), heart, lungs, gut and liver, skin and the fetus.',
   xp: 30,
   sourceRefs: c4([2, 5, 6, 7, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 31, 32, 34, 35, 36, 37, 39, 40, 45]),
@@ -1421,7 +1421,7 @@ const lesson8: Draft = {
 
 const lesson9: Draft = {
   id: 'cardiovascular-physiology-9',
-  title: 'The ECG and Cardiac Rhythms',
+  title: 'Circulation 5 (The ECG and Cardiac Rhythms)',
   description: 'Leads, waves and intervals, calculating heart rate, sinus rhythm and arrhythmia, and the degrees of heart block.',
   xp: 25,
   sourceRefs: c5([2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]),
