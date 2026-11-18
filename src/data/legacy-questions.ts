@@ -21,7 +21,7 @@ export type BankQuestion = { id: string; q: string; o: string[]; a: number; e: s
 // Fractions do not nest. Where only plain text will do (Ask AI, the glossary), one is written on one
 // line, a/b, with brackets round a part of more than one term: (mass of solute)/(mass of solution).
 
-export type Run = { t: string; b?: boolean; i?: boolean; sub?: boolean; sup?: boolean; term?: string; frac?: { num: Run[]; den: Run[] } };
+export type Run = { t: string; b?: boolean; i?: boolean; sub?: boolean; sup?: boolean; /** Highlighted (a lesson's line to remember: <mark>, data/lesson-marks.ts). */ hl?: boolean; term?: string; frac?: { num: Run[]; den: Run[] } };
 const unescape = (s: string) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
 const FRACTION = /<frac><n>([\s\S]*?)<\/n><d>([\s\S]*?)<\/d><\/frac>/g;
 /** One side of a fraction on one line: in brackets when it has more than one term. */
@@ -34,12 +34,12 @@ export const plainText = (s: string) => unescape(s.replace(FRACTION, (_, num: st
 
 export function parseRich(src: string): Run[] {
   const runs: Run[] = [];
-  const state = { b: 0, i: 0, sub: 0, sup: 0 };
+  const state = { b: 0, i: 0, sub: 0, sup: 0, mark: 0 };
   let term: string | undefined;
   // Inside a fraction, text goes to its numerator or denominator.
   let frac: { num: Run[]; den: Run[] } | null = null;
   let target = runs;
-  const re = /<(\/?)(b|i|sub|sup|term|frac|n|d)((?:\s+d="[^"]*")?)>|([^<]+)|(<)/g;
+  const re = /<(\/?)(b|i|sub|sup|mark|term|frac|n|d)((?:\s+d="[^"]*")?)>|([^<]+)|(<)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(src))) {
     const text = m[4] ?? m[5];
@@ -49,11 +49,12 @@ export function parseRich(src: string): Run[] {
       if (state.i) run.i = true;
       if (state.sub) run.sub = true;
       if (state.sup) run.sup = true;
+      if (state.mark) run.hl = true;
       if (term) run.term = term;
       target.push(run);
     } else {
       const close = m[1] === '/';
-      const tag = m[2] as 'b' | 'i' | 'sub' | 'sup' | 'term' | 'frac' | 'n' | 'd';
+      const tag = m[2] as 'b' | 'i' | 'sub' | 'sup' | 'mark' | 'term' | 'frac' | 'n' | 'd';
       if (tag === 'term') {
         if (close) term = undefined;
         else {

@@ -30,6 +30,7 @@ import {
 import { THEME_CATALOG } from '@/data/theme-catalog';
 import { setUsername, useSocial } from '@/data/social';
 import { subjects } from '@/data/subjects';
+import { stripMarks } from '@/data/lesson-marks';
 import { setDisplayName, useDisplayName } from '@/data/user';
 import { useTheme, useThemedStyles, useThemeFamily } from '@/hooks/use-theme';
 
@@ -289,7 +290,7 @@ export function ReadDemo({ done, onDone }: DemoProps) {
       <Text style={styles.levelLabel}>READ &amp; REVISE · PART 1</Text>
       <Text style={styles.readTitle}>{chunk?.title ?? lesson?.title}</Text>
       <Text style={styles.readText} numberOfLines={5}>
-        {chunk?.paragraphs?.[0] ?? lesson?.description}
+        {chunk?.paragraphs?.[0] ? stripMarks(chunk.paragraphs[0]) : lesson?.description}
       </Text>
       {done ? (
         <View style={styles.keyPoints}>

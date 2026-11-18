@@ -7,6 +7,7 @@
 import { publishedTopics } from '@/data/curriculum';
 import type { ExploreItem } from '@/data/explore';
 import type { LessonChunk } from '@/data/lesson-types';
+import { stripMarks } from '@/data/lesson-marks';
 
 /** Monday 00:00 (local) of the week containing `time`. */
 export function mondayOf(time = Date.now()) {
@@ -30,7 +31,7 @@ function hash(text: string) {
 const CONCEPT_KINDS = new Set<LessonChunk['kind']>(['mechanism', 'pathway', 'regulation']);
 
 /** Lecture text without its slide/page pointers ("(slide 12)"), which only make sense inside the lesson. */
-const withoutRefs = (text: string) => text.replace(/\s*\((?:slides?|pages?|p\.)\s*[\d,–\- ]+\)/gi, '').replace(/\s+/g, ' ').trim();
+const withoutRefs = (text: string) => stripMarks(text).replace(/\s*\((?:slides?|pages?|p\.)\s*[\d,–\- ]+\)/gi, '').replace(/\s+/g, ' ').trim();
 
 /** The first sentence or two of a section, for a card. */
 function summaryOf(chunk: LessonChunk) {

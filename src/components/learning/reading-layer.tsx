@@ -4,6 +4,7 @@ import { Text } from '@/components/ui/text';
 import { FigureExplorer } from '@/components/learning/figure-view';
 import { WithIllustrations } from '@/components/learning/illustration';
 import { LessonReferences } from '@/components/learning/lesson-references';
+import { MarkedText } from '@/components/learning/marked-text';
 import { RelatedLessons } from '@/components/learning/related-lessons';
 import { PathwaySteps } from '@/components/pathway-steps';
 import { Icon, type IconName } from '@/components/ui/icon';
@@ -120,14 +121,14 @@ function ReadingSection({ lessonId, chunk, index, total }: { lessonId: string; c
       <WithIllustrations
         items={illustrationsFor(lessonId, chunk.title, index + 1)}
         lead={chunk.teach?.slice(0, 1).map((paragraph, i) => (
-          <Text key={`teach-${i}`} style={[styles.paragraph, serif]}>
-            {paragraph}
-          </Text>
+          <View key={`teach-${i}`}>
+            <MarkedText text={paragraph} style={[styles.paragraph, serif]} />
+          </View>
         ))}
         rest={chunk.teach?.slice(1).map((paragraph, i) => (
-          <Text key={`teach-${i + 1}`} style={[styles.paragraph, serif]}>
-            {paragraph}
-          </Text>
+          <View key={`teach-${i + 1}`}>
+            <MarkedText text={paragraph} style={[styles.paragraph, serif]} />
+          </View>
         ))}
       />
 
@@ -139,9 +140,9 @@ function ReadingSection({ lessonId, chunk, index, total }: { lessonId: string; c
       ) : null}
 
       {chunk.paragraphs?.map((paragraph, i) => (
-        <Text key={i} style={[styles.paragraph, serif]}>
-          {paragraph}
-        </Text>
+        <View key={i}>
+          <MarkedText text={paragraph} style={[styles.paragraph, serif]} />
+        </View>
       ))}
 
       {chunk.steps ? <PathwaySteps steps={chunk.steps} /> : null}
@@ -188,7 +189,7 @@ function ReadingSection({ lessonId, chunk, index, total }: { lessonId: string; c
           {chunk.keyPoints.map((point, i) => (
             <View key={i} style={styles.bulletRow}>
               <View style={styles.bulletDot} />
-              <Text style={styles.bulletText}>{point}</Text>
+              <MarkedText text={point} style={styles.bulletText} />
             </View>
           ))}
         </View>

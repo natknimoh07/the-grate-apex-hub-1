@@ -7,6 +7,7 @@
 import { hash, type Flashcard } from '@/data/flashcards';
 import { plainText } from '@/data/legacy-questions';
 import type { Lesson } from '@/data/lesson-types';
+import { stripMarks } from '@/data/lesson-marks';
 import { stripMarkdown } from '@/lib/markdown';
 
 /** The server accepts at most this much lesson text (api/ai.mjs). */
@@ -23,15 +24,15 @@ export function lessonToText(lesson: Lesson): string {
   if (lesson.objectives?.length) out.push('Objectives:', ...lesson.objectives.map((item) => `- ${item}`));
   for (const chunk of lesson.chunks) {
     out.push('', `## ${chunk.title}`);
-    chunk.teach?.forEach((paragraph) => out.push(paragraph));
-    chunk.paragraphs?.forEach((paragraph) => out.push(paragraph));
+    chunk.teach?.forEach((paragraph) => out.push(stripMarks(paragraph)));
+    chunk.paragraphs?.forEach((paragraph) => out.push(stripMarks(paragraph)));
     chunk.steps?.forEach((step, i) => out.push(`${i + 1}. ${step.label}${step.detail ? `: ${step.detail}` : ''}`));
     chunk.terms?.forEach((term) => out.push(`${term.term}: ${term.meaning}`));
     if (chunk.table) {
       out.push(chunk.table.columns.join(' | '));
       chunk.table.rows.forEach((row) => out.push(row.join(' | ')));
     }
-    chunk.keyPoints?.forEach((point) => out.push(`- ${point}`));
+    chunk.keyPoints?.forEach((point) => out.push(`- ${stripMarks(point)}`));
   }
   if (lesson.summary?.length) out.push('', 'Key points to remember:', ...lesson.summary.map((item) => `- ${item}`));
   if (lesson.highYield?.length) out.push('', 'High-yield:', ...lesson.highYield.map((item) => `- ${item}`));

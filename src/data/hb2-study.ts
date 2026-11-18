@@ -9,6 +9,7 @@
 import { getLessonQuizBank, getSubjectTopics } from '@/data/curriculum';
 import { describeTextbookRefs } from '@/data/source-labels';
 import { lessonLectureLabel } from '@/data/lesson-lecture';
+import { markSegments, marksToTags } from '@/data/lesson-marks';
 import { illustrationsFor } from '@/data/illustrations';
 import { chunkFigures, type Lesson, type LessonChunk, type LessonChunkKind, type SubjectId, type Topic } from '@/data/lesson-types';
 import type { Question } from '@/data/questions';
@@ -46,6 +47,22 @@ export function richWithTerms(text: string, terms: readonly { term: string; mean
   return out;
 }
 
+/** Rich text with key words, and the lesson's bold, italics and highlights (data/lesson-marks.ts). */
+const richMarked = (text: string, terms: readonly { term: string; meaning: string }[], used: Set<string>) => marksToTags(richWithTerms(text, terms, used));
+
+/** A paragraph as blocks: its text, and any bulleted or numbered list written in it ("
+- item", "
+1. item"). */
+function markedBlocks(text: string, terms: readonly { term: string; meaning: string }[], used: Set<string>, lede = false): Block[] {
+  let first = lede;
+  return markSegments(text).map((segment): Block => {
+    if (segment.kind === 'list') return { k: 'ul', items: segment.items.map((item) => richMarked(item, terms, used)), ...(segment.ordered ? { ol: 1 as const } : {}) };
+    const block: Block = { k: 'p', x: richMarked(segment.text, terms, used), ...(first ? { lede: 1 as const } : {}) };
+    first = false;
+    return block;
+  });
+}
+
 const KIND_LABEL: Record<LessonChunkKind, string> = {
   overview: 'Overview', definitions: 'Definitions', pathway: 'Pathway', mechanism: 'Mechanism', structure: 'Structure',
   regulation: 'Regulation', comparison: 'Comparison', clinical: 'Clinical link', classification: 'Classification',
@@ -81,26 +98,26 @@ function sectionOf(chunk: LessonChunk, index: number, lesson: Lesson): LocalSect
     ...(item.slide ? { side: 1 as const } : {}),
   }));
   chunk.teach?.forEach((paragraph, n) => {
-    blocks.push({ k: 'p', x: richWithTerms(paragraph, terms, used), ...(n === 0 ? { lede: 1 as const } : {}) });
+    blocks.push(...markedBlocks(paragraph, terms, used, n === 0));
     // Pictures after the opening paragraph, as in an encyclopaedia article.
     if (n === 0) blocks.push(...pictures);
   });
   if (!chunk.teach?.length) blocks.push(...pictures);
   if (chunk.teach?.length) blocks.push({ k: 'p', x: '<b>Key points from the lecture</b>' });
-  for (const paragraph of chunk.paragraphs ?? []) blocks.push({ k: 'p', x: richWithTerms(paragraph, terms, used) });
+  for (const paragraph of chunk.paragraphs ?? []) blocks.push(...markedBlocks(paragraph, terms, used));
   for (const id of chunkFigures(chunk)) blocks.push({ k: 'lfig', id });
   chunk.steps?.forEach((step, n) => {
-    blocks.push({ k: 'step', n: String(n + 1), title: richWithTerms(step.label, terms, used), blocks: step.detail ? [{ k: 'p', x: richWithTerms(step.detail, terms, used) }] : undefined });
+    blocks.push({ k: 'step', n: String(n + 1), title: richMarked(step.label, terms, used), blocks: step.detail ? [{ k: 'p', x: richMarked(step.detail, terms, used) }] : undefined });
   });
   if (chunk.table) blocks.push({ k: 'table', head: chunk.table.columns.map(escape), rows: chunk.table.rows.map((row) => ({ c: row.map(escape) })) });
   // Key words not already tappable in the text get their own definition rows.
   for (const term of terms) if (!used.has(term.term.toLowerCase())) blocks.push({ k: 'term', name: escape(term.term), def: escape(term.meaning) });
-  if (chunk.keyPoints?.length) blocks.push({ k: 'box', title: 'Key points', tone: 'gold', blocks: [{ k: 'ul', items: chunk.keyPoints.map((point) => richWithTerms(point, terms, used)) }] });
-  for (const note of chunk.notes ?? []) blocks.push({ k: 'box', title: NOTE_LABEL[note.kind] ?? 'Note', tone: note.kind === 'check' ? 'red' : undefined, blocks: [{ k: 'p', x: escape(note.text) }] });
+  if (chunk.keyPoints?.length) blocks.push({ k: 'box', title: 'Key points', tone: 'gold', blocks: [{ k: 'ul', items: chunk.keyPoints.map((point) => richMarked(point, terms, used)) }] });
+  for (const note of chunk.notes ?? []) blocks.push({ k: 'box', title: NOTE_LABEL[note.kind] ?? 'Note', tone: note.kind === 'check' ? 'red' : undefined, blocks: [{ k: 'p', x: marksToTags(escape(note.text)) }] });
   // Where to read more: the reference-textbook pages for this section.
   const textbook = chunk.sourceRefs ? describeTextbookRefs(chunk.sourceRefs) : '';
   if (chunk.textbookNote) {
-    blocks.push({ k: 'box', title: 'From the textbook (summarised)', blocks: [{ k: 'p', x: escape(chunk.textbookNote) }, ...(textbook ? [{ k: 'p' as const, x: `<i>${escape(textbook)}</i>` }] : [])] });
+    blocks.push({ k: 'box', title: 'From the textbook (summarised)', blocks: [{ k: 'p', x: marksToTags(escape(chunk.textbookNote)) }, ...(textbook ? [{ k: 'p' as const, x: `<i>${escape(textbook)}</i>` }] : [])] });
   } else if (textbook) blocks.push({ k: 'box', title: 'Read more in the textbook', blocks: [{ k: 'p', x: escape(textbook) }] });
   const kicker = [chunk.kind ? KIND_LABEL[chunk.kind] : null, chunk.origin === 'textbook' ? 'From the textbook' : null].filter(Boolean).join(' · ');
   return { id: `s${index + 1}`, title: escape(chunk.title), kicker: kicker || undefined, blocks };

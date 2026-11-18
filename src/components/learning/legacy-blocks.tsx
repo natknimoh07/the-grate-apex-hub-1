@@ -54,6 +54,8 @@ function Runs({ runs, style }: { runs: readonly Run[]; style?: object | object[]
         }
         if (run.b) st.fontWeight = '700';
         if (run.i) st.fontStyle = 'italic';
+        // A lesson's line to remember (==…== in the lesson text, data/lesson-marks.ts): a soft marker colour.
+        if (run.hl) st.backgroundColor = colors.accentSubtle;
         if (run.term) {
           return (
             <Text key={i} style={[st, { color: colors.primaryText, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }]} onPress={() => tip(run.t, run.term!)} accessibilityRole="button" accessibilityHint="Shows the meaning">

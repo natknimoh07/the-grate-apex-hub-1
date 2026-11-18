@@ -8,6 +8,7 @@ import { describe, it } from 'node:test';
 
 const { builtTopics } = await import('@/data/topics');
 const { teachingOf, teachingTopics } = await import('@/data/teaching');
+const { marksProblems } = await import('@/data/lesson-marks');
 
 const words = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
 const runs = (text, n) => {
@@ -56,8 +57,10 @@ describe('textbook-style teaching', () => {
           assert.ok(paragraphs.length >= 2 && paragraphs.length <= 6, `${where}: ${paragraphs.length} paragraphs`);
           for (const paragraph of paragraphs) {
             assert.ok(paragraph.length >= 80 && paragraph.length <= 1200, `${where}: a paragraph of ${paragraph.length} characters`);
-            assert.ok(!/[<>*`]/.test(paragraph), `${where}: no markup in teaching text`);
-            assert.ok(/[.!?)”’]$/.test(paragraph.trim()), `${where}: a paragraph should end with a full stop`);
+            // Only the lesson marks (data/lesson-marks.ts: **bold**, *italic*, ==highlight==, "- " and "1. " lists), well formed.
+            assert.ok(!/[<>`]/.test(paragraph), `${where}: no HTML or code in teaching text`);
+            assert.deepEqual(marksProblems(paragraph), [], `${where}: marks`);
+            assert.ok(/[.!?)”’]$/.test(paragraph.replace(/\*\*|==|\*/g, '').trim()), `${where}: a paragraph should end with a full stop`);
             assert.ok(!/\bslides? \d/i.test(paragraph), `${where}: slide numbers belong in the key points, not the teaching`);
           }
         }

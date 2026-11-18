@@ -30,8 +30,8 @@ const lesson1: Draft = {
       figure: 'cardiovascular-physiology:heart',
       kind: 'overview',
       paragraphs: [
-        'The heart is built from cardiac muscle and a specialised conducting system. Its job is to move blood about — to send blood to all the tissues (slide 4).',
-        'It works in two alternating states: systole (contraction) and diastole (relaxation). Contraction and relaxation produce changes in both volume and pressure, in the chambers and in the vessels (slide 11).',
+        'The heart is built from **cardiac muscle** and a specialised **conducting system**. Its job is to move blood about — to send blood to all the tissues (slide 4).',
+        'It works in two alternating states: **systole** (contraction) and **diastole** (relaxation). Contraction and relaxation produce changes in both *volume* and *pressure*, in the chambers and in the vessels (slide 11).',
       ],
       sourceRefs: c1([4, 11]),
     },
@@ -40,7 +40,7 @@ const lesson1: Draft = {
       figure: 'cardiovascular-physiology:conduction',
       kind: 'pathway',
       paragraphs: [
-        'All parts of the conduction system can discharge spontaneously, but they are controlled by the discharge of the SA node — the pacemaker (slide 7). The impulse travels (slide 8):',
+        'All parts of the conduction system can discharge spontaneously, but they are controlled by the discharge of the **SA node** — the **pacemaker** (slide 7). The impulse travels (slide 8):',
       ],
       steps: [
         { label: 'SA (sinoatrial) node', detail: 'At the junction of the superior vena cava and the right atrium.' },
@@ -56,15 +56,15 @@ const lesson1: Draft = {
       title: 'Diastole and atrial systole',
       kind: 'mechanism',
       paragraphs: [
-        'In diastole the heart relaxes so the chambers can fill. The mitral and tricuspid valves are open; the aortic and pulmonary valves are closed. Filling slows as the ventricles fill, but the pressure stays low (slide 12).',
-        'Most ventricular filling is passive — about 70%. The other 30% comes from contraction of the atria (atrial systole) (slide 13).',
+        'In diastole the heart relaxes so the chambers can fill. The **mitral and tricuspid** valves are *open*; the **aortic and pulmonary** valves are *closed*. Filling slows as the ventricles fill, but the pressure stays low (slide 12).',
+        'Most ventricular filling is **passive** — about **70%**. The other **30%** comes from contraction of the atria (**atrial systole**) (slide 13).',
       ],
       sourceRefs: c1([12, 13]),
     },
     {
       title: 'Ventricular systole',
       kind: 'pathway',
-      paragraphs: ['Closure of the mitral and tricuspid valves starts ventricular systole (slide 13). Then:'],
+      paragraphs: ['Closure of the **mitral and tricuspid** valves starts **ventricular systole** (slide 13). Then:'],
       steps: [
         { label: 'Isovolumetric contraction', detail: 'The myocardium presses on the blood with very little shortening, so pressure rises. The AV valves bulge into the atria, giving a small rise in atrial pressure (slides 13–15).' },
         { label: 'Aortic and pulmonary valves open', detail: 'When ventricular pressure exceeds the pressure in the aorta (about 80 mmHg) and the pulmonary artery (about 10 mmHg) (slide 14).' },
@@ -89,8 +89,8 @@ const lesson1: Draft = {
       title: 'Right versus left, inspiration versus expiration',
       kind: 'comparison',
       paragraphs: [
-        'Although the left ventricle contracts before the right, ejection from the right ventricle comes first, because the pulmonary artery pressure it pushes against is smaller (slide 18).',
-        'In expiration the aortic and pulmonary valves close together. In inspiration the aortic valve closes before the pulmonary valve (slide 18). The pulmonary valve closes late because right ventricular ejection is prolonged: the negative intrathoracic pressure of inspiration increases venous return and lowers the impedance of the pulmonary vessels, and the expanding lungs exert a force on those vessels (slide 19). This is the basis of splitting of the second heart sound (Lesson 2).',
+        'Although the left ventricle contracts before the right, **ejection from the right ventricle comes first**, because the pulmonary artery pressure it pushes against is smaller (slide 18).',
+        'In **expiration** the aortic and pulmonary valves close together. In **inspiration** the aortic valve closes before the pulmonary valve (slide 18). The pulmonary valve closes late because right ventricular ejection is prolonged: the negative intrathoracic pressure of inspiration increases venous return and lowers the impedance of the pulmonary vessels, and the expanding lungs exert a force on those vessels (slide 19). This is the basis of **splitting of the second heart sound** (Lesson 2).',
       ],
       sourceRefs: c1([18, 19]),
     },
@@ -98,9 +98,9 @@ const lesson1: Draft = {
       title: 'Why a fast heart rate is dangerous',
       kind: 'clinical',
       paragraphs: [
-        'A faster heart rate is achieved by contracting and repolarising faster — a shorter systolic ejection — but diastole is shortened to a much greater extent (slide 20).',
-        'That is dangerous because diastole is the resting period: coronary blood flow to the myocardium happens in diastole, and the ventricles fill in diastole.',
-        'Cardiac muscle cannot be tetanised, because its action potential has a long refractory period (slide 20).',
+        'A faster heart rate is achieved by contracting and repolarising faster — a shorter systolic ejection — but **diastole is shortened to a much greater extent** (slide 20).',
+        'That is dangerous because diastole is the resting period:\n- **Coronary blood flow** to the myocardium happens in diastole.\n- The **ventricles fill** in diastole.',
+        'Cardiac muscle **cannot be tetanised**, because its action potential has a long **refractory period** (slide 20).',
       ],
       sourceRefs: c1([20]),
     },
@@ -109,7 +109,7 @@ const lesson1: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'The syllabus asks you to link the cardiac action potential to the cycle and the ECG. The Cardiac Muscle lecture (HB1) teaches the potentials in full; this is the recap that the circulation lectures assume.',
+        'The syllabus asks you to link the cardiac action potential to the cycle and the ECG. The **Cardiac Muscle lecture (HB1)** teaches the potentials in full; this is the recap that the circulation lectures assume.',
       ],
       table: {
         columns: ['Phase', 'Ventricular muscle (fast response, rests near −90 mV)', 'SA node (slow response, no true resting potential)'],
@@ -164,9 +164,9 @@ const lesson2: Draft = {
       title: 'The arterial pulse',
       kind: 'definitions',
       paragraphs: [
-        'Ejection of blood into the aorta sends a pressure wave along all the arteries. The wave expands the arterial walls, and that expansion is what you feel (palpate) as the pulse — it is independent of the velocity of the blood (slide 24).',
-        'The wave speeds up from the aorta to the small arteries, and as we age the arteries become rigid and the wave moves faster.',
-        'Characteristics of the pulse (slide 25): rate, volume, strength, character and location.',
+        'Ejection of blood into the aorta sends a **pressure wave** along all the arteries. The wave expands the arterial walls, and that expansion is what you feel (palpate) as the **pulse** — it is *independent* of the velocity of the blood (slide 24).',
+        'The wave **speeds up** from the aorta to the small arteries, and as we age the arteries become rigid and the wave moves faster.',
+        'Characteristics of the pulse (slide 25):\n- **Rate**\n- **Volume**\n- **Strength**\n- **Character**\n- **Location**',
       ],
       sourceRefs: c1([24, 25]),
     },
@@ -175,7 +175,7 @@ const lesson2: Draft = {
       figure: 'cardiovascular-physiology:jvp',
       kind: 'mechanism',
       paragraphs: [
-        'The neck veins (internal jugular) communicate with the right atrium, so pressure changes in the atrium show as visible pressure changes in the neck veins. The venous level falls in inspiration, when blood is drawn into the heart. The JVP is seen, not palpated (slide 26). The waves (slide 27):',
+        'The neck veins (**internal jugular**) communicate with the **right atrium**, so pressure changes in the atrium show as visible pressure changes in the neck veins. The venous level **falls in inspiration**, when blood is drawn into the heart. The JVP is *seen*, not palpated (slide 26). The waves (slide 27):',
       ],
       steps: [
         { label: 'a wave', detail: 'Atrial contraction — blood regurgitates into the great veins and venous inflow stops.' },
@@ -205,10 +205,10 @@ const lesson2: Draft = {
       title: 'Heart sounds',
       kind: 'overview',
       paragraphs: [
-        'Heart sounds are made by valves closing (slide 30). S1 — tricuspid and mitral closing at about the same time — occurs at the beginning of ventricular systole. S2 — aortic and pulmonary closing — occurs at the end of ventricular systole, i.e. the beginning of diastole.',
-        'Normal sounds in diastole come from rapid ventricular filling: the third and fourth heart sounds (slide 31).',
-        'S1 lasts about 0.15 s and is soft when the heart is slow, because the ventricles fill fully and the valves float closed. S2 lasts about 0.12 s and is loud when aortic or pulmonary artery pressure is high, because the valves close briskly (slide 33).',
-        'S2 is split physiologically in inspiration — aortic before pulmonary — because venous return rises and pulmonary resistance falls, giving the right ventricle a longer time for flow (slide 34).',
+        'Heart sounds are made by **valves closing** (slide 30).\n- **S1** — tricuspid and mitral closing at about the same time — occurs at the *beginning* of ventricular systole.\n- **S2** — aortic and pulmonary closing — occurs at the *end* of ventricular systole, i.e. the beginning of diastole.',
+        'Normal sounds in diastole come from **rapid ventricular filling**: the **third and fourth heart sounds** (slide 31).',
+        '- **S1** lasts about **0.15 s** and is *soft* when the heart is slow, because the ventricles fill fully and the valves float closed.\n- **S2** lasts about **0.12 s** and is *loud* when aortic or pulmonary artery pressure is high, because the valves close briskly (slide 33).',
+        'S2 is **split physiologically in inspiration** — aortic before pulmonary — because venous return rises and pulmonary resistance falls, giving the right ventricle a longer time for flow (slide 34).',
       ],
       notes: [
         { kind: 'annotation', text: 'A speaker note added to slide 33 lists clinical examples: loud A2 in systemic hypertension and coarctation; loud P2 in pulmonary hypertension, ASD and VSD; soft or absent S2 in aortic or pulmonary stenosis. Not quizzed until confirmed.' },
@@ -219,8 +219,8 @@ const lesson2: Draft = {
       title: 'Murmurs and bruits',
       kind: 'clinical',
       paragraphs: [
-        'Normal flow is streamlined (laminar) and silent. Murmurs come from turbulent flow — abnormal valves, a hyperdynamic circulation (high speed) or backflow (slide 35). They are heard with a stethoscope (auscultation), best over the surface marking of each valve (slide 38).',
-        'To time a murmur, remember which valves close together — aortic with pulmonary, tricuspid with mitral — and ask when blood flows through the faulty valve (slide 36):',
+        'Normal flow is streamlined (**laminar**) and silent. **Murmurs** come from **turbulent flow** (slide 35):\n- Abnormal valves.\n- A hyperdynamic circulation (high speed).\n- Backflow.\nThey are heard with a stethoscope (**auscultation**), best over the surface marking of each valve (slide 38).',
+        'To time a murmur, remember which valves close together — **aortic with pulmonary**, **tricuspid with mitral** — and ask *when* blood flows through the faulty valve (slide 36):',
       ],
       table: {
         columns: ['Lesion', 'Flow', 'Murmur'],
@@ -239,8 +239,8 @@ const lesson2: Draft = {
       kind: 'clinical',
       origin: 'textbook',
       paragraphs: [
-        'Syllabus 5.5 asks for the pulse in different situations: its rate, regularity, how it travels in the vessel wall and how it relates to flow. The lecture gives the five characteristics (slide 25); the textbooks add what abnormal pulses mean.',
-        'Speed of the pressure wave (Guyton): about 3–5 m/s in the aorta, 7–10 m/s in large branches and 15–35 m/s in small arteries — far faster than the blood itself, which moves well under 1 m/s.',
+        'Syllabus 5.5 asks for the pulse in different situations: its rate, regularity, how it travels in the vessel wall and how it relates to flow. The lecture gives the **five characteristics** (slide 25); the textbooks add what abnormal pulses mean.',
+        'Speed of the pressure wave (Guyton):\n- About **3–5 m/s** in the aorta.\n- **7–10 m/s** in large branches.\n- **15–35 m/s** in small arteries.\nThat is far faster than the blood itself, which moves well under **1 m/s**.',
       ],
       table: {
         columns: ['Pulse', 'What you feel', 'Typical cause'],
@@ -290,9 +290,9 @@ const lesson3: Draft = {
       title: 'Cardiac output',
       kind: 'definitions',
       paragraphs: [
-        'Cardiac output is the amount of blood pumped out of the heart per unit time. It depends on the number of beats per unit time and the volume pumped by each beat (slide 41):',
-        'CO = heart rate × stroke volume. Right and left outputs are equal — about 5.5 L. Cardiac index is the cardiac output per unit area of body surface.',
-        'So output changes through the rate or the stroke volume (slide 42). Rate is set by the cardiac innervation (sympathetic and parasympathetic); stroke volume rises when the heart contracts forcibly (e.g. sympathetic stimulation).',
+        '**Cardiac output** is the amount of blood pumped out of the heart per unit time. It depends on the number of beats per unit time and the volume pumped by each beat (slide 41):',
+        '**CO = heart rate × stroke volume**. Right and left outputs are *equal* — about **5.5 L**. **Cardiac index** is the cardiac output per unit area of body surface.',
+        'So output changes through the **rate** or the **stroke volume** (slide 42). Rate is set by the cardiac innervation (sympathetic and parasympathetic); stroke volume rises when the heart contracts forcibly (e.g. sympathetic stimulation).',
       ],
       terms: [
         { term: 'Inotropic effect', meaning: 'A change in the strength of contraction (positive or negative).' },
@@ -305,10 +305,10 @@ const lesson3: Draft = {
       figure: 'cardiovascular-physiology:starling-curves',
       kind: 'mechanism',
       paragraphs: [
-        'The force of contraction depends on preload and afterload — liken it to an elastic band or sling shot (slide 44).',
-        'Preload is the degree to which the myocardium is stretched before it contracts. Afterload is the resistance against which blood is expelled — through the aortic valve and against the peripheral resistance (systemic BP) (slides 44, 50).',
-        'Frank–Starling law: the energy of contraction is proportional to the initial length of the cardiac muscle. The curve relating stroke volume to end-diastolic volume is the Frank–Starling curve (slides 44–47).',
-        'Regulation through changes in fibre length is heterometric regulation; changes in contractility that do not involve muscle length are homometric regulation (slide 48).',
+        'The force of contraction depends on **preload** and **afterload** — liken it to an elastic band or sling shot (slide 44).',
+        '- **Preload** is the degree to which the myocardium is stretched before it contracts.\n- **Afterload** is the resistance against which blood is expelled — through the aortic valve and against the peripheral resistance (systemic BP) (slides 44, 50).',
+        '**Frank–Starling law**: the energy of contraction is proportional to the initial length of the cardiac muscle. The curve relating stroke volume to end-diastolic volume is the **Frank–Starling curve** (slides 44–47).',
+        'Regulation through changes in fibre length is **heterometric** regulation; changes in contractility that do not involve muscle length are **homometric** regulation (slide 48).',
       ],
       sourceRefs: c1([44, 45, 46, 47, 48, 50]),
     },
@@ -331,10 +331,10 @@ const lesson3: Draft = {
       title: 'Contractility',
       kind: 'mechanism',
       paragraphs: [
-        'Myocardial contractility is a determinant of stroke volume (slide 50). Catecholamines (adrenaline and noradrenaline) act through β1 receptors and adenylyl cyclase, which makes cAMP as a second messenger; accumulating cAMP gives a positive inotropic effect (slides 50–52).',
-        'Xanthines — caffeine and theophylline — prevent the breakdown of cAMP, so they too raise inotropy (slide 52).',
-        'Vagal stimulation has negative chronotropic and inotropic effects (slide 51).',
-        'Inotropy is depressed by hypercapnia, hypoxia, acidosis, drugs (quinidine, procainamide) and cardiac failure (slide 53).',
+        '**Myocardial contractility** is a determinant of stroke volume (slide 50). **Catecholamines** (adrenaline and noradrenaline) act through **β1 receptors** and **adenylyl cyclase**, which makes **cAMP** as a second messenger; accumulating cAMP gives a **positive inotropic** effect (slides 50–52).',
+        '**Xanthines** — caffeine and theophylline — prevent the breakdown of cAMP, so they too raise inotropy (slide 52).',
+        '**Vagal stimulation** has *negative* chronotropic and inotropic effects (slide 51).',
+        'Inotropy is depressed by (slide 53):\n- **Hypercapnia**\n- **Hypoxia**\n- **Acidosis**\n- **Drugs** (quinidine, procainamide)\n- **Cardiac failure**',
       ],
       notes: [
         { kind: 'clarified', text: 'Slides 50–51 attribute adrenaline to sympathetic nerve endings and noradrenaline to the adrenals. Guyton: sympathetic nerve endings release noradrenaline; the adrenal medulla secretes mainly adrenaline. Both act via β1 receptors and cAMP.' },
@@ -345,8 +345,8 @@ const lesson3: Draft = {
       title: 'Cardiac output in exercise and other states',
       kind: 'regulation',
       paragraphs: [
-        'In exercise, catecholamines and sympathetic discharge rise, increasing contractility and rate; venous return increases because of muscle pumping; and afterload falls because of vasodilatation and reduced peripheral resistance (slide 54).',
-        'Cardiac output also rises with eating, exercise, high temperature, pregnancy, adrenaline, thyrotoxicosis, and anxiety and excitement (slide 54).',
+        'In exercise:\n- **Catecholamines** and **sympathetic discharge** rise, increasing contractility and rate.\n- **Venous return increases** because of muscle pumping.\n- **Afterload falls** because of vasodilatation and reduced peripheral resistance (slide 54).',
+        'Cardiac output also rises with **eating**, **exercise**, **high temperature**, **pregnancy**, **adrenaline**, **thyrotoxicosis**, and **anxiety and excitement** (slide 54).',
       ],
       sourceRefs: c1([54, 55, 56]),
     },
@@ -354,8 +354,8 @@ const lesson3: Draft = {
       title: 'Fick’s principle',
       kind: 'definitions',
       paragraphs: [
-        'The amount of a substance taken up or added by an organ equals the arteriovenous concentration difference × the blood flow (slide 57). Using oxygen:',
-        'O₂ consumption = (arterial O₂ − venous O₂) × ventricular output. Arterial blood can be taken from any artery, because arterial blood is the same everywhere; venous blood must come from the pulmonary artery (mixed venous blood).',
+        'The amount of a substance taken up or added by an organ equals the **arteriovenous concentration difference × the blood flow** (slide 57). Using oxygen:',
+        '**O₂ consumption = (arterial O₂ − venous O₂) × ventricular output**. Arterial blood can be taken from *any* artery, because arterial blood is the same everywhere; venous blood must come from the **pulmonary artery** (mixed venous blood).',
       ],
       sourceRefs: c1([57]),
     },
@@ -363,9 +363,9 @@ const lesson3: Draft = {
       title: 'Work done by the heart',
       kind: 'mechanism',
       paragraphs: [
-        'The heart’s oxygen is supplied by the coronary arteries. Coronary venous blood is already low in O₂ because so much is extracted, so to get more O₂ the heart must increase coronary blood flow (slide 58).',
-        'Work = stroke volume × mean arterial pressure (aorta or pulmonary artery). Its determinants are intramyocardial tension, the contractile state of the myocardium and heart rate.',
-        'Pressure work demands more O₂ than volume work; afterload work is more demanding than preload. That is why angina pectoris is more common in aortic stenosis (afterload) than in aortic incompetence (preload) (slide 58).',
+        'The heart’s oxygen is supplied by the **coronary arteries**. Coronary venous blood is already low in O₂ because so much is extracted, so to get more O₂ the heart must **increase coronary blood flow** (slide 58).',
+        '**Work = stroke volume × mean arterial pressure** (aorta or pulmonary artery). Its determinants are **intramyocardial tension**, the **contractile state** of the myocardium and **heart rate**.',
+        '**Pressure work** demands more O₂ than **volume work**; afterload work is more demanding than preload. That is why **angina pectoris** is more common in **aortic stenosis** (afterload) than in **aortic incompetence** (preload) (slide 58).',
       ],
       sourceRefs: c1([58]),
     },
@@ -374,8 +374,8 @@ const lesson3: Draft = {
       kind: 'comparison',
       origin: 'textbook',
       paragraphs: [
-        'The syllabus lists three methods: direct Fick (slide 57), dye dilution and thermal dilution. The last two are indicator-dilution methods: inject a known amount of something and see how much it is diluted by the blood flowing past.',
-        'Stewart–Hamilton principle: cardiac output = amount of indicator injected ÷ (mean arterial concentration × time for the first passage), i.e. amount ÷ area under the concentration curve.',
+        'The syllabus lists three methods:\n- **Direct Fick** (slide 57).\n- **Dye dilution**.\n- **Thermal dilution**.\nThe last two are **indicator-dilution** methods: inject a known amount of something and see how much it is diluted by the blood flowing past.',
+        '**Stewart–Hamilton principle**: cardiac output = amount of indicator injected ÷ (mean arterial concentration × time for the first passage), i.e. **amount ÷ area under the concentration curve**.',
       ],
       table: {
         columns: ['Method', 'How it is done', 'Limitations'],
@@ -393,7 +393,7 @@ const lesson3: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'The lecture defines work as stroke volume × mean arterial pressure and says pressure work costs more O₂ than volume work (slide 58). The syllabus also asks for efficiency and for the effect of aortic pressure and heart rate on work.',
+        'The lecture defines work as **stroke volume × mean arterial pressure** and says **pressure work** costs more O₂ than **volume work** (slide 58). The syllabus also asks for efficiency and for the effect of aortic pressure and heart rate on work.',
       ],
       terms: [
         { term: 'Stroke work', meaning: 'Stroke volume × mean ejection pressure: about 70 mL × 100 mmHg for the left ventricle — roughly six times the right ventricle’s, because pulmonary pressure is so much lower.' },
@@ -474,10 +474,10 @@ const lesson4: Draft = {
       title: 'Flow, pressure and resistance',
       kind: 'mechanism',
       paragraphs: [
-        'Blood flows from high to low pressure, in proportion to the pressure drop and inversely to resistance. The pressure drop — mean pressure at the arterial end minus that at the venous end — is the effective perfusion pressure (slide 66).',
-        'Flow = ΔP ÷ Resistance, so Resistance = ΔP ÷ Flow.',
-        'For a long tube, the Poiseuille–Hagen formula gives Flow = (P_A − P_B) × π/8 × 1/η × r⁴/L, where η is viscosity, r the radius and L the length (slide 74). So Resistance = 8ηL/πr⁴ — resistance varies with 1/r⁴ (slides 75–76).',
-        'Increase the radius and resistance falls and flow rises: organ blood flow can be regulated by changing vessel diameter.',
+        'Blood flows from high to low pressure, in proportion to the pressure drop and inversely to resistance. The pressure drop — mean pressure at the arterial end minus that at the venous end — is the **effective perfusion pressure** (slide 66).',
+        '**Flow = ΔP ÷ Resistance**, so **Resistance = ΔP ÷ Flow**.',
+        'For a long tube, the **Poiseuille–Hagen formula** gives Flow = (P_A − P_B) × π/8 × 1/η × r⁴/L, where η is viscosity, r the radius and L the length (slide 74). So Resistance = 8ηL/πr⁴ — **resistance varies with 1/r⁴** (slides 75–76).',
+        'Increase the radius and resistance falls and flow rises: **organ blood flow can be regulated by changing vessel diameter**.',
       ],
       notes: [{ kind: 'annotation', text: 'A note added to slide 74: if the radius doubles, flow rises 16-fold; if it halves, flow falls to 1/16 — which is why arterioles are the main resistance vessels.' }],
       sourceRefs: c1([66, 74, 75, 76]),
@@ -486,9 +486,9 @@ const lesson4: Draft = {
       title: 'Laminar and turbulent flow',
       kind: 'mechanism',
       paragraphs: [
-        'In laminar flow the velocity is greatest in the centre and falls towards the wall, where a thin layer does not move at all. Laminar flow is silent. Above a critical velocity, flow becomes turbulent and makes noise (slide 70).',
-        'The probability of turbulence is expressed by Reynolds’ number, Re = ρDv/η: it rises with fluid density, tube diameter and velocity, and falls with viscosity (slide 71).',
-        'So turbulence occurs in anaemia (low viscosity) and in a constricted vessel (high velocity) — giving a bruit over a narrowed artery and the Korotkov sounds of BP measurement (slide 72).',
+        'In laminar flow the velocity is greatest in the **centre** and falls towards the wall, where a thin layer does not move at all. Laminar flow is *silent*. Above a **critical velocity**, flow becomes **turbulent** and makes noise (slide 70).',
+        'The probability of turbulence is expressed by **Reynolds’ number**, Re = ρDv/η: it *rises* with fluid density, tube diameter and velocity, and *falls* with viscosity (slide 71).',
+        'So turbulence occurs in **anaemia** (low viscosity) and in a **constricted vessel** (high velocity) — giving a **bruit** over a narrowed artery and the **Korotkov sounds** of BP measurement (slide 72).',
       ],
       notes: [{ kind: 'clarified', text: 'Slide 72 writes anaemia as giving a “small R”; low viscosity actually raises Reynolds’ number, which is why turbulence occurs (Guyton).' }],
       sourceRefs: [...c1([70, 71, 72]), ...GUYTON],
@@ -497,8 +497,8 @@ const lesson4: Draft = {
       title: 'Velocity and cross-sectional area',
       kind: 'definitions',
       paragraphs: [
-        'Velocity is displacement per unit time (cm/s); flow is volume moved per unit time (cm³/s). Average velocity v = Q/A (slide 73).',
-        'As vessels divide, total cross-sectional area increases, so velocity is greatest in the aorta, falls towards the capillaries, and rises again towards the big veins. Arm-to-tongue circulation time is about 15 s.',
+        '**Velocity** is displacement per unit time (cm/s); **flow** is volume moved per unit time (cm³/s). Average velocity **v = Q/A** (slide 73).',
+        'As vessels divide, **total cross-sectional area increases**, so velocity is greatest in the **aorta**, falls towards the **capillaries**, and rises again towards the big veins. Arm-to-tongue circulation time is about **15 s**.',
       ],
       sourceRefs: c1([73]),
     },
@@ -506,8 +506,8 @@ const lesson4: Draft = {
       title: 'Viscosity',
       kind: 'mechanism',
       paragraphs: [
-        'Blood viscosity depends on the haematocrit and affects resistance (slide 77). Flow in large vessels is affected most; viscosity changes in small vessels matter little because of the way blood flows through them, so peripheral resistance changes little unless the change in viscosity is very large.',
-        'In polycythaemia, viscosity and resistance rise — more afterload and more work for the heart. In anaemia viscosity is lower, but the heart does extra (volume) work to make up for the low Hb (slide 78). Viscosity also rises with more plasma protein and with rigid cells (hereditary spherocytosis, sickle cell disease).',
+        'Blood viscosity depends on the **haematocrit** and affects resistance (slide 77). Flow in **large vessels** is affected most; viscosity changes in small vessels matter little because of the way blood flows through them, so peripheral resistance changes little unless the change in viscosity is very large.',
+        '- In **polycythaemia**, viscosity and resistance rise — more afterload and more work for the heart.\n- In **anaemia** viscosity is lower, but the heart does extra (volume) work to make up for the low Hb (slide 78).\n- Viscosity also rises with more **plasma protein** and with **rigid cells** (hereditary spherocytosis, sickle cell disease).',
       ],
       sourceRefs: c1([77, 78]),
     },
@@ -515,8 +515,8 @@ const lesson4: Draft = {
       title: 'Capacitance and distribution of blood',
       kind: 'comparison',
       paragraphs: [
-        'Fill an artery and pressure rises linearly; a big vein takes a lot of fluid before its pressure rises. Veins hold blood — capacitance vessels. Small arteries and arterioles generate the peripheral resistance — resistance vessels (slide 79).',
-        'At rest (slide 81): about 50% of blood is in the veins, 12% in the heart, 18% in the pulmonary circulation, 2% in the aorta, 8% in arteries and 5% in capillaries. Of transfused blood, about 90% ends up in systemic veins, the pulmonary circulation and the right heart; only 1% goes to the arteries.',
+        'Fill an artery and pressure rises linearly; a big vein takes a lot of fluid before its pressure rises. Veins hold blood — **capacitance vessels**. Small arteries and arterioles generate the peripheral resistance — **resistance vessels** (slide 79).',
+        'At rest (slide 81):\n- About **50%** of blood is in the veins.\n- **12%** in the heart.\n- **18%** in the pulmonary circulation.\n- **2%** in the aorta.\n- **8%** in arteries.\n- **5%** in capillaries.\nOf transfused blood, about **90%** ends up in systemic veins, the pulmonary circulation and the right heart; only **1%** goes to the arteries.',
       ],
       sourceRefs: c1([79, 81]),
     },
@@ -524,9 +524,9 @@ const lesson4: Draft = {
       title: 'Arterial blood pressure',
       kind: 'definitions',
       paragraphs: [
-        'Systole gives peak arterial pressure; diastole the minimum. Flow continues in diastole because of the elastic recoil of the arterial walls — the Windkessel effect. By convention BP is written systolic/diastolic (slide 82).',
-        'Arterial pressure is quoted at heart level. Because of gravity, pressure is lower above the heart and higher below it (about 0.77 mmHg per cm) (slide 85).',
-        'Pulse pressure is systolic minus diastolic — it causes the pulse. Mean pressure is the average over the cycle ≈ diastolic + ⅓ pulse pressure. Pressure drops further down the arterial tree (slide 91).',
+        '**Systole** gives peak arterial pressure; **diastole** the minimum. Flow continues in diastole because of the elastic recoil of the arterial walls — the **Windkessel effect**. By convention BP is written **systolic/diastolic** (slide 82).',
+        'Arterial pressure is quoted at **heart level**. Because of gravity, pressure is lower above the heart and higher below it (about **0.77 mmHg per cm**) (slide 85).',
+        '- **Pulse pressure** is systolic minus diastolic — it causes the pulse.\n- **Mean pressure** is the average over the cycle ≈ **diastolic + ⅓ pulse pressure**.\nPressure drops further down the arterial tree (slide 91).',
       ],
       sourceRefs: c1([82, 85, 91]),
     },
@@ -534,8 +534,8 @@ const lesson4: Draft = {
       title: 'Measuring blood pressure',
       kind: 'clinical',
       paragraphs: [
-        'Methods: cannulation with a strain gauge, a mercury manometer, and the cuff method by palpation and auscultation over the brachial artery (slide 86). The first sound heard is the systolic pressure; the Korotkov sounds then become louder, dull and muffled, and disappear — they come from turbulent flow through the compressed artery.',
-        'Precautions (slide 87): the cuff must be at heart level. In obese people fat absorbs some cuff pressure, giving a falsely high reading. A cuff too big gives a falsely low result; too small, falsely high. Palpate first for the systolic pressure. Normal ≈ 120/70 (range down to about 90/60).',
+        'Methods:\n- **Cannulation** with a strain gauge.\n- A **mercury manometer**.\n- The **cuff method** by palpation and auscultation over the brachial artery (slide 86).\nThe **first sound** heard is the **systolic pressure**; the **Korotkov sounds** then become louder, dull and muffled, and disappear — they come from **turbulent flow** through the compressed artery.',
+        'Precautions (slide 87):\n- The cuff must be at **heart level**.\n- In **obese** people fat absorbs some cuff pressure, giving a falsely high reading.\n- A cuff too **big** gives a falsely **low** result; too **small**, falsely **high**.\n- **Palpate first** for the systolic pressure.\nNormal ≈ **120/70** (range down to about 90/60).',
       ],
       sourceRefs: c1([86, 87, 88, 89]),
     },
@@ -554,8 +554,8 @@ const lesson4: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'The syllabus asks how heart rate, stroke volume and the temporary storage of blood in elastic walls (the Windkessel effect, slide 82) change arterial pressure, and how pressure varies around the body.',
-        'Mean arterial pressure = cardiac output × total peripheral resistance (Regulation, slide 4). Pulse pressure depends mainly on stroke volume and on how compliant (stretchy) the arteries are.',
+        'The syllabus asks how **heart rate**, **stroke volume** and the temporary storage of blood in elastic walls (the **Windkessel effect**, slide 82) change arterial pressure, and how pressure varies around the body.',
+        '**Mean arterial pressure = cardiac output × total peripheral resistance** (Regulation, slide 4). **Pulse pressure** depends mainly on **stroke volume** and on how **compliant** (stretchy) the arteries are.',
       ],
       table: {
         columns: ['Change', 'Effect on pressures'],
@@ -580,7 +580,7 @@ const lesson4: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'Laplace’s law for a tube (Regulation, slides 11–12): wall tension T = P × r. Because capillaries have a tiny radius, they withstand pressure with very little tension — the point the lecture makes about why vessels do not rupture.',
+        '**Laplace’s law** for a tube (Regulation, slides 11–12): wall tension **T = P × r**. Because capillaries have a tiny radius, they withstand pressure with very little tension — the point the lecture makes about why vessels do not rupture.',
       ],
       terms: [
         { term: 'Critical closing pressure', meaning: 'The pressure below which a small vessel collapses and flow stops (about 20 mmHg). As pressure falls, the radius falls, the distending force falls faster than the muscle’s active tension, and the vessel suddenly snaps shut. Sympathetic tone raises it; vasodilators lower it.' },
@@ -595,8 +595,8 @@ const lesson4: Draft = {
       kind: 'comparison',
       origin: 'textbook',
       paragraphs: [
-        'Syllabus 5.11 lists Fick’s principle applied to organs, clearance, and the principles and limits of the electromagnetic flowmeter, venous occlusion plethysmography and Doppler (slide 67 names the instruments).',
-        'Organ Fick: blood flow = amount of substance taken up (or added) per minute ÷ arteriovenous concentration difference. Clearance is a special case: renal plasma flow = clearance of PAH (urine concentration × urine flow ÷ plasma concentration), because the kidney removes nearly all PAH in one pass; cerebral blood flow can be measured the same way with inhaled nitrous oxide (Kety method).',
+        'Syllabus 5.11 lists **Fick’s principle** applied to organs, **clearance**, and the principles and limits of the **electromagnetic flowmeter**, **venous occlusion plethysmography** and **Doppler** (slide 67 names the instruments).',
+        '**Organ Fick**: blood flow = amount of substance taken up (or added) per minute ÷ arteriovenous concentration difference. **Clearance** is a special case: renal plasma flow = clearance of **PAH** (urine concentration × urine flow ÷ plasma concentration), because the kidney removes nearly all PAH in one pass; cerebral blood flow can be measured the same way with inhaled nitrous oxide (**Kety method**).',
       ],
       table: {
         columns: ['Method', 'Principle', 'Limitation'],
@@ -645,15 +645,15 @@ const lesson5: Draft = {
       title: 'Capillary circulation',
       kind: 'overview',
       paragraphs: [
-        'Capillaries hold a small part of the blood volume — about 5% — and serve nutrient distribution and absorption and waste disposal. Capillary pressure is estimated from the external pressure that occludes the capillary (slide 93).',
-        'Substances cross the capillary wall by fenestrations, diffusion, filtration and vesicular transport (slide 93).',
+        'Capillaries hold a small part of the blood volume — about **5%** — and serve nutrient distribution and absorption and waste disposal. **Capillary pressure** is estimated from the external pressure that occludes the capillary (slide 93).',
+        'Substances cross the capillary wall by (slide 93):\n- **Fenestrations**\n- **Diffusion**\n- **Filtration**\n- **Vesicular transport**',
       ],
       sourceRefs: c1([62, 93]),
     },
     {
       title: 'Starling’s forces',
       kind: 'mechanism',
-      paragraphs: ['The rate of filtration at any point depends on a balance of forces that push fluid out and pull it in (slides 94–95):'],
+      paragraphs: ['The rate of **filtration** at any point depends on a balance of forces that **push fluid out** and **pull it in** (slides 94–95):'],
       table: {
         columns: ['Pushes fluid out of the capillary', 'Draws fluid into the capillary'],
         rows: [
@@ -671,7 +671,7 @@ const lesson5: Draft = {
       title: 'Oedema',
       kind: 'clinical',
       paragraphs: [
-        'Oedema is an abnormal, excessive collection of fluid in the interstitial space, from increased filtration or inadequate reabsorption (slide 99). The amount of interstitial fluid depends on the capillary filtration coefficient, the number of active capillaries, hydrostatic and oncotic pressures, and pre- and post-capillary resistance.',
+        '**Oedema** is an abnormal, excessive collection of fluid in the interstitial space, from **increased filtration** or **inadequate reabsorption** (slide 99). The amount of interstitial fluid depends on:\n- The **capillary filtration coefficient**.\n- The **number of active capillaries**.\n- **Hydrostatic and oncotic pressures**.\n- **Pre- and post-capillary resistance**.',
       ],
       table: {
         columns: ['Mechanism', 'Causes'],
@@ -688,9 +688,9 @@ const lesson5: Draft = {
       title: 'Lymphatic drainage',
       kind: 'mechanism',
       paragraphs: [
-        'More fluid leaves capillaries than returns, so interstitial fluid would build up — but lymph takes it back (slide 106). Lymph flow is aided by the skeletal muscle pump, negative intrathoracic pressure, the suction of the subclavian veins it drains into, contractions of the lymphatic walls, and valves.',
-        'The lymph system takes up protein in the intestine and returns it to the circulation, helps reabsorb water, and absorbs fatty acids and cholesterol (slide 106).',
-        'Lymphoedema — from obstruction — is not pitting (slide 107).',
+        'More fluid leaves capillaries than returns, so interstitial fluid would build up — but **lymph takes it back** (slide 106). Lymph flow is aided by:\n- The **skeletal muscle pump**.\n- **Negative intrathoracic pressure**.\n- The suction of the **subclavian veins** it drains into.\n- **Contractions** of the lymphatic walls.\n- **Valves**.',
+        'The lymph system takes up **protein** in the intestine and returns it to the circulation, helps **reabsorb water**, and absorbs **fatty acids and cholesterol** (slide 106).',
+        '**Lymphoedema** — from obstruction — is **not pitting** (slide 107).',
       ],
       sourceRefs: c1([106, 107]),
     },
@@ -698,9 +698,9 @@ const lesson5: Draft = {
       title: 'Venous circulation',
       kind: 'mechanism',
       paragraphs: [
-        'Blood moves in veins by the negative intrathoracic pressure of inspiration, the skeletal muscle pump, the heartbeat and the thoracic pump; arterial pulsation also compresses neighbouring veins (slides 109–110).',
-        'Venous pressure is about 12–18 mmHg and falls nearer the heart: at the entrance to the right atrium it is 4–6 mmHg — the central venous pressure (CVP), which fluctuates with respiration and the heartbeat. Velocity rises nearer the heart as total cross-section falls (slide 109).',
-        'Standing causes pooling. Because venous pressure is affected by gravity, some head veins may have zero pressure and collapse — but the dural sinuses have rigid walls and stay open at subatmospheric pressure, so opening them risks air embolism (slide 110).',
+        'Blood moves in veins by:\n- The **negative intrathoracic pressure** of inspiration.\n- The **skeletal muscle pump**.\n- The **heartbeat**.\n- The **thoracic pump**.\n**Arterial pulsation** also compresses neighbouring veins (slides 109–110).',
+        'Venous pressure is about **12–18 mmHg** and falls nearer the heart: at the entrance to the right atrium it is **4–6 mmHg** — the **central venous pressure (CVP)**, which fluctuates with respiration and the heartbeat. Velocity *rises* nearer the heart as total cross-section falls (slide 109).',
+        'Standing causes **pooling**. Because venous pressure is affected by gravity, some head veins may have **zero pressure** and collapse — but the **dural sinuses** have rigid walls and stay open at subatmospheric pressure, so opening them risks **air embolism** (slide 110).',
       ],
       sourceRefs: c1([109, 110]),
     },
@@ -709,7 +709,7 @@ const lesson5: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'The lecture lists the routes — fenestrations, diffusion, filtration and vesicular transport (slide 93). Syllabus 5.12 adds diffusion versus pinocytosis and the role of pre- and post-capillary sphincters.',
+        'The lecture lists the routes — **fenestrations**, **diffusion**, **filtration** and **vesicular transport** (slide 93). Syllabus 5.12 adds diffusion versus pinocytosis and the role of pre- and post-capillary sphincters.',
       ],
       table: {
         columns: ['Substance', 'Route'],
@@ -732,7 +732,7 @@ const lesson5: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'Syllabus 5.6 asks for pressures in veins, the CVP, changes with posture, veins as capacitance vessels, and the roles of valves, the muscle pump, the respiratory pump and venoconstriction. The lecture gives the numbers (slides 109–110); the textbooks explain them.',
+        'Syllabus 5.6 asks for pressures in veins, the **CVP**, changes with **posture**, veins as **capacitance vessels**, and the roles of **valves**, the **muscle pump**, the **respiratory pump** and **venoconstriction**. The lecture gives the numbers (slides 109–110); the textbooks explain them.',
       ],
       table: {
         columns: ['Situation', 'Venous pressure (Guyton)'],
@@ -785,7 +785,7 @@ const lesson6: Draft = {
       title: 'Levels of control',
       kind: 'overview',
       paragraphs: [
-        'Blood pressure = cardiac output × total peripheral resistance (slide 4). Regulation works locally, systemically and centrally (slide 2), through nerves, local vasoactive substances and circulating vasoactive substances, which dilate or constrict the resistance vessels and the capacitance vessels (slide 3).',
+        '**Blood pressure = cardiac output × total peripheral resistance** (slide 4). Regulation works **locally**, **systemically** and **centrally** (slide 2), through nerves, local vasoactive substances and circulating vasoactive substances, which dilate or constrict the **resistance vessels** and the **capacitance vessels** (slide 3).',
       ],
       sourceRefs: c2([1, 2, 3, 4]),
     },
@@ -793,8 +793,8 @@ const lesson6: Draft = {
       title: 'Autoregulation: the metabolic theory',
       kind: 'mechanism',
       paragraphs: [
-        'Autoregulation is the capacity of a tissue to keep its blood flow relatively constant despite minor changes in perfusion pressure, by changing its vascular resistance (slide 5).',
-        'Metabolic theory: when blood flow falls, vasoactive metabolites accumulate and dilate the vessels, increasing flow; the extra flow washes them away, allowing constriction (slide 6).',
+        '**Autoregulation** is the capacity of a tissue to keep its blood flow relatively **constant** despite minor changes in perfusion pressure, by changing its vascular resistance (slide 5).',
+        '**Metabolic theory**: when blood flow falls, **vasoactive metabolites accumulate** and dilate the vessels, increasing flow; the extra flow washes them away, allowing constriction (slide 6).',
       ],
       table: {
         columns: ['Local vasodilators (slides 7–8)', 'Local vasoconstrictors (slide 9)'],
@@ -811,9 +811,9 @@ const lesson6: Draft = {
       title: 'Autoregulation: the myogenic theory',
       kind: 'mechanism',
       paragraphs: [
-        'When pressure rises it distends the vessels, and vascular smooth muscle contracts in response to the increased transmural pressure (slide 10).',
-        'Law of Laplace: the distending pressure equals the wall tension divided by the radii — P = T(1/R₁ + 1/R₂), or P = T/R for a cylinder (slides 11–12). The small radius of small vessels lets them withstand pressure without rupturing.',
-        'Two examples of autoregulation are reactive hyperaemia and active hyperaemia (slide 13).',
+        'When pressure rises it **distends** the vessels, and vascular smooth muscle **contracts** in response to the increased transmural pressure (slide 10).',
+        '**Law of Laplace**: the distending pressure equals the wall tension divided by the radii — **P = T(1/R₁ + 1/R₂)**, or **P = T/R** for a cylinder (slides 11–12). The small radius of small vessels lets them withstand pressure without rupturing.',
+        'Two examples of autoregulation are **reactive hyperaemia** and **active hyperaemia** (slide 13).',
       ],
       sourceRefs: c2([10, 11, 12, 13, 14]),
     },
@@ -821,10 +821,10 @@ const lesson6: Draft = {
       title: 'Systemic control: humoral and nervous',
       kind: 'regulation',
       paragraphs: [
-        'Circulating vasodilators include kinins (plasma and tissue bradykinin, which relax vascular smooth muscle through NO), VIP and ANP (slide 15).',
-        'Sympathetic noradrenergic fibres supply all vessels except capillaries and venules and cause vasoconstriction. On resistance vessels they regulate flow and BP; on capacitance vessels they regulate the volume of blood stored — constriction moves blood to the arterial side (slide 16).',
-        'There is tonic discharge of the sympathetic constrictor fibres (not the dilator fibres), so reducing that tonic discharge causes vasodilatation (slide 17).',
-        'Sympathetic vasodilator fibres travel with the sympathetic but are cholinergic and dilate vessels — slide 18 lists muscle and liver.',
+        'Circulating **vasodilators** include **kinins** (plasma and tissue bradykinin, which relax vascular smooth muscle through NO), **VIP** and **ANP** (slide 15).',
+        '**Sympathetic noradrenergic** fibres supply all vessels *except* capillaries and venules and cause **vasoconstriction**.\n- On **resistance vessels** they regulate flow and BP.\n- On **capacitance vessels** they regulate the volume of blood stored — constriction moves blood to the arterial side (slide 16).',
+        'There is **tonic discharge** of the sympathetic constrictor fibres (not the dilator fibres), so **reducing that tonic discharge causes vasodilatation** (slide 17).',
+        '**Sympathetic vasodilator fibres** travel with the sympathetic but are **cholinergic** and dilate vessels — slide 18 lists muscle and liver.',
       ],
       sourceRefs: c2([15, 16, 17, 18]),
     },
@@ -832,9 +832,9 @@ const lesson6: Draft = {
       title: 'The vasomotor centre',
       kind: 'structure',
       paragraphs: [
-        'The heart and vessels are controlled by a collection of neurons in the medulla oblongata — the vasomotor centre (VMC). It has a dorsolateral pressor area and a caudal, ventromedial depressor area; the depressor area inhibits the pressor area (slides 19–20).',
-        'Varying the tonic sympathetic discharge controls the radius of arterioles, peripheral resistance and so BP (slide 20). Pressor neurons project directly to sympathetic neurons in the spinal cord: arteriolar constriction, venoconstriction (blood moved out of the reservoir), more venous return and, with the effects on the heart, more cardiac output (slide 22).',
-        'The heart: sympathetic increases rate and strength; parasympathetic reduces rate. Rate is controlled mainly by tonic vagal discharge, so vagotomy or atropine increases heart rate (slide 21).',
+        'The heart and vessels are controlled by a collection of neurons in the **medulla oblongata** — the **vasomotor centre (VMC)**. It has a dorsolateral **pressor area** and a caudal, ventromedial **depressor area**; the depressor area inhibits the pressor area (slides 19–20).',
+        'Varying the **tonic sympathetic discharge** controls the radius of arterioles, peripheral resistance and so BP (slide 20). Pressor neurons project directly to sympathetic neurons in the spinal cord:\n- **Arteriolar constriction**.\n- **Venoconstriction** (blood moved out of the reservoir).\n- More **venous return**.\n- With the effects on the heart, more **cardiac output** (slide 22).',
+        'The heart: **sympathetic** increases rate and strength; **parasympathetic** reduces rate. Rate is controlled mainly by **tonic vagal discharge**, so **vagotomy or atropine increases heart rate** (slide 21).',
       ],
       sourceRefs: c2([19, 20, 21, 22]),
     },
@@ -842,7 +842,7 @@ const lesson6: Draft = {
       title: 'The baroreceptor reflex',
       kind: 'pathway',
       paragraphs: [
-        'Baroreceptors are stretch receptors in high-pressure areas: the carotid sinus (a dilatation at the bifurcation of the common carotid) and the aortic arch (slide 23). Afferents run in the carotid sinus nerve (a branch of the glossopharyngeal, IX) and the vagus (X) to the nucleus of the tractus solitarius in the medulla (slide 24). Low-pressure receptors lie in the atrial walls at the entrances of the venae cavae and in the pulmonary veins.',
+        'Baroreceptors are **stretch receptors** in high-pressure areas: the **carotid sinus** (a dilatation at the bifurcation of the common carotid) and the **aortic arch** (slide 23). Afferents run in the **carotid sinus nerve** (a branch of the glossopharyngeal, IX) and the **vagus (X)** to the **nucleus of the tractus solitarius** in the medulla (slide 24). **Low-pressure receptors** lie in the atrial walls at the entrances of the venae cavae and in the pulmonary veins.',
       ],
       table: {
         columns: ['BP rises (slide 26)', 'BP falls (slide 28)'],
@@ -861,9 +861,9 @@ const lesson6: Draft = {
       title: 'Atrial (volume) receptors',
       kind: 'mechanism',
       paragraphs: [
-        'Atrial receptors are of two types: type A discharge in atrial systole; type B discharge later, in atrial diastole, and more when the atrial wall is distended (slide 31).',
-        'Type B stimulation causes vasodilatation and a fall in BP — but an increased, not decreased, heart rate, which may combat an excessive rise in CVP and congestion (slide 31). Through the hypothalamus the impulses also reduce ACTH and ADH; the reflex tachycardia pumps out the extra volume (slide 32).',
-        'So there are two exceptions to the rule that HR and BP move together (slides 37–38): reflex hypotension with tachycardia when atrial stretch receptors are stimulated, and hypertension with reflex bradycardia in raised intracranial pressure.',
+        'Atrial receptors are of two types:\n- **Type A** discharge in atrial systole.\n- **Type B** discharge later, in atrial diastole, and more when the atrial wall is distended (slide 31).',
+        '**Type B** stimulation causes vasodilatation and a fall in BP — but an **increased, not decreased, heart rate**, which may combat an excessive rise in CVP and congestion (slide 31). Through the hypothalamus the impulses also reduce **ACTH and ADH**; the reflex tachycardia pumps out the extra volume (slide 32).',
+        'So there are **two exceptions** to the rule that HR and BP move together (slides 37–38):\n- Reflex **hypotension with tachycardia** when atrial stretch receptors are stimulated.\n- **Hypertension with reflex bradycardia** in raised intracranial pressure.',
       ],
       sourceRefs: c2([31, 32, 37, 38]),
     },
@@ -871,8 +871,8 @@ const lesson6: Draft = {
       title: 'Other influences on the vasomotor centre',
       kind: 'regulation',
       paragraphs: [
-        'Hypoxia and hypercapnia stimulate the VMC directly (slides 33, 35). The cortex, via the hypothalamus, raises BP in anger and sexual excitement. Sharp, short pain raises BP; prolonged pain causes vasodilatation and fainting (slide 33).',
-        'The VMC is inhibited by the cortex (fear), by lung inflation through vagal afferents (vasodilatation and lower BP), and by the carotid, aortic and pulmonary baroreceptors (slide 34). Fear and grief cause bradycardia and hypotension (slide 37).',
+        '**Hypoxia** and **hypercapnia** stimulate the VMC directly (slides 33, 35). The cortex, via the hypothalamus, raises BP in **anger** and **sexual excitement**. **Sharp, short pain** raises BP; **prolonged pain** causes vasodilatation and fainting (slide 33).',
+        'The VMC is inhibited:\n- By the **cortex** (fear).\n- By **lung inflation** through vagal afferents (vasodilatation and lower BP).\n- By the **carotid, aortic and pulmonary baroreceptors** (slide 34).\n**Fear and grief** cause bradycardia and hypotension (slide 37).',
       ],
       notes: [{ kind: 'annotation', text: 'A note added to slide 34 explains that lung inflation stimulates pulmonary stretch receptors whose vagal afferents inhibit the vasomotor centre.' }],
       sourceRefs: c2([33, 34, 35, 37]),
@@ -881,9 +881,9 @@ const lesson6: Draft = {
       title: 'Cushing’s reflex',
       kind: 'clinical',
       paragraphs: [
-        'Raised intracranial pressure (hydrocephalus, tumours, a blood clot) reduces blood flow to the VMC. The resulting ischaemia, hypoxia and hypercapnia stimulate the VMC directly → more sympathetic discharge → systemic arterial pressure rises, which restores blood flow to the medulla (slides 35–36, 40).',
-        'The rise in BP is sensed by the arterial baroreceptors, giving reflex bradycardia. Result: hypertension with bradycardia (slides 36, 40). Cushing’s reflex is triggered when intracranial pressure rises by more than about 33 mmHg (Regional Circulation, slide 23).',
-        'Slide 36 adds a twist: the systemic rise in PCO₂ drives the VMC to cause vasoconstriction centrally, but CO₂ acting directly on the peripheral vessels causes vasodilatation.',
+        'Raised intracranial pressure (hydrocephalus, tumours, a blood clot) reduces blood flow to the VMC. The resulting **ischaemia, hypoxia and hypercapnia** stimulate the VMC directly → more **sympathetic discharge** → **systemic arterial pressure rises**, which restores blood flow to the medulla (slides 35–36, 40).',
+        'The rise in BP is sensed by the arterial baroreceptors, giving **reflex bradycardia**. Result: **hypertension with bradycardia** (slides 36, 40). Cushing’s reflex is triggered when intracranial pressure rises by more than about **33 mmHg** (Regional Circulation, slide 23).',
+        'Slide 36 adds a twist: the systemic rise in PCO₂ drives the VMC to cause **vasoconstriction centrally**, but CO₂ acting directly on the peripheral vessels causes **vasodilatation**.',
       ],
       notes: [{ kind: 'annotation', text: 'A note added to slide 36 gives Cushing’s triad: hypertension (wide pulse pressure), bradycardia and irregular breathing.' }],
       sourceRefs: [...c2([35, 36, 39, 40]), ...c4([23])],
@@ -911,7 +911,7 @@ const lesson6: Draft = {
       kind: 'comparison',
       origin: 'textbook',
       paragraphs: [
-        'Syllabus 5.13 asks for the effects of circulating catecholamines on the heart, arteries, arterioles and veins, and for adrenaline, angiotensin, ADH, prostaglandins, 5-HT, bradykinin and histamine. The lecture lists several of these as local or humoral agents (slides 8, 9 and 15).',
+        'Syllabus 5.13 asks for the effects of **circulating catecholamines** on the heart, arteries, arterioles and veins, and for adrenaline, angiotensin, ADH, prostaglandins, 5-HT, bradykinin and histamine. The lecture lists several of these as local or humoral agents (slides 8, 9 and 15).',
       ],
       table: {
         columns: ['Agent', 'Effect'],
@@ -934,7 +934,7 @@ const lesson6: Draft = {
       kind: 'regulation',
       origin: 'textbook',
       paragraphs: [
-        'The lecture covers baroreceptors, atrial receptors, direct effects of hypoxia and hypercapnia and the cortex (slides 23–35). The syllabus adds other arterial receptors, C fibres and higher centres.',
+        'The lecture covers **baroreceptors**, **atrial receptors**, direct effects of **hypoxia and hypercapnia** and the **cortex** (slides 23–35). The syllabus adds other arterial receptors, C fibres and higher centres.',
       ],
       terms: [
         { term: 'Peripheral chemoreceptors', meaning: 'Carotid and aortic bodies sense low PO₂, high PCO₂ and low pH. They mainly drive breathing, but when BP falls below about 80 mmHg their blood flow drops, they fire, and they stimulate the vasomotor centre — backing up the baroreflex.' },
@@ -950,7 +950,7 @@ const lesson6: Draft = {
       kind: 'regulation',
       origin: 'textbook',
       paragraphs: [
-        'The syllabus contrasts short-term and long-term control. The baroreceptor reflex works within seconds, but baroreceptors reset to a new pressure within one or two days, so they cannot set the long-term level.',
+        'The syllabus contrasts **short-term** and **long-term** control. The baroreceptor reflex works within **seconds**, but baroreceptors **reset** to a new pressure within one or two days, so they cannot set the long-term level.',
       ],
       table: {
         columns: ['Time scale', 'Mechanisms'],
@@ -1003,10 +1003,10 @@ const lesson7: Draft = {
       title: 'Standing up',
       kind: 'mechanism',
       paragraphs: [
-        'Slide 2 pictures a standing runner with no compensation: pressure at heart level 120/80, much higher at the feet (about 180 systolic) and lower at the head. On standing, blood pools in the peripheral capacitance vessels, hydrostatic pressure increases and interstitial fluid collects; venous return falls, and cerebral blood flow falls (slide 3).',
-        'The pressure drop in the aortic arch and carotid sinus (above heart level) triggers the VMC: vasoconstriction in the periphery, renin–aldosterone release, more venous return and positive inotropic and chronotropic effects, restoring cardiac output and BP (slide 4).',
-        'Cerebral flow is protected because venous pressure (JVP) falls along with arterial pressure, keeping the perfusion pressure; intracranial pressure falls; and the rise in PCO₂ and fall in PO₂ dilate cerebral vessels (slide 5).',
-        'With prolonged standing and no muscle pump, excessive pooling reduces venous return, cardiac output and cerebral flow → fainting, which brings the head to the level of the heart (slide 6).',
+        'Slide 2 pictures a standing runner with no compensation: pressure at heart level **120/80**, much higher at the feet (about **180** systolic) and lower at the head. On standing, blood **pools** in the peripheral capacitance vessels, hydrostatic pressure increases and interstitial fluid collects; **venous return falls**, and **cerebral blood flow falls** (slide 3).',
+        'The pressure drop in the **aortic arch and carotid sinus** (above heart level) triggers the VMC:\n- **Vasoconstriction** in the periphery.\n- **Renin–aldosterone** release.\n- More **venous return**.\n- Positive **inotropic and chronotropic** effects, restoring cardiac output and BP (slide 4).',
+        'Cerebral flow is protected because:\n- **Venous pressure (JVP) falls** along with arterial pressure, keeping the perfusion pressure.\n- **Intracranial pressure falls**.\n- The rise in PCO₂ and fall in PO₂ **dilate cerebral vessels** (slide 5).',
+        'With prolonged standing and no muscle pump, excessive pooling reduces venous return, cardiac output and cerebral flow → **fainting**, which brings the head to the level of the heart (slide 6).',
       ],
       notes: [{ kind: 'annotation', text: 'A note added to slide 4 likens renin to an alarm bell, angiotensin II to an enforcer that tightens the pipes, and aldosterone to a water collector.' }],
       sourceRefs: c3([2, 3, 4, 5, 6]),
@@ -1015,7 +1015,7 @@ const lesson7: Draft = {
       title: 'Orthostatic (postural) hypotension',
       kind: 'clinical',
       paragraphs: [
-        'A fall in BP on suddenly rising upright from lying (slide 8). Causes: disrupted sympathetic innervation — during surgery, sympatholytic drugs, nerve damage in diabetes or syphilis, autonomic insufficiency. Vasoconstrictor fibres have no effect, noradrenaline does not rise on standing, and there is no response to baroreceptor stimulation.',
+        'A **fall in BP** on suddenly rising upright from lying (slide 8). Causes: disrupted **sympathetic innervation**:\n- During surgery.\n- Sympatholytic drugs.\n- Nerve damage in diabetes or syphilis.\n- Autonomic insufficiency.\nVasoconstrictor fibres have no effect, noradrenaline does not rise on standing, and there is no response to baroreceptor stimulation.',
       ],
       sourceRefs: c3([7, 8]),
     },
@@ -1036,7 +1036,7 @@ const lesson7: Draft = {
     {
       title: 'Shock and its types',
       kind: 'classification',
-      paragraphs: ['Shock is a clinical syndrome of tissue perfusion inadequate to maintain normal metabolic and nutritional activity, with a relative or absolute inadequate cardiac output (slide 12). Put simply, it is any situation where perfusion of organs and tissues is reduced enough to damage them.'],
+      paragraphs: ['**Shock** is a clinical syndrome of **tissue perfusion inadequate** to maintain normal metabolic and nutritional activity, with a relative or absolute inadequate cardiac output (slide 12). Put simply, it is any situation where perfusion of organs and tissues is reduced enough to damage them.'],
       table: {
         columns: ['Type', 'Examples'],
         rows: [
@@ -1052,7 +1052,7 @@ const lesson7: Draft = {
       title: 'Signs of hypovolaemic shock — and why',
       kind: 'mechanism',
       paragraphs: [
-        'Haemorrhage → reduced blood volume → reduced venous return → reduced cardiac output → reduced tissue perfusion (slide 18). You see low BP, a fast pulse, pale cool skin, rapid respiration and intense thirst (slide 19).',
+        '**Haemorrhage** → reduced blood volume → reduced venous return → reduced cardiac output → reduced tissue perfusion (slide 18). You see:\n- **Low BP**.\n- A **fast pulse**.\n- **Pale cool skin**.\n- **Rapid respiration**.\n- Intense **thirst** (slide 19).',
       ],
       table: {
         columns: ['Sign', 'Why (slides 20–23)'],
@@ -1076,7 +1076,7 @@ const lesson7: Draft = {
       title: 'Irreversible shock',
       kind: 'clinical',
       paragraphs: [
-        'In irreversible shock there is no response to compensation even when blood volume is restored (slide 25). Prolonged cerebral ischaemia depresses the VMC → slowing of the heart and vasodilatation → further falls in BP and cerebral flow. Myocardial ischaemia worsens the shock. Precapillary sphincters relax while venules do not, causing stasis, a rise in hydrostatic pressure and loss of fluid into the interstitium (slide 26).',
+        'In **irreversible shock** there is no response to compensation even when blood volume is restored (slide 25).\n- Prolonged **cerebral ischaemia** depresses the VMC → slowing of the heart and vasodilatation → further falls in BP and cerebral flow.\n- **Myocardial ischaemia** worsens the shock.\n- **Precapillary sphincters relax while venules do not**, causing stasis, a rise in hydrostatic pressure and loss of fluid into the interstitium (slide 26).',
       ],
       sourceRefs: c3([25, 26, 27]),
     },
@@ -1084,16 +1084,16 @@ const lesson7: Draft = {
       title: 'Other causes of shock, and syncope',
       kind: 'clinical',
       paragraphs: [
-        'Hidden bleeding: fractured femur, ruptured ectopic pregnancy, ruptured spleen. In traumatic shock, myoglobin from muscle damages the kidneys. Burns shock: plasma exudes from the skin, giving haemoconcentration. Also diabetes, diarrhoea and adrenal insufficiency (slide 28).',
-        'Low-resistance shock: normal blood volume but massive vasodilatation and pooling — neurogenic (fainting from fear or grief), septic/endotoxic (bacterial toxins cause vasodilatation and increased permeability) and anaphylactic (antigen–antibody complexes release histamine → widespread dilatation and permeability) (slide 29).',
-        'Syncope (fainting) is caused by inadequate cerebral blood flow and is usually harmless. Vasovagal syncope: abrupt vasodilatation, hypotension and bradycardia after strong emotion. Others: postural syncope, micturition syncope, and carotid sinus syncope from pressure on the carotids (e.g. a tight collar) (slide 30).',
+        'Hidden bleeding: **fractured femur**, **ruptured ectopic pregnancy**, **ruptured spleen**. In **traumatic shock**, myoglobin from muscle damages the kidneys. **Burns shock**: plasma exudes from the skin, giving haemoconcentration. Also diabetes, diarrhoea and adrenal insufficiency (slide 28).',
+        '**Low-resistance shock**: normal blood volume but massive vasodilatation and pooling (slide 29):\n- **Neurogenic** (fainting from fear or grief).\n- **Septic/endotoxic** (bacterial toxins cause vasodilatation and increased permeability).\n- **Anaphylactic** (antigen–antibody complexes release histamine → widespread dilatation and permeability).',
+        '**Syncope** (fainting) is caused by inadequate cerebral blood flow and is usually harmless. **Vasovagal syncope**: abrupt vasodilatation, hypotension and bradycardia after strong emotion. Others: **postural** syncope, **micturition** syncope, and **carotid sinus** syncope from pressure on the carotids (e.g. a tight collar) (slide 30).',
       ],
       sourceRefs: c3([28, 29, 30]),
     },
     {
       title: 'Heart failure',
       kind: 'clinical',
-      paragraphs: ['Heart failure: the heart as a pump cannot meet the tissues’ needs for oxygen and substrates even though venous return is normal or increased (slide 31).'],
+      paragraphs: ['**Heart failure**: the heart as a pump cannot meet the tissues’ needs for oxygen and substrates even though **venous return is normal or increased** (slide 31).'],
       table: {
         columns: ['', 'Left heart', 'Right heart'],
         rows: [
@@ -1125,7 +1125,7 @@ const lesson7: Draft = {
       title: 'The lecture’s question: Hb and haematocrit after a haemorrhage',
       kind: 'clinical',
       paragraphs: [
-        'Slide 24 asks: “If you lose whole blood, what happens to Hb and haematocrit?” The slide gives the facts needed (fluid mobilised over 12–72 hours dilutes the blood; erythropoietin restores Hb in 4–5 weeks); the timing below comes from the textbooks.',
+        'Slide 24 asks: “If you lose whole blood, what happens to Hb and haematocrit?” The slide gives the facts needed (fluid mobilised over **12–72 hours** dilutes the blood; **erythropoietin** restores Hb in **4–5 weeks**); the timing below comes from the textbooks.',
       ],
       table: {
         columns: ['Time after a bleed', 'Hb concentration and haematocrit'],
@@ -1178,15 +1178,15 @@ const lesson8: Draft = {
       title: 'Cerebral blood supply and the meninges',
       kind: 'structure',
       paragraphs: [
-        'The brain is supplied through the circle of Willis, formed from the internal carotids and the basilar artery (from the vertebral arteries), giving the anterior, middle and posterior cerebral arteries. Each artery is almost the exclusive supply to its region, with little anastomosis (slide 2).',
-        'The meninges: tough outer dura mater; the subdural space; the arachnoid membrane; the subarachnoid space containing CSF; and the thin pia mater adhering to the brain and cord, following every sulcus (slide 5).',
+        'The brain is supplied through the **circle of Willis**, formed from the **internal carotids** and the **basilar artery** (from the vertebral arteries), giving the **anterior, middle and posterior cerebral arteries**. Each artery is almost the **exclusive supply** to its region, with little anastomosis (slide 2).',
+        'The meninges:\n- Tough outer **dura mater**.\n- The **subdural space**.\n- The **arachnoid** membrane.\n- The **subarachnoid space** containing CSF.\n- The thin **pia mater** adhering to the brain and cord, following every sulcus (slide 5).',
       ],
       sourceRefs: c4([2, 3, 4, 5]),
     },
     {
       title: 'Cerebrospinal fluid',
       kind: 'pathway',
-      paragraphs: ['CSF is a clear, colourless fluid bathing the CNS, contained in the ventricles and made mainly by the choroid plexus of the lateral, third and fourth ventricles (slide 7). It flows:'],
+      paragraphs: ['CSF is a clear, colourless fluid bathing the CNS, contained in the **ventricles** and made mainly by the **choroid plexus** of the lateral, third and fourth ventricles (slide 7). It flows:'],
       steps: [
         { label: 'Lateral ventricles' },
         { label: 'Interventricular foramen (of Monro)' },
@@ -1207,8 +1207,8 @@ const lesson8: Draft = {
         { term: 'Endocrine medium', meaning: 'Carries hormones to other areas of the brain.' },
       ],
       paragraphs: [
-        'Volume 150 mL; production 550 mL/day; 15% of brain volume. Composition like brain ECF: protein 20 mg/dL, glucose 64 mg/dL; lumbar pressure 70–180 mm CSF (slide 14).',
-        'Hydrocephalus is accumulation of CSF: external (communicating) — reduced reabsorption by the arachnoid villi; internal (non-communicating) — obstruction of the ventricular drainage system (slide 16).',
+        '- Volume **150 mL**.\n- Production **550 mL/day**.\n- **15%** of brain volume.\n- Composition like brain ECF: protein **20 mg/dL**, glucose **64 mg/dL**.\n- Lumbar pressure **70–180 mm CSF** (slide 14).',
+        '**Hydrocephalus** is accumulation of CSF:\n- **External (communicating)** — reduced reabsorption by the arachnoid villi.\n- **Internal (non-communicating)** — obstruction of the ventricular drainage system (slide 16).',
       ],
       sourceRefs: c4([13, 14, 15, 16]),
     },
@@ -1216,9 +1216,9 @@ const lesson8: Draft = {
       title: 'The blood–brain barrier',
       kind: 'mechanism',
       paragraphs: [
-        'The barrier insulates the brain and its ECF, including CSF, from blood-borne chemicals such as drugs, antigens and electrolyte changes. It lies in the intracranial endothelium. Only small, non-polar, lipid-soluble substances, or those with specific carriers, cross (slide 18).',
-        'Easy passage: water, CO₂, O₂, lipid-soluble steroid hormones. Difficult: proteins and protein-bound substances. Glucose diffuses slowly but is carried fast by a transporter (slide 19).',
-        'It keeps the neuronal environment constant and protects from endogenous toxins. Clinically, drug penetration must be known, and the barrier breaks down in infection and injury (slide 20).',
+        'The barrier insulates the brain and its ECF, including CSF, from blood-borne chemicals such as drugs, antigens and electrolyte changes. It lies in the **intracranial endothelium**. Only **small, non-polar, lipid-soluble** substances, or those with **specific carriers**, cross (slide 18).',
+        '- **Easy passage**: water, CO₂, O₂, lipid-soluble steroid hormones.\n- **Difficult**: proteins and protein-bound substances.\n- **Glucose** diffuses slowly but is carried fast by a transporter (slide 19).',
+        'It keeps the neuronal environment **constant** and protects from endogenous toxins. Clinically, **drug penetration** must be known, and the barrier **breaks down in infection and injury** (slide 20).',
       ],
       sourceRefs: c4([18, 19, 20]),
     },
@@ -1227,11 +1227,11 @@ const lesson8: Draft = {
       figure: 'cardiovascular-physiology:circle-of-willis',
       kind: 'regulation',
       paragraphs: [
-        'Flow is greater to active parts. Cerebral vessels have adrenergic, cholinergic and sensory nerves — touching them causes pain (slide 21).',
-        'Monro–Kellie doctrine: the volumes of blood, CSF and brain in the skull remain relatively constant, so vessels are compressed when intracranial pressure rises; perfusion pressure is nonetheless maintained (slide 22). A rise of more than about 33 mmHg triggers Cushing’s reflex (slide 23).',
-        'Autoregulation is prominent. The brain is very sensitive to hypoxia: 10 s of occlusion causes unconsciousness. Brainstem vegetative structures resist hypoxia better than the cortex; the basal ganglia and thalamus are also very sensitive (slide 23).',
-        'Glucose supplies 90% of the energy and is taken up without insulin; hypoglycaemia causes convulsions and coma (slide 24).',
-        'Stroke is loss of blood supply to an area of brain → ischaemia → cell death: haemorrhagic (rupture, usually of an aneurysm) or ischaemic (atherosclerotic plaque, thrombus, embolus) (slide 25).',
+        'Flow is greater to **active parts**. Cerebral vessels have adrenergic, cholinergic and sensory nerves — touching them causes **pain** (slide 21).',
+        '**Monro–Kellie doctrine**: the volumes of blood, CSF and brain in the skull remain relatively constant, so vessels are compressed when intracranial pressure rises; perfusion pressure is nonetheless maintained (slide 22). A rise of more than about **33 mmHg** triggers **Cushing’s reflex** (slide 23).',
+        '**Autoregulation** is prominent. The brain is very sensitive to hypoxia: **10 s** of occlusion causes unconsciousness. **Brainstem** vegetative structures resist hypoxia better than the cortex; the **basal ganglia and thalamus** are also very sensitive (slide 23).',
+        '**Glucose** supplies **90%** of the energy and is taken up **without insulin**; hypoglycaemia causes convulsions and coma (slide 24).',
+        '**Stroke** is loss of blood supply to an area of brain → ischaemia → cell death:\n- **Haemorrhagic** (rupture, usually of an aneurysm).\n- **Ischaemic** (atherosclerotic plaque, thrombus, embolus) (slide 25).',
       ],
       sourceRefs: c4([21, 22, 23, 24, 25]),
     },
@@ -1240,9 +1240,9 @@ const lesson8: Draft = {
       figure: 'cardiovascular-physiology:coronary-arteries',
       kind: 'mechanism',
       paragraphs: [
-        'There are right and left coronary arteries: the right is larger in 50% of people, the left in 20%, and they are equal in 30% (slide 27). Their openings stay patent throughout the cardiac cycle. Venous return is through the coronary sinus and anterior cardiac veins; others drain directly into the chambers.',
-        'Flow occurs during diastole; in systole the vessels are compressed (slide 27). Coronary vasodilatation is caused by ↓O₂, ADP, K⁺, H⁺, lactate, CO₂ and adenosine, and reactive hyperaemia occurs; α-receptor stimulation constricts the vessels (slide 28).',
-        'Coronary artery disease (slide 29): hypoxia from occlusion — at about 75% occlusion, a “P factor” causes pain. In angina pectoris, resting flow is normal but problems appear in exercise; severe, prolonged hypoxia causes myocardial infarction. Partial obstruction by atheromatous plaque is aggravated by spasm, thrombus, emboli, haemorrhage and platelet aggregation.',
+        'There are right and left coronary arteries: the **right** is larger in **50%** of people, the **left** in **20%**, and they are **equal** in **30%** (slide 27). Their openings stay patent throughout the cardiac cycle. Venous return is through the **coronary sinus** and **anterior cardiac veins**; others drain directly into the chambers.',
+        'Flow occurs during **diastole**; in systole the vessels are compressed (slide 27). Coronary **vasodilatation** is caused by ↓O₂, ADP, K⁺, H⁺, lactate, CO₂ and **adenosine**, and reactive hyperaemia occurs; **α-receptor** stimulation constricts the vessels (slide 28).',
+        '**Coronary artery disease** (slide 29): hypoxia from occlusion — at about **75% occlusion**, a “P factor” causes pain. In **angina pectoris**, resting flow is normal but problems appear in exercise; severe, prolonged hypoxia causes **myocardial infarction**. Partial obstruction by atheromatous plaque is aggravated by spasm, thrombus, emboli, haemorrhage and platelet aggregation.',
       ],
       notes: [
         { kind: 'clarified', text: 'Slide 27 says the coronary vessels arise “behind the mitral valve cusps”. Guyton: they arise from the aortic sinuses behind the aortic valve cusps.' },
@@ -1254,9 +1254,9 @@ const lesson8: Draft = {
       title: 'Pulmonary circulation',
       kind: 'mechanism',
       paragraphs: [
-        'The lungs have two systems: the respiratory (pulmonary) circulation and the supporting bronchial arteries from the aorta, which empty into the pulmonary veins (slide 31).',
-        'Pulmonary capillary hydrostatic pressure is low (10 mmHg) against an oncotic pressure of 25 mmHg, so it is difficult for fluid to accumulate in the alveoli. Gravity matters: upright, the apices are above the heart; lying flat, the whole lung is at heart level — important in orthopnoea and heart failure (slide 31).',
-        'The lungs are a blood reservoir: lying down adds about 400 mL to the lungs; standing returns it to the circulation. There is autonomic innervation for constriction and NO for dilatation. Hypoxia constricts pulmonary vessels, shunting blood to better-ventilated areas; CO₂ and H⁺ also constrict; persistent constriction leads to pulmonary hypertension (slide 32).',
+        'The lungs have two systems: the **respiratory (pulmonary) circulation** and the supporting **bronchial arteries** from the aorta, which empty into the pulmonary veins (slide 31).',
+        'Pulmonary capillary hydrostatic pressure is low (**10 mmHg**) against an oncotic pressure of **25 mmHg**, so it is difficult for fluid to accumulate in the alveoli. Gravity matters: upright, the apices are above the heart; lying flat, the whole lung is at heart level — important in **orthopnoea** and heart failure (slide 31).',
+        'The lungs are a **blood reservoir**: lying down adds about **400 mL** to the lungs; standing returns it to the circulation. There is autonomic innervation for constriction and **NO** for dilatation. **Hypoxia constricts pulmonary vessels**, shunting blood to better-ventilated areas; CO₂ and H⁺ also constrict; persistent constriction leads to **pulmonary hypertension** (slide 32).',
       ],
       sourceRefs: c4([30, 31, 32]),
     },
@@ -1264,10 +1264,10 @@ const lesson8: Draft = {
       title: 'Splanchnic and liver circulation',
       kind: 'structure',
       paragraphs: [
-        'Arterial supply from the coeliac, superior and inferior mesenteric arteries; drainage via the hepatic portal vein, liver, hepatic vein and IVC (slide 34).',
-        'The liver’s functional unit is the acinus. Blood flows from the portal triad (portal vein, hepatic artery, bile duct branches) toward the central vein, so the area near the vein is less oxygenated and prone to anoxic damage. Pressures: portal vein 10 mmHg, hepatic vein 5 mmHg, hepatic artery 90 mmHg (slide 35).',
-        'There is extensive anastomosis in the mesentery; flow to mucosa exceeds flow to muscle; flow rises for about 3 h after a meal; metabolic autoregulation is prominent. Sympathetic outflow constricts the arteries, diverting blood away in shock (which can cause necrosis). The splanchnic bed is a large venous reservoir (slide 36).',
-        'Ascites (free fluid in the peritoneal cavity): a rise in hepatic venous pressure raises sinusoidal hydrostatic pressure; fluid moves into the space of Disse and lymph and leaks from the liver surface. Because sinusoids have pores, this fluid is rich in protein, and its osmotic pull draws more fluid from the gut and mesentery (slide 37).',
+        'Arterial supply from the **coeliac, superior and inferior mesenteric** arteries; drainage via the **hepatic portal vein**, liver, hepatic vein and IVC (slide 34).',
+        'The liver’s functional unit is the **acinus**. Blood flows from the **portal triad** (portal vein, hepatic artery, bile duct branches) toward the **central vein**, so the area near the vein is less oxygenated and prone to anoxic damage. Pressures:\n- Portal vein **10 mmHg**.\n- Hepatic vein **5 mmHg**.\n- Hepatic artery **90 mmHg** (slide 35).',
+        '- There is extensive **anastomosis** in the mesentery.\n- Flow to **mucosa** exceeds flow to muscle.\n- Flow rises for about **3 h after a meal**.\n- **Metabolic autoregulation** is prominent.\nSympathetic outflow constricts the arteries, diverting blood away in **shock** (which can cause necrosis). The splanchnic bed is a large **venous reservoir** (slide 36).',
+        '**Ascites** (free fluid in the peritoneal cavity): a rise in **hepatic venous pressure** raises sinusoidal hydrostatic pressure; fluid moves into the **space of Disse** and lymph and leaks from the liver surface. Because sinusoids have pores, this fluid is **rich in protein**, and its osmotic pull draws more fluid from the gut and mesentery (slide 37).',
       ],
       sourceRefs: c4([33, 34, 35, 36, 37]),
     },
@@ -1275,8 +1275,8 @@ const lesson8: Draft = {
       title: 'Skin circulation',
       kind: 'mechanism',
       paragraphs: [
-        'The skin is used for heat regulation, has many anastomoses, and is shunted in shock (slide 39).',
-        'White reaction: paleness after stroking the skin, from contraction of precapillary sphincters; blood drains from capillaries and small veins; lasts about 15 s (slide 39).',
+        'The skin is used for **heat regulation**, has many **anastomoses**, and is **shunted in shock** (slide 39).',
+        '**White reaction**: paleness after stroking the skin, from contraction of **precapillary sphincters**; blood drains from capillaries and small veins; lasts about **15 s** (slide 39).',
       ],
       table: {
         columns: ['Triple response (firmer stroke, slide 40)', 'Cause'],
@@ -1293,7 +1293,7 @@ const lesson8: Draft = {
       figure: 'cardiovascular-physiology:fetal-circulation',
       kind: 'overview',
       paragraphs: [
-        'Fetal haemoglobin has a higher O₂ affinity than the mother’s adult haemoglobin, because it binds 2,3-DPG less. HbF usually disappears by about 4 months after birth. The placenta is cut off at birth and the baby adjusts to adult respiration (slide 45). Slides 43–46 show the fetal circulation and its changes after birth as diagrams.',
+        '**Fetal haemoglobin** has a **higher O₂ affinity** than the mother’s adult haemoglobin, because it binds **2,3-DPG less**. **HbF** usually disappears by about **4 months** after birth. The placenta is cut off at birth and the baby adjusts to adult respiration (slide 45). Slides 43–46 show the fetal circulation and its changes after birth as diagrams.',
       ],
       sourceRefs: c4([42, 43, 44, 45, 46]),
     },
@@ -1301,10 +1301,10 @@ const lesson8: Draft = {
       title: 'Supporting the brain, CSF taps and brain fuel',
       kind: 'structure',
       paragraphs: [
-        'The dura is attached to the bone. The brain hangs from the arachnoid by trabeculae that carry blood vessels and nerves. In trauma, movement of the brain is checked by the CSF and these trabeculae; the brain weighs about 1400 g in air but only about 50 g in CSF. Removing CSF can cause pain (slide 15).',
+        'The **dura** is attached to the bone. The brain hangs from the **arachnoid** by **trabeculae** that carry blood vessels and nerves. In trauma, movement of the brain is checked by the CSF and these trabeculae; the brain weighs about **1400 g in air** but only about **50 g in CSF**. Removing CSF can cause **pain** (slide 15).',
         'Slide 17 shows CSF being tapped (lumbar puncture).',
-        'Blood–brain barrier: transient breaches occur in many situations with little ill effect; sustained, partial breakdown occurs in brain tumours, inflammation and the oedema that goes with them (slide 18).',
-        'In prolonged starvation the brain uses other substances besides glucose — the slide says amino acids, lipids and proteins — and some glucose is converted into these substances (slide 24).',
+        'Blood–brain barrier: **transient breaches** occur in many situations with little ill effect; **sustained, partial breakdown** occurs in brain tumours, inflammation and the oedema that goes with them (slide 18).',
+        'In **prolonged starvation** the brain uses other substances besides glucose — the slide says amino acids, lipids and proteins — and some glucose is converted into these substances (slide 24).',
       ],
       notes: [
         { kind: 'textbook', text: 'Headache after a lumbar puncture: with less CSF the brain loses buoyancy, sags and pulls on pain-sensitive vessels and dura. The tap is done at L3–L4 or L4–L5, below the end of the spinal cord.' },
@@ -1317,7 +1317,7 @@ const lesson8: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'The lecture says the coronary openings stay patent throughout the cardiac cycle, flow occurs in diastole and the vessels are compressed in systole (slide 27). The syllabus asks for the flow pattern through the cycle and its link to the work of the heart.',
+        'The lecture says the coronary openings stay **patent** throughout the cardiac cycle, flow occurs in **diastole** and the vessels are **compressed in systole** (slide 27). The syllabus asks for the flow pattern through the cycle and its link to the work of the heart.',
       ],
       keyPoints: [
         'Left ventricle: flow falls almost to zero (or briefly reverses) in systole and peaks early in diastole, because the high-pressure muscle squeezes its own vessels. The subendocardium is squeezed most, so it is the first layer to become ischaemic.',
@@ -1334,7 +1334,7 @@ const lesson8: Draft = {
       kind: 'pathway',
       figure: 'cardiovascular-physiology:fetal-circulation',
       paragraphs: [
-        'Slide 43 labels the placenta, umbilical vein, umbilical arteries, ductus venosus, foramen ovale and ductus arteriosus; slides 44 and 46 are videos of the circulation before and after birth. The route (Guyton):',
+        'Slide 43 labels the **placenta**, **umbilical vein**, **umbilical arteries**, **ductus venosus**, **foramen ovale** and **ductus arteriosus**; slides 44 and 46 are videos of the circulation before and after birth. The route (Guyton):',
       ],
       steps: [
         { label: 'Placenta → umbilical vein', detail: 'The most oxygenated blood in the fetus (Hb about 80% saturated).' },
@@ -1385,7 +1385,7 @@ const lesson8: Draft = {
       kind: 'regulation',
       origin: 'textbook',
       paragraphs: [
-        'Slide 39 says skin is used for heat regulation, has many anastomoses and is shunted in shock; slide 41 asks how temperature control and the response to shock fit together. The syllabus adds AV shunts, subcutaneous capacity vessels and emotion.',
+        'Slide 39 says skin is used for **heat regulation**, has many **anastomoses** and is **shunted in shock**; slide 41 asks how temperature control and the response to shock fit together. The syllabus adds AV shunts, subcutaneous capacity vessels and emotion.',
       ],
       terms: [
         { term: 'Arteriovenous anastomoses', meaning: 'Thick-walled shunts in the fingers, palms, soles, ears, nose and lips that carry blood straight from arterioles to the venous plexus. Controlled almost entirely by sympathetic noradrenergic nerves, with little local autoregulation.' },
@@ -1439,8 +1439,8 @@ const lesson9: Draft = {
       figure: 'cardiovascular-physiology:limb-leads',
       kind: 'overview',
       paragraphs: [
-        'Currents generated as the heart depolarises and repolarises spread through the whole body, so they can be recorded by electrodes on the body surface: the electrocardiogram (ECG or EKG). It is recorded at 25 mm/s and calibrated so that 1 mV = 10 mm vertically (slide 2).',
-        'Leads: standard limb leads (bipolar), augmented limb leads (unipolar) and chest leads (unipolar) (slides 3–5).',
+        'Currents generated as the heart depolarises and repolarises spread through the whole body, so they can be recorded by electrodes on the body surface: the **electrocardiogram (ECG or EKG)**. It is recorded at **25 mm/s** and calibrated so that **1 mV = 10 mm** vertically (slide 2).',
+        'Leads:\n- **Standard limb leads** (bipolar).\n- **Augmented limb leads** (unipolar).\n- **Chest leads** (unipolar) (slides 3–5).',
       ],
       sourceRefs: c5([2, 3, 4, 5]),
     },
@@ -1480,9 +1480,9 @@ const lesson9: Draft = {
       title: 'Reading the paper',
       kind: 'definitions',
       paragraphs: [
-        'Each small 1-mm square is 0.04 s (40 ms) and 0.1 mV; one big square (5 small squares) is 0.2 s (slide 15).',
-        'Heart rate = 1500 ÷ number of small squares between two R waves, or 300 ÷ number of large squares. Example: 1500/22 ≈ 68 beats/min; 300/4.4 ≈ 68 (slide 16).',
-        'Uses of the ECG (slide 17): anatomical orientation of the heart, relative chamber sizes, rhythm disturbances, ischaemic damage, electrolyte imbalances and the influence of drugs.',
+        'Each **small 1-mm square** is **0.04 s** (40 ms) and **0.1 mV**; one **big square** (5 small squares) is **0.2 s** (slide 15).',
+        '**Heart rate = 1500 ÷ number of small squares** between two R waves, or **300 ÷ number of large squares**. Example: 1500/22 ≈ 68 beats/min; 300/4.4 ≈ 68 (slide 16).',
+        'Uses of the ECG (slide 17):\n- Anatomical orientation of the heart.\n- Relative chamber sizes.\n- Rhythm disturbances.\n- Ischaemic damage.\n- Electrolyte imbalances.\n- The influence of drugs.',
       ],
       sourceRefs: c5([14, 15, 16, 17]),
     },
@@ -1490,8 +1490,8 @@ const lesson9: Draft = {
       title: 'Cardiac rhythms',
       kind: 'definitions',
       paragraphs: [
-        'At rest the heart beats regularly at about 70/min, controlled by discharges from the SA node: sinus rhythm. Faster is tachycardia; slower is bradycardia (slide 18).',
-        'Exercise, fever, emotions and drugs affect the heart. An arrhythmia is an abnormal rhythm. In sinus arrhythmia the rate varies with respiration — slowing in expiration and speeding up in inspiration — due mainly to the parasympathetic outflow to the heart (slide 19).',
+        'At rest the heart beats regularly at about **70/min**, controlled by discharges from the SA node: **sinus rhythm**. Faster is **tachycardia**; slower is **bradycardia** (slide 18).',
+        'Exercise, fever, emotions and drugs affect the heart. An **arrhythmia** is an abnormal rhythm. In **sinus arrhythmia** the rate varies with respiration — *slowing in expiration* and *speeding up in inspiration* — due mainly to the **parasympathetic** outflow to the heart (slide 19).',
       ],
       sourceRefs: c5([18, 19]),
     },
@@ -1515,7 +1515,7 @@ const lesson9: Draft = {
       kind: 'structure',
       figure: 'cardiovascular-physiology:limb-leads',
       paragraphs: [
-        'Slides 3–5 show the leads as pictures. The standard limb leads are bipolar: each compares two limbs, forming Einthoven’s triangle around the heart. The right leg electrode is the ground.',
+        'Slides 3–5 show the leads as pictures. The standard limb leads are **bipolar**: each compares two limbs, forming **Einthoven’s triangle** around the heart. The **right leg** electrode is the ground.',
       ],
       table: {
         columns: ['Lead', 'Electrodes', 'Angle (frontal plane)'],
@@ -1541,7 +1541,7 @@ const lesson9: Draft = {
       kind: 'mechanism',
       origin: 'textbook',
       paragraphs: [
-        'The syllabus asks for the relation between the cardiac action potential and the ECG, and for ECG changes with ectopic foci. The ECG records current only while part of the heart is depolarised and part is not; when the whole ventricle is resting, or all at its plateau (the ST segment, slide 11), the trace is flat.',
+        'The syllabus asks for the relation between the cardiac action potential and the ECG, and for ECG changes with **ectopic foci**. The ECG records current only while **part of the heart is depolarised and part is not**; when the whole ventricle is resting, or all at its plateau (the **ST segment**, slide 11), the trace is **flat**.',
       ],
       table: {
         columns: ['ECG feature', 'Action-potential event'],
@@ -1566,7 +1566,7 @@ const lesson9: Draft = {
       kind: 'clinical',
       origin: 'textbook',
       paragraphs: [
-        'Slide 28 sets atrial fibrillation, atrial flutter, ventricular fibrillation and ventricular flutter as homework, and syllabus 5.3 lists flutter and fibrillation. Most are caused by re-entry (circus movement): an impulse keeps travelling round a loop of muscle and re-excites it. Re-entry is favoured by a long pathway (a dilated heart), slow conduction (ischaemia, high K⁺) and a short refractory period (Guyton).',
+        'Slide 28 sets **atrial fibrillation**, **atrial flutter**, **ventricular fibrillation** and **ventricular flutter** as homework, and syllabus 5.3 lists flutter and fibrillation. Most are caused by **re-entry** (circus movement): an impulse keeps travelling round a loop of muscle and re-excites it. Re-entry is favoured by:\n- A **long pathway** (a dilated heart).\n- **Slow conduction** (ischaemia, high K⁺).\n- A **short refractory period** (Guyton).',
       ],
       table: {
         columns: ['Rhythm', 'Rate and mechanism', 'ECG', 'Consequence'],
