@@ -699,6 +699,31 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // GrateApex Live Quiz. The Vercel referee is the only writer: it keeps correct
+    // answers in liveQuizKeys, validates every answer and calculates every score.
+    function liveQuizHost(code) {
+      return request.auth != null
+        && get(/databases/$(database)/documents/liveQuizSessions/$(code)).data.hostUid == request.auth.uid;
+    }
+    function liveQuizParticipant(code) {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/liveQuizParticipants/$(code + '_' + request.auth.uid));
+    }
+    match /liveQuizSessions/{code} {
+      allow read: if liveQuizHost(code) || liveQuizParticipant(code);
+      allow write: if false;
+    }
+    match /liveQuizParticipants/{id} {
+      allow read: if liveQuizHost(resource.data.sessionCode) || liveQuizParticipant(resource.data.sessionCode);
+      allow write: if false;
+    }
+    match /liveQuizAnswers/{id} {
+      allow read, write: if false;
+    }
+    match /liveQuizKeys/{code} {
+      allow read, write: if false;
+    }
+
     // ─── Live league tables (2026-11-14) ─────────────────────────────────────────
     // leagueTables/{week}_{tier}: one document per tier per week, `rows.{uid} = { username,
     // weeklyXp, at }`, listened to by every league card (src/data/leagues.ts). A learner may

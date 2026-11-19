@@ -148,6 +148,12 @@ export const routes = {
 
   apex: (courseId?: string | null) =>
     `/learn/apex${query({ course: valid(courseId) ? courseId : undefined })}` as Href,
+
+  liveQuiz: (code?: string | null) =>
+    `/live${query({ code: valid(code) ? code : undefined })}` as Href,
+
+  liveQuizHost: (code?: string | null) =>
+    `/live/host${query({ code: valid(code) ? code : undefined })}` as Href,
 };
 
 // Reads one string value from an expo-router search param.
