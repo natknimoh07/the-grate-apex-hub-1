@@ -12,14 +12,14 @@ GrateApex Live is a host-led, real-time multiple-choice quiz. It uses the app's 
 ## Security
 
 - Host access uses the existing `admins/{uid}` document. The owner must already have that document.
-- `api/live-quiz.mjs` verifies every signed-in caller and checks that the host owns the requested session.
+- `api/_live-quiz.mjs`, bundled into the existing `api/battle.mjs` Vercel Function, verifies every signed-in caller and checks that the host owns the requested session.
 - The correct options live only in `liveQuizKeys`, which no client can read.
 - The server receives an answer once, scores it from server time, writes the result, and updates the participant score. Clients cannot write a session, answer, score, or leaderboard directly.
 - `liveQuizSessions` contains only the question currently shown to participants and the published leaderboard.
 
 ## Question source
 
-`scripts/build-live-quiz-bank.mjs` creates the ignored `server/live-quiz-bank.json` from the generated `public/battle-bank/` curriculum projection. This happens before `npm start`, `npm run web`, and the Vercel production build. The generated file is server-only and is included with `api/live-quiz.mjs` by `vercel.json`.
+`scripts/build-live-quiz-bank.mjs` creates the ignored `server/live-quiz-bank.json` from the generated `public/battle-bank/` curriculum projection. This happens before `npm start`, `npm run web`, and the Vercel production build. The generated file is server-only and is included with the existing `api/battle.mjs` Vercel Function by `vercel.json`.
 
 When the curriculum changes, first rebuild the normal battle bank, then the Live Quiz bank is regenerated automatically by the normal start or web build command.
 

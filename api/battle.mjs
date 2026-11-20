@@ -9,6 +9,7 @@
 // (built by scripts/build-battle-bank.mjs). Rules: battleRooms, battleKeys, battleStats in firestore.rules.
 import { BattleError, handleBattle } from '../server/battle-referee.mjs';
 import { restAdmin } from './_admin-rest.mjs';
+import { handleLiveQuiz } from './_live-quiz.mjs';
 
 const banks = new Map(); // course -> { at, bank }
 const BANK_REUSE_MS = 10 * 60_000;
@@ -98,6 +99,15 @@ export default async function handler(req, res) {
   const admin = restAdmin();
   if (!admin) return res.status(503).json({ error: 'Battles are not set up on the server yet.', code: 'not-configured' });
 
+  let body = req.body ?? {};
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch { body = {}; }
+  }
+  // Live Quiz shares this trusted server function so the project remains within
+  // Vercel Hobby's serverless-function limit. Its own handler still verifies the
+  // signed-in caller, owner access and scoring independently.
+  if (body.action === 'live-quiz') return handleLiveQuiz({ req, res, admin, body });
+
   let uid;
   try {
     const token = String(req.headers.authorization ?? '').replace(/^Bearer\s+/i, '');
@@ -107,10 +117,6 @@ export default async function handler(req, res) {
   }
   if (tooMany(uid)) return res.status(429).json({ error: 'Slow down a little.' });
 
-  let body = req.body ?? {};
-  if (typeof body === 'string') {
-    try { body = JSON.parse(body); } catch { body = {}; }
-  }
   try {
     const store = firestoreStore(admin.db);
     const base = origin(req);

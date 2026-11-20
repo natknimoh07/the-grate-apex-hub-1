@@ -58,10 +58,10 @@ async function call<T>(action: string, body: Record<string, unknown> = {}): Prom
   if (!token) throw new LiveQuizServerError(401, 'Sign in to use Live Quiz.');
   let response: Response;
   try {
-    response = await fetch(`${API_BASE}/api/live-quiz`, {
+    response = await fetch(`${API_BASE}/api/battle`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
-      body: JSON.stringify({ action, ...body }),
+      body: JSON.stringify({ action: 'live-quiz', liveAction: action, ...body }),
     });
   } catch {
     throw new LiveQuizServerError(0, 'No connection to the Live Quiz server. Check your internet and try again.');

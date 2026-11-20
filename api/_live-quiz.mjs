@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
 
-import { restAdmin } from './_admin-rest.mjs';
 import { leaderboard, LiveQuizError, scoreLiveAnswer } from '../server/live-quiz-referee.mjs';
 
 const codeAlphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -254,18 +253,10 @@ async function actionEnd(admin, uid, body) {
   await admin.db.doc(`liveQuizSessions/${current.code}`).update({ status: 'ended', phase: 'ended', leaderboard: entries, endedAt: Date.now(), updatedAt: Date.now() });
 }
 
-export default async function handler(req, res) {
-  res.setHeader('cache-control', 'no-store');
-  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only.' });
-  const admin = restAdmin();
-  if (!admin) return res.status(503).json({ error: 'Live Quiz is not configured on the server yet.', code: 'not-configured' });
-  let body = req.body ?? {};
-  if (typeof body === 'string') {
-    try { body = JSON.parse(body); } catch { body = {}; }
-  }
+export async function handleLiveQuiz({ req, res, admin, body }) {
   try {
     const token = await signedIn(admin, req);
-    const action = text(body.action, 40);
+    const action = text(body.liveAction, 40);
     if (action === 'catalog') {
       await owner(admin, token.uid);
       return res.status(200).json(await actionCatalog());
