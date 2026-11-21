@@ -154,6 +154,9 @@ export const routes = {
 
   liveQuizHost: (code?: string | null) =>
     `/live/host${query({ code: valid(code) ? code : undefined })}` as Href,
+
+  liveQuizHistory: (code?: string | null) =>
+    `/live/history${query({ code: valid(code) ? code : undefined })}` as Href,
 };
 
 // Reads one string value from an expo-router search param.

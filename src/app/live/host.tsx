@@ -166,6 +166,7 @@ function HostBuilder() {
     <Screen width="wide" contentStyle={styles.page}>
       <BackLink fallback={routes.liveQuiz()} />
       <PageHeader title="Build a Live Quiz" eyebrow="GrateApex Live" subtitle="Choose a course, set the pace, and build your quiz in a few taps." right={<Text style={styles.count}>{selected.length}/{questionCount} questions</Text>} />
+      <Button label="Quiz history" variant="secondary" onPress={() => router.push(routes.liveQuizHistory())} />
       <Columns
         sideFirstOnMobile
         sideWidth={300}
@@ -320,7 +321,7 @@ function HostRoom({ code }: { code: string }) {
               {session.phase === 'question' ? <Button label="Show results now" variant="apex" size="lg" loading={action === 'reveal'} onPress={() => void run('reveal', () => showLiveQuizResults(code))} /> : null}
               {session.phase === 'reveal' ? <Button label="Show leaderboard now" variant="apex" size="lg" loading={action === 'leaderboard'} onPress={() => void run('leaderboard', () => showLiveQuizLeaderboard(code))} /> : null}
               {session.phase === 'leaderboard' ? <Button label={finalQuestion ? 'Finish quiz' : 'Prepare next question'} variant="primary" size="lg" loading={action === 'next'} onPress={() => void run('next', () => nextLiveQuizQuestion(code))} /> : null}
-              {session.status !== 'ended' ? <Button label="End session" variant="danger" loading={action === 'end'} onPress={() => void run('end', () => endLiveQuiz(code))} /> : <Button label="Create another quiz" variant="secondary" onPress={() => router.replace(routes.liveQuizHost())} />}
+              {session.status !== 'ended' ? <Button label="End session" variant="danger" loading={action === 'end'} onPress={() => void run('end', () => endLiveQuiz(code))} /> : <><Button label="Review quiz answers" variant="secondary" onPress={() => router.push(routes.liveQuizHistory(code))} /><Button label="Create another quiz" variant="secondary" onPress={() => router.replace(routes.liveQuizHost())} /></>}
             </View>
           </Card>
         }

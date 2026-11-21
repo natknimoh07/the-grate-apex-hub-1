@@ -29,6 +29,18 @@ export type LiveQuizCourse = {
 
 export type LiveQuizEntry = { rank: number; displayName: string; score: number };
 
+export type LiveQuizHistoryItem = {
+  code: string;
+  title: string;
+  questionCount: number;
+  createdAt: number;
+  endedAt: number;
+};
+
+export type LiveQuizHistoryQuestion = LiveQuizQuestion & {
+  answerIndex: number;
+};
+
 export type LiveQuizSession = {
   code: string;
   title: string;
@@ -121,6 +133,8 @@ export const getLiveQuizCatalog = () => call<{ courses: LiveQuizCourse[] }>('cat
 export const getLiveQuizQuestions = (course: string, topic?: string, search?: string) => call<{ questions: LiveQuizQuestionSummary[] }>('questions', { course, topic, search });
 export const createLiveQuiz = (input: { title: string; durationSeconds: number; questionKeys: string[] }) => call<{ code: string }>('create', input);
 export const getLiveQuizHostSession = (code: string) => call<{ session: LiveQuizSession; questions: LiveQuizQuestion[] }>('host-session', { code });
+export const getLiveQuizHistory = () => call<{ quizzes: LiveQuizHistoryItem[] }>('history');
+export const getLiveQuizHistoryDetail = (code: string) => call<{ quiz: LiveQuizHistoryItem; questions: LiveQuizHistoryQuestion[] }>('history-detail', { code });
 export const joinLiveQuiz = (code: string, displayName: string) => call<{ code: string }>('join', { code, displayName });
 export const startLiveQuizQuestion = (code: string) => call<{ now: number }>('start', { code });
 export const answerLiveQuiz = (code: string, choiceIndex: number) => call<{ accepted: boolean; now: number }>('answer', { code, choiceIndex });

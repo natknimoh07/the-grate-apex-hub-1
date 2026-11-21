@@ -169,6 +169,49 @@ async function actionHostSession(admin, uid, body) {
   return { session: current, questions: publicHostQuestions(keys.data().questions ?? []) };
 }
 
+async function actionHistory(admin, uid) {
+  const result = await admin.db.collection('liveQuizSessions').where('hostUid', '==', uid).get();
+  const quizzes = result.docs
+    .map((item) => item.data())
+    .filter((item) => item.status === 'ended')
+    .sort((first, second) => Number(second.endedAt ?? second.createdAt ?? 0) - Number(first.endedAt ?? first.createdAt ?? 0))
+    .slice(0, 50)
+    .map((item) => ({
+      code: item.code,
+      title: item.title,
+      questionCount: Number(item.questionCount ?? 0),
+      createdAt: Number(item.createdAt ?? 0),
+      endedAt: Number(item.endedAt ?? item.updatedAt ?? 0),
+    }));
+  return { quizzes };
+}
+
+async function actionHistoryDetail(admin, uid, body) {
+  const current = await hostSession(admin, uid, codeOf(body.code));
+  if (current.status !== 'ended') throw new LiveQuizError(409, 'This quiz is still in progress. Its history will be available when it ends.');
+  const keys = await admin.db.doc(`liveQuizKeys/${current.code}`).get();
+  if (!keys.exists) throw new LiveQuizError(404, 'The saved questions for this quiz could not be found.');
+  const questions = Array.isArray(keys.data()?.questions) ? keys.data().questions : [];
+  return {
+    quiz: {
+      code: current.code,
+      title: current.title,
+      questionCount: Number(current.questionCount ?? questions.length),
+      createdAt: Number(current.createdAt ?? 0),
+      endedAt: Number(current.endedAt ?? current.updatedAt ?? 0),
+    },
+    questions: questions.map((question, position) => ({
+      position,
+      key: question.key,
+      course: question.course,
+      topic: question.topic,
+      prompt: question.prompt,
+      options: Array.isArray(question.options) ? question.options : [],
+      answerIndex: Number(question.answer),
+    })),
+  };
+}
+
 async function actionJoin(admin, uid, body) {
   const code = codeOf(body.code);
   const current = await session(admin, code);
@@ -337,6 +380,8 @@ export async function handleLiveQuiz({ req, res, admin, liveQuizAdmin, body }) {
     }
     if (action === 'create') return res.status(200).json(await actionCreate(quizAdmin, token.uid, body));
     if (action === 'host-session') return res.status(200).json(await actionHostSession(quizAdmin, token.uid, body));
+    if (action === 'history') return res.status(200).json(await actionHistory(quizAdmin, token.uid));
+    if (action === 'history-detail') return res.status(200).json(await actionHistoryDetail(quizAdmin, token.uid, body));
     if (action === 'join') return res.status(200).json(await actionJoin(quizAdmin, token.uid, body));
     if (action === 'start') return res.status(200).json(await actionStart(quizAdmin, token.uid, body));
     if (action === 'answer') return res.status(200).json(await actionAnswer(quizAdmin, token.uid, body));
