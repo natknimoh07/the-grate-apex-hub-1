@@ -4,6 +4,7 @@ import { leaderboard, LiveQuizError, scoreLiveAnswer } from '../server/live-quiz
 
 const codeAlphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const codePattern = /^[A-Z2-9]{6}$/;
+const LEADERBOARD_DISPLAY_MS = 5_000;
 const bankDirectory = new URL('../server/live-quiz-bank/', import.meta.url);
 let cachedCourses = null;
 const cachedCourseBanks = new Map();
@@ -238,8 +239,38 @@ async function actionLeaderboard(admin, uid, body) {
   const current = await hostSession(admin, uid, codeOf(body.code));
   if (current.status === 'ended') throw new LiveQuizError(409, 'This live quiz has ended.');
   const entries = await writeLeaderboard(admin, current);
-  await admin.db.doc(`liveQuizSessions/${current.code}`).update({ phase: 'leaderboard', leaderboard: entries, updatedAt: Date.now() });
+  const now = Date.now();
+  await admin.db.doc(`liveQuizSessions/${current.code}`).update({ phase: 'leaderboard', leaderboard: entries, leaderboardAt: now, updatedAt: now });
   return { entries };
+}
+
+async function actionAutoAdvance(admin, uid, body) {
+  const current = await hostSession(admin, uid, codeOf(body.code));
+  if (current.status === 'ended' || current.phase !== 'leaderboard') return { advanced: false };
+  const leaderboardAt = Number(current.leaderboardAt ?? current.updatedAt ?? Date.now());
+  if (Date.now() - leaderboardAt < LEADERBOARD_DISPLAY_MS) return { advanced: false };
+
+  const next = current.currentIndex + 1;
+  const now = Date.now();
+  if (next >= current.questionCount) {
+    await admin.db.doc(`liveQuizSessions/${current.code}`).update({ status: 'ended', phase: 'ended', currentQuestion: null, questionStartedAt: 0, updatedAt: now });
+    return { advanced: true, ended: true };
+  }
+
+  const keys = await admin.db.doc(`liveQuizKeys/${current.code}`).get();
+  if (!keys.exists) throw new LiveQuizError(500, 'The private answer key is missing for this session.');
+  const question = keys.data()?.questions?.[next];
+  if (!question) throw new LiveQuizError(500, 'This question is unavailable.');
+  await admin.db.doc(`liveQuizSessions/${current.code}`).update({
+    status: 'live',
+    phase: 'question',
+    currentIndex: next,
+    currentQuestion: publicQuestion(question, next),
+    questionStartedAt: now,
+    leaderboardAt: 0,
+    updatedAt: now,
+  });
+  return { advanced: true, ended: false };
 }
 
 async function actionNext(admin, uid, body) {
@@ -277,6 +308,7 @@ export async function handleLiveQuiz({ req, res, admin, body }) {
     if (action === 'answer') return res.status(200).json(await actionAnswer(admin, token.uid, body));
     if (action === 'leaderboard') return res.status(200).json(await actionLeaderboard(admin, token.uid, body));
     if (action === 'next') return res.status(200).json(await actionNext(admin, token.uid, body));
+    if (action === 'auto-advance') return res.status(200).json(await actionAutoAdvance(admin, token.uid, body));
     if (action === 'end') return res.status(200).json(await actionEnd(admin, token.uid, body));
     throw new LiveQuizError(400, 'Unknown Live Quiz action.');
   } catch (error) {

@@ -153,7 +153,7 @@ function Results({ session, styles }: { session: LiveQuizSession; styles: Return
           </View>
         )) : <Text style={styles.muted}>Scores will appear here when the host reveals the results.</Text>}
       </Card>
-      <Text style={styles.lead}>{session.phase === 'ended' ? 'Thanks for playing GrateApex Live.' : 'The host will open the next question shortly.'}</Text>
+      <Text style={styles.lead}>{session.phase === 'ended' ? 'Thanks for playing GrateApex Live.' : 'The next question starts automatically after the leaderboard.'}</Text>
       {session.phase === 'ended' ? <Button label="Back to GrateApex" variant="secondary" onPress={() => router.replace(routes.home())} /> : null}
     </Screen>
   );

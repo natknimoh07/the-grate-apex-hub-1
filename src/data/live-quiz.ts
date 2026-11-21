@@ -38,6 +38,8 @@ export type LiveQuizSession = {
   durationSeconds: number;
   currentQuestion: LiveQuizQuestion | null;
   questionStartedAt: number;
+  leaderboardAt?: number;
+  updatedAt?: number;
   leaderboard: LiveQuizEntry[];
 };
 
@@ -83,6 +85,7 @@ export const startLiveQuizQuestion = (code: string) => call<{ now: number }>('st
 export const answerLiveQuiz = (code: string, choiceIndex: number) => call<{ accepted: boolean; now: number }>('answer', { code, choiceIndex });
 export const showLiveQuizLeaderboard = (code: string) => call<{ entries: LiveQuizEntry[] }>('leaderboard', { code });
 export const nextLiveQuizQuestion = (code: string) => call<void>('next', { code });
+export const autoAdvanceLiveQuizQuestion = (code: string) => call<{ advanced: boolean; ended?: boolean }>('auto-advance', { code });
 export const endLiveQuiz = (code: string) => call<void>('end', { code });
 
 export function watchLiveQuiz(code: string, onChange: (session: LiveQuizSession | null) => void, onError: (error: Error) => void): Unsubscribe {

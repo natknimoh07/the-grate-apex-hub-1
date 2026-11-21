@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { BackLink } from '@/components/learning/nav-bits';
@@ -10,6 +10,7 @@ import { ErrorScreen, LoadingState } from '@/components/ui/state-views';
 import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
 import {
+  autoAdvanceLiveQuizQuestion,
   createLiveQuiz,
   endLiveQuiz,
   getLiveQuizCatalog,
@@ -229,6 +230,7 @@ function HostRoom({ code }: { code: string }) {
   const [participants, setParticipants] = useState<LiveQuizParticipant[]>([]);
   const [problem, setProblem] = useState<string | null>(null);
   const [action, setAction] = useState<string | null>(null);
+  const autoTransition = useRef('');
 
   useEffect(() => watchLiveQuiz(code, setSession, (error) => setProblem(friendlyError(error, 'This live session is unavailable.'))), [code]);
   useEffect(() => watchLiveQuizParticipants(code, setParticipants, (error) => setProblem(friendlyError(error, 'Participant updates are unavailable.'))), [code]);
@@ -253,6 +255,33 @@ function HostRoom({ code }: { code: string }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (!session) return undefined;
+    let timer: ReturnType<typeof setTimeout>;
+    if (session.phase === 'question' && session.status === 'live') {
+      const key = `leaderboard:${session.currentIndex}:${session.questionStartedAt}`;
+      if (autoTransition.current === key) return undefined;
+      const deadline = session.questionStartedAt + session.durationSeconds * 1000 + 1_500;
+      timer = setTimeout(() => {
+        if (autoTransition.current === key) return;
+        autoTransition.current = key;
+        void run('auto-leaderboard', () => showLiveQuizLeaderboard(code));
+      }, Math.max(0, deadline - Date.now()));
+    } else if (session.phase === 'leaderboard' && session.status !== 'ended') {
+      const shownAt = Number(session.leaderboardAt ?? session.updatedAt ?? Date.now());
+      const key = `advance:${session.currentIndex}:${shownAt}`;
+      if (autoTransition.current === key) return undefined;
+      timer = setTimeout(() => {
+        if (autoTransition.current === key) return;
+        autoTransition.current = key;
+        void run('auto-advance', () => autoAdvanceLiveQuizQuestion(code));
+      }, 5_250);
+    } else {
+      return undefined;
+    }
+    return () => clearTimeout(timer);
+  }, [code, run, session?.currentIndex, session?.durationSeconds, session?.leaderboardAt, session?.phase, session?.questionStartedAt, session?.status, session?.updatedAt]);
+
   if (problem && !session) return <ErrorScreen title="Host session unavailable" message={problem} primary={{ label: 'Create a live quiz', onPress: () => router.replace(routes.liveQuizHost()) }} />;
   if (!session || !questions.length) return <LoadingState label="Preparing the host controls…" />;
   const finalQuestion = session.currentIndex + 1 >= session.questionCount;
@@ -271,7 +300,7 @@ function HostRoom({ code }: { code: string }) {
         main={
           <Card style={styles.stage}>
             <Text style={styles.kicker}>QUESTION {session.currentIndex + 1}</Text>
-            {session.phase === 'leaderboard' ? <Text style={styles.stageTitle}>Leaderboard is live.</Text> : session.status === 'ended' ? <Text style={styles.stageTitle}>This live quiz has ended.</Text> : <><Text style={styles.stageTitle}>{current?.prompt}</Text><View style={styles.stageOptions}>{current?.options.map((option, index) => <View key={`${index}:${option}`} style={styles.stageOption}><Text style={styles.stageLetter}>{String.fromCharCode(65 + index)}</Text><Text style={styles.stageOptionText}>{option}</Text></View>)}</View></>}
+            {session.phase === 'leaderboard' ? <><Text style={styles.stageTitle}>Leaderboard is live.</Text><Text style={styles.settingsHint}>{finalQuestion ? 'Final scores will show before the quiz ends.' : 'The next question starts automatically after the scores show.'}</Text></> : session.status === 'ended' ? <Text style={styles.stageTitle}>This live quiz has ended.</Text> : <><Text style={styles.stageTitle}>{current?.prompt}</Text><View style={styles.stageOptions}>{current?.options.map((option, index) => <View key={`${index}:${option}`} style={styles.stageOption}><Text style={styles.stageLetter}>{String.fromCharCode(65 + index)}</Text><Text style={styles.stageOptionText}>{option}</Text></View>)}</View></>}
             {problem ? <Text style={styles.error}>{problem}</Text> : null}
             <View style={styles.actions}>
               {session.phase === 'lobby' && session.status !== 'ended' ? <Button label="Open question" variant="apex" size="lg" loading={action === 'start'} onPress={() => void run('start', () => startLiveQuizQuestion(code))} /> : null}
