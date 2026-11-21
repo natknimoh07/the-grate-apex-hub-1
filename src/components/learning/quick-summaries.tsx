@@ -4,6 +4,14 @@ import { Card } from '@/components/ui/interactive';
 import type { Lesson, Topic } from '@/data/lesson-types';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { Button } from '@/components/ui/button';
+import { Pill } from '@/components/ui/pill';
+import { Screen } from '@/components/ui/screen';
+import { BackLink, Breadcrumbs } from '@/components/learning/nav-bits';
+import { TopicGlyph } from '@/components/learning/glyphs';
+import { ErrorScreen } from '@/components/ui/state-views';
+import { router } from 'expo-router';
+import { routes } from '@/lib/routes';
 
 /** Concise revision view using the key points already authored for each lesson. */
 export function LessonQuickSummary({ lesson }: { lesson: Lesson }) {
@@ -33,20 +41,45 @@ export function LessonQuickSummary({ lesson }: { lesson: Lesson }) {
   );
 }
 
-/** Topic-level rapid review, grouped by lesson and sourced from authored high-yield notes. */
-export function TopicQuickSummary({ topic }: { topic: Topic }) {
+/** Compact entry point on the topic page; keeps the lesson list visible. */
+export function TopicSummaryLink({ topic }: { topic: Topic }) {
+  const styles = useThemedStyles(createStyles);
+  return (
+    <Card style={styles.topicCard} tone="primary">
+      <View style={styles.topicHeader}>
+        <View style={styles.flex}>
+          <Text style={styles.kicker}>SHORT ON TIME?</Text>
+          <Text style={styles.topicTitle}>High-yield topic summary</Text>
+        </View>
+        <Pill label={`${topic.lessons.length} lessons`} />
+      </View>
+      <Text style={styles.topicDescription}>Review the exam-focused ideas across the topic without scrolling past them to reach your lessons.</Text>
+      <Button label="View high-yield summary" trailing="chevronRight" onPress={() => router.push(routes.topicSummary(topic.id))} />
+    </Card>
+  );
+}
+
+/** Dedicated, readable topic review grouped by lesson. */
+export function TopicSummaryPage({ topic }: { topic: Topic }) {
   const styles = useThemedStyles(createStyles);
   const colors = useTheme();
   return (
-    <Card style={styles.topicCard}>
-      <View style={styles.topicHeader}>
-        <View style={styles.flex}>
-          <Text style={styles.kicker}>QUICK TOPIC REVIEW</Text>
-          <Text style={styles.topicTitle}>High-yield summary</Text>
+    <Screen width="content">
+      <BackLink fallback={routes.topic(topic.id)} />
+      <Breadcrumbs items={[{ label: 'Study', href: routes.learn() }, { label: topic.title, href: routes.topic(topic.id) }, { label: 'High-yield summary' }]} style={styles.crumbs} />
+
+      <Card tone="primary" style={styles.hero}>
+        <View style={styles.heroTop}>
+          <TopicGlyph title={topic.title} subject={topic.subject} size={48} />
+          <View style={styles.flex}>
+            <Text style={styles.kicker}>QUICK TOPIC REVIEW</Text>
+            <Text style={styles.heroTitle} accessibilityRole="header">{topic.title}</Text>
+          </View>
         </View>
-        <Text style={styles.lessonCount}>{topic.lessons.length} lessons</Text>
-      </View>
-      <Text style={styles.topicDescription}>The main exam-relevant ideas across this topic, grouped by lesson.</Text>
+        <Text style={styles.heroDescription}>A concise review of the high-yield ideas from this topic, organized in lesson order. Use it to refresh the big ideas, then open the full lessons for detailed explanations and practice.</Text>
+        <Pill label={`${topic.lessons.length} lessons`} />
+      </Card>
+
       <View style={styles.topicLessons}>
         {topic.lessons.map((lesson, index) => {
           const points = lesson.highYield?.length
@@ -55,19 +88,32 @@ export function TopicQuickSummary({ topic }: { topic: Topic }) {
               ? lesson.summary
               : lesson.chunks.flatMap((chunk) => chunk.keyPoints ?? []);
           return (
-            <View key={lesson.id} style={styles.topicLesson}>
-              <Text style={styles.lessonTitle}>{index + 1}. {lesson.title}</Text>
-              {points.length ? points.map((point, pointIndex) => (
-                <View key={`${lesson.id}-${pointIndex}`} style={styles.pointRow}>
-                  <View style={[styles.dot, { backgroundColor: colors.primaryText }]} />
-                  <Text style={styles.point}>{point}</Text>
+            <Card key={lesson.id} style={styles.topicLesson}>
+              <View style={styles.lessonHeading}>
+                <View style={[styles.lessonNumber, { backgroundColor: colors.primarySubtle }]}>
+                  <Text style={styles.lessonNumberText}>{index + 1}</Text>
                 </View>
-              )) : <Text style={styles.fallback}>{lesson.description}</Text>}
-            </View>
+                <Text style={styles.lessonTitle} accessibilityRole="header">{lesson.title}</Text>
+              </View>
+              <View style={styles.lessonPoints}>
+                {points.length ? points.map((point, pointIndex) => (
+                  <View key={`${lesson.id}-${pointIndex}`} style={styles.pointRow}>
+                    <View style={[styles.dot, { backgroundColor: colors.primaryText }]} />
+                    <Text style={styles.point}>{point}</Text>
+                  </View>
+                )) : <Text style={styles.fallback}>{lesson.description}</Text>}
+              </View>
+            </Card>
           );
         })}
       </View>
-    </Card>
+
+      <Card style={styles.endCard}>
+        <Text style={styles.endTitle}>Want the full explanations?</Text>
+        <Text style={styles.topicDescription}>The topic lessons include section-by-section reading, interactive learning and questions.</Text>
+        <Button label="Back to all lessons" variant="secondary" onPress={() => router.replace(routes.topic(topic.id))} />
+      </Card>
+    </Screen>
   );
 }
 
@@ -103,11 +149,21 @@ function createStyles(colors: ThemeColors) {
     topicHeader: { flexDirection: 'row', alignItems: 'center', gap: 10 },
     flex: { flex: 1, minWidth: 0 },
     topicTitle: { ...Type.title2, color: colors.text, marginTop: 2 },
-    lessonCount: { fontSize: 12, fontWeight: '700', color: colors.textTertiary },
     topicDescription: { fontSize: 13, lineHeight: 19, color: colors.textSecondary },
-    topicLessons: { gap: 15, marginTop: 2 },
-    topicLesson: { gap: 7, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border, paddingTop: 12 },
-    lessonTitle: { fontSize: 14, fontWeight: '800', color: colors.text, marginBottom: 2 },
+    crumbs: { marginBottom: 14 },
+    hero: { gap: 14, marginBottom: 18, padding: 20 },
+    heroTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+    heroTitle: { ...Type.title1, color: colors.text, marginTop: 2 },
+    heroDescription: { fontSize: 15, lineHeight: 24, color: colors.textSecondary },
+    topicLessons: { gap: 14 },
+    topicLesson: { gap: 14, padding: 18 },
+    lessonHeading: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+    lessonNumber: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
+    lessonNumberText: { fontSize: 14, fontWeight: '800', color: colors.primaryText },
+    lessonTitle: { flex: 1, fontSize: 17, lineHeight: 23, fontWeight: '800', color: colors.text },
+    lessonPoints: { gap: 12 },
+    endCard: { gap: 12, marginTop: 18, marginBottom: 18, padding: 18 },
+    endTitle: { ...Type.title3, color: colors.text },
     fallback: { fontSize: 13, lineHeight: 19, color: colors.textSecondary },
   });
 }
