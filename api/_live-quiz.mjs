@@ -51,11 +51,6 @@ async function signedIn(admin, req) {
   }
 }
 
-async function owner(admin, uid) {
-  const record = await admin.db.doc(`admins/${uid}`).get();
-  if (!record.exists) throw new LiveQuizError(403, 'Only the GrateApex owner can host a live quiz.');
-}
-
 async function session(admin, code) {
   const found = await admin.db.doc(`liveQuizSessions/${code}`).get();
   if (!found.exists) throw new LiveQuizError(404, 'That live quiz could not be found.');
@@ -63,7 +58,6 @@ async function session(admin, code) {
 }
 
 async function hostSession(admin, uid, code) {
-  await owner(admin, uid);
   const found = await session(admin, code);
   if (found.hostUid !== uid) throw new LiveQuizError(403, 'This live quiz belongs to another host.');
   return found;
@@ -118,7 +112,6 @@ async function actionQuestions(body) {
 }
 
 async function actionCreate(admin, uid, body) {
-  await owner(admin, uid);
   const title = text(body.title, 80);
   const durationSeconds = Number(body.durationSeconds);
   const refs = Array.isArray(body.questionKeys) ? [...new Set(body.questionKeys.map((item) => text(item, 220)).filter(Boolean))] : [];
@@ -258,11 +251,9 @@ export async function handleLiveQuiz({ req, res, admin, body }) {
     const token = await signedIn(admin, req);
     const action = text(body.liveAction, 40);
     if (action === 'catalog') {
-      await owner(admin, token.uid);
       return res.status(200).json(await actionCatalog());
     }
     if (action === 'questions') {
-      await owner(admin, token.uid);
       return res.status(200).json(await actionQuestions(body));
     }
     if (action === 'create') return res.status(200).json(await actionCreate(admin, token.uid, body));

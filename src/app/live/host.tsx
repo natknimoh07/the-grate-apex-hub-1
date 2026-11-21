@@ -1,5 +1,4 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { doc, onSnapshot } from 'firebase/firestore';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
@@ -26,7 +25,6 @@ import {
   type LiveQuizQuestion,
   type LiveQuizSession,
 } from '@/data/live-quiz';
-import { db } from '@/lib/firebase';
 import { friendlyError } from '@/lib/errors';
 import { LIVE_SITE } from '@/lib/live-site';
 import { param, routes } from '@/lib/routes';
@@ -37,18 +35,8 @@ export default function LiveQuizHostScreen() {
   const params = useLocalSearchParams<{ code?: string | string[] }>();
   const code = param(params.code);
   const { user, loading } = useAuth();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    if (!user?.uid) {
-      setIsAdmin(false);
-      return undefined;
-    }
-    return onSnapshot(doc(db, 'admins', user.uid), (snapshot) => setIsAdmin(snapshot.exists()), () => setIsAdmin(false));
-  }, [user?.uid]);
-
-  if (loading || isAdmin === null) return <LoadingState label="Checking host access…" />;
-  if (!user || !isAdmin) return <ErrorScreen title="Host access only" message="Live Quiz hosting is reserved for the GrateApex owner account." primary={{ label: 'Join a quiz', onPress: () => router.replace(routes.liveQuiz()) }} />;
+  if (loading) return <LoadingState label="Opening Live Quiz…" />;
+  if (!user) return <ErrorScreen title="Sign in to host" message="Sign in to create and control a Live Quiz session." primary={{ label: 'Sign in', onPress: () => router.replace('/login') }} />;
   return code ? <HostRoom code={code} /> : <HostBuilder />;
 }
 

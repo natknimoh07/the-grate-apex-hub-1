@@ -11,8 +11,8 @@ GrateApex Live is a host-led, real-time multiple-choice quiz. It uses the app's 
 
 ## Security
 
-- Host access uses the existing `admins/{uid}` document. The owner must already have that document.
-- `api/_live-quiz.mjs`, bundled into the existing `api/battle.mjs` Vercel Function, verifies every signed-in caller and checks that the host owns the requested session.
+- Any signed-in GrateApex learner can create and host a session.
+- `api/_live-quiz.mjs`, bundled into the existing `api/battle.mjs` Vercel Function, verifies every signed-in caller and checks that only the session creator can control that session.
 - The correct options live only in `liveQuizKeys`, which no client can read.
 - The server receives an answer once, scores it from server time, writes the result, and updates the participant score. Clients cannot write a session, answer, score, or leaderboard directly.
 - `liveQuizSessions` contains only the question currently shown to participants and the published leaderboard.
@@ -27,4 +27,4 @@ When the curriculum changes, first rebuild the normal battle bank, then the Live
 
 1. Deploy the updated `firestore.rules` to the existing Firebase project. These rules add only the `liveQuiz*` collections and do not replace the rest of GrateApex's protection.
 2. Deploy GrateApex to Vercel. The production build creates and includes the private quiz projection.
-3. Sign in with the account that already has `admins/{uid}`. Open `/live/host`, select questions, create a session, and share its join address.
+3. Sign in to any GrateApex account. Open `/live/host`, select questions, create a session, and share its join address.
