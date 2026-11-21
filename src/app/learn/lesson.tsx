@@ -11,6 +11,7 @@ import { QuizInProgressCard } from '@/components/learning/quiz-in-progress-card'
 import { MemoryStateBadge } from '@/components/learning/memory-ui';
 import { Breadcrumbs, BackLink } from '@/components/learning/nav-bits';
 import { ReadingLayer } from '@/components/learning/reading-layer';
+import { LessonQuickSummary } from '@/components/learning/quick-summaries';
 import { Button } from '@/components/ui/button';
 import { Card, Interactive } from '@/components/ui/interactive';
 import { Pill } from '@/components/ui/pill';
@@ -36,7 +37,7 @@ import { useThemedStyles } from '@/hooks/use-theme';
 import { useAuth } from '@/hooks/use-auth';
 import { param, routes } from '@/lib/routes';
 
-type View3 = 'learn' | 'read';
+type View3 = 'learn' | 'read' | 'summary';
 type AiView = 'ask' | 'aicards' | 'questions';
 
 // /learn/lesson?lesson=<lesson id>[&layer=learn|read][&restart=1]
@@ -54,7 +55,7 @@ export default function LessonRoute() {
     <LessonPlayer
       key={`${lessonId}:${param(params.t) ?? ''}`}
       lessonId={lessonId}
-      requestedLayer={layer === 'learn' || layer === 'read' ? layer : undefined}
+      requestedLayer={layer === 'learn' || layer === 'read' || layer === 'summary' ? layer : undefined}
       restart={restart}
     />
   );
@@ -201,6 +202,10 @@ function LessonPlayer({
           setChoosing(false);
           setView('read');
         }}
+        onSummary={() => {
+          setChoosing(false);
+          setView('summary');
+        }}
       />
     );
   }
@@ -248,10 +253,10 @@ function LessonPlayer({
       <QuizInProgressCard lessonId={lesson?.id} />
       <Card style={styles.sideCard}>
         <Text style={styles.kicker}>THIS LESSON</Text>
-        {(['learn', 'read'] as View3[]).map((layer, i) => {
+        {(['learn', 'read', 'summary'] as View3[]).map((layer, i) => {
           const disabled = layer === 'learn' && !hasInteractive;
           const active = view === layer && !ai;
-          const label = layer === 'learn' ? 'Learn interactively' : 'Read & revise';
+          const label = layer === 'learn' ? 'Learn interactively' : layer === 'read' ? 'Read & revise' : 'Lesson summary';
           const detail =
             layer === 'learn'
               ? hasInteractive
@@ -259,7 +264,9 @@ function LessonPlayer({
                   ? `Step ${Math.min(session.position + 1, session.queue.length)} of ${session.queue.length}`
                   : `${lesson.interactive!.length} steps`
                 : 'Not available for this lesson'
-              : `${lesson.chunks.length} sections`;
+              : layer === 'read'
+                ? `${lesson.chunks.length} sections`
+                : `${(lesson.highYield?.length ?? 0) + (lesson.summary?.length ?? 0)} key points`;
           return (
             <Interactive
               key={layer}
@@ -282,7 +289,7 @@ function LessonPlayer({
           disabled={quizSize === 0}
           style={({ hovered }) => [styles.outlineRow, hovered && styles.outlineHover]}
         >
-          <Text style={styles.outlineNumber}>3</Text>
+          <Text style={styles.outlineNumber}>4</Text>
           <View style={styles.flex}>
             <Text style={styles.outlineLabel}>{completed ? 'Lesson quiz' : 'Test out (quiz)'}</Text>
             <Text style={styles.outlineDetail}>{quizSize > 0 ? `${quizSize} questions in the bank` : 'No quiz yet'}</Text>
@@ -428,6 +435,16 @@ function LessonPlayer({
           ) : null}
         </>
       ) : null}
+
+      {view === 'summary' ? (
+        <>
+          <LessonQuickSummary lesson={lesson} />
+          <View style={styles.doneActions}>
+            <Button label="Read section by section" variant="secondary" onPress={() => goTo('read')} />
+            <Button label="Back to topic" variant="ghost" onPress={() => router.push(routes.topic(topic.id))} />
+          </View>
+        </>
+      ) : null}
     </View>
   );
 
@@ -479,7 +496,7 @@ function LessonPlayer({
         ) : null}
 
         <View style={styles.tabs} accessibilityRole="tablist">
-          {(['learn', 'read'] as View3[]).map((layer, i) => (
+          {(['learn', 'read', 'summary'] as View3[]).map((layer, i) => (
             <Interactive
               key={layer}
               accessibilityRole="tab"
@@ -489,7 +506,7 @@ function LessonPlayer({
               style={({ hovered }) => [styles.tab, view === layer && !ai && styles.tabActive, hovered && styles.tabHover]}
             >
               <Text style={[styles.tabText, view === layer && !ai && styles.tabTextActive]}>
-                {i + 1} · {layer === 'learn' ? 'Learn' : 'Read'}
+                {i + 1} · {layer === 'learn' ? 'Learn' : layer === 'read' ? 'Read' : 'Summary'}
               </Text>
             </Interactive>
           ))}
@@ -499,7 +516,7 @@ function LessonPlayer({
             onPress={() => router.push(routes.lessonQuiz(lesson.id, { masteryCheck: !completed }))}
             style={({ hovered }) => [styles.tab, hovered && styles.tabHover]}
           >
-            <Text style={styles.tabText}>3 · Quiz</Text>
+            <Text style={styles.tabText}>4 · Quiz</Text>
           </Interactive>
           {(['ask', 'aicards', 'questions'] as AiView[]).map((layer) => (
             <Interactive

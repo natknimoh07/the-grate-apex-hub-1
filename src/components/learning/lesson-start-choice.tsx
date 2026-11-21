@@ -11,8 +11,8 @@ import { Type, type ThemeColors } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 /**
- * Opening a lesson asks how to study it (owner, 2026-10-31): learn by answering (the
- * step-by-step questions) or read it section by section, one page at a time.
+ * Opening a lesson offers interactive learning, section-by-section reading, or a concise
+ * summary (owner request, 2026-11-21).
  */
 export function LessonStartChoice({
   kicker,
@@ -25,6 +25,7 @@ export function LessonStartChoice({
   back,
   onLearn,
   onRead,
+  onSummary,
 }: {
   kicker: string;
   title: string;
@@ -37,6 +38,7 @@ export function LessonStartChoice({
   back: Href;
   onLearn: () => void;
   onRead: () => void;
+  onSummary: () => void;
 }) {
   const styles = useThemedStyles(createStyles);
   return (
@@ -61,6 +63,12 @@ export function LessonStartChoice({
           title="Read section by section"
           detail={`${sections} section${sections === 1 ? '' : 's'}, one page at a time, with Next to move on.${completed ? ' Good for revising.' : ''}`}
           onPress={onRead}
+        />
+        <Option
+          icon="xp"
+          title="Lesson summary"
+          detail="Review the high-yield ideas and key points from the whole lesson at a glance."
+          onPress={onSummary}
         />
       </View>
     </Screen>

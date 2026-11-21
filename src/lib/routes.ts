@@ -80,7 +80,7 @@ export const routes = {
   topic: (topicId: string | null | undefined) =>
     valid(topicId) ? (`/learn/topic${query({ topic: topicId })}` as Href) : fallback('topic', '/learn'),
 
-  lesson: (lessonId: string | null | undefined, options: { layer?: 'learn' | 'read'; restart?: boolean } = {}) =>
+  lesson: (lessonId: string | null | undefined, options: { layer?: 'learn' | 'read' | 'summary'; restart?: boolean } = {}) =>
     valid(lessonId)
       ? (`/learn/lesson${query({ lesson: lessonId, layer: options.layer, restart: options.restart ? 1 : undefined, t: options.restart ? Date.now() : undefined })}` as Href)
       : fallback('lesson', '/learn'),

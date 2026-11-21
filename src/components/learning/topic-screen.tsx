@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 
 import { TopicGlyph } from '@/components/learning/glyphs';
+import { TopicQuickSummary } from '@/components/learning/quick-summaries';
 import { ClassAccessCard } from '@/components/learning/class-access-card';
 import { MemoryDistribution, MemoryStateBadge } from '@/components/learning/memory-ui';
 import { MemoryMap } from '@/components/learning/memory-map';
@@ -194,6 +195,7 @@ export function TopicScreen({ topicId }: { topicId: string | undefined }) {
           {topic.source ? <Text style={styles.source}>{topic.source}</Text> : null}
         </View>
       </View>
+      <TopicQuickSummary topic={topic} />
       <Columns main={main} side={side} sideWidth={360} />
     </Screen>
   );
