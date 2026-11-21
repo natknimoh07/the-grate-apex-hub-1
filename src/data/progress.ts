@@ -13,6 +13,7 @@ import {
   saveCloudProgress,
   subscribeToLearningAuthChanges,
   uploadCloudXpEvents,
+  watchCloudXpLedger,
   writeLearningCache,
 } from '@/data/learning-sync';
 import {
@@ -49,6 +50,7 @@ import {
 } from '@/data/learning/streak-rules';
 import { track } from '@/lib/analytics';
 import { db } from '@/lib/firebase';
+import { activateLiveDataFailover, isPrimaryFirestoreQuotaError, watchLiveDataFailover } from '@/data/live-quiz';
 
 // XP, level, streak and completed lessons — persisted with AsyncStorage
 // (account-scoped) and synced with cloud progress.
@@ -382,9 +384,14 @@ function pushXpEvents(): Promise<void> {
       ...pending.map((entry) => ({ key: entry.key, amount: entry.amount, at: entry.at, label: entry.label, type: entry.sourceType, countXp: true })),
       ...backfill.map((entry) => ({ key: entry.key, amount: entry.amount, at: entry.at, label: entry.label, type: entry.sourceType, countXp: false })),
     ];
+    const seed: CloudLedger = {
+      xp: progress.cloudXp,
+      xpSeq: progress.cloudSeq,
+      xpEvents: Object.fromEntries(progress.xpLedger.filter((entry) => entry.synced !== false).map((entry) => [entry.key, { amount: entry.amount, at: entry.at, label: entry.label, type: entry.sourceType }])),
+    };
     let result;
     try {
-      result = await uploadCloudXpEvents(uploads, cloudStats(), floorXp);
+      result = await uploadCloudXpEvents(uploads, cloudStats(), floorXp, seed);
     } catch (error) {
       console.warn('Could not send XP to the account (kept on this device for now):', error);
       return;
@@ -455,6 +462,22 @@ export function watchCloudProgress(userId: string): () => void {
   let timer: ReturnType<typeof setTimeout> | null = null;
   let lastRun = 0;
   let lessonsChanged = false;
+  let fallbackActive = false;
+  let stopFallbackXp: (() => void) | null = null;
+  let stopPrimaryProgress: (() => void) | null = null;
+  const startFallbackXp = () => {
+    if (stopFallbackXp) return;
+    stopFallbackXp = watchCloudXpLedger(userId, (ledger) => {
+      void ensureProgressLoaded().then(async () => {
+        if ((await getAuthenticatedLearningUserId()) !== userId) return;
+        const before = `${progress.xp}|${progress.cloudSeq}`;
+        applyCloudLedger(ledger);
+        if (before === `${progress.xp}|${progress.cloudSeq}`) return;
+        await saveProgress();
+        notify();
+      });
+    }, (error) => console.warn('Could not watch the Live project XP ledger:', error));
+  };
   const syncSoon = (moreLessons: boolean) => {
     lessonsChanged ||= moreLessons;
     if (timer) return;
@@ -466,34 +489,56 @@ export function watchCloudProgress(userId: string): () => void {
       void syncLearningProgress().catch((error) => console.warn('Could not sync progress from another device:', error));
     }, Math.max(0, lastRun + WATCH_SYNC_GAP_MS - Date.now()));
   };
-  const stop = onSnapshot(
-    doc(db, 'progress', userId),
-    (snap) => {
-      // Our own writes, and the saved copy shown before the server answers, are not news.
-      if (snap.metadata.hasPendingWrites || snap.metadata.fromCache) return;
-      const data = snap.data();
-      if (!data) return;
-      void ensureProgressLoaded().then(async () => {
-        if ((await getAuthenticatedLearningUserId()) !== userId) return;
-        const moreLessons = (Number(data.lessonsDone) || 0) > progress.completedLessons.length;
-        // The account's ledger as it is now: XP earned on another device shows here at once.
-        const before = `${progress.xp}|${progress.cloudSeq}`;
-        applyCloudLedger(cloudLedgerOf(data));
-        if (before !== `${progress.xp}|${progress.cloudSeq}`) {
-          await saveProgress();
-          notify();
-        }
-        if (moreLessons) syncSoon(true);
-      });
-    },
-    () => undefined // offline or signed out: the sync on return still runs
-  );
+  const startPrimaryProgress = () => {
+    if (stopPrimaryProgress || fallbackActive) return;
+    stopPrimaryProgress = onSnapshot(
+      doc(db, 'progress', userId),
+      (snap) => {
+        // Our own writes, and the saved copy shown before the server answers, are not news.
+        if (fallbackActive || snap.metadata.hasPendingWrites || snap.metadata.fromCache) return;
+        const data = snap.data();
+        if (!data) return;
+        void ensureProgressLoaded().then(async () => {
+          if ((await getAuthenticatedLearningUserId()) !== userId || fallbackActive) return;
+          const moreLessons = (Number(data.lessonsDone) || 0) > progress.completedLessons.length;
+          // The account's ledger as it is now: XP earned on another device shows here at once.
+          const before = `${progress.xp}|${progress.cloudSeq}`;
+          applyCloudLedger(cloudLedgerOf(data));
+          if (before !== `${progress.xp}|${progress.cloudSeq}`) {
+            await saveProgress();
+            notify();
+          }
+          if (moreLessons) syncSoon(true);
+        });
+      },
+      (error) => {
+        stopPrimaryProgress?.();
+        stopPrimaryProgress = null;
+        if (isPrimaryFirestoreQuotaError(error)) void activateLiveDataFailover('quota-exceeded').catch((fallbackError) => console.warn('Could not activate the Live project XP backup:', fallbackError));
+      }
+    );
+  };
+  const stopFailoverWatch = watchLiveDataFailover((active) => {
+    fallbackActive = active;
+    if (active) {
+      stopPrimaryProgress?.();
+      stopPrimaryProgress = null;
+      startFallbackXp();
+    } else {
+      stopFallbackXp?.();
+      stopFallbackXp = null;
+      startPrimaryProgress();
+    }
+  }, () => {
+    if (!fallbackActive) startPrimaryProgress();
+  });
   return () => {
-    stop();
+    stopPrimaryProgress?.();
+    stopFailoverWatch();
+    stopFallbackXp?.();
     if (timer) clearTimeout(timer);
   };
 }
-
 function ensureProgressLoaded() {
   if (!progressLoadPromise) progressLoadPromise = loadProgress();
   return progressLoadPromise;

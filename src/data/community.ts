@@ -25,6 +25,7 @@ import {
 import { type Poll, type PollDef, pollOf } from '@/data/polls';
 import { isFriendsShell, PRIVATE_PART, splitFriendsPost, withPrivateWords } from '@/data/private-posts';
 import { auth, db } from '@/lib/firebase';
+import { syncBattleBlockListToLive } from '@/data/battle-rooms';
 import { findMyUsername } from '@/lib/my-username';
 import { cleanMedia, optimized, safeUrl, uploadMedia, uploadVoiceNote } from '@/lib/media';
 import { ONLINE_WITHIN_MS } from '@/lib/presence';
@@ -712,6 +713,7 @@ export async function blockCommunityUser(blockedId: string, friendshipId?: strin
   blocked.add(blockedId);
   await AsyncStorage.setItem(`${BLOCKED_KEY}:${uid}`, JSON.stringify([...blocked]));
   await setDoc(doc(db, 'blocks', `${uid}_${blockedId}`), { blocker: uid, blocked: blockedId, at: serverTimestamp() }).catch(() => undefined);
+  void syncBattleBlockListToLive([...blocked]).catch(() => undefined);
   await Promise.all([
     deleteDoc(doc(db, 'follows', `${uid}_${blockedId}`)).catch(() => undefined),
     deleteDoc(doc(db, 'follows', `${blockedId}_${uid}`)).catch(() => undefined),
@@ -726,6 +728,7 @@ export async function unblockCommunityUser(blockedId: string) {
   const uid = await signedInUserId();
   const saved = await AsyncStorage.getItem(`${BLOCKED_KEY}:${uid}`).then((raw) => (raw ? (JSON.parse(raw) as string[]) : []), () => [] as string[]);
   await AsyncStorage.setItem(`${BLOCKED_KEY}:${uid}`, JSON.stringify(saved.filter((id) => id !== blockedId)));
+  void syncBattleBlockListToLive(saved.filter((id) => id !== blockedId)).catch(() => undefined);
   await deleteDoc(doc(db, 'blocks', `${uid}_${blockedId}`)).catch(() => undefined);
   blockedOnline = null;
   storiesCache = null;

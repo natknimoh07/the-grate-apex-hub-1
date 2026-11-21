@@ -111,7 +111,8 @@ export function weeklyContributionTotal(entry, week, finished) {
  * (src/data/leagues.ts tierRows): the weekly figure each learner's app saved, or —
  * when there is none yet — leaderboard XP minus the week's start point. Learners who
  * already moved on from that week count with the figure they finished with.
- * Returns [{ userId, username, weeklyXp }].
+ * Returns [{ userId, username, weeklyXp, league }]. `league` is internal mirror data;
+ * api/league.mjs strips it from the public table response.
  */
 export async function tierTable(call, week, tier) {
   const both = (prefix) => call(':runQuery', {
@@ -138,10 +139,10 @@ export async function tierTable(call, week, tier) {
     const trusted = Number(entry.startXp) > 0 || saved !== null || contributed > 0;
     const fromScores = trusted ? Math.max(0, (xp.get(person.id) ?? 0) - (Number(entry.startXp) || 0)) : 0;
     const weeklyXp = Math.max(contributed, fromScores);
-    rows.set(person.id, { userId: person.id, username: person.username, weeklyXp });
+    rows.set(person.id, { userId: person.id, username: person.username, weeklyXp, league: entry });
   }
   for (const person of people(moved)) {
-    if (!rows.has(person.id)) rows.set(person.id, { userId: person.id, username: person.username, weeklyXp: weeklyContributionTotal(person.league.prev, week, true) });
+    if (!rows.has(person.id)) rows.set(person.id, { userId: person.id, username: person.username, weeklyXp: weeklyContributionTotal(person.league.prev, week, true), league: person.league });
   }
   return [...rows.values()];
 }

@@ -33,5 +33,53 @@ service cloud.firestore {
     match /liveQuizKeys/{code} {
       allow read, write: if false;
     }
+
+    // Shared quota failover: the switch is written only by the Vercel service account.
+    match /systemStatus/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // The account-wide XP ledger lives here after the original project's quota is hit.
+    match /xpLedgers/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'streakFreezes', 'freezeWeeks', 'lostStreak', 'savedAt', 'updatedAt']);
+      allow delete: if false;
+    }
+
+    // The app reads the shared tier table live; all writes go through the Vercel API,
+    // which derives the row id from the verified sign-in token.
+    match /leagueTables/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /leagueEntries/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Live XP battle rooms are written only by the Vercel referee. Only the
+    // two players named in a room can watch it; answer keys remain server-only.
+    match /battleRooms/{id} {
+      allow read: if signedIn() && request.auth.uid in resource.data.players;
+      allow write: if false;
+    }
+
+    match /battleKeys/{id} {
+      allow read, write: if false;
+    }
+
+    // Battle records are public to signed-in learners, like the primary project.
+    match /battleStats/{uid} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Backup profile and block metadata is used by the server only.
+    match /battleProfiles/{uid} {
+      allow read, write: if false;
+    }
   }
 }

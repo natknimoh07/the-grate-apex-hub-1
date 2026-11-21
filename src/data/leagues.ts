@@ -23,12 +23,14 @@
 // one row per learner. A learner's app writes only its own row (the rules allow nothing
 // else), 20 s after its XP last changed; the league card listens to that one document,
 // so every device shows the same table, and a change costs one read per viewer.
-import { collection, doc, type DocumentReference, getDoc, getDocFromServer, getDocs, limit, onSnapshot, query, runTransaction, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, type DocumentReference, getDoc, getDocFromCache, getDocFromServer, getDocs, limit, onSnapshot, query, runTransaction, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 
 import { getLeagueOutcome, type LeagueOutcome } from '@/data/ranks';
 import { auth, db } from '@/lib/firebase';
 import { API_BASE } from '@/lib/live-site';
 import { getProgressSnapshot, waitForProgressSync } from '@/data/progress';
+import { activateLiveDataFailover, ensureLiveQuizSignIn, isLiveDataFailoverActive, isPrimaryFirestoreQuotaError, saveLiveLeagueFallbackRow, watchLiveDataFailover } from '@/data/live-quiz';
+import { liveQuizDb } from '@/lib/live-quiz-firebase';
 
 export const LEAGUE_TIERS = [
   { name: 'Bronze', emoji: '🥉', color: '#C07A3C' },
@@ -118,11 +120,50 @@ export function tableRows(data: unknown, me: string): LeagueRow[] {
  */
 export function watchLeagueTable(week: string, tier: number, onRows: (rows: LeagueRow[]) => void, onError?: (error: unknown) => void) {
   const me = auth.currentUser?.uid ?? '';
-  return onSnapshot(
-    doc(db, 'leagueTables', leagueTableId(week, tier)),
-    (snap) => onRows(tableRows(snap.data(), me)),
-    (error) => onError?.(error)
-  );
+  let stopPrimary: (() => void) | null = null;
+  let stopFallback: (() => void) | null = null;
+  const startFallback = () => {
+    if (stopFallback) return;
+    let active = true;
+    let unsubscribe: (() => void) | null = null;
+    void ensureLiveQuizSignIn().then(() => {
+      if (!active) return;
+      unsubscribe = onSnapshot(doc(liveQuizDb, 'leagueTables', leagueTableId(week, tier)), (snap) => onRows(tableRows(snap.data(), me)), (error) => onError?.(error));
+    }).catch((error) => onError?.(error));
+    stopFallback = () => { active = false; unsubscribe?.(); };
+  };
+  const startPrimary = () => {
+    if (stopPrimary) return;
+    stopPrimary = onSnapshot(
+      doc(db, 'leagueTables', leagueTableId(week, tier)),
+      (snap) => onRows(tableRows(snap.data(), me)),
+      (error) => {
+        if (isPrimaryFirestoreQuotaError(error)) {
+          void activateLiveDataFailover('quota-exceeded').catch((fallbackError) => onError?.(fallbackError));
+        } else onError?.(error);
+      }
+    );
+  };
+  const stopMode = watchLiveDataFailover((active) => {
+    lastLeague = null;
+    if (active) {
+      stopPrimary?.();
+      stopPrimary = null;
+      startFallback();
+    } else {
+      stopFallback?.();
+      stopFallback = null;
+      startPrimary();
+    }
+  }, () => {
+    // A missing or temporarily unavailable status document must not disable the existing table.
+    startPrimary();
+  });
+  return () => {
+    stopMode();
+    stopPrimary?.();
+    stopFallback?.();
+  };
 }
 
 /** Rows from the live table replace the server's for the same learner; the rest are kept. */
@@ -135,14 +176,28 @@ export function mergeTableRows(base: readonly LeagueRow[], live: readonly League
 let lastRowWrite = '';
 
 /** My row in the shared table (the rules let me write only this one). Skipped without a username. */
-async function saveMyTableRow(uid: string, week: string, tier: number, weeklyXp: number, username: string | null | undefined) {
+async function saveMyTableRow(uid: string, week: string, tier: number, weeklyXp: number, username: string | null | undefined, league?: LeagueEntry) {
   if (!username) return;
-  const mark = `${uid}|${week}|${tier}|${weeklyXp}`;
+  const mark = `${uid}|${week}|${tier}|${weeklyXp}|${JSON.stringify(league ?? null)}`;
   if (mark === lastRowWrite) return;
   lastRowWrite = mark;
   try {
-    await setDoc(doc(db, 'leagueTables', leagueTableId(week, tier)), { week, tier: clampTier(tier), rows: { [uid]: { username, weeklyXp, at: serverTimestamp() } } }, { merge: true });
+    if (await isLiveDataFailoverActive().catch(() => false)) {
+      await saveLiveLeagueFallbackRow({ week, tier: clampTier(tier), username, weeklyXp, league: league as unknown as Record<string, unknown> });
+    } else {
+      await setDoc(doc(db, 'leagueTables', leagueTableId(week, tier)), { week, tier: clampTier(tier), rows: { [uid]: { username, weeklyXp, at: serverTimestamp() } } }, { merge: true });
+      void saveLiveLeagueFallbackRow({ week, tier: clampTier(tier), username, weeklyXp, league: league as unknown as Record<string, unknown> }).catch(() => {});
+    }
   } catch (error) {
+    if (isPrimaryFirestoreQuotaError(error)) {
+      try {
+        await activateLiveDataFailover('quota-exceeded');
+        await saveLiveLeagueFallbackRow({ week, tier: clampTier(tier), username, weeklyXp, league: league as unknown as Record<string, unknown> });
+        return;
+      } catch (fallbackError) {
+        console.warn('Could not save the live league row in the backup project:', fallbackError);
+      }
+    }
     lastRowWrite = '';
     // The rules are not published yet, or offline: the server table still shows the saved figure.
     if ((error as { code?: string } | null)?.code !== 'permission-denied') console.warn('Could not update the league table:', error);
@@ -256,6 +311,7 @@ export async function loadLeague(options: { fresh?: boolean } = {}): Promise<Lea
   await auth.authStateReady();
   const uid = auth.currentUser?.uid ?? '';
   const week = weekKey();
+  if (await isLiveDataFailoverActive().catch(() => false)) lastLeague = null;
   if (!options.fresh && lastLeague && lastLeague.uid === uid && lastLeague.week === week && Date.now() - lastLeague.at < LEAGUE_REUSE_MS) {
     return lastLeague.view;
   }
@@ -287,11 +343,21 @@ export async function saveWeeklyLeagueXp(value: unknown, username?: string | nul
   const saved = savedLeague(value);
   if (!uid) return;
   const entry = value as LeagueEntry | null;
-  await repairPreviousLeagueXp(uid, entry);
+  const fallbackActive = await isLiveDataFailoverActive().catch(() => false);
+  if (!fallbackActive) await repairPreviousLeagueXp(uid, entry);
   if (entry?.week === weekKey(Date.now() - 7 * 86_400_000)) {
     // The week has ended and the server has not settled it yet.
     await waitForProgressSync().catch(() => {});
-    await saveClosedWeekXp(uid, entry);
+    const { finalXp, nextXp } = await saveClosedWeekXp(uid, entry, fallbackActive);
+    if (fallbackActive && username) {
+      await saveLiveLeagueFallbackRow({
+        week: entry.week,
+        tier: entry.tier,
+        username,
+        weeklyXp: finalXp,
+        league: { ...entry, weeklyXp: finalXp, xpWeek: entry.week, nextWeek: weekKey(), nextXp } as unknown as Record<string, unknown>,
+      }).catch((error) => console.warn('Could not save the Live project league entry:', error));
+    }
     return;
   }
   if (!saved.settled || !entry) return;
@@ -300,11 +366,15 @@ export async function saveWeeklyLeagueXp(value: unknown, username?: string | nul
   const week = weekKey();
   const weeklyXp = currentWeeklyXp(entry, week);
   const startXp = Math.max(0, progress.xp - weeklyXp);
-  if (progress.xp <= 0) return;
-  await saveMyTableRow(uid, week, entry.tier, weeklyXp, username);
-  if (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week) return;
+  if (progress.xp <= 0 && !fallbackActive) return;
+  if (entry.weeklyXp === weeklyXp && entry.startXp === startXp && entry.xpWeek === week) {
+    await saveMyTableRow(uid, week, entry.tier, weeklyXp, username, entry);
+    return;
+  }
   // Only the XP figures, never the whole entry: a stale copy must not put back an old league.
-  await updateDoc(doc(db, 'users', uid), { 'league.startXp': startXp, 'league.weeklyXp': weeklyXp, 'league.xpWeek': week }).catch(() => {});
+  const updatedEntry = { ...entry, startXp, weeklyXp, xpWeek: week };
+  if (!fallbackActive) await updateDoc(doc(db, 'users', uid), { 'league.startXp': startXp, 'league.weeklyXp': weeklyXp, 'league.xpWeek': week }).catch(() => {});
+  await saveMyTableRow(uid, week, entry.tier, weeklyXp, username, updatedEntry);
 }
 
 /**
@@ -326,14 +396,14 @@ async function repairPreviousLeagueXp(uid: string, entry: LeagueEntry | null) {
  * week, and so is my XP since this Monday 00:00: the server starts my new week from it, so XP
  * earned before it got round to settling still counts for the new week, never the old one.
  */
-async function saveClosedWeekXp(uid: string, entry: LeagueEntry) {
+async function saveClosedWeekXp(uid: string, entry: LeagueEntry, skipPrimaryWrite = false) {
   const earlier = typeof entry.weeklyXp === 'number' && (entry.xpWeek ?? entry.week) === entry.week ? entry.weeklyXp : 0;
   const finalXp = Math.max(earlier, myXpInWeek(entry.week));
   const nextWeek = weekKey();
   const nextXp = myXpInWeek(nextWeek);
   if (entry.weeklyXp !== finalXp || entry.xpWeek !== entry.week || entry.nextWeek !== nextWeek || entry.nextXp !== nextXp) {
     // Labelled, so if the server settles first and this lands on the new week's entry, nobody counts it there.
-    await updateDoc(doc(db, 'users', uid), { 'league.weeklyXp': finalXp, 'league.xpWeek': entry.week, 'league.nextWeek': nextWeek, 'league.nextXp': nextXp }).catch(() => {});
+    if (!skipPrimaryWrite) await updateDoc(doc(db, 'users', uid), { 'league.weeklyXp': finalXp, 'league.xpWeek': entry.week, 'league.nextWeek': nextWeek, 'league.nextXp': nextXp }).catch(() => {});
   }
   return { finalXp, nextXp };
 }
@@ -368,8 +438,33 @@ async function readLeague(): Promise<LeagueView> {
   if (!uid) throw new Error('Sign in to see your league.');
   const week = weekKey();
   const ref = doc(db, 'users', uid);
-  // From the server, never a copy kept in the browser: what is written below depends on it.
-  const mine = (await getDocFromServer(ref)).data() ?? {};
+  let fallbackActive = await isLiveDataFailoverActive().catch(() => false);
+  let mine: Record<string, any> | undefined;
+  if (fallbackActive) {
+    try {
+      await ensureLiveQuizSignIn();
+      mine = (await getDoc(doc(liveQuizDb, 'leagueEntries', uid))).data();
+    } catch {
+      // The prior profile may still be available in Firestore's local cache.
+    }
+    if (!mine) mine = (await getDocFromCache(ref).catch(() => null))?.data();
+  } else {
+    try {
+      mine = (await getDocFromServer(ref)).data();
+    } catch (error) {
+      if (!isPrimaryFirestoreQuotaError(error)) throw error;
+      await activateLiveDataFailover('quota-exceeded');
+      fallbackActive = true;
+      try {
+        await ensureLiveQuizSignIn();
+        mine = (await getDoc(doc(liveQuizDb, 'leagueEntries', uid))).data();
+      } catch {
+        mine = (await getDocFromCache(ref).catch(() => null))?.data();
+      }
+      if (!mine) throw error;
+    }
+  }
+  mine ??= {};
   let entry = mine.league as LeagueEntry | undefined;
 
   // The account's XP ledger first: a finished week is settled with it, and the lifetime
@@ -378,21 +473,35 @@ async function readLeague(): Promise<LeagueView> {
   const myXp = getProgressSnapshot().xp;
 
   const lastWeek = weekKey(Date.now() - 7 * 86_400_000);
-  if (!entry || typeof entry.week !== 'string') entry = await joinLeague(ref, week, myXp);
+  if (!entry || typeof entry.week !== 'string') {
+    if (fallbackActive) {
+      const prev = entry?.prev && typeof entry.prev.tier === 'number' ? entry.prev : undefined;
+      entry = { week, tier: prev ? nextTier(prev.tier, prev.outcome) : clampTier(Number(entry?.tier) || 0), startXp: myXp, ...(prev ? { prev } : {}) };
+    } else entry = await joinLeague(ref, week, myXp);
+  }
   if (entry.week === lastWeek) {
     // The week that just ended is settled by the server for everyone at once (api/leagues.mjs,
     // at midnight and again every morning), never by the app: apps that settled it themselves
     // saw only part of the league when the free plan's reads were used up, so some moved up
     // wrongly and some who earned it stayed (2026-10-26). Until then the final table is shown,
     // with my XP since Monday 00:00 beside it, and both my figures are saved for the server.
-    const { finalXp, nextXp } = await saveClosedWeekXp(uid, entry);
+    const { finalXp, nextXp } = await saveClosedWeekXp(uid, entry, fallbackActive);
+    if (fallbackActive && typeof mine.username === 'string') {
+      await saveLiveLeagueFallbackRow({
+        week: entry.week,
+        tier: entry.tier,
+        username: mine.username,
+        weeklyXp: finalXp,
+        league: { ...entry, weeklyXp: finalXp, xpWeek: entry.week, nextWeek: weekKey(), nextXp } as unknown as Record<string, unknown>,
+      }).catch((error) => console.warn('Could not save the Live project league entry:', error));
+    }
     const finished = standings((await tierRows(entry.week, entry.tier, uid, true)).map((row) => (row.isMe ? { ...row, weeklyXp: finalXp } : row)));
     if (!finished.some((row) => row.isMe)) finished.push({ userId: uid, username: mine.username ?? null, weeklyXp: finalXp, isMe: true });
     return { week: entry.week, tier: entry.tier, endsAt: weekEnds(), rows: standings(finished), prev: null, settling: true, thisWeekXp: nextXp };
   } else if (entry.week !== week) {
     // Away for more than a week: back into this week's league at the same level (nothing to settle).
     entry = { week, tier: clampTier(entry.tier), startXp: myXp };
-    await updateDoc(ref, { league: entry });
+    if (!fallbackActive) await updateDoc(ref, { league: entry });
   }
   // My weekly XP comes from the account's XP ledger (earned since Monday), so it is
   // never mixed up with lifetime XP; the start point others use is corrected to
@@ -404,7 +513,7 @@ async function readLeague(): Promise<LeagueView> {
     // Only the XP figures: the league itself is the server's to change.
     await updateDoc(ref, { 'league.startXp': fixedStart, 'league.weeklyXp': ledgerWeekly, 'league.xpWeek': week }).catch(() => {});
   }
-  if (myXp > 0) await saveMyTableRow(uid, week, entry.tier, ledgerWeekly, typeof mine.username === 'string' ? mine.username : null);
+  if (myXp > 0 || fallbackActive) await saveMyTableRow(uid, week, entry.tier, ledgerWeekly, typeof mine.username === 'string' ? mine.username : null, entry);
   const rows = standings((await tierRows(week, entry.tier, uid)).map((row) => (row.isMe ? { ...row, weeklyXp: ledgerWeekly } : row)));
   if (!rows.some((row) => row.isMe)) rows.push({ userId: uid, username: mine.username ?? null, weeklyXp: ledgerWeekly, isMe: true });
   return { week, tier: entry.tier, endsAt: weekEnds(), rows: standings(rows), prev: entry.prev && entry.prev.week !== week ? entry.prev : null };

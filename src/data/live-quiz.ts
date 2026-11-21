@@ -1,4 +1,4 @@
-import { collection, doc, onSnapshot, query, where, type Unsubscribe } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, query, where, type Unsubscribe } from 'firebase/firestore';
 import { signInWithCustomToken } from 'firebase/auth';
 
 import { auth } from '@/lib/firebase';
@@ -93,8 +93,10 @@ async function call<T>(action: string, body: Record<string, unknown> = {}): Prom
 
 let secondarySignIn: Promise<void> | null = null;
 let secondaryUid: string | null = null;
+let liveDataFailover: boolean | null = null;
+let liveDataFailoverCheckedAt = 0;
 
-async function ensureLiveQuizSignIn() {
+export async function ensureLiveQuizSignIn() {
   if (!liveQuizFirebaseConfigured) return;
   await auth.authStateReady();
   const mainUser = auth.currentUser;
@@ -115,6 +117,52 @@ async function ensureLiveQuizSignIn() {
   } finally {
     secondarySignIn = null;
   }
+}
+
+/** Whether the original Firestore project has been put into shared quota failover mode. */
+export async function isLiveDataFailoverActive() {
+  if (!liveQuizFirebaseConfigured) return false;
+  if (liveDataFailover === true) return true;
+  if (liveDataFailover === false && Date.now() - liveDataFailoverCheckedAt < 30_000) return false;
+  await ensureLiveQuizSignIn();
+  const status = await getDoc(doc(liveQuizDb, 'systemStatus', 'database'));
+  liveDataFailover = status.exists() && status.data().failover === true;
+  liveDataFailoverCheckedAt = Date.now();
+  return liveDataFailover;
+}
+
+/** Every signed-in device watches the same switch, so one device cannot split XP from another. */
+export function watchLiveDataFailover(onChange: (active: boolean) => void, onError?: (error: Error) => void): Unsubscribe {
+  if (!liveQuizFirebaseConfigured) {
+    onChange(false);
+    return () => {};
+  }
+  return watchWithLiveQuizAuth(
+    () => onSnapshot(doc(liveQuizDb, 'systemStatus', 'database'), (snapshot) => {
+      liveDataFailover = snapshot.exists() && snapshot.data().failover === true;
+      liveDataFailoverCheckedAt = Date.now();
+      onChange(liveDataFailover);
+    }, (error) => onError?.(error)),
+    onError ?? (() => {})
+  );
+}
+
+/** Permanently routes XP and live league reads/writes to GrAte Apex live after quota exhaustion. */
+export async function activateLiveDataFailover(reason: string) {
+  if (!liveQuizFirebaseConfigured) throw new LiveQuizServerError(503, 'The separate GrAte Apex live Firebase project is not configured.');
+  await call<{ failover: boolean }>('activate-data-fallback', { reason: reason.slice(0, 80) });
+  liveDataFailover = true;
+  liveDataFailoverCheckedAt = Date.now();
+}
+
+/** Server-side write for the current learner's shared live league row in failover mode. */
+export const saveLiveLeagueFallbackRow = (input: { week: string; tier: number; username: string; weeklyXp: number; league?: Record<string, unknown> }) =>
+  call<{ saved: boolean }>('save-league-fallback-row', input);
+
+export function isPrimaryFirestoreQuotaError(error: unknown) {
+  const value = error as { code?: unknown; message?: unknown } | null;
+  return String(value?.code ?? '').toLowerCase() === 'resource-exhausted'
+    || /quota exceeded|resource_exhausted|429/i.test(String(value?.message ?? error ?? ''));
 }
 
 function watchWithLiveQuizAuth<T>(subscribe: () => Unsubscribe, onError: (error: Error) => void): Unsubscribe {

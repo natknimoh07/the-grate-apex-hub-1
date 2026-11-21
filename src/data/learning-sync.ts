@@ -6,6 +6,7 @@ import {
   getDoc,
   getDocs,
   limit,
+  onSnapshot,
   orderBy,
   query,
   runTransaction,
@@ -27,6 +28,8 @@ import { mergeAppLessons } from '@/data/legacy-lessons';
 import { isLegacyLessonId } from '@/data/legacy-ids';
 import { applyUploads, type CloudLedger, cloudLedgerOf, type LedgerUpload } from '@/data/learning/xp-ledger';
 import { auth, db } from '@/lib/firebase';
+import { activateLiveDataFailover, ensureLiveQuizSignIn, isLiveDataFailoverActive, isPrimaryFirestoreQuotaError } from '@/data/live-quiz';
+import { liveQuizDb, liveQuizFirebaseConfigured } from '@/lib/live-quiz-firebase';
 
 const LEGACY_CACHE_OWNER_KEY = 'grateapex_learning_cache_owner';
 
@@ -120,6 +123,62 @@ export type CloudLearningEvent = {
   data: Record<string, unknown> | null;
 };
 
+const QUESTION_ATTEMPT_LIMIT = 5000;
+const LEARNING_EVENT_LIMIT = 1500;
+const mirroredXpSeq = new Map<string, number>();
+
+const emptyCloudLedger = (): CloudLedger => ({ xp: 0, xpEvents: {}, xpSeq: 0 });
+
+async function loadFallbackXpLedger(userId: string) {
+  await ensureLiveQuizSignIn();
+  const snap = await getDoc(doc(liveQuizDb, 'xpLedgers', userId));
+  return { snap, ledger: cloudLedgerOf(snap.data()) };
+}
+
+async function mirrorXpLedgerToLiveProject(userId: string, ledger: CloudLedger, stats: CloudLearningStats) {
+  if (!liveQuizFirebaseConfigured || (ledger.xpSeq <= 0 && ledger.xp <= 0) || ledger.xpSeq <= (mirroredXpSeq.get(userId) ?? -1)) return;
+  await ensureLiveQuizSignIn();
+  const ref = doc(liveQuizDb, 'xpLedgers', userId);
+  let currentSeq = ledger.xpSeq;
+  await runTransaction(liveQuizDb, async (transaction) => {
+    const current = await transaction.get(ref);
+    if (current.exists()) {
+      const saved = cloudLedgerOf(current.data());
+      if (saved.xpSeq > ledger.xpSeq || (saved.xpSeq === ledger.xpSeq && saved.xp >= ledger.xp)) {
+        currentSeq = saved.xpSeq;
+        return;
+      }
+    }
+    transaction.set(ref, { ...ledger, ...summaryFields(stats), updatedAt: Date.now() }, {
+      mergeFields: ['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'savedAt', 'updatedAt', ...Object.keys(streakFields(stats))],
+    });
+  });
+  mirroredXpSeq.set(userId, currentSeq);
+}
+
+async function uploadFallbackXpEvents(
+  userId: string,
+  uploads: readonly LedgerUpload[],
+  stats: CloudLearningStats,
+  floorXp?: number,
+  seed?: CloudLedger
+) {
+  await ensureLiveQuizSignIn();
+  const ref = doc(liveQuizDb, 'xpLedgers', userId);
+  const result = await runTransaction(liveQuizDb, async (transaction) => {
+    const current = await transaction.get(ref);
+    const stored = current.exists() ? cloudLedgerOf(current.data()) : emptyCloudLedger();
+    const base = seed && (seed.xpSeq > stored.xpSeq || (seed.xpSeq === stored.xpSeq && seed.xp > stored.xp)) ? seed : stored;
+    const next = applyUploads(base, uploads, floorXp);
+    if (next.changed) transaction.set(ref, { xp: next.xp, xpEvents: next.xpEvents, xpSeq: next.xpSeq, ...summaryFields(stats), updatedAt: Date.now() }, {
+      mergeFields: ['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'savedAt', 'updatedAt', ...Object.keys(streakFields(stats))],
+    });
+    return next;
+  });
+  mirroredXpSeq.set(userId, result.xpSeq);
+  return result;
+}
+
 async function getUserId(): Promise<string | null> {
   return auth.currentUser?.uid ?? null;
 }
@@ -193,17 +252,36 @@ export function createLearningRecordId() {
 export async function loadCloudProgress(): Promise<CloudProgress | null> {
   const userId = await getUserId();
   if (!userId) return null;
+  const fallbackActive = await isLiveDataFailoverActive().catch(() => false);
+  // Once the shared switch is set, avoid spending more reads on the original project.
+  if (fallbackActive) {
+    try {
+      return await fallbackCloudProgress(userId);
+    } catch (error) {
+      console.warn('Could not load learning progress from the Live project:', error);
+      return null;
+    }
+  }
 
   try {
     const progressDocRef = doc(db, 'progress', userId);
     const snap = await getDoc(progressDocRef);
+    if (await isLiveDataFailoverActive().catch(() => false)) return await fallbackCloudProgress(userId);
 
     if (!snap.exists()) {
       return null;
     }
 
     const d = snap.data() || {};
-    const totalXp = Number(d.xp ?? 0);
+    const ledger = cloudLedgerOf(d);
+    await mirrorXpLedgerToLiveProject(userId, ledger, {
+      total_xp: ledger.xp,
+      current_streak: typeof d.streak === 'number' ? d.streak : streakFromDays(d.days),
+      last_activity_date: typeof d.lastActivityDate === 'string' ? d.lastActivityDate : null,
+      streak_freezes: Number(d.streakFreezes) || 0,
+      freeze_weeks: Array.isArray(d.freezeWeeks) ? d.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string') : [],
+      lost_streak: d.lostStreak ?? null,
+    }).catch((error) => console.warn('Could not refresh the XP backup:', error));
     // This app's own streak field, else the current streak from the original
     // app's daily activity (not the number of days ever studied).
     const streak = typeof d.streak === 'number' ? d.streak : streakFromDays(d.days);
@@ -226,7 +304,7 @@ export async function loadCloudProgress(): Promise<CloudProgress | null> {
 
     return {
       stats: {
-        total_xp: totalXp,
+        total_xp: ledger.xp,
         current_streak: streak,
         last_activity_date: lastActivity,
       },
@@ -238,12 +316,61 @@ export async function loadCloudProgress(): Promise<CloudProgress | null> {
             lost: d.lostStreak ?? null,
           }
         : undefined,
-      ledger: cloudLedgerOf(d),
+      ledger,
     };
   } catch (error) {
+    if (isPrimaryFirestoreQuotaError(error)) {
+      try {
+        if (!fallbackActive) await activateLiveDataFailover('quota-exceeded');
+        return await fallbackCloudProgress(userId);
+      } catch (fallbackError) {
+        console.warn('Could not switch learning progress to the Live project:', fallbackError);
+      }
+    }
     console.warn('Could not load learning progress from Firestore:', error);
     return null;
   }
+}
+
+async function fallbackCloudProgress(userId: string): Promise<CloudProgress> {
+  const { snap, ledger } = await loadFallbackXpLedger(userId);
+  const d = snap.data() ?? {};
+  return {
+    stats: {
+      total_xp: ledger.xp,
+      current_streak: Number(d.streak) || 0,
+      last_activity_date: typeof d.lastActivityDate === 'string' ? d.lastActivityDate : null,
+      streak_freezes: Number(d.streakFreezes) || 0,
+      freeze_weeks: Array.isArray(d.freezeWeeks) ? d.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string') : [],
+      lost_streak: d.lostStreak ?? null,
+    },
+    completedLessons: [],
+    streak: {
+      freezes: Number(d.streakFreezes) || 0,
+      freezeWeeks: Array.isArray(d.freezeWeeks) ? d.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string') : [],
+      lost: d.lostStreak ?? null,
+    },
+    ledger,
+  };
+}
+
+/** Live XP updates after the account-wide quota switch has moved the ledger. */
+export function watchCloudXpLedger(userId: string, onChange: (ledger: CloudLedger) => void, onError?: (error: Error) => void) {
+  let active = true;
+  let stop: (() => void) | null = null;
+  void ensureLiveQuizSignIn()
+    .then(() => {
+      if (!active) return;
+      stop = onSnapshot(doc(liveQuizDb, 'xpLedgers', userId), (snapshot) => {
+        if (snapshot.metadata.fromCache) return;
+        onChange(cloudLedgerOf(snapshot.data()));
+      }, (error) => onError?.(error));
+    })
+    .catch((error) => onError?.(error instanceof Error ? error : new Error('Could not connect to the XP backup.')));
+  return () => {
+    active = false;
+    stop?.();
+  };
 }
 
 // progress/{uid}/completions as a map, or null when it can't be read — for
@@ -435,25 +562,39 @@ export type LedgerUploadResult = CloudLedger & { duplicates: string[] };
  * caller keeps the entries and tries again later. One read and one write however
  * many entries are sent, so a device coming back online costs the same as one award.
  */
-export async function uploadCloudXpEvents(uploads: readonly LedgerUpload[], stats: CloudLearningStats, floorXp?: number): Promise<LedgerUploadResult | null> {
+export async function uploadCloudXpEvents(uploads: readonly LedgerUpload[], stats: CloudLearningStats, floorXp?: number, seed?: CloudLedger): Promise<LedgerUploadResult | null> {
   const userId = await getUserId();
   if (!userId) return null;
-  const progressDocRef = doc(db, 'progress', userId);
-  const result = await runTransaction(db, async (transaction) => {
-    const current = await transaction.get(progressDocRef);
-    const next = applyUploads(cloudLedgerOf(current.data()), uploads, floorXp);
-    if (next.changed) {
-      // The event map is replaced whole (mergeFields), so entries trimmed from it go;
-      // keys hold ':' and are written as plain object keys, never as field paths.
-      transaction.set(
-        progressDocRef,
-        { xp: next.xp, xpEvents: next.xpEvents, xpSeq: next.xpSeq, ...summaryFields(stats) },
-        { mergeFields: ['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'savedAt', 'updatedAt', ...Object.keys(streakFields(stats))] }
-      );
+  let fallbackActive = await isLiveDataFailoverActive().catch(() => false);
+  let result: CloudLedger & { duplicates: string[]; changed: boolean };
+  if (fallbackActive) {
+    result = await uploadFallbackXpEvents(userId, uploads, stats, floorXp, seed);
+  } else {
+    const progressDocRef = doc(db, 'progress', userId);
+    try {
+      result = await runTransaction(db, async (transaction) => {
+        const current = await transaction.get(progressDocRef);
+        const next = applyUploads(cloudLedgerOf(current.data()), uploads, floorXp);
+        if (next.changed) {
+          // The event map is replaced whole (mergeFields), so entries trimmed from it go;
+          // keys hold ':' and are written as plain object keys, never as field paths.
+          transaction.set(
+            progressDocRef,
+            { xp: next.xp, xpEvents: next.xpEvents, xpSeq: next.xpSeq, ...summaryFields(stats) },
+            { mergeFields: ['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'savedAt', 'updatedAt', ...Object.keys(streakFields(stats))] }
+          );
+        }
+        return next;
+      });
+      await mirrorXpLedgerToLiveProject(userId, result, stats).catch((error) => console.warn('Could not refresh the XP backup:', error));
+    } catch (error) {
+      if (!isPrimaryFirestoreQuotaError(error)) throw error;
+      await activateLiveDataFailover('quota-exceeded');
+      fallbackActive = true;
+      result = await uploadFallbackXpEvents(userId, uploads, stats, floorXp, seed);
     }
-    return next;
-  });
-  if (result.changed) void saveLeaderboardSummary(userId, result.xp, { ...stats, total_xp: result.xp });
+  }
+  if (result.changed && !fallbackActive) void saveLeaderboardSummary(userId, result.xp, { ...stats, total_xp: result.xp });
   return { xp: result.xp, xpEvents: result.xpEvents, xpSeq: result.xpSeq, duplicates: result.duplicates };
 }
 

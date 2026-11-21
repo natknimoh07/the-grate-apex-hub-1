@@ -11,6 +11,8 @@ import { collection, doc, onSnapshot, query, where, type Unsubscribe } from 'fir
 
 import type { BankCourse, BattleCount, BattleDifficulty } from '@/data/battle-race-rules';
 import { auth, db } from '@/lib/firebase';
+import { activateLiveDataFailover, ensureLiveQuizSignIn, isPrimaryFirestoreQuotaError, watchLiveDataFailover } from '@/data/live-quiz';
+import { liveQuizDb } from '@/lib/live-quiz-firebase';
 import { API_BASE, LIVE_SITE_LABEL, SITE_BASE } from '@/lib/live-site';
 
 export type RaceStatus = 'invited' | 'lobby' | 'live' | 'done' | 'declined' | 'expired' | 'cancelled';
@@ -102,6 +104,8 @@ export const readyRace = (id: string) => call<{ room: RaceRoom }>('ready', { id 
 export const leaveRace = (id: string) => call<{ room: RaceRoom }>('leave', { id }).then((reply) => reply.room);
 export const getRace = (id: string) => call<{ room: RaceRoom }>('get', { id }).then((reply) => reply.room);
 export const myRaces = () => call<{ rooms: RaceRoom[]; stats: RaceStats | null }>('mine');
+export const syncBattleBlockListToLive = (blockedIds: readonly string[]) =>
+  call<{ saved: boolean }>('sync-block-list', { blockedIds });
 
 /** Marks one answer (an option index, or 'skip') to my current question. */
 export const answerRace = (id: string, index: number, pick: number | 'skip') =>
@@ -121,18 +125,49 @@ const denied = (error: unknown) => (error as { code?: string })?.code === 'permi
 export function watchRace(id: string, onRoom: (room: RaceRoom) => void, onError: (error: unknown) => void): Unsubscribe {
   let poll: ReturnType<typeof setInterval> | null = null;
   let stopped = false;
+  let mode: 'primary' | 'live' | 'server' | null = null;
+  let stopRoom: Unsubscribe | null = null;
+  const stopCurrent = () => {
+    stopRoom?.();
+    stopRoom = null;
+    if (poll) clearInterval(poll);
+    poll = null;
+  };
   const ask = () => getRace(id).then((room) => { if (!stopped) onRoom(room); }).catch((error) => { if (!stopped) onError(error); });
-  const stopLive = onSnapshot(doc(db, 'battleRooms', id), (snap) => {
-    if (snap.exists()) onRoom(snap.data() as RaceRoom);
-  }, (error) => {
-    if (!denied(error)) return onError(error);
+  const startServer = () => {
+    if (stopped || mode === 'server') return;
+    stopCurrent();
+    mode = 'server';
     void ask();
     poll = setInterval(() => void ask(), 2_500);
-  });
+  };
+  const startDatabase = (target: 'primary' | 'live') => {
+    if (stopped || mode === target) return;
+    stopCurrent();
+    mode = target;
+    const generation = target;
+    const subscribe = () => {
+      if (stopped || mode !== generation) return;
+      const targetDb = target === 'live' ? liveQuizDb : db;
+      stopRoom = onSnapshot(doc(targetDb, 'battleRooms', id), (snap) => {
+        if (snap.exists()) onRoom(snap.data() as RaceRoom);
+      }, (error) => {
+        if (denied(error)) return startServer();
+        if (target === 'primary' && isPrimaryFirestoreQuotaError(error)) {
+          void activateLiveDataFailover('quota-exceeded').catch((failure) => { if (!stopped) onError(failure); });
+          return;
+        }
+        onError(error);
+      });
+    };
+    if (target === 'live') void ensureLiveQuizSignIn().then(subscribe).catch((error) => { if (!stopped) onError(error); });
+    else subscribe();
+  };
+  const stopMode = watchLiveDataFailover((active) => startDatabase(active ? 'live' : 'primary'), () => startDatabase('primary'));
   return () => {
     stopped = true;
-    stopLive();
-    if (poll) clearInterval(poll);
+    stopMode();
+    stopCurrent();
   };
 }
 
@@ -141,31 +176,73 @@ export function watchRace(id: string, onRoom: (room: RaceRoom) => void, onError:
  * rules it asks the server once (and again when `refresh` is called after an action).
  */
 export function watchMyRaces(uid: string, onRooms: (rooms: RaceRoom[]) => void, onStats: (stats: RaceStats | null) => void, onError: (error: unknown) => void) {
-  let fallback = false;
   let stopped = false;
+  let mode: 'primary' | 'live' | 'server' | null = null;
+  let stopRooms: Unsubscribe | null = null;
+  let stopStats: Unsubscribe | null = null;
+  let poll: ReturnType<typeof setInterval> | null = null;
+  let generation = 0;
+  const stopCurrent = () => {
+    generation += 1;
+    stopRooms?.();
+    stopStats?.();
+    stopRooms = null;
+    stopStats = null;
+    if (poll) clearInterval(poll);
+    poll = null;
+  };
   const ask = () => myRaces().then(({ rooms, stats }) => {
     if (stopped) return;
     onRooms(rooms);
     onStats(stats);
   }).catch((error) => { if (!stopped) onError(error); });
-  const useServer = () => {
-    if (fallback) return;
-    fallback = true;
+  const startServer = () => {
+    if (stopped || mode === 'server') return;
+    stopCurrent();
+    mode = 'server';
     void ask();
+    poll = setInterval(() => void ask(), 2_500);
   };
-  const stopRooms = onSnapshot(query(collection(db, 'battleRooms'), where('players', 'array-contains', uid), where('open', '==', true)), (snap) => {
-    onRooms(snap.docs.map((item) => item.data() as RaceRoom).sort((a, b) => b.createdAt - a.createdAt));
-  }, (error) => (denied(error) ? useServer() : onError(error)));
-  const stopStats = onSnapshot(doc(db, 'battleStats', uid), (snap) => onStats(snap.exists() ? (snap.data() as RaceStats) : null), (error) => (denied(error) ? useServer() : onError(error)));
+  const startDatabase = (target: 'primary' | 'live') => {
+    if (stopped || mode === target) return;
+    stopCurrent();
+    mode = target;
+    const currentGeneration = generation;
+    const subscribe = () => {
+      if (stopped || mode !== target || generation !== currentGeneration) return;
+      const targetDb = target === 'live' ? liveQuizDb : db;
+      stopRooms = onSnapshot(query(collection(targetDb, 'battleRooms'), where('players', 'array-contains', uid)), (snap) => {
+        onRooms(snap.docs.map((item) => item.data() as RaceRoom).filter((room) => room.open).sort((a, b) => b.createdAt - a.createdAt));
+      }, (error) => {
+        if (denied(error)) return startServer();
+        if (target === 'primary' && isPrimaryFirestoreQuotaError(error)) {
+          void activateLiveDataFailover('quota-exceeded').catch((failure) => { if (!stopped) onError(failure); });
+          return;
+        }
+        onError(error);
+      });
+      stopStats = onSnapshot(doc(targetDb, 'battleStats', uid), (snap) => onStats(snap.exists() ? (snap.data() as RaceStats) : null), (error) => {
+        if (denied(error)) return startServer();
+        if (target === 'primary' && isPrimaryFirestoreQuotaError(error)) {
+          void activateLiveDataFailover('quota-exceeded').catch((failure) => { if (!stopped) onError(failure); });
+          return;
+        }
+        onError(error);
+      });
+    };
+    if (target === 'live') void ensureLiveQuizSignIn().then(subscribe).catch((error) => { if (!stopped) onError(error); });
+    else subscribe();
+  };
+  const stopMode = watchLiveDataFailover((active) => startDatabase(active ? 'live' : 'primary'), () => startDatabase('primary'));
   return {
     stop() {
       stopped = true;
-      stopRooms();
-      stopStats();
+      stopMode();
+      stopCurrent();
     },
     /** After an action: the listeners update themselves; the fallback asks again. */
     refresh() {
-      if (fallback) void ask();
+      if (mode === 'server') void ask();
     },
   };
 }

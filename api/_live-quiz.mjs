@@ -212,6 +212,57 @@ async function actionHistoryDetail(admin, uid, body) {
   };
 }
 
+async function actionActivateDataFallback(admin, identityAdmin, uid, body) {
+  try {
+    await identityAdmin.db.doc(`progress/${uid}`).get();
+    throw new LiveQuizError(409, 'The original Firestore project has not reported a quota limit.');
+  } catch (error) {
+    if (error instanceof LiveQuizError) throw error;
+    if (!/429|RESOURCE_EXHAUSTED|quota exceeded/i.test(String(error?.message ?? error))) {
+      throw new LiveQuizError(503, 'The original database could not be checked for a quota limit.');
+    }
+  }
+  const reason = text(body.reason, 80) || 'firestore-quota-exceeded';
+  await admin.db.doc('systemStatus/database').set({ failover: true, reason, activatedAt: Date.now(), activatedBy: uid });
+  return { failover: true };
+}
+
+async function actionSaveLeagueFallbackRow(admin, uid, body) {
+  const week = text(body.week, 10);
+  const tier = Number(body.tier);
+  const username = text(body.username, 20).toLowerCase();
+  const weeklyXp = Number(body.weeklyXp);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(week) || !Number.isInteger(tier) || tier < 0 || tier > 9) {
+    throw new LiveQuizError(400, 'The live league row is not valid.');
+  }
+  if (!/^[a-z0-9_]{3,20}$/.test(username) || !Number.isFinite(weeklyXp) || weeklyXp < 0 || weeklyXp > 1_000_000) {
+    throw new LiveQuizError(400, 'The live league row is not valid.');
+  }
+  const ref = admin.db.doc(`leagueTables/${week}_${tier}`);
+  if (!(await ref.get()).exists) await ref.set({ week, tier, rows: {} });
+  await ref.update({ [`rows.${uid}`]: { username, weeklyXp: Math.round(weeklyXp), at: Date.now() } });
+  const entry = body.league && typeof body.league === 'object' ? body.league : null;
+  if (entry) {
+    const entryWeek = text(entry.week, 10);
+    const entryTier = Number(entry.tier);
+    const startXp = Number(entry.startXp);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(entryWeek) && Number.isInteger(entryTier) && entryTier >= 0 && entryTier <= 9 && Number.isFinite(startXp)) {
+      const saved = {
+        week: entryWeek,
+        tier: entryTier,
+        startXp: Math.max(0, Math.min(1_000_000, Math.round(startXp))),
+        ...(Number.isFinite(Number(entry.weeklyXp)) ? { weeklyXp: Math.max(0, Math.min(1_000_000, Math.round(Number(entry.weeklyXp)))) } : {}),
+        ...(typeof entry.xpWeek === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(entry.xpWeek) ? { xpWeek: entry.xpWeek } : {}),
+        ...(typeof entry.nextWeek === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(entry.nextWeek) ? { nextWeek: entry.nextWeek } : {}),
+        ...(Number.isFinite(Number(entry.nextXp)) ? { nextXp: Math.max(0, Math.min(1_000_000, Math.round(Number(entry.nextXp)))) } : {}),
+        ...(entry.prev && typeof entry.prev === 'object' ? { prev: entry.prev } : {}),
+      };
+      await admin.db.doc(`leagueEntries/${uid}`).set({ username, league: saved, updatedAt: Date.now() });
+    }
+  }
+  return { saved: true };
+}
+
 async function actionJoin(admin, uid, body) {
   const code = codeOf(body.code);
   const current = await session(admin, code);
@@ -382,6 +433,8 @@ export async function handleLiveQuiz({ req, res, admin, liveQuizAdmin, body }) {
     if (action === 'host-session') return res.status(200).json(await actionHostSession(quizAdmin, token.uid, body));
     if (action === 'history') return res.status(200).json(await actionHistory(quizAdmin, token.uid));
     if (action === 'history-detail') return res.status(200).json(await actionHistoryDetail(quizAdmin, token.uid, body));
+    if (action === 'activate-data-fallback') return res.status(200).json(await actionActivateDataFallback(quizAdmin, admin, token.uid, body));
+    if (action === 'save-league-fallback-row') return res.status(200).json(await actionSaveLeagueFallbackRow(quizAdmin, token.uid, body));
     if (action === 'join') return res.status(200).json(await actionJoin(quizAdmin, token.uid, body));
     if (action === 'start') return res.status(200).json(await actionStart(quizAdmin, token.uid, body));
     if (action === 'answer') return res.status(200).json(await actionAnswer(quizAdmin, token.uid, body));
