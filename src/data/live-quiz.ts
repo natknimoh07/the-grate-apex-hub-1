@@ -16,6 +16,8 @@ export type LiveQuizQuestion = {
   options: string[];
 };
 
+export type LiveQuizQuestionSummary = Pick<LiveQuizQuestion, 'key' | 'course' | 'topic' | 'level' | 'prompt'>;
+
 export type LiveQuizCourse = {
   id: string;
   name: string;
@@ -73,7 +75,7 @@ async function call<T>(action: string, body: Record<string, unknown> = {}): Prom
 }
 
 export const getLiveQuizCatalog = () => call<{ courses: LiveQuizCourse[] }>('catalog');
-export const getLiveQuizQuestions = (course: string, topic?: string, search?: string) => call<{ questions: LiveQuizQuestion[] }>('questions', { course, topic, search });
+export const getLiveQuizQuestions = (course: string, topic?: string, search?: string) => call<{ questions: LiveQuizQuestionSummary[] }>('questions', { course, topic, search });
 export const createLiveQuiz = (input: { title: string; durationSeconds: number; questionKeys: string[] }) => call<{ code: string }>('create', input);
 export const getLiveQuizHostSession = (code: string) => call<{ session: LiveQuizSession; questions: LiveQuizQuestion[] }>('host-session', { code });
 export const joinLiveQuiz = (code: string, displayName: string) => call<{ code: string }>('join', { code, displayName });

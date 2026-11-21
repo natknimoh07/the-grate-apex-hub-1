@@ -4,18 +4,31 @@ import { leaderboard, LiveQuizError, scoreLiveAnswer } from '../server/live-quiz
 
 const codeAlphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const codePattern = /^[A-Z2-9]{6}$/;
-const bankPath = new URL('../server/live-quiz-bank.json', import.meta.url);
-let cachedBank = null;
+const bankDirectory = new URL('../server/live-quiz-bank/', import.meta.url);
+let cachedCourses = null;
+const cachedCourseBanks = new Map();
 
-function bank() {
-  if (cachedBank) return cachedBank;
+function catalog() {
+  if (cachedCourses) return cachedCourses;
   try {
-    const data = JSON.parse(readFileSync(bankPath, 'utf8'));
-    cachedBank = {
-      courses: Array.isArray(data.courses) ? data.courses : [],
-      questions: Array.isArray(data.questions) ? data.questions : [],
-    };
-    return cachedBank;
+    const data = JSON.parse(readFileSync(new URL('index.json', bankDirectory), 'utf8'));
+    cachedCourses = Array.isArray(data.courses) ? data.courses : [];
+    return cachedCourses;
+  } catch {
+    throw new LiveQuizError(503, 'The Live Quiz question bank is being prepared. Try again in a moment.');
+  }
+}
+
+function courseBank(course) {
+  const found = cachedCourseBanks.get(course);
+  if (found) return found;
+  if (!catalog().some((item) => item.id === course)) throw new LiveQuizError(400, 'Choose a course.');
+  try {
+    const data = JSON.parse(readFileSync(new URL(`${encodeURIComponent(course)}.json`, bankDirectory), 'utf8'));
+    const questions = Array.isArray(data.questions) ? data.questions : [];
+    const bank = { questions, byKey: new Map(questions.map((question) => [question.key, question])) };
+    cachedCourseBanks.set(course, bank);
+    return bank;
   } catch {
     throw new LiveQuizError(503, 'The Live Quiz question bank is being prepared. Try again in a moment.');
   }
@@ -32,7 +45,9 @@ function codeOf(value) {
 }
 
 function questionFor(key) {
-  const question = bank().questions.find((item) => item.key === key);
+  const separator = key.indexOf('/');
+  const course = separator < 0 ? '' : key.slice(0, separator);
+  const question = course ? courseBank(course).byKey.get(key) : null;
   if (!question) throw new LiveQuizError(404, 'One selected question is no longer available. Choose it again.');
   return question;
 }
@@ -95,19 +110,18 @@ async function newCode(admin) {
 }
 
 async function actionCatalog() {
-  return { courses: bank().courses };
+  return { courses: catalog() };
 }
 
 async function actionQuestions(body) {
   const course = text(body.course, 80);
   const topic = text(body.topic, 100);
   const search = text(body.search, 100).toLowerCase();
-  if (!bank().courses.some((item) => item.id === course)) throw new LiveQuizError(400, 'Choose a course.');
-  const questions = bank().questions
-    .filter((item) => item.course === course && (!topic || item.topic === topic))
+  const questions = courseBank(course).questions
+    .filter((item) => !topic || item.topic === topic)
     .filter((item) => !search || `${item.prompt} ${item.topic}`.toLowerCase().includes(search))
     .slice(0, 200)
-    .map((item) => ({ key: item.key, course: item.course, topic: item.topic, level: item.level, prompt: item.prompt, options: item.options }));
+    .map((item) => ({ key: item.key, course: item.course, topic: item.topic, level: item.level, prompt: item.prompt }));
   return { questions };
 }
 

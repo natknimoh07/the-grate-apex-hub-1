@@ -23,6 +23,7 @@ import {
   type LiveQuizCourse,
   type LiveQuizParticipant,
   type LiveQuizQuestion,
+  type LiveQuizQuestionSummary,
   type LiveQuizSession,
 } from '@/data/live-quiz';
 import { friendlyError } from '@/lib/errors';
@@ -45,8 +46,10 @@ function HostBuilder() {
   const [courses, setCourses] = useState<LiveQuizCourse[]>([]);
   const [courseId, setCourseId] = useState('');
   const [topicId, setTopicId] = useState('');
-  const [questions, setQuestions] = useState<LiveQuizQuestion[]>([]);
-  const [selected, setSelected] = useState<LiveQuizQuestion[]>([]);
+  const [editingCourse, setEditingCourse] = useState(true);
+  const [editingTopic, setEditingTopic] = useState(true);
+  const [questions, setQuestions] = useState<LiveQuizQuestionSummary[]>([]);
+  const [selected, setSelected] = useState<LiveQuizQuestionSummary[]>([]);
   const [questionCount, setQuestionCount] = useState(10);
   const [title, setTitle] = useState('GrateApex Live Quiz');
   const [durationSeconds, setDurationSeconds] = useState(30);
@@ -84,9 +87,16 @@ function HostBuilder() {
   function chooseCourse(id: string) {
     setCourseId(id);
     setTopicId('');
+    setEditingCourse(false);
+    setEditingTopic(true);
   }
 
-  function toggle(question: LiveQuizQuestion) {
+  function chooseTopic(id: string) {
+    setTopicId(id);
+    setEditingTopic(false);
+  }
+
+  function toggle(question: LiveQuizQuestionSummary) {
     const selectedNow = selectedKeys.has(question.key);
     if (!selectedNow && selected.length >= questionCount) {
       setProblem(`This quiz is set for ${questionCount} questions. Increase the question count or remove one first.`);
@@ -159,23 +169,23 @@ function HostBuilder() {
           <Card style={styles.library}>
             <Text style={styles.stepLabel}>STEP 1</Text>
             <SectionHeader title="Course library" subtitle="Choose where your questions come from." />
-            <View style={styles.courseList}>
+            {course && !editingCourse ? <Interactive onPress={() => setEditingCourse(true)} style={styles.selectedCourse} accessibilityLabel={`Selected course: ${course.name}. Change course.`}><View style={styles.courseText}><Text style={styles.courseMeta}>COURSE</Text><Text style={styles.courseName}>{course.name}</Text></View><Text style={styles.changeLabel}>Change</Text></Interactive> : <View style={styles.courseList}>
               {courses.map((item) => {
                 const active = courseId === item.id;
                 return <Interactive key={item.id} onPress={() => chooseCourse(item.id)} style={[styles.courseRow, active && styles.courseRowActive]} accessibilityLabel={`Choose ${item.name}`} accessibilityState={{ selected: active }}><View style={styles.courseText}><Text style={styles.courseName}>{item.name}</Text><Text style={styles.courseMeta}>{item.total} questions</Text></View><Text style={[styles.courseArrow, active && styles.courseArrowActive]}>›</Text></Interactive>;
               })}
-            </View>
-            {course ? <View style={styles.topicSection}>
-              <Text style={styles.topicHeading}>Topics in {course.name}</Text>
+            </View>}
+            {course ? editingTopic ? <View style={styles.topicSection}>
+              <Text style={styles.topicHeading}>Choose a topic in {course.name}</Text>
               <View style={styles.topicList}>
-                <Interactive onPress={() => setTopicId('')} style={[styles.topicRow, !topicId && styles.topicRowActive]} accessibilityLabel="Show all topics" accessibilityState={{ selected: !topicId }}><Text style={styles.topicName}>All topics</Text><Text style={styles.topicCount}>{course.total}</Text></Interactive>
+                <Interactive onPress={() => chooseTopic('')} style={[styles.topicRow, !topicId && styles.topicRowActive]} accessibilityLabel="Show all topics" accessibilityState={{ selected: !topicId }}><Text style={styles.topicName}>All topics</Text><Text style={styles.topicCount}>{course.total}</Text></Interactive>
                 {course.topics.map((topic) => {
                   const active = topicId === topic.id;
                   const total = topic.easy + topic.medium + topic.hard + topic.unrated;
-                  return <Interactive key={topic.id} onPress={() => setTopicId(topic.id)} style={[styles.topicRow, active && styles.topicRowActive]} accessibilityLabel={`Choose ${topic.title}`} accessibilityState={{ selected: active }}><Text style={styles.topicName}>{topic.title}</Text><Text style={styles.topicCount}>{total}</Text></Interactive>;
+                  return <Interactive key={topic.id} onPress={() => chooseTopic(topic.id)} style={[styles.topicRow, active && styles.topicRowActive]} accessibilityLabel={`Choose ${topic.title}`} accessibilityState={{ selected: active }}><Text style={styles.topicName}>{topic.title}</Text><Text style={styles.topicCount}>{total}</Text></Interactive>;
                 })}
               </View>
-            </View> : <View style={styles.libraryEmpty}><Text style={styles.libraryEmptyText}>Select a course to reveal its topics.</Text></View>}
+            </View> : <Interactive onPress={() => setEditingTopic(true)} style={styles.selectedCourse} accessibilityLabel={`Selected topic: ${topicId ? course.topics.find((topic) => topic.id === topicId)?.title : 'All topics'}. Change topic.`}><View style={styles.courseText}><Text style={styles.courseMeta}>TOPIC</Text><Text style={styles.courseName}>{topicId ? course.topics.find((topic) => topic.id === topicId)?.title ?? course.name : 'All topics'}</Text></View><Text style={styles.changeLabel}>Change</Text></Interactive> : <View style={styles.libraryEmpty}><Text style={styles.libraryEmptyText}>Select a course to reveal its topics.</Text></View>}
           </Card>
         }
         main={
@@ -289,6 +299,8 @@ function createStyles(colors: ThemeColors) {
     courseMeta: { color: colors.textTertiary, fontSize: 11.5, fontWeight: '600' },
     courseArrow: { color: colors.textTertiary, fontSize: 24, lineHeight: 26, fontWeight: '500' },
     courseArrowActive: { color: colors.apexGlow },
+    selectedCourse: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 56, paddingHorizontal: 13, paddingVertical: 10, borderRadius: 12, backgroundColor: colors.apexSurface, borderWidth: 1, borderColor: colors.apexGlow },
+    changeLabel: { color: colors.apexGlow, fontSize: 12, fontWeight: '800' },
     settingField: { flex: 1, minWidth: 220, gap: 7 },
     settingNote: { color: colors.textTertiary, fontSize: 11.5, lineHeight: 16 },
     topicSection: { gap: 9, paddingTop: 14, borderTopWidth: 1, borderTopColor: colors.border },

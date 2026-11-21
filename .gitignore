@@ -57,6 +57,7 @@ example
 
 /scratch/
 /server/live-quiz-bank.json
+/server/live-quiz-bank/
 
 # Game web builds: the joined file is rebuilt from its parts (scripts/assemble-games.mjs)
 /public/game-builds/*/index.wasm
