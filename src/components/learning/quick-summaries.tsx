@@ -82,10 +82,12 @@ export function TopicSummaryPage({ topic }: { topic: Topic }) {
 
       <View style={styles.topicLessons}>
         {topic.lessons.map((lesson, index) => {
-          const points = lesson.highYield?.length
-            ? lesson.highYield
-            : lesson.summary?.length
-              ? lesson.summary
+          // The lesson summary is the fuller exam review. High-yield bullets are
+          // a shorter subset, so use them only when no authored summary exists.
+          const points = lesson.summary?.length
+            ? lesson.summary
+            : lesson.highYield?.length
+              ? lesson.highYield
               : lesson.chunks.flatMap((chunk) => chunk.keyPoints ?? []);
           return (
             <Card key={lesson.id} style={styles.topicLesson}>
