@@ -169,13 +169,11 @@ async function actionHostSession(admin, uid, body) {
   return { session: current, questions: publicHostQuestions(keys.data().questions ?? []) };
 }
 
-async function actionJoin(admin, identityAdmin, uid, body) {
+async function actionJoin(admin, uid, body) {
   const code = codeOf(body.code);
   const current = await session(admin, code);
   if (current.status === 'ended') throw new LiveQuizError(409, 'This live quiz has ended.');
-  const profile = await identityAdmin.db.doc(`users/${uid}`).get();
-  const profileName = text(profile.data?.()?.displayName || profile.data?.()?.username, 32);
-  const displayName = text(body.displayName, 32) || profileName;
+  const displayName = text(body.displayName, 32);
   if (!displayName) throw new LiveQuizError(400, 'Enter the name you want to use in the quiz.');
   const ref = admin.db.doc(`liveQuizParticipants/${code}_${uid}`);
   const found = await ref.get();
@@ -339,7 +337,7 @@ export async function handleLiveQuiz({ req, res, admin, liveQuizAdmin, body }) {
     }
     if (action === 'create') return res.status(200).json(await actionCreate(quizAdmin, token.uid, body));
     if (action === 'host-session') return res.status(200).json(await actionHostSession(quizAdmin, token.uid, body));
-    if (action === 'join') return res.status(200).json(await actionJoin(quizAdmin, admin, token.uid, body));
+    if (action === 'join') return res.status(200).json(await actionJoin(quizAdmin, token.uid, body));
     if (action === 'start') return res.status(200).json(await actionStart(quizAdmin, token.uid, body));
     if (action === 'answer') return res.status(200).json(await actionAnswer(quizAdmin, token.uid, body));
     if (action === 'my-result') return res.status(200).json(await actionMyResult(quizAdmin, token.uid, body));
