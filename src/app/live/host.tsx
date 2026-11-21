@@ -59,7 +59,6 @@ function HostBuilder() {
       .then(({ courses: found }) => {
         if (!live) return;
         setCourses(found);
-        setCourseId(found[0]?.id ?? '');
       })
       .catch((error) => { if (live) setProblem(friendlyError(error, 'The question bank could not be loaded.')); })
       .finally(() => { if (live) setLoading(false); });
@@ -67,9 +66,9 @@ function HostBuilder() {
   }, []);
 
   useEffect(() => {
-    if (!courseId) return;
     let live = true;
     setQuestions([]);
+    if (!courseId) return () => { live = false; };
     void getLiveQuizQuestions(courseId, topicId || undefined)
       .then(({ questions: found }) => { if (live) setQuestions(found); })
       .catch((error) => { if (live) setProblem(friendlyError(error, 'Questions could not be loaded.')); });
@@ -85,9 +84,29 @@ function HostBuilder() {
   }
 
   function toggle(question: LiveQuizQuestion) {
+    const selectedNow = selectedKeys.has(question.key);
+    if (!selectedNow && selected.length >= 30) {
+      setProblem('A Live Quiz can contain up to 30 questions. Remove one before adding another.');
+      return;
+    }
     setSelected((current) => current.some((item) => item.key === question.key)
       ? current.filter((item) => item.key !== question.key)
       : [...current, question]);
+  }
+
+  function removeQuestion(key: string) {
+    setSelected((current) => current.filter((item) => item.key !== key));
+  }
+
+  function moveQuestion(key: string, direction: -1 | 1) {
+    setSelected((current) => {
+      const from = current.findIndex((item) => item.key === key);
+      const to = from + direction;
+      if (from < 0 || to < 0 || to >= current.length) return current;
+      const next = [...current];
+      [next[from], next[to]] = [next[to], next[from]];
+      return next;
+    });
   }
 
   async function create() {
@@ -107,32 +126,60 @@ function HostBuilder() {
   return (
     <Screen width="wide" contentStyle={styles.page}>
       <BackLink fallback={routes.liveQuiz()} />
-      <PageHeader title="Create a Live Quiz" eyebrow="GrateApex Live" subtitle="Select existing GrateApex questions. The original curriculum stays the source of truth." right={<Text style={styles.count}>{selected.length} selected</Text>} />
+      <PageHeader title="Build a Live Quiz" eyebrow="GrateApex Live" subtitle="Choose a course, add questions in the order you want, then launch your room." right={<Text style={styles.count}>{selected.length}/30 questions</Text>} />
       <Columns
         sideFirstOnMobile
+        sideWidth={300}
+        gap={28}
         side={
-          <Card style={styles.settings}>
-            <Text style={styles.settingsTitle}>Session settings</Text>
-            <Text style={styles.label}>Quiz title</Text>
-            <TextInput value={title} onChangeText={setTitle} maxLength={80} style={styles.input} placeholderTextColor={styles.placeholder.color} />
-            <Text style={styles.label}>Answer time</Text>
-            <View style={styles.durationRow}>{[15, 30, 45, 60].map((seconds) => <Button key={seconds} label={`${seconds}s`} size="sm" variant={durationSeconds === seconds ? 'apex' : 'secondary'} onPress={() => setDurationSeconds(seconds)} />)}</View>
-            <Text style={styles.settingsHint}>Correct answers and scoring stay on the server. Players never receive an answer key.</Text>
-            {problem ? <Text style={styles.error}>{problem}</Text> : null}
-            <Button label={`Create session · ${selected.length} questions`} variant="apex" fullWidth loading={saving} disabled={!selected.length || !title.trim()} onPress={() => void create()} />
-            {selected.length ? <Button label="Clear selection" variant="ghost" onPress={() => setSelected([])} /> : null}
+          <Card style={styles.library}>
+            <Text style={styles.stepLabel}>STEP 1</Text>
+            <SectionHeader title="Course library" subtitle="Choose where your questions come from." />
+            <View style={styles.courseList}>
+              {courses.map((item) => {
+                const active = courseId === item.id;
+                return <Interactive key={item.id} onPress={() => chooseCourse(item.id)} style={[styles.courseRow, active && styles.courseRowActive]} accessibilityLabel={`Choose ${item.name}`} accessibilityState={{ selected: active }}><View style={styles.courseText}><Text style={styles.courseName}>{item.name}</Text><Text style={styles.courseMeta}>{item.total} questions</Text></View><Text style={[styles.courseArrow, active && styles.courseArrowActive]}>›</Text></Interactive>;
+              })}
+            </View>
+            {course ? <View style={styles.topicSection}>
+              <Text style={styles.topicHeading}>Topics in {course.name}</Text>
+              <View style={styles.topicList}>
+                <Interactive onPress={() => setTopicId('')} style={[styles.topicRow, !topicId && styles.topicRowActive]} accessibilityLabel="Show all topics" accessibilityState={{ selected: !topicId }}><Text style={styles.topicName}>All topics</Text><Text style={styles.topicCount}>{course.total}</Text></Interactive>
+                {course.topics.map((topic) => {
+                  const active = topicId === topic.id;
+                  const total = topic.easy + topic.medium + topic.hard + topic.unrated;
+                  return <Interactive key={topic.id} onPress={() => setTopicId(topic.id)} style={[styles.topicRow, active && styles.topicRowActive]} accessibilityLabel={`Choose ${topic.title}`} accessibilityState={{ selected: active }}><Text style={styles.topicName}>{topic.title}</Text><Text style={styles.topicCount}>{total}</Text></Interactive>;
+                })}
+              </View>
+            </View> : <View style={styles.libraryEmpty}><Text style={styles.libraryEmptyText}>Select a course to reveal its topics.</Text></View>}
           </Card>
         }
         main={
-          <View style={styles.bank}>
-            <SectionHeader title="Question bank" subtitle="Questions are generated from the same GrateApex curriculum used elsewhere in the app." />
-            <View style={styles.chips}>{courses.map((item) => <Button key={item.id} label={item.name} size="sm" variant={courseId === item.id ? 'primary' : 'secondary'} onPress={() => chooseCourse(item.id)} />)}</View>
-            {course ? <View style={styles.chips}><Button label="All topics" size="sm" variant={!topicId ? 'apex' : 'secondary'} onPress={() => setTopicId('')} />{course.topics.map((topic) => <Button key={topic.id} label={topic.title} size="sm" variant={topicId === topic.id ? 'apex' : 'secondary'} onPress={() => setTopicId(topic.id)} />)}</View> : null}
-            <Text style={styles.resultsLabel}>{questions.length ? `${questions.length} available questions` : 'Loading questions…'} · Select up to 30</Text>
-            <View style={styles.questionList}>{questions.map((question) => {
-              const selectedNow = selectedKeys.has(question.key);
-              return <Interactive key={question.key} onPress={() => toggle(question)} style={[styles.questionRow, selectedNow && styles.questionSelected]} accessibilityLabel={`${selectedNow ? 'Remove' : 'Add'} question: ${question.prompt}`}><View style={[styles.checkbox, selectedNow && styles.checkboxOn]}><Text style={styles.checkmark}>{selectedNow ? '✓' : ''}</Text></View><View style={styles.questionText}><Text style={styles.questionPrompt}>{question.prompt}</Text><Text style={styles.questionMeta}>{question.topic || 'General'} · {question.options.length} choices</Text></View></Interactive>;
-            })}</View>
+          <View style={styles.builderMain}>
+            <Card style={styles.quizSettings} tone="elevated">
+              <View style={styles.settingsHeading}>
+                <View style={styles.settingsCopy}><Text style={styles.stepLabel}>STEP 2</Text><Text style={styles.settingsTitle}>Quiz details</Text><Text style={styles.settingsHint}>Set the title and answer time before you launch.</Text></View>
+                <Button label={`Create · ${selected.length}`} variant="apex" loading={saving} disabled={!selected.length || !title.trim()} onPress={() => void create()} />
+              </View>
+              <View style={styles.detailsGrid}>
+                <View style={styles.titleField}><Text style={styles.label}>Quiz title</Text><TextInput value={title} onChangeText={setTitle} maxLength={80} style={styles.input} placeholder="Name your quiz" placeholderTextColor={styles.placeholder.color} /></View>
+                <View style={styles.timeField}><Text style={styles.label}>Answer time</Text><View style={styles.durationRow}>{[15, 30, 45, 60].map((seconds) => <Button key={seconds} label={`${seconds}s`} size="sm" variant={durationSeconds === seconds ? 'apex' : 'secondary'} onPress={() => setDurationSeconds(seconds)} />)}</View></View>
+              </View>
+              {problem ? <Text style={styles.error}>{problem}</Text> : null}
+            </Card>
+
+            {selected.length ? <Card style={styles.queue}>
+              <SectionHeader title="Your quiz" subtitle="Use the arrows to set the order players will see." right={<Button label="Clear all" size="sm" variant="ghost" onPress={() => setSelected([])} />} />
+              <View style={styles.queueList}>{selected.map((question, index) => <View key={question.key} style={styles.queueRow}><Text style={styles.queueNumber}>{String(index + 1).padStart(2, '0')}</Text><View style={styles.queueText}><Text style={styles.queuePrompt} numberOfLines={2}>{question.prompt}</Text><Text style={styles.queueMeta}>{question.course || course?.name || 'GrateApex'} · {question.topic || 'General'}</Text></View><View style={styles.queueActions}><Button label="↑" size="sm" variant="ghost" disabled={index === 0} onPress={() => moveQuestion(question.key, -1)} /><Button label="↓" size="sm" variant="ghost" disabled={index === selected.length - 1} onPress={() => moveQuestion(question.key, 1)} /><Button label="Remove" size="sm" variant="ghost" onPress={() => removeQuestion(question.key)} /></View></View>)}</View>
+            </Card> : <Card tone="outline" style={styles.emptyQueue}><Text style={styles.emptyQueueTitle}>Your quiz is empty</Text><Text style={styles.emptyQueueText}>Pick a course, then add questions from the list. You can mix courses and rearrange the final order.</Text></Card>}
+
+            {!course ? <Card tone="outline" style={styles.emptyBank}><Text style={styles.emptyBankTitle}>Choose a course to begin</Text><Text style={styles.emptyBankText}>The question list will appear here after you select a course from the library.</Text></Card> : <Card style={styles.questionPanel}>
+              <View style={styles.questionPanelHeader}><View><Text style={styles.stepLabel}>STEP 3</Text><Text style={styles.questionPanelTitle}>{topicId ? course.topics.find((topic) => topic.id === topicId)?.title ?? course.name : course.name}</Text><Text style={styles.resultsLabel}>{questions.length ? `${questions.length} available questions` : 'Loading questions…'} · Select questions to add them to your quiz.</Text></View></View>
+              <View style={styles.questionList}>{questions.map((question) => {
+                const selectedNow = selectedKeys.has(question.key);
+                return <Interactive key={question.key} onPress={() => toggle(question)} style={[styles.questionRow, selectedNow && styles.questionSelected]} accessibilityLabel={`${selectedNow ? 'Remove' : 'Add'} question: ${question.prompt}`} accessibilityState={{ selected: selectedNow }}><View style={[styles.checkbox, selectedNow && styles.checkboxOn]}><Text style={styles.checkmark}>{selectedNow ? '✓' : '+'}</Text></View><View style={styles.questionText}><Text style={styles.questionPrompt}>{question.prompt}</Text><Text style={styles.questionMeta}>{question.topic || 'General'} · {question.options.length} choices</Text></View></Interactive>;
+              })}</View>
+            </Card>}
           </View>
         }
       />
@@ -207,6 +254,25 @@ function HostRoom({ code }: { code: string }) {
 function createStyles(colors: ThemeColors) {
   return StyleSheet.create({
     page: { gap: 20 },
+    library: { gap: 14, padding: 16 },
+    stepLabel: { ...Type.overline, color: colors.apexGlow, letterSpacing: 1.2 },
+    courseList: { gap: 7 },
+    courseRow: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 58, paddingHorizontal: 13, paddingVertical: 10, borderRadius: 12, backgroundColor: colors.surfaceMuted, borderWidth: 1, borderColor: colors.border },
+    courseRowActive: { backgroundColor: colors.apexSurface, borderColor: colors.apexGlow },
+    courseText: { flex: 1, gap: 3 },
+    courseName: { color: colors.text, fontSize: 13.5, fontWeight: '800' },
+    courseMeta: { color: colors.textTertiary, fontSize: 11.5, fontWeight: '600' },
+    courseArrow: { color: colors.textTertiary, fontSize: 24, lineHeight: 26, fontWeight: '500' },
+    courseArrowActive: { color: colors.apexGlow },
+    topicSection: { gap: 9, paddingTop: 14, borderTopWidth: 1, borderTopColor: colors.border },
+    topicHeading: { color: colors.textSecondary, fontSize: 12, fontWeight: '800' },
+    topicList: { gap: 5 },
+    topicRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, minHeight: 38, paddingHorizontal: 10, borderRadius: 9 },
+    topicRowActive: { backgroundColor: colors.apexSurface },
+    topicName: { flex: 1, color: colors.text, fontSize: 12.5, fontWeight: '650' },
+    topicCount: { color: colors.textTertiary, fontSize: 11, fontWeight: '700' },
+    libraryEmpty: { padding: 12, borderRadius: 10, backgroundColor: colors.surfaceMuted },
+    libraryEmptyText: { color: colors.textTertiary, fontSize: 12, lineHeight: 18 },
     count: { backgroundColor: colors.apexSurface, color: colors.apexGlow, fontWeight: '900', fontSize: 13, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999 },
     settings: { gap: 10, padding: 18 },
     settingsTitle: { ...Type.title3, color: colors.text },
