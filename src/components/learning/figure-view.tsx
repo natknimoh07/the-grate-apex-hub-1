@@ -12,6 +12,7 @@
 //   QuestionImage   a plain picture with a question (past papers' diagrams).
 import { LIVE_SITE } from '@/lib/live-site';
 import { Image } from 'expo-image';
+import Svg, { Line } from 'react-native-svg';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Linking, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 
@@ -173,23 +174,42 @@ function Bubble({ spot, text }: { spot: FigureSpot; text: string }) {
 
 type PinTone = 'idle' | 'selected' | 'done' | 'wrong';
 
-/**
- * The part a quiz question asks about: a small see-through ring with a tiny
- * "?" tag beside it (owner, 2026-10-31: the big filled "?" hid the leader
- * lines). The ring is hollow, so the line and the structure under it still
- * show.
- */
+/** Recolours the diagram's leader line for the part a quiz question asks about. */
 function TargetMark({ spot }: { spot: FigureSpot }) {
-  const styles = useThemedStyles(createStyles);
+  const leader = leaderLineFor(spot);
   return (
-    <View pointerEvents="none" style={[styles.pinSlot, { left: pct(spot.x), top: pct(spot.y) }]} accessibilityLabel="The marked part">
-      <View style={styles.targetHalo} />
-      <View style={styles.targetRing} />
-      <View style={styles.targetTag}>
-        <Text style={styles.targetTagText}>?</Text>
-      </View>
-    </View>
+    <Svg pointerEvents="none" width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" style={StyleSheet.absoluteFill}>
+      {leader ? <>
+        <Line x1={leader.x} y1={leader.y} x2={spot.x * 1000} y2={spot.y * 1000} stroke="#FFFFFF" strokeWidth={11} strokeLinecap="round" />
+        <Line x1={leader.x} y1={leader.y} x2={spot.x * 1000} y2={spot.y * 1000} stroke="#D5222A" strokeWidth={6} strokeLinecap="round" />
+      </> : null}
+    </Svg>
   );
+}
+
+/** Find the closest edge of the covered printed label, where its leader line begins. */
+function leaderLineFor(spot: FigureSpot): { x: number; y: number } | null {
+  if (!spot.boxes?.length) return null;
+  const px = spot.x * 1000;
+  const py = spot.y * 1000;
+  let nearest: { x: number; y: number; distance: number } | null = null;
+  for (const [x, y, width, height] of spot.boxes) {
+    const left = x * 1000;
+    const top = y * 1000;
+    const right = (x + width) * 1000;
+    const bottom = (y + height) * 1000;
+    const candidates = [
+      { x: Math.max(left, Math.min(right, px)), y: top },
+      { x: Math.max(left, Math.min(right, px)), y: bottom },
+      { x: left, y: Math.max(top, Math.min(bottom, py)) },
+      { x: right, y: Math.max(top, Math.min(bottom, py)) },
+    ];
+    for (const point of candidates) {
+      const distance = (point.x - px) ** 2 + (point.y - py) ** 2;
+      if (!nearest || distance < nearest.distance) nearest = { ...point, distance };
+    }
+  }
+  return nearest ? { x: nearest.x, y: nearest.y } : null;
 }
 
 function Pin({ spot, number, tone, onPress, label }: { spot: FigureSpot; number: string; tone: PinTone; onPress?: () => void; label: string }) {
@@ -530,10 +550,6 @@ function createStyles(colors: ThemeColors) {
     chipHover: { borderColor: colors.primaryBorder },
     chipText: { fontSize: 13, fontWeight: '600', color: colors.text },
     chipTextOn: { color: colors.onPrimary },
-    targetHalo: { position: 'absolute', width: 18, height: 18, borderRadius: 9, borderWidth: 4, borderColor: colors.surface, opacity: 0.8 },
-    targetRing: { position: 'absolute', width: 16, height: 16, borderRadius: 8, borderWidth: 2.5, borderColor: colors.error, backgroundColor: 'transparent' },
-    targetTag: { position: 'absolute', left: 8, top: -17, minWidth: 13, height: 13, paddingHorizontal: 2, borderRadius: 7, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.error },
-    targetTagText: { fontSize: 9, lineHeight: 11, fontWeight: '800', color: colors.onPrimary },
     pinText: { fontSize: 10.5, fontWeight: '800', color: colors.onPrimary },
     pinTextStrong: { color: colors.text },
     bubble: { position: 'absolute', maxWidth: 220, paddingVertical: 5, paddingHorizontal: 9, borderRadius: Radius.sm, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.primary },
