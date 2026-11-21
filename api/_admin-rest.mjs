@@ -7,7 +7,7 @@
 // Local checks: with FIRESTORE_EMULATOR_HOST / FIREBASE_AUTH_EMULATOR_HOST set
 // (never on Vercel) it talks to the emulators instead, and reads sign-in tokens
 // without a signature, as the emulators make them and as firebase-admin does there.
-import { createRemoteJWKSet, decodeJwt, jwtVerify } from 'jose';
+import { createRemoteJWKSet, decodeJwt, importPKCS8, jwtVerify, SignJWT } from 'jose';
 
 import { adminToken, DATASTORE_SCOPE, serviceAccount } from './_admin.mjs';
 
@@ -53,10 +53,9 @@ function decode(value) {
 const fieldPath = (path) => path.split('.').map((part) => (/^[A-Za-z_][A-Za-z_0-9]*$/.test(part) ? part : `\`${part.replace(/[`\\]/g, '\\$&')}\``)).join('.');
 
 /** An admin `{ auth, db, FieldValue }` for the project, or null without a service account. */
-export function restAdmin() {
+export function restAdmin(account = serviceAccount()) {
   const emulatorFirestore = process.env.FIRESTORE_EMULATOR_HOST;
   const emulatorAuth = process.env.FIREBASE_AUTH_EMULATOR_HOST;
-  const account = serviceAccount();
   if (!account && !emulatorFirestore) return null;
   const project = account?.project_id || 'grate-apex';
   const root = `projects/${project}/databases/(default)/documents`;
@@ -235,6 +234,18 @@ export function restAdmin() {
         }
         throw error;
       }
+    },
+    async createCustomToken(uid) {
+      if (!account) throw new Error('No service account is available to mint a Live Quiz sign-in token.');
+      const key = await importPKCS8(account.private_key, 'RS256');
+      return new SignJWT({ uid })
+        .setProtectedHeader({ alg: 'RS256', typ: 'JWT' })
+        .setIssuer(account.client_email)
+        .setSubject(account.client_email)
+        .setAudience('https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit')
+        .setIssuedAt()
+        .setExpirationTime('1h')
+        .sign(key);
     },
   };
 

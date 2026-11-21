@@ -7,8 +7,8 @@ import { Buffer } from 'node:buffer';
 
 import { importPKCS8, SignJWT } from 'jose';
 
-export function serviceAccount() {
-  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+export function serviceAccount(variable = 'FIREBASE_SERVICE_ACCOUNT') {
+  const raw = process.env[variable];
   if (!raw) return null;
   try {
     const text = raw.trim().startsWith('{') ? raw : Buffer.from(raw, 'base64').toString('utf8');

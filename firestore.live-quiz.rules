@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isHost(code) {
+      return signedIn()
+        && get(/databases/$(database)/documents/liveQuizSessions/$(code)).data.hostUid == request.auth.uid;
+    }
+
+    function isParticipant(code) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/liveQuizParticipants/$(code + '_' + request.auth.uid));
+    }
+
+    match /liveQuizSessions/{code} {
+      allow read: if isHost(code) || isParticipant(code);
+      allow write: if false;
+    }
+
+    match /liveQuizParticipants/{id} {
+      allow read: if isHost(resource.data.sessionCode) || isParticipant(resource.data.sessionCode);
+      allow write: if false;
+    }
+
+    match /liveQuizAnswers/{id} {
+      allow read, write: if false;
+    }
+
+    match /liveQuizKeys/{code} {
+      allow read, write: if false;
+    }
+  }
+}

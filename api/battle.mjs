@@ -9,6 +9,7 @@
 // (built by scripts/build-battle-bank.mjs). Rules: battleRooms, battleKeys, battleStats in firestore.rules.
 import { BattleError, handleBattle } from '../server/battle-referee.mjs';
 import { restAdmin } from './_admin-rest.mjs';
+import { serviceAccount } from './_admin.mjs';
 import { handleLiveQuiz } from './_live-quiz.mjs';
 
 const banks = new Map(); // course -> { at, bank }
@@ -106,7 +107,11 @@ export default async function handler(req, res) {
   // Live Quiz shares this trusted server function so the project remains within
   // Vercel Hobby's serverless-function limit. Its own handler still verifies the
   // signed-in caller, owner access and scoring independently.
-  if (body.action === 'live-quiz') return handleLiveQuiz({ req, res, admin, body });
+  if (body.action === 'live-quiz') {
+    const liveQuizAccount = serviceAccount('LIVE_QUIZ_FIREBASE_SERVICE_ACCOUNT');
+    const liveQuizAdmin = liveQuizAccount ? restAdmin(liveQuizAccount) : null;
+    return handleLiveQuiz({ req, res, admin, liveQuizAdmin, body });
+  }
 
   let uid;
   try {

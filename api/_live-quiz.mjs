@@ -169,11 +169,11 @@ async function actionHostSession(admin, uid, body) {
   return { session: current, questions: publicHostQuestions(keys.data().questions ?? []) };
 }
 
-async function actionJoin(admin, uid, body) {
+async function actionJoin(admin, identityAdmin, uid, body) {
   const code = codeOf(body.code);
   const current = await session(admin, code);
   if (current.status === 'ended') throw new LiveQuizError(409, 'This live quiz has ended.');
-  const profile = await admin.db.doc(`users/${uid}`).get();
+  const profile = await identityAdmin.db.doc(`users/${uid}`).get();
   const profileName = text(profile.data?.()?.displayName || profile.data?.()?.username, 32);
   const displayName = text(body.displayName, 32) || profileName;
   if (!displayName) throw new LiveQuizError(400, 'Enter the name you want to use in the quiz.');
@@ -322,27 +322,32 @@ async function actionEnd(admin, uid, body) {
   await admin.db.doc(`liveQuizSessions/${current.code}`).update({ status: 'ended', phase: 'ended', leaderboard: entries, endedAt: Date.now(), updatedAt: Date.now() });
 }
 
-export async function handleLiveQuiz({ req, res, admin, body }) {
+export async function handleLiveQuiz({ req, res, admin, liveQuizAdmin, body }) {
   try {
     const token = await signedIn(admin, req);
     const action = text(body.liveAction, 40);
+    const quizAdmin = liveQuizAdmin ?? admin;
+    if (action === 'client-token') {
+      if (!liveQuizAdmin) return res.status(503).json({ error: 'The separate Live Quiz Firebase project is not connected yet.', code: 'live-quiz-not-configured' });
+      return res.status(200).json({ customToken: await liveQuizAdmin.auth.createCustomToken(token.uid) });
+    }
     if (action === 'catalog') {
       return res.status(200).json(await actionCatalog());
     }
     if (action === 'questions') {
       return res.status(200).json(await actionQuestions(body));
     }
-    if (action === 'create') return res.status(200).json(await actionCreate(admin, token.uid, body));
-    if (action === 'host-session') return res.status(200).json(await actionHostSession(admin, token.uid, body));
-    if (action === 'join') return res.status(200).json(await actionJoin(admin, token.uid, body));
-    if (action === 'start') return res.status(200).json(await actionStart(admin, token.uid, body));
-    if (action === 'answer') return res.status(200).json(await actionAnswer(admin, token.uid, body));
-    if (action === 'my-result') return res.status(200).json(await actionMyResult(admin, token.uid, body));
-    if (action === 'reveal') return res.status(200).json(await actionReveal(admin, token.uid, body));
-    if (action === 'leaderboard') return res.status(200).json(await actionLeaderboard(admin, token.uid, body));
-    if (action === 'next') return res.status(200).json(await actionNext(admin, token.uid, body));
-    if (action === 'auto-advance') return res.status(200).json(await actionAutoAdvance(admin, token.uid, body));
-    if (action === 'end') return res.status(200).json(await actionEnd(admin, token.uid, body));
+    if (action === 'create') return res.status(200).json(await actionCreate(quizAdmin, token.uid, body));
+    if (action === 'host-session') return res.status(200).json(await actionHostSession(quizAdmin, token.uid, body));
+    if (action === 'join') return res.status(200).json(await actionJoin(quizAdmin, admin, token.uid, body));
+    if (action === 'start') return res.status(200).json(await actionStart(quizAdmin, token.uid, body));
+    if (action === 'answer') return res.status(200).json(await actionAnswer(quizAdmin, token.uid, body));
+    if (action === 'my-result') return res.status(200).json(await actionMyResult(quizAdmin, token.uid, body));
+    if (action === 'reveal') return res.status(200).json(await actionReveal(quizAdmin, token.uid, body));
+    if (action === 'leaderboard') return res.status(200).json(await actionLeaderboard(quizAdmin, token.uid, body));
+    if (action === 'next') return res.status(200).json(await actionNext(quizAdmin, token.uid, body));
+    if (action === 'auto-advance') return res.status(200).json(await actionAutoAdvance(quizAdmin, token.uid, body));
+    if (action === 'end') return res.status(200).json(await actionEnd(quizAdmin, token.uid, body));
     throw new LiveQuizError(400, 'Unknown Live Quiz action.');
   } catch (error) {
     if (error instanceof LiveQuizError) return res.status(error.status).json({ error: error.message });

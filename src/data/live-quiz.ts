@@ -1,6 +1,8 @@
 import { collection, doc, onSnapshot, query, where, type Unsubscribe } from 'firebase/firestore';
+import { signInWithCustomToken } from 'firebase/auth';
 
-import { auth, db } from '@/lib/firebase';
+import { auth } from '@/lib/firebase';
+import { liveQuizAuth, liveQuizDb, liveQuizFirebaseConfigured } from '@/lib/live-quiz-firebase';
 import { API_BASE, LIVE_SITE_LABEL } from '@/lib/live-site';
 
 export type LiveQuizPhase = 'lobby' | 'question' | 'reveal' | 'leaderboard' | 'ended';
@@ -77,6 +79,44 @@ async function call<T>(action: string, body: Record<string, unknown> = {}): Prom
   return data as T;
 }
 
+let secondarySignIn: Promise<void> | null = null;
+let secondaryUid: string | null = null;
+
+async function ensureLiveQuizSignIn() {
+  if (!liveQuizFirebaseConfigured) return;
+  await auth.authStateReady();
+  const mainUser = auth.currentUser;
+  if (!mainUser) throw new LiveQuizServerError(401, 'Sign in to use Live Quiz.');
+  await liveQuizAuth.authStateReady();
+  if (liveQuizAuth.currentUser?.uid === mainUser.uid) {
+    secondaryUid = mainUser.uid;
+    return;
+  }
+  if (secondarySignIn && secondaryUid === mainUser.uid) return secondarySignIn;
+  secondaryUid = mainUser.uid;
+  secondarySignIn = (async () => {
+    const { customToken } = await call<{ customToken: string }>('client-token');
+    await signInWithCustomToken(liveQuizAuth, customToken);
+  })();
+  try {
+    await secondarySignIn;
+  } finally {
+    secondarySignIn = null;
+  }
+}
+
+function watchWithLiveQuizAuth<T>(subscribe: () => Unsubscribe, onError: (error: Error) => void): Unsubscribe {
+  let active = true;
+  let unsubscribe: Unsubscribe | undefined;
+  void ensureLiveQuizSignIn()
+    .then(() => { if (active) unsubscribe = subscribe(); })
+    .catch((error) => { if (active) onError(error instanceof Error ? error : new Error('Live Quiz connection failed.')); });
+  return () => {
+    active = false;
+    unsubscribe?.();
+  };
+}
+
 export const getLiveQuizCatalog = () => call<{ courses: LiveQuizCourse[] }>('catalog');
 export const getLiveQuizQuestions = (course: string, topic?: string, search?: string) => call<{ questions: LiveQuizQuestionSummary[] }>('questions', { course, topic, search });
 export const createLiveQuiz = (input: { title: string; durationSeconds: number; questionKeys: string[] }) => call<{ code: string }>('create', input);
@@ -92,11 +132,11 @@ export const autoAdvanceLiveQuizQuestion = (code: string) => call<{ advanced: bo
 export const endLiveQuiz = (code: string) => call<void>('end', { code });
 
 export function watchLiveQuiz(code: string, onChange: (session: LiveQuizSession | null) => void, onError: (error: Error) => void): Unsubscribe {
-  return onSnapshot(doc(db, 'liveQuizSessions', code), (snapshot) => onChange(snapshot.exists() ? (snapshot.data() as LiveQuizSession) : null), onError);
+  return watchWithLiveQuizAuth(() => onSnapshot(doc(liveQuizDb, 'liveQuizSessions', code), (snapshot) => onChange(snapshot.exists() ? (snapshot.data() as LiveQuizSession) : null), onError), onError);
 }
 
 export function watchLiveQuizParticipants(code: string, onChange: (participants: LiveQuizParticipant[]) => void, onError: (error: Error) => void): Unsubscribe {
-  return onSnapshot(query(collection(db, 'liveQuizParticipants'), where('sessionCode', '==', code)), (snapshot) => {
+  return watchWithLiveQuizAuth(() => onSnapshot(query(collection(liveQuizDb, 'liveQuizParticipants'), where('sessionCode', '==', code)), (snapshot) => {
     onChange(snapshot.docs.map((item) => item.data() as LiveQuizParticipant).sort((first, second) => second.score - first.score || first.joinedAt - second.joinedAt));
-  }, onError);
+  }, onError), onError);
 }
