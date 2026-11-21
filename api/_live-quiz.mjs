@@ -4,7 +4,7 @@ import { leaderboard, LiveQuizError, scoreLiveAnswer } from '../server/live-quiz
 
 const codeAlphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const codePattern = /^[A-Z2-9]{6}$/;
-const LEADERBOARD_DISPLAY_MS = 5_000;
+const LEADERBOARD_DISPLAY_MS = 10_000;
 const bankDirectory = new URL('../server/live-quiz-bank/', import.meta.url);
 let cachedCourses = null;
 const cachedCourseBanks = new Map();
@@ -216,6 +216,9 @@ async function actionAnswer(admin, uid, body) {
   if (current.status !== 'live' || current.phase !== 'question' || !current.currentQuestion) {
     throw new LiveQuizError(409, 'Answers are not open right now.');
   }
+  if (Date.now() >= Number(current.questionStartedAt) + Number(current.durationSeconds) * 1000) {
+    throw new LiveQuizError(409, 'Time is up. Wait for the next question.');
+  }
   if (!Number.isInteger(choiceIndex) || choiceIndex < 0 || choiceIndex >= current.currentQuestion.options.length) {
     throw new LiveQuizError(400, 'Choose one of the available answers.');
   }
@@ -235,10 +238,38 @@ async function actionAnswer(admin, uid, body) {
   return { accepted: true, now };
 }
 
+async function actionMyResult(admin, uid, body) {
+  const code = codeOf(body.code);
+  const current = await session(admin, code);
+  if (!['reveal', 'leaderboard', 'ended'].includes(current.phase)) {
+    throw new LiveQuizError(409, 'Your result will appear when the question time is up.');
+  }
+  const participant = await admin.db.doc(`liveQuizParticipants/${code}_${uid}`).get();
+  if (!participant.exists) throw new LiveQuizError(403, 'Join this live quiz to view your result.');
+  const answer = await admin.db.doc(`liveQuizAnswers/${code}_${current.currentIndex}_${uid}`).get();
+  const data = answer.data?.();
+  return data
+    ? { answered: true, correct: data.correct === true, points: Number(data.points ?? 0) }
+    : { answered: false, correct: false, points: 0 };
+}
+
+async function actionReveal(admin, uid, body) {
+  const current = await hostSession(admin, uid, codeOf(body.code));
+  if (current.status === 'ended') throw new LiveQuizError(409, 'This live quiz has ended.');
+  if (current.phase === 'reveal' || current.phase === 'leaderboard') return { entries: current.leaderboard ?? [] };
+  if (current.phase !== 'question') throw new LiveQuizError(409, 'There is no question to reveal right now.');
+  const entries = await writeLeaderboard(admin, current);
+  const now = Date.now();
+  await admin.db.doc(`liveQuizSessions/${current.code}`).update({ phase: 'reveal', leaderboard: entries, revealAt: now, leaderboardAt: 0, updatedAt: now });
+  return { entries };
+}
+
 async function actionLeaderboard(admin, uid, body) {
   const current = await hostSession(admin, uid, codeOf(body.code));
   if (current.status === 'ended') throw new LiveQuizError(409, 'This live quiz has ended.');
-  const entries = await writeLeaderboard(admin, current);
+  if (current.phase === 'leaderboard') return { entries: current.leaderboard ?? [] };
+  if (current.phase !== 'reveal') throw new LiveQuizError(409, 'Show the round results before opening the leaderboard.');
+  const entries = current.leaderboard?.length ? current.leaderboard : await writeLeaderboard(admin, current);
   const now = Date.now();
   await admin.db.doc(`liveQuizSessions/${current.code}`).update({ phase: 'leaderboard', leaderboard: entries, leaderboardAt: now, updatedAt: now });
   return { entries };
@@ -306,6 +337,8 @@ export async function handleLiveQuiz({ req, res, admin, body }) {
     if (action === 'join') return res.status(200).json(await actionJoin(admin, token.uid, body));
     if (action === 'start') return res.status(200).json(await actionStart(admin, token.uid, body));
     if (action === 'answer') return res.status(200).json(await actionAnswer(admin, token.uid, body));
+    if (action === 'my-result') return res.status(200).json(await actionMyResult(admin, token.uid, body));
+    if (action === 'reveal') return res.status(200).json(await actionReveal(admin, token.uid, body));
     if (action === 'leaderboard') return res.status(200).json(await actionLeaderboard(admin, token.uid, body));
     if (action === 'next') return res.status(200).json(await actionNext(admin, token.uid, body));
     if (action === 'auto-advance') return res.status(200).json(await actionAutoAdvance(admin, token.uid, body));

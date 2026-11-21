@@ -9,7 +9,7 @@ import { Screen } from '@/components/ui/screen';
 import { ErrorScreen, LoadingState } from '@/components/ui/state-views';
 import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
-import { answerLiveQuiz, joinLiveQuiz, watchLiveQuiz, type LiveQuizSession } from '@/data/live-quiz';
+import { answerLiveQuiz, getMyLiveQuizResult, joinLiveQuiz, watchLiveQuiz, type LiveQuizSession } from '@/data/live-quiz';
 import { friendlyError } from '@/lib/errors';
 import { param, routes } from '@/lib/routes';
 import { useAuth } from '@/hooks/use-auth';
@@ -75,22 +75,40 @@ function LiveQuizPlayer({ code }: { code: string }) {
   const [choice, setChoice] = useState<number | null>(null);
   const [sending, setSending] = useState(false);
   const [clock, setClock] = useState(Date.now());
+  const [answerResult, setAnswerResult] = useState<{ answered: boolean; correct: boolean; points: number } | null>(null);
 
   useEffect(() => watchLiveQuiz(code, setSession, (error) => setProblem(friendlyError(error, 'This live quiz is unavailable.'))), [code]);
   useEffect(() => {
     setChoice(null);
     setSending(false);
+    setAnswerResult(null);
   }, [session?.currentIndex]);
   useEffect(() => {
-    if (session?.phase !== 'question') return undefined;
+    if (!session || !['question', 'reveal', 'leaderboard'].includes(session.phase)) return undefined;
     const timer = setInterval(() => setClock(Date.now()), 250);
     return () => clearInterval(timer);
   }, [session?.phase, session?.currentIndex]);
+  useEffect(() => {
+    if (!session || !['reveal', 'leaderboard', 'ended'].includes(session.phase)) return undefined;
+    let active = true;
+    void getMyLiveQuizResult(code)
+      .then((result) => { if (active) setAnswerResult(result); })
+      .catch((error) => { if (active) setProblem(friendlyError(error, 'Your round result could not be loaded.')); });
+    return () => { active = false; };
+  }, [code, session?.currentIndex, session?.phase]);
 
   const secondsLeft = useMemo(() => {
     if (!session?.questionStartedAt) return session?.durationSeconds ?? 0;
     return Math.max(0, Math.ceil((session.questionStartedAt + session.durationSeconds * 1000 - clock) / 1000));
   }, [clock, session?.durationSeconds, session?.questionStartedAt]);
+  const leaderboardSeconds = useMemo(() => {
+    if (!session?.leaderboardAt) return 10;
+    return Math.max(0, Math.ceil((session.leaderboardAt + 10_000 - clock) / 1000));
+  }, [clock, session?.leaderboardAt]);
+  const revealSeconds = useMemo(() => {
+    if (!session?.revealAt) return 4;
+    return Math.max(0, Math.ceil((session.revealAt + 4_000 - clock) / 1000));
+  }, [clock, session?.revealAt]);
 
   async function answer(index: number) {
     if (choice !== null || sending || secondsLeft <= 0) return;
@@ -122,13 +140,14 @@ function LiveQuizPlayer({ code }: { code: string }) {
             </Interactive>
           ))}
         </View>
-        <Text style={styles.status}>{choice !== null ? 'Answer locked in. Watch for the leaderboard.' : secondsLeft <= 0 ? 'Time is up. Waiting for the leaderboard.' : 'Choose one answer.'}</Text>
+        <Text style={styles.status}>{sending ? 'Sending your answer…' : choice !== null ? 'Answer locked in. Your points appear when time is up.' : secondsLeft <= 0 ? 'Time is up. Your result is next.' : 'Choose one answer.'}</Text>
         {problem ? <Text style={styles.error}>{problem}</Text> : null}
       </Screen>
     );
   }
 
-  if (session.phase === 'leaderboard' || session.phase === 'ended') return <Results session={session} styles={styles} />;
+  if (session.phase === 'reveal') return <ResultReveal session={session} styles={styles} result={answerResult} secondsLeft={revealSeconds} problem={problem} />;
+  if (session.phase === 'leaderboard' || session.phase === 'ended') return <Results session={session} styles={styles} answerResult={answerResult} secondsLeft={leaderboardSeconds} />;
 
   return (
     <Screen width="learning" contentStyle={styles.waitingPage}>
@@ -141,11 +160,34 @@ function LiveQuizPlayer({ code }: { code: string }) {
   );
 }
 
-function Results({ session, styles }: { session: LiveQuizSession; styles: ReturnType<typeof createStyles> }) {
+function AnswerFeedback({ result, styles }: { result: { answered: boolean; correct: boolean; points: number }; styles: ReturnType<typeof createStyles> }) {
+  const correct = result.answered && result.correct;
+  return (
+    <Card style={[styles.feedback, correct ? styles.feedbackCorrect : styles.feedbackIncorrect]}>
+      <Text style={[styles.feedbackTitle, correct ? styles.feedbackCorrectText : styles.feedbackIncorrectText]}>{!result.answered ? 'No answer this round' : correct ? 'Correct!' : 'Not quite'}</Text>
+      <Text style={styles.feedbackPoints}>{result.answered ? `You earned ${result.points.toLocaleString()} points` : 'You earned 0 points'}</Text>
+    </Card>
+  );
+}
+
+function ResultReveal({ session, styles, result, secondsLeft, problem }: { session: LiveQuizSession; styles: ReturnType<typeof createStyles>; result: { answered: boolean; correct: boolean; points: number } | null; secondsLeft: number; problem: string | null }) {
   return (
     <Screen width="learning" contentStyle={styles.resultsPage}>
-      <Text style={styles.kicker}>{session.phase === 'ended' ? 'LIVE QUIZ COMPLETE' : 'ROUND RESULTS'}</Text>
+      <Text style={styles.kicker}>QUESTION {session.currentIndex + 1} RESULT</Text>
+      <Text style={styles.title}>Here’s how you did</Text>
+      {result ? <AnswerFeedback result={result} styles={styles} /> : <Text style={styles.status}>Loading your result…</Text>}
+      {problem ? <Text style={styles.error}>{problem}</Text> : null}
+      <Text style={styles.lead}>The leaderboard opens in {secondsLeft} seconds.</Text>
+    </Screen>
+  );
+}
+
+function Results({ session, styles, answerResult, secondsLeft }: { session: LiveQuizSession; styles: ReturnType<typeof createStyles>; answerResult: { answered: boolean; correct: boolean; points: number } | null; secondsLeft: number }) {
+  return (
+    <Screen width="learning" contentStyle={styles.resultsPage}>
+      <Text style={styles.kicker}>{session.phase === 'ended' ? 'LIVE QUIZ COMPLETE' : 'ROUND LEADERBOARD'}</Text>
       <Text style={styles.title}>{session.phase === 'ended' ? 'That’s a wrap.' : 'Leaderboard'}</Text>
+      {answerResult ? <AnswerFeedback result={answerResult} styles={styles} /> : <Text style={styles.status}>Loading your result…</Text>}
       <Card style={styles.board}>
         {session.leaderboard.length ? session.leaderboard.map((entry) => (
           <View key={`${entry.rank}:${entry.displayName}`} style={styles.boardRow}>
@@ -153,7 +195,7 @@ function Results({ session, styles }: { session: LiveQuizSession; styles: Return
           </View>
         )) : <Text style={styles.muted}>Scores will appear here when the host reveals the results.</Text>}
       </Card>
-      <Text style={styles.lead}>{session.phase === 'ended' ? 'Thanks for playing GrateApex Live.' : 'The next question starts automatically after the leaderboard.'}</Text>
+      <Text style={styles.lead}>{session.phase === 'ended' ? 'Thanks for playing GrateApex Live.' : session.currentIndex + 1 >= session.questionCount ? `Final leaderboard · quiz ends in ${secondsLeft} seconds.` : `Get ready · next question in ${secondsLeft} seconds.`}</Text>
       {session.phase === 'ended' ? <Button label="Back to GrateApex" variant="secondary" onPress={() => router.replace(routes.home())} /> : null}
     </Screen>
   );
@@ -187,6 +229,13 @@ function createStyles(colors: ThemeColors) {
     optionLetterText: { color: colors.apexGlow, fontWeight: '800', fontSize: 13 },
     optionText: { flex: 1, color: colors.text, fontWeight: '700', fontSize: 15.5, lineHeight: 22 },
     status: { color: colors.textSecondary, textAlign: 'center', fontSize: 14, fontWeight: '600' },
+    feedback: { width: '100%', maxWidth: 560, alignItems: 'center', padding: 15, gap: 5, borderWidth: 1 },
+    feedbackCorrect: { backgroundColor: colors.successSubtle, borderColor: colors.success },
+    feedbackIncorrect: { backgroundColor: colors.errorSubtle, borderColor: colors.error },
+    feedbackTitle: { fontSize: 18, fontWeight: '900' },
+    feedbackCorrectText: { color: colors.success },
+    feedbackIncorrectText: { color: colors.error },
+    feedbackPoints: { color: colors.text, fontSize: 14, fontWeight: '700' },
     pulse: { width: 68, height: 68, borderRadius: 34, backgroundColor: colors.apexGlow, boxShadow: `0px 0px 0px 16px ${colors.apexGlow}22, 0px 0px 0px 32px ${colors.apexGlow}0d` },
     board: { width: '100%', maxWidth: 560, padding: 12, gap: 7 },
     boardRow: { minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 10, borderRadius: 11, backgroundColor: colors.surfaceMuted },

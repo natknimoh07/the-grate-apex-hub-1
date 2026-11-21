@@ -17,6 +17,7 @@ import {
   getLiveQuizHostSession,
   getLiveQuizQuestions,
   nextLiveQuizQuestion,
+  showLiveQuizResults,
   showLiveQuizLeaderboard,
   startLiveQuizQuestion,
   watchLiveQuiz,
@@ -32,6 +33,9 @@ import { LIVE_SITE } from '@/lib/live-site';
 import { param, routes } from '@/lib/routes';
 import { useAuth } from '@/hooks/use-auth';
 import { useThemedStyles } from '@/hooks/use-theme';
+
+const RESULT_REVEAL_MS = 4_000;
+const LEADERBOARD_DISPLAY_MS = 10_000;
 
 export default function LiveQuizHostScreen() {
   const params = useLocalSearchParams<{ code?: string | string[] }>();
@@ -213,7 +217,7 @@ function HostBuilder() {
               <View style={styles.questionPanelHeader}><View style={styles.questionHeaderCopy}><Text style={styles.stepLabel}>STEP 3 · QUESTIONS</Text><Text style={styles.questionPanelTitle}>{topicId ? course.topics.find((topic) => topic.id === topicId)?.title ?? course.name : course.name}</Text><Text style={styles.resultsLabel}>{questions.length ? `${questions.length} available · ${selected.length} of ${questionCount} selected` : 'Loading questions…'}</Text></View><Button label={selected.length < questionCount ? `Pick ${questionCount - selected.length} at random` : 'Quiz ready'} size="sm" variant="secondary" disabled={!questions.length || selected.length >= questionCount} onPress={addRandomQuestions} /></View>
               <View style={styles.questionList}>{questions.map((question) => {
                 const selectedNow = selectedKeys.has(question.key);
-                return <Interactive key={question.key} onPress={() => toggle(question)} style={[styles.questionRow, selectedNow && styles.questionSelected]} accessibilityLabel={`${selectedNow ? 'Remove' : 'Add'} question: ${question.prompt}`} accessibilityState={{ selected: selectedNow }}><View style={[styles.checkbox, selectedNow && styles.checkboxOn]}><Text style={styles.checkmark}>{selectedNow ? '✓' : '+'}</Text></View><View style={styles.questionText}><Text style={styles.questionPrompt}>{question.prompt}</Text><Text style={styles.questionMeta}>{question.topic || 'General'} · {question.options.length} choices</Text></View></Interactive>;
+                return <Interactive key={question.key} onPress={() => toggle(question)} style={[styles.questionRow, selectedNow && styles.questionSelected]} accessibilityLabel={`${selectedNow ? 'Remove' : 'Add'} question: ${question.prompt}`} accessibilityState={{ selected: selectedNow }}><View style={[styles.checkbox, selectedNow && styles.checkboxOn]}><Text style={styles.checkmark}>{selectedNow ? '✓' : '+'}</Text></View><View style={styles.questionText}><Text style={styles.questionPrompt}>{question.prompt}</Text><Text style={styles.questionMeta}>{question.topic || 'General'}{question.level ? ` · ${question.level}` : ''}</Text></View></Interactive>;
               })}</View>
             </Card>}
           </View>
@@ -259,14 +263,23 @@ function HostRoom({ code }: { code: string }) {
     if (!session) return undefined;
     let timer: ReturnType<typeof setTimeout>;
     if (session.phase === 'question' && session.status === 'live') {
-      const key = `leaderboard:${session.currentIndex}:${session.questionStartedAt}`;
+      const key = `reveal:${session.currentIndex}:${session.questionStartedAt}`;
       if (autoTransition.current === key) return undefined;
       const deadline = session.questionStartedAt + session.durationSeconds * 1000 + 1_500;
       timer = setTimeout(() => {
         if (autoTransition.current === key) return;
         autoTransition.current = key;
-        void run('auto-leaderboard', () => showLiveQuizLeaderboard(code));
+        void run('auto-reveal', () => showLiveQuizResults(code));
       }, Math.max(0, deadline - Date.now()));
+    } else if (session.phase === 'reveal') {
+      const shownAt = Number(session.revealAt ?? session.updatedAt ?? Date.now());
+      const key = `leaderboard:${session.currentIndex}:${shownAt}`;
+      if (autoTransition.current === key) return undefined;
+      timer = setTimeout(() => {
+        if (autoTransition.current === key) return;
+        autoTransition.current = key;
+        void run('auto-leaderboard', () => showLiveQuizLeaderboard(code));
+      }, Math.max(0, shownAt + RESULT_REVEAL_MS - Date.now()));
     } else if (session.phase === 'leaderboard' && session.status !== 'ended') {
       const shownAt = Number(session.leaderboardAt ?? session.updatedAt ?? Date.now());
       const key = `advance:${session.currentIndex}:${shownAt}`;
@@ -275,12 +288,12 @@ function HostRoom({ code }: { code: string }) {
         if (autoTransition.current === key) return;
         autoTransition.current = key;
         void run('auto-advance', () => autoAdvanceLiveQuizQuestion(code));
-      }, 5_250);
+      }, Math.max(0, shownAt + LEADERBOARD_DISPLAY_MS - Date.now()));
     } else {
       return undefined;
     }
     return () => clearTimeout(timer);
-  }, [code, run, session?.currentIndex, session?.durationSeconds, session?.leaderboardAt, session?.phase, session?.questionStartedAt, session?.status, session?.updatedAt]);
+  }, [code, run, session?.currentIndex, session?.durationSeconds, session?.leaderboardAt, session?.phase, session?.questionStartedAt, session?.revealAt, session?.status, session?.updatedAt]);
 
   if (problem && !session) return <ErrorScreen title="Host session unavailable" message={problem} primary={{ label: 'Create a live quiz', onPress: () => router.replace(routes.liveQuizHost()) }} />;
   if (!session || !questions.length) return <LoadingState label="Preparing the host controls…" />;
@@ -300,11 +313,12 @@ function HostRoom({ code }: { code: string }) {
         main={
           <Card style={styles.stage}>
             <Text style={styles.kicker}>QUESTION {session.currentIndex + 1}</Text>
-            {session.phase === 'leaderboard' ? <><Text style={styles.stageTitle}>Leaderboard is live.</Text><Text style={styles.settingsHint}>{finalQuestion ? 'Final scores will show before the quiz ends.' : 'The next question starts automatically after the scores show.'}</Text></> : session.status === 'ended' ? <Text style={styles.stageTitle}>This live quiz has ended.</Text> : <><Text style={styles.stageTitle}>{current?.prompt}</Text><View style={styles.stageOptions}>{current?.options.map((option, index) => <View key={`${index}:${option}`} style={styles.stageOption}><Text style={styles.stageLetter}>{String.fromCharCode(65 + index)}</Text><Text style={styles.stageOptionText}>{option}</Text></View>)}</View></>}
+            {session.phase === 'reveal' ? <><Text style={styles.stageTitle}>Players are seeing their results.</Text><Text style={styles.settingsHint}>The leaderboard opens automatically in a few seconds.</Text></> : session.phase === 'leaderboard' ? <><Text style={styles.stageTitle}>Leaderboard is live.</Text><Text style={styles.settingsHint}>{finalQuestion ? 'Final scores will show before the quiz ends.' : 'The next question starts automatically after the 10-second leaderboard.'}</Text></> : session.status === 'ended' ? <Text style={styles.stageTitle}>This live quiz has ended.</Text> : <><Text style={styles.stageTitle}>{current?.prompt}</Text><View style={styles.stageOptions}>{current?.options.map((option, index) => <View key={`${index}:${option}`} style={styles.stageOption}><Text style={styles.stageLetter}>{String.fromCharCode(65 + index)}</Text><Text style={styles.stageOptionText}>{option}</Text></View>)}</View></>}
             {problem ? <Text style={styles.error}>{problem}</Text> : null}
             <View style={styles.actions}>
               {session.phase === 'lobby' && session.status !== 'ended' ? <Button label="Open question" variant="apex" size="lg" loading={action === 'start'} onPress={() => void run('start', () => startLiveQuizQuestion(code))} /> : null}
-              {session.phase === 'question' ? <Button label="Show leaderboard" variant="apex" size="lg" loading={action === 'leaderboard'} onPress={() => void run('leaderboard', () => showLiveQuizLeaderboard(code))} /> : null}
+              {session.phase === 'question' ? <Button label="Show results now" variant="apex" size="lg" loading={action === 'reveal'} onPress={() => void run('reveal', () => showLiveQuizResults(code))} /> : null}
+              {session.phase === 'reveal' ? <Button label="Show leaderboard now" variant="apex" size="lg" loading={action === 'leaderboard'} onPress={() => void run('leaderboard', () => showLiveQuizLeaderboard(code))} /> : null}
               {session.phase === 'leaderboard' ? <Button label={finalQuestion ? 'Finish quiz' : 'Prepare next question'} variant="primary" size="lg" loading={action === 'next'} onPress={() => void run('next', () => nextLiveQuizQuestion(code))} /> : null}
               {session.status !== 'ended' ? <Button label="End session" variant="danger" loading={action === 'end'} onPress={() => void run('end', () => endLiveQuiz(code))} /> : <Button label="Create another quiz" variant="secondary" onPress={() => router.replace(routes.liveQuizHost())} />}
             </View>

@@ -3,7 +3,7 @@ import { collection, doc, onSnapshot, query, where, type Unsubscribe } from 'fir
 import { auth, db } from '@/lib/firebase';
 import { API_BASE, LIVE_SITE_LABEL } from '@/lib/live-site';
 
-export type LiveQuizPhase = 'lobby' | 'question' | 'leaderboard' | 'ended';
+export type LiveQuizPhase = 'lobby' | 'question' | 'reveal' | 'leaderboard' | 'ended';
 export type LiveQuizStatus = 'lobby' | 'live' | 'ended';
 
 export type LiveQuizQuestion = {
@@ -38,6 +38,7 @@ export type LiveQuizSession = {
   durationSeconds: number;
   currentQuestion: LiveQuizQuestion | null;
   questionStartedAt: number;
+  revealAt?: number;
   leaderboardAt?: number;
   updatedAt?: number;
   leaderboard: LiveQuizEntry[];
@@ -83,6 +84,8 @@ export const getLiveQuizHostSession = (code: string) => call<{ session: LiveQuiz
 export const joinLiveQuiz = (code: string, displayName: string) => call<{ code: string }>('join', { code, displayName });
 export const startLiveQuizQuestion = (code: string) => call<{ now: number }>('start', { code });
 export const answerLiveQuiz = (code: string, choiceIndex: number) => call<{ accepted: boolean; now: number }>('answer', { code, choiceIndex });
+export const getMyLiveQuizResult = (code: string) => call<{ answered: boolean; correct: boolean; points: number }>('my-result', { code });
+export const showLiveQuizResults = (code: string) => call<{ entries: LiveQuizEntry[] }>('reveal', { code });
 export const showLiveQuizLeaderboard = (code: string) => call<{ entries: LiveQuizEntry[] }>('leaderboard', { code });
 export const nextLiveQuizQuestion = (code: string) => call<void>('next', { code });
 export const autoAdvanceLiveQuizQuestion = (code: string) => call<{ advanced: boolean; ended?: boolean }>('auto-advance', { code });
