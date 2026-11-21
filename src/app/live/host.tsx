@@ -47,6 +47,7 @@ function HostBuilder() {
   const [topicId, setTopicId] = useState('');
   const [questions, setQuestions] = useState<LiveQuizQuestion[]>([]);
   const [selected, setSelected] = useState<LiveQuizQuestion[]>([]);
+  const [questionCount, setQuestionCount] = useState(10);
   const [title, setTitle] = useState('GrateApex Live Quiz');
   const [durationSeconds, setDurationSeconds] = useState(30);
   const [loading, setLoading] = useState(true);
@@ -77,6 +78,8 @@ function HostBuilder() {
 
   const course = courses.find((item) => item.id === courseId);
   const selectedKeys = useMemo(() => new Set(selected.map((item) => item.key)), [selected]);
+  const availableCount = Math.min(30, questions.length);
+  const countOptions = [...new Set([5, 10, 15, 20, 30, ...(availableCount > 0 && availableCount < 5 ? [availableCount] : [])])];
 
   function chooseCourse(id: string) {
     setCourseId(id);
@@ -85,8 +88,8 @@ function HostBuilder() {
 
   function toggle(question: LiveQuizQuestion) {
     const selectedNow = selectedKeys.has(question.key);
-    if (!selectedNow && selected.length >= 30) {
-      setProblem('A Live Quiz can contain up to 30 questions. Remove one before adding another.');
+    if (!selectedNow && selected.length >= questionCount) {
+      setProblem(`This quiz is set for ${questionCount} questions. Increase the question count or remove one first.`);
       return;
     }
     setSelected((current) => current.some((item) => item.key === question.key)
@@ -111,6 +114,10 @@ function HostBuilder() {
 
   async function create() {
     setProblem(null);
+    if (selected.length !== questionCount) {
+      setProblem(`Choose exactly ${questionCount} questions before creating the live quiz.`);
+      return;
+    }
     setSaving(true);
     try {
       const session = await createLiveQuiz({ title, durationSeconds, questionKeys: selected.map((item) => item.key) });
@@ -126,7 +133,7 @@ function HostBuilder() {
   return (
     <Screen width="wide" contentStyle={styles.page}>
       <BackLink fallback={routes.liveQuiz()} />
-      <PageHeader title="Build a Live Quiz" eyebrow="GrateApex Live" subtitle="Choose a course, add questions in the order you want, then launch your room." right={<Text style={styles.count}>{selected.length}/30 questions</Text>} />
+      <PageHeader title="Build a Live Quiz" eyebrow="GrateApex Live" subtitle="Choose your quiz size and timer, then add questions in the order you want." right={<Text style={styles.count}>{selected.length}/{questionCount} questions</Text>} />
       <Columns
         sideFirstOnMobile
         sideWidth={300}
@@ -158,12 +165,13 @@ function HostBuilder() {
           <View style={styles.builderMain}>
             <Card style={styles.quizSettings} tone="elevated">
               <View style={styles.settingsHeading}>
-                <View style={styles.settingsCopy}><Text style={styles.stepLabel}>STEP 2</Text><Text style={styles.settingsTitle}>Quiz details</Text><Text style={styles.settingsHint}>Set the title and answer time before you launch.</Text></View>
-                <Button label={`Create · ${selected.length}`} variant="apex" loading={saving} disabled={!selected.length || !title.trim()} onPress={() => void create()} />
+                <View style={styles.settingsCopy}><Text style={styles.stepLabel}>STEP 2</Text><Text style={styles.settingsTitle}>Quiz details</Text><Text style={styles.settingsHint}>Choose the number of questions and the time players get for each answer.</Text></View>
+                <Button label={`Create · ${selected.length}/${questionCount}`} variant="apex" loading={saving} disabled={selected.length !== questionCount || !title.trim()} onPress={() => void create()} />
               </View>
               <View style={styles.detailsGrid}>
                 <View style={styles.titleField}><Text style={styles.label}>Quiz title</Text><TextInput value={title} onChangeText={setTitle} maxLength={80} style={styles.input} placeholder="Name your quiz" placeholderTextColor={styles.placeholder.color} /></View>
-                <View style={styles.timeField}><Text style={styles.label}>Answer time</Text><View style={styles.durationRow}>{[15, 30, 45, 60].map((seconds) => <Button key={seconds} label={`${seconds}s`} size="sm" variant={durationSeconds === seconds ? 'apex' : 'secondary'} onPress={() => setDurationSeconds(seconds)} />)}</View></View>
+                <View style={styles.settingField}><Text style={styles.label}>Number of questions</Text><View style={styles.durationRow}>{countOptions.map((count) => <Button key={count} label={String(count)} size="sm" variant={questionCount === count ? 'apex' : 'secondary'} onPress={() => { setQuestionCount(count); setProblem(null); }} />)}</View><Text style={styles.settingNote}>Select exactly {questionCount} questions below.</Text></View>
+                <View style={styles.settingField}><Text style={styles.label}>Answer time per question</Text><View style={styles.durationRow}>{[10, 15, 20, 30, 45, 60, 90, 120, 180].map((seconds) => <Button key={seconds} label={`${seconds}s`} size="sm" variant={durationSeconds === seconds ? 'apex' : 'secondary'} onPress={() => setDurationSeconds(seconds)} />)}</View></View>
               </View>
               {problem ? <Text style={styles.error}>{problem}</Text> : null}
             </Card>
@@ -174,7 +182,7 @@ function HostBuilder() {
             </Card> : <Card tone="outline" style={styles.emptyQueue}><Text style={styles.emptyQueueTitle}>Your quiz is empty</Text><Text style={styles.emptyQueueText}>Pick a course, then add questions from the list. You can mix courses and rearrange the final order.</Text></Card>}
 
             {!course ? <Card tone="outline" style={styles.emptyBank}><Text style={styles.emptyBankTitle}>Choose a course to begin</Text><Text style={styles.emptyBankText}>The question list will appear here after you select a course from the library.</Text></Card> : <Card style={styles.questionPanel}>
-              <View style={styles.questionPanelHeader}><View><Text style={styles.stepLabel}>STEP 3</Text><Text style={styles.questionPanelTitle}>{topicId ? course.topics.find((topic) => topic.id === topicId)?.title ?? course.name : course.name}</Text><Text style={styles.resultsLabel}>{questions.length ? `${questions.length} available questions` : 'Loading questions…'} · Select questions to add them to your quiz.</Text></View></View>
+              <View style={styles.questionPanelHeader}><View><Text style={styles.stepLabel}>STEP 3</Text><Text style={styles.questionPanelTitle}>{topicId ? course.topics.find((topic) => topic.id === topicId)?.title ?? course.name : course.name}</Text><Text style={styles.resultsLabel}>{questions.length ? `${questions.length} available questions · ${selected.length} of ${questionCount} selected` : 'Loading questions…'} · Select questions to add them to your quiz.</Text></View></View>
               <View style={styles.questionList}>{questions.map((question) => {
                 const selectedNow = selectedKeys.has(question.key);
                 return <Interactive key={question.key} onPress={() => toggle(question)} style={[styles.questionRow, selectedNow && styles.questionSelected]} accessibilityLabel={`${selectedNow ? 'Remove' : 'Add'} question: ${question.prompt}`} accessibilityState={{ selected: selectedNow }}><View style={[styles.checkbox, selectedNow && styles.checkboxOn]}><Text style={styles.checkmark}>{selectedNow ? '✓' : '+'}</Text></View><View style={styles.questionText}><Text style={styles.questionPrompt}>{question.prompt}</Text><Text style={styles.questionMeta}>{question.topic || 'General'} · {question.options.length} choices</Text></View></Interactive>;
@@ -264,15 +272,40 @@ function createStyles(colors: ThemeColors) {
     courseMeta: { color: colors.textTertiary, fontSize: 11.5, fontWeight: '600' },
     courseArrow: { color: colors.textTertiary, fontSize: 24, lineHeight: 26, fontWeight: '500' },
     courseArrowActive: { color: colors.apexGlow },
+    settingField: { flex: 1, minWidth: 220, gap: 7 },
+    settingNote: { color: colors.textTertiary, fontSize: 11.5, lineHeight: 16 },
     topicSection: { gap: 9, paddingTop: 14, borderTopWidth: 1, borderTopColor: colors.border },
     topicHeading: { color: colors.textSecondary, fontSize: 12, fontWeight: '800' },
     topicList: { gap: 5 },
     topicRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, minHeight: 38, paddingHorizontal: 10, borderRadius: 9 },
     topicRowActive: { backgroundColor: colors.apexSurface },
-    topicName: { flex: 1, color: colors.text, fontSize: 12.5, fontWeight: '650' },
+    topicName: { flex: 1, color: colors.text, fontSize: 12.5, fontWeight: '600' },
     topicCount: { color: colors.textTertiary, fontSize: 11, fontWeight: '700' },
     libraryEmpty: { padding: 12, borderRadius: 10, backgroundColor: colors.surfaceMuted },
     libraryEmptyText: { color: colors.textTertiary, fontSize: 12, lineHeight: 18 },
+    builderMain: { gap: 16 },
+    quizSettings: { gap: 16, padding: 18 },
+    settingsHeading: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 },
+    settingsCopy: { flex: 1, minWidth: 210, gap: 5 },
+    detailsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 14 },
+    titleField: { flex: 1, minWidth: 220, gap: 7 },
+    queue: { gap: 14, padding: 18 },
+    queueList: { gap: 8 },
+    queueRow: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10, borderRadius: 11, backgroundColor: colors.surfaceMuted },
+    queueNumber: { color: colors.apexGlow, fontSize: 12, fontWeight: '900', width: 24, textAlign: 'center' },
+    queueText: { flex: 1, gap: 3 },
+    queuePrompt: { color: colors.text, fontSize: 13, lineHeight: 18, fontWeight: '700' },
+    queueMeta: { color: colors.textTertiary, fontSize: 11, fontWeight: '600' },
+    queueActions: { flexDirection: 'row', alignItems: 'center', gap: 2 },
+    emptyQueue: { gap: 6, padding: 18 },
+    emptyQueueTitle: { color: colors.text, fontSize: 15, fontWeight: '800' },
+    emptyQueueText: { color: colors.textSecondary, fontSize: 13, lineHeight: 19 },
+    emptyBank: { gap: 6, padding: 20, minHeight: 130, justifyContent: 'center' },
+    emptyBankTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },
+    emptyBankText: { color: colors.textSecondary, fontSize: 13, lineHeight: 19 },
+    questionPanel: { gap: 14, padding: 18 },
+    questionPanelHeader: { flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
+    questionPanelTitle: { ...Type.title3, color: colors.text, marginTop: 4 },
     count: { backgroundColor: colors.apexSurface, color: colors.apexGlow, fontWeight: '900', fontSize: 13, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999 },
     settings: { gap: 10, padding: 18 },
     settingsTitle: { ...Type.title3, color: colors.text },
