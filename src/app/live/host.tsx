@@ -101,6 +101,23 @@ function HostBuilder() {
     setSelected((current) => current.filter((item) => item.key !== key));
   }
 
+  function addRandomQuestions() {
+    const needed = questionCount - selected.length;
+    const available = questions.filter((item) => !selectedKeys.has(item.key));
+    if (needed <= 0) return;
+    if (available.length < needed) {
+      setProblem(`Only ${available.length} more questions are available here. Choose another topic or reduce the quiz size.`);
+      return;
+    }
+    const shuffled = [...available];
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const swap = Math.floor(Math.random() * (index + 1));
+      [shuffled[index], shuffled[swap]] = [shuffled[swap], shuffled[index]];
+    }
+    setSelected((current) => [...current, ...shuffled.slice(0, needed)]);
+    setProblem(null);
+  }
+
   function moveQuestion(key: string, direction: -1 | 1) {
     setSelected((current) => {
       const from = current.findIndex((item) => item.key === key);
@@ -133,7 +150,7 @@ function HostBuilder() {
   return (
     <Screen width="wide" contentStyle={styles.page}>
       <BackLink fallback={routes.liveQuiz()} />
-      <PageHeader title="Build a Live Quiz" eyebrow="GrateApex Live" subtitle="Choose your quiz size and timer, then add questions in the order you want." right={<Text style={styles.count}>{selected.length}/{questionCount} questions</Text>} />
+      <PageHeader title="Build a Live Quiz" eyebrow="GrateApex Live" subtitle="Choose a course, set the pace, and build your quiz in a few taps." right={<Text style={styles.count}>{selected.length}/{questionCount} questions</Text>} />
       <Columns
         sideFirstOnMobile
         sideWidth={300}
@@ -177,12 +194,12 @@ function HostBuilder() {
             </Card>
 
             {selected.length ? <Card style={styles.queue}>
-              <SectionHeader title="Your quiz" subtitle="Use the arrows to set the order players will see." right={<Button label="Clear all" size="sm" variant="ghost" onPress={() => setSelected([])} />} />
+              <SectionHeader title="Your quiz" subtitle="Questions play in this order. Reorder or remove any question." right={<Button label="Clear" size="sm" variant="ghost" onPress={() => setSelected([])} />} />
               <View style={styles.queueList}>{selected.map((question, index) => <View key={question.key} style={styles.queueRow}><Text style={styles.queueNumber}>{String(index + 1).padStart(2, '0')}</Text><View style={styles.queueText}><Text style={styles.queuePrompt} numberOfLines={2}>{question.prompt}</Text><Text style={styles.queueMeta}>{question.course || course?.name || 'GrateApex'} · {question.topic || 'General'}</Text></View><View style={styles.queueActions}><Button label="↑" size="sm" variant="ghost" disabled={index === 0} onPress={() => moveQuestion(question.key, -1)} /><Button label="↓" size="sm" variant="ghost" disabled={index === selected.length - 1} onPress={() => moveQuestion(question.key, 1)} /><Button label="Remove" size="sm" variant="ghost" onPress={() => removeQuestion(question.key)} /></View></View>)}</View>
             </Card> : <Card tone="outline" style={styles.emptyQueue}><Text style={styles.emptyQueueTitle}>Your quiz is empty</Text><Text style={styles.emptyQueueText}>Pick a course, then add questions from the list. You can mix courses and rearrange the final order.</Text></Card>}
 
-            {!course ? <Card tone="outline" style={styles.emptyBank}><Text style={styles.emptyBankTitle}>Choose a course to begin</Text><Text style={styles.emptyBankText}>The question list will appear here after you select a course from the library.</Text></Card> : <Card style={styles.questionPanel}>
-              <View style={styles.questionPanelHeader}><View><Text style={styles.stepLabel}>STEP 3</Text><Text style={styles.questionPanelTitle}>{topicId ? course.topics.find((topic) => topic.id === topicId)?.title ?? course.name : course.name}</Text><Text style={styles.resultsLabel}>{questions.length ? `${questions.length} available questions · ${selected.length} of ${questionCount} selected` : 'Loading questions…'} · Select questions to add them to your quiz.</Text></View></View>
+            {!course ? <Card tone="outline" style={styles.emptyBank}><Text style={styles.emptyBankTitle}>Start with a course</Text><Text style={styles.emptyBankText}>Choose a course on the left. Then pick questions yourself or let GrateApex choose them for you.</Text></Card> : <Card style={styles.questionPanel}>
+              <View style={styles.questionPanelHeader}><View style={styles.questionHeaderCopy}><Text style={styles.stepLabel}>STEP 3 · QUESTIONS</Text><Text style={styles.questionPanelTitle}>{topicId ? course.topics.find((topic) => topic.id === topicId)?.title ?? course.name : course.name}</Text><Text style={styles.resultsLabel}>{questions.length ? `${questions.length} available · ${selected.length} of ${questionCount} selected` : 'Loading questions…'}</Text></View><Button label={selected.length < questionCount ? `Pick ${questionCount - selected.length} at random` : 'Quiz ready'} size="sm" variant="secondary" disabled={!questions.length || selected.length >= questionCount} onPress={addRandomQuestions} /></View>
               <View style={styles.questionList}>{questions.map((question) => {
                 const selectedNow = selectedKeys.has(question.key);
                 return <Interactive key={question.key} onPress={() => toggle(question)} style={[styles.questionRow, selectedNow && styles.questionSelected]} accessibilityLabel={`${selectedNow ? 'Remove' : 'Add'} question: ${question.prompt}`} accessibilityState={{ selected: selectedNow }}><View style={[styles.checkbox, selectedNow && styles.checkboxOn]}><Text style={styles.checkmark}>{selectedNow ? '✓' : '+'}</Text></View><View style={styles.questionText}><Text style={styles.questionPrompt}>{question.prompt}</Text><Text style={styles.questionMeta}>{question.topic || 'General'} · {question.options.length} choices</Text></View></Interactive>;
@@ -304,7 +321,8 @@ function createStyles(colors: ThemeColors) {
     emptyBankTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },
     emptyBankText: { color: colors.textSecondary, fontSize: 13, lineHeight: 19 },
     questionPanel: { gap: 14, padding: 18 },
-    questionPanelHeader: { flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
+    questionPanelHeader: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+    questionHeaderCopy: { flex: 1, minWidth: 190 },
     questionPanelTitle: { ...Type.title3, color: colors.text, marginTop: 4 },
     count: { backgroundColor: colors.apexSurface, color: colors.apexGlow, fontWeight: '900', fontSize: 13, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999 },
     settings: { gap: 10, padding: 18 },
