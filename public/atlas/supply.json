@@ -1,0 +1,2406 @@
+{
+ "_about": "Nerve, arterial and venous supply of limb muscles for the atlas info card. Keys are model structure names. n / a / v = nerve / artery / vein: t = text shown to the learner, m = model parts to light up (same side as the tapped muscle). Check any change against the lecture notes or a textbook.",
+ "Acromial part of deltoid muscle": {
+  "n": {
+   "t": "Axillary nerve (C5-C6).",
+   "m": [
+    "Axillary nerve"
+   ]
+  },
+  "a": {
+   "t": "Posterior circumflex humeral artery and the deltoid branch of the thoraco-acromial artery (both from the axillary artery).",
+   "m": [
+    "Posterior circumflex humeral artery",
+    "Thoraco-acromial artery"
+   ]
+  },
+  "v": {
+   "t": "Posterior circumflex humeral vein, draining to the axillary vein.",
+   "m": [
+    "Posterior circumflex humeral vein"
+   ]
+  }
+ },
+ "Clavicular part of deltoid muscle": {
+  "n": {
+   "t": "Axillary nerve (C5-C6).",
+   "m": [
+    "Axillary nerve"
+   ]
+  },
+  "a": {
+   "t": "Posterior circumflex humeral artery and the deltoid branch of the thoraco-acromial artery (both from the axillary artery).",
+   "m": [
+    "Posterior circumflex humeral artery",
+    "Thoraco-acromial artery"
+   ]
+  },
+  "v": {
+   "t": "Posterior circumflex humeral vein, draining to the axillary vein.",
+   "m": [
+    "Posterior circumflex humeral vein"
+   ]
+  }
+ },
+ "Scapular spinal part of deltoid muscle": {
+  "n": {
+   "t": "Axillary nerve (C5-C6).",
+   "m": [
+    "Axillary nerve"
+   ]
+  },
+  "a": {
+   "t": "Posterior circumflex humeral artery and the deltoid branch of the thoraco-acromial artery (both from the axillary artery).",
+   "m": [
+    "Posterior circumflex humeral artery",
+    "Thoraco-acromial artery"
+   ]
+  },
+  "v": {
+   "t": "Posterior circumflex humeral vein, draining to the axillary vein.",
+   "m": [
+    "Posterior circumflex humeral vein"
+   ]
+  }
+ },
+ "Supraspinatus muscle": {
+  "n": {
+   "t": "Suprascapular nerve (C5-C6).",
+   "m": [
+    "Suprascapular nerve"
+   ]
+  },
+  "a": {
+   "t": "Suprascapular artery (from the thyrocervical trunk).",
+   "m": [
+    "Suprascapular artery"
+   ]
+  },
+  "v": {
+   "t": "Suprascapular vein, draining to the external jugular or subclavian vein.",
+   "m": [
+    "Suprascapular vein"
+   ]
+  }
+ },
+ "Infraspinatus muscle": {
+  "n": {
+   "t": "Suprascapular nerve (C5-C6).",
+   "m": [
+    "Suprascapular nerve"
+   ]
+  },
+  "a": {
+   "t": "Suprascapular artery and circumflex scapular artery.",
+   "m": [
+    "Suprascapular artery",
+    "Circumflex scapular artery"
+   ]
+  },
+  "v": {
+   "t": "Suprascapular vein and circumflex scapular vein.",
+   "m": [
+    "Suprascapular vein",
+    "Circumflex scapular vein"
+   ]
+  }
+ },
+ "Teres minor muscle": {
+  "n": {
+   "t": "Axillary nerve (C5-C6).",
+   "m": [
+    "Axillary nerve"
+   ]
+  },
+  "a": {
+   "t": "Circumflex scapular artery and posterior circumflex humeral artery.",
+   "m": [
+    "Circumflex scapular artery",
+    "Posterior circumflex humeral artery"
+   ]
+  },
+  "v": {
+   "t": "Circumflex scapular vein and posterior circumflex humeral vein.",
+   "m": [
+    "Circumflex scapular vein",
+    "Posterior circumflex humeral vein"
+   ]
+  }
+ },
+ "Subscapularis muscle": {
+  "n": {
+   "t": "Upper and lower subscapular nerves (C5-C7).",
+   "m": [
+    "Superior subscapular nerve",
+    "Inferior subscapular nerve"
+   ]
+  },
+  "a": {
+   "t": "Subscapular artery (through its circumflex scapular branch) and the suprascapular artery.",
+   "m": [
+    "Subscapular artery",
+    "Circumflex scapular artery"
+   ]
+  },
+  "v": {
+   "t": "Subscapular vein and circumflex scapular vein, draining to the axillary vein.",
+   "m": [
+    "Subscapular vein",
+    "Circumflex scapular vein"
+   ]
+  }
+ },
+ "Teres major muscle": {
+  "n": {
+   "t": "Lower subscapular nerve (C5-C6).",
+   "m": [
+    "Inferior subscapular nerve"
+   ]
+  },
+  "a": {
+   "t": "Circumflex scapular artery and thoracodorsal artery.",
+   "m": [
+    "Circumflex scapular artery",
+    "Thoracodorsal artery"
+   ]
+  },
+  "v": {
+   "t": "Circumflex scapular vein and thoracodorsal vein.",
+   "m": [
+    "Circumflex scapular vein",
+    "Thoracodorsal vein"
+   ]
+  }
+ },
+ "Latissimus dorsi muscle": {
+  "n": {
+   "t": "Thoracodorsal nerve (C6-C8).",
+   "m": [
+    "Thoracodorsal nerve"
+   ]
+  },
+  "a": {
+   "t": "Thoracodorsal artery (from the subscapular artery), with posterior intercostal and lumbar artery branches to its lower part.",
+   "m": [
+    "Thoracodorsal artery",
+    "Posterior intercostal arteries"
+   ]
+  },
+  "v": {
+   "t": "Thoracodorsal vein, draining to the axillary vein.",
+   "m": [
+    "Thoracodorsal vein"
+   ]
+  }
+ },
+ "Descending part of trapezius muscle": {
+  "n": {
+   "t": "Accessory nerve (cranial nerve XI) for movement; C3-C4 carry pain and position sense.",
+   "m": [
+    "Accessory nerve (XI)"
+   ]
+  },
+  "a": {
+   "t": "Superficial branch of the transverse cervical artery (the descending part also gets the occipital artery).",
+   "m": [
+    "(Superficial branch of transverse cervical artery)",
+    "Transverse cervical artery"
+   ]
+  },
+  "v": {
+   "t": "Transverse cervical vein, draining to the external jugular or subclavian vein.",
+   "m": []
+  }
+ },
+ "Transverse part of trapezius muscle": {
+  "n": {
+   "t": "Accessory nerve (cranial nerve XI) for movement; C3-C4 carry pain and position sense.",
+   "m": [
+    "Accessory nerve (XI)"
+   ]
+  },
+  "a": {
+   "t": "Superficial branch of the transverse cervical artery (the descending part also gets the occipital artery).",
+   "m": [
+    "(Superficial branch of transverse cervical artery)",
+    "Transverse cervical artery"
+   ]
+  },
+  "v": {
+   "t": "Transverse cervical vein, draining to the external jugular or subclavian vein.",
+   "m": []
+  }
+ },
+ "Ascending part of trapezius muscle": {
+  "n": {
+   "t": "Accessory nerve (cranial nerve XI) for movement; C3-C4 carry pain and position sense.",
+   "m": [
+    "Accessory nerve (XI)"
+   ]
+  },
+  "a": {
+   "t": "Superficial branch of the transverse cervical artery (the descending part also gets the occipital artery).",
+   "m": [
+    "(Superficial branch of transverse cervical artery)",
+    "Transverse cervical artery"
+   ]
+  },
+  "v": {
+   "t": "Transverse cervical vein, draining to the external jugular or subclavian vein.",
+   "m": []
+  }
+ },
+ "Levator scapulae": {
+  "n": {
+   "t": "Dorsal scapular nerve (C5) and branches of C3-C4.",
+   "m": [
+    "Dorsal scapular nerve"
+   ]
+  },
+  "a": {
+   "t": "Dorsal scapular artery (often the deep branch of the transverse cervical artery) and the ascending cervical artery.",
+   "m": [
+    "(Deep branch of transverse cervical artery)",
+    "Transverse cervical artery"
+   ]
+  },
+  "v": {
+   "t": "Dorsal scapular vein, draining to the external jugular or subclavian vein.",
+   "m": []
+  }
+ },
+ "Rhomboid major muscle": {
+  "n": {
+   "t": "Dorsal scapular nerve (C4-C5).",
+   "m": [
+    "Dorsal scapular nerve"
+   ]
+  },
+  "a": {
+   "t": "Dorsal scapular artery (often the deep branch of the transverse cervical artery).",
+   "m": [
+    "(Deep branch of transverse cervical artery)",
+    "Transverse cervical artery"
+   ]
+  },
+  "v": {
+   "t": "Dorsal scapular vein, draining to the external jugular or subclavian vein.",
+   "m": []
+  }
+ },
+ "Rhomboid minor muscle": {
+  "n": {
+   "t": "Dorsal scapular nerve (C4-C5).",
+   "m": [
+    "Dorsal scapular nerve"
+   ]
+  },
+  "a": {
+   "t": "Dorsal scapular artery (often the deep branch of the transverse cervical artery).",
+   "m": [
+    "(Deep branch of transverse cervical artery)",
+    "Transverse cervical artery"
+   ]
+  },
+  "v": {
+   "t": "Dorsal scapular vein, draining to the external jugular or subclavian vein.",
+   "m": []
+  }
+ },
+ "Serratus anterior muscle": {
+  "n": {
+   "t": "Long thoracic nerve (C5-C7).",
+   "m": [
+    "Long thoracic nerve"
+   ]
+  },
+  "a": {
+   "t": "Lateral thoracic artery and thoracodorsal artery.",
+   "m": [
+    "Lateral thoracic artery",
+    "Thoracodorsal artery"
+   ]
+  },
+  "v": {
+   "t": "Lateral thoracic vein and thoracodorsal vein, draining to the axillary vein.",
+   "m": [
+    "Lateral thoracic vein",
+    "Thoracodorsal vein"
+   ]
+  }
+ },
+ "Clavicular head of pectoralis major muscle": {
+  "n": {
+   "t": "Lateral and medial pectoral nerves (C5-T1).",
+   "m": [
+    "Lateral pectoral nerve",
+    "Medial pectoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Pectoral branches of the thoraco-acromial artery, with the lateral thoracic artery and perforating branches of the internal thoracic artery.",
+   "m": [
+    "Pectoral branches of thoraco-acromial artery",
+    "Lateral thoracic artery"
+   ]
+  },
+  "v": {
+   "t": "Veins that accompany these arteries, draining to the axillary vein.",
+   "m": [
+    "Lateral thoracic vein"
+   ]
+  }
+ },
+ "Sternocostal head of pectoralis major muscle": {
+  "n": {
+   "t": "Lateral and medial pectoral nerves (C5-T1).",
+   "m": [
+    "Lateral pectoral nerve",
+    "Medial pectoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Pectoral branches of the thoraco-acromial artery, with the lateral thoracic artery and perforating branches of the internal thoracic artery.",
+   "m": [
+    "Pectoral branches of thoraco-acromial artery",
+    "Lateral thoracic artery"
+   ]
+  },
+  "v": {
+   "t": "Veins that accompany these arteries, draining to the axillary vein.",
+   "m": [
+    "Lateral thoracic vein"
+   ]
+  }
+ },
+ "(Abdominal part of pectoralis major muscle)": {
+  "n": {
+   "t": "Lateral and medial pectoral nerves (C5-T1).",
+   "m": [
+    "Lateral pectoral nerve",
+    "Medial pectoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Pectoral branches of the thoraco-acromial artery, with the lateral thoracic artery and perforating branches of the internal thoracic artery.",
+   "m": [
+    "Pectoral branches of thoraco-acromial artery",
+    "Lateral thoracic artery"
+   ]
+  },
+  "v": {
+   "t": "Veins that accompany these arteries, draining to the axillary vein.",
+   "m": [
+    "Lateral thoracic vein"
+   ]
+  }
+ },
+ "Pectoralis minor muscle": {
+  "n": {
+   "t": "Medial pectoral nerve (C8-T1), with a contribution from the lateral pectoral nerve.",
+   "m": [
+    "Medial pectoral nerve",
+    "Lateral pectoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Pectoral branches of the thoraco-acromial artery and the lateral thoracic artery.",
+   "m": [
+    "Pectoral branches of thoraco-acromial artery",
+    "Lateral thoracic artery"
+   ]
+  },
+  "v": {
+   "t": "Veins that accompany these arteries, draining to the axillary vein.",
+   "m": [
+    "Lateral thoracic vein"
+   ]
+  }
+ },
+ "Long head of biceps brachii": {
+  "n": {
+   "t": "Musculocutaneous nerve (C5-C6).",
+   "m": [
+    "Musculocutaneous nerve"
+   ]
+  },
+  "a": {
+   "t": "Muscular branches of the brachial artery.",
+   "m": [
+    "Brachial artery"
+   ]
+  },
+  "v": {
+   "t": "Brachial veins (venae comitantes of the brachial artery), draining to the axillary vein.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Short head of biceps brachii": {
+  "n": {
+   "t": "Musculocutaneous nerve (C5-C6).",
+   "m": [
+    "Musculocutaneous nerve"
+   ]
+  },
+  "a": {
+   "t": "Muscular branches of the brachial artery.",
+   "m": [
+    "Brachial artery"
+   ]
+  },
+  "v": {
+   "t": "Brachial veins (venae comitantes of the brachial artery), draining to the axillary vein.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Brachialis muscle": {
+  "n": {
+   "t": "Musculocutaneous nerve (C5-C6); a small lateral part is supplied by the radial nerve (C7).",
+   "m": [
+    "Musculocutaneous nerve",
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Muscular branches of the brachial artery and the radial recurrent artery.",
+   "m": [
+    "Brachial artery",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Brachial veins, draining to the axillary vein.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Coracobrachialis muscle": {
+  "n": {
+   "t": "Musculocutaneous nerve (C5-C7).",
+   "m": [
+    "Musculocutaneous nerve"
+   ]
+  },
+  "a": {
+   "t": "Muscular branches of the brachial artery.",
+   "m": [
+    "Brachial artery"
+   ]
+  },
+  "v": {
+   "t": "Brachial veins, draining to the axillary vein.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Long head of triceps brachii": {
+  "n": {
+   "t": "Radial nerve (C6-C8).",
+   "m": [
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep brachial artery (profunda brachii) and its collateral branches; the long head also gets the posterior circumflex humeral artery.",
+   "m": [
+    "Deep brachial artery",
+    "Posterior circumflex humeral artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the deep brachial artery, draining to the brachial veins.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Lateral head of triceps brachii": {
+  "n": {
+   "t": "Radial nerve (C6-C8).",
+   "m": [
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep brachial artery (profunda brachii) and its collateral branches; the long head also gets the posterior circumflex humeral artery.",
+   "m": [
+    "Deep brachial artery",
+    "Posterior circumflex humeral artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the deep brachial artery, draining to the brachial veins.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Medial head of triceps brachii": {
+  "n": {
+   "t": "Radial nerve (C6-C8).",
+   "m": [
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep brachial artery (profunda brachii) and its collateral branches; the long head also gets the posterior circumflex humeral artery.",
+   "m": [
+    "Deep brachial artery",
+    "Posterior circumflex humeral artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the deep brachial artery, draining to the brachial veins.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Anconeus muscle": {
+  "n": {
+   "t": "Radial nerve (C7-C8), through the branch to the medial head of triceps.",
+   "m": [
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Middle collateral artery (from the deep brachial artery) and the recurrent interosseous artery.",
+   "m": [
+    "Middle collateral artery",
+    "Recurrent interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the brachial veins.",
+   "m": [
+    "Brachial veins"
+   ]
+  }
+ },
+ "Brachioradialis muscle": {
+  "n": {
+   "t": "Radial nerve (C5-C7).",
+   "m": [
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Radial recurrent artery, radial collateral artery and muscular branches of the radial artery.",
+   "m": [
+    "Radial artery",
+    "Radial collateral artery"
+   ]
+  },
+  "v": {
+   "t": "Radial veins, draining to the brachial veins.",
+   "m": [
+    "Radial veins"
+   ]
+  }
+ },
+ "Extensor carpi radialis longus": {
+  "n": {
+   "t": "Radial nerve (C6-C7).",
+   "m": [
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Radial artery and radial recurrent artery.",
+   "m": [
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Radial veins, draining to the brachial veins.",
+   "m": [
+    "Radial veins"
+   ]
+  }
+ },
+ "Extensor carpi radialis brevis": {
+  "n": {
+   "t": "Deep branch of the radial nerve / posterior interosseous nerve (C7-C8).",
+   "m": [
+    "Deep branch of radial nerve",
+    "Radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Radial artery and radial recurrent artery.",
+   "m": [
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Radial veins, draining to the brachial veins.",
+   "m": [
+    "Radial veins"
+   ]
+  }
+ },
+ "Supinator": {
+  "n": {
+   "t": "Deep branch of the radial nerve (C5-C6).",
+   "m": [
+    "Deep branch of radial nerve"
+   ]
+  },
+  "a": {
+   "t": "Radial recurrent artery and the recurrent interosseous artery.",
+   "m": [
+    "Recurrent interosseous artery",
+    "Posterior interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the radial and brachial veins.",
+   "m": [
+    "Radial veins"
+   ]
+  }
+ },
+ "Extensor digitorum": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8), the continuation of the deep branch of the radial nerve.",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery.",
+   "m": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the posterior interosseous artery, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Extensor digiti minimi": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8), the continuation of the deep branch of the radial nerve.",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery.",
+   "m": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the posterior interosseous artery, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Humeral head of extensor carpi ulnaris": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8), the continuation of the deep branch of the radial nerve.",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery.",
+   "m": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the posterior interosseous artery, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Ulnar head of extensor carpi ulnaris": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8), the continuation of the deep branch of the radial nerve.",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery.",
+   "m": [
+    "Posterior interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the posterior interosseous artery, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Abductor pollicis longus": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8).",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery (the anterior interosseous artery supplies the lowest part).",
+   "m": [
+    "Posterior interosseous artery",
+    "Common interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the interosseous arteries, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Extensor pollicis brevis": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8).",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery (the anterior interosseous artery supplies the lowest part).",
+   "m": [
+    "Posterior interosseous artery",
+    "Common interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the interosseous arteries, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Extensor pollicis longus": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8).",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery (the anterior interosseous artery supplies the lowest part).",
+   "m": [
+    "Posterior interosseous artery",
+    "Common interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the interosseous arteries, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Extensor indicis": {
+  "n": {
+   "t": "Posterior interosseous nerve (C7-C8).",
+   "m": [
+    "Posterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Posterior interosseous artery (the anterior interosseous artery supplies the lowest part).",
+   "m": [
+    "Posterior interosseous artery",
+    "Common interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the interosseous arteries, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Superficial head of pronator teres": {
+  "n": {
+   "t": "Median nerve (C6-C7).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery (through the anterior ulnar recurrent artery) and the radial artery.",
+   "m": [
+    "Ulnar artery",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the brachial veins.",
+   "m": [
+    "Ulnar veins",
+    "Radial veins"
+   ]
+  }
+ },
+ "Deep head of pronator teres": {
+  "n": {
+   "t": "Median nerve (C6-C7).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery (through the anterior ulnar recurrent artery) and the radial artery.",
+   "m": [
+    "Ulnar artery",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the brachial veins.",
+   "m": [
+    "Ulnar veins",
+    "Radial veins"
+   ]
+  }
+ },
+ "Flexor carpi radialis": {
+  "n": {
+   "t": "Median nerve (C6-C7).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Radial artery.",
+   "m": [
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Radial veins, draining to the brachial veins.",
+   "m": [
+    "Radial veins"
+   ]
+  }
+ },
+ "Palmaris longus muscle": {
+  "n": {
+   "t": "Median nerve (C7-C8).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery.",
+   "m": [
+    "Ulnar artery"
+   ]
+  },
+  "v": {
+   "t": "Ulnar veins, draining to the brachial veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Humeral head of flexor carpi ulnaris": {
+  "n": {
+   "t": "Ulnar nerve (C7-C8).",
+   "m": [
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery (and its posterior ulnar recurrent branch).",
+   "m": [
+    "Ulnar artery"
+   ]
+  },
+  "v": {
+   "t": "Ulnar veins, draining to the brachial veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Ulnar head of flexor carpi ulnaris": {
+  "n": {
+   "t": "Ulnar nerve (C7-C8).",
+   "m": [
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery (and its posterior ulnar recurrent branch).",
+   "m": [
+    "Ulnar artery"
+   ]
+  },
+  "v": {
+   "t": "Ulnar veins, draining to the brachial veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Humero-ulnar head of flexor digitorum superficialis": {
+  "n": {
+   "t": "Median nerve (C7-T1).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery and radial artery.",
+   "m": [
+    "Ulnar artery",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the brachial veins.",
+   "m": [
+    "Ulnar veins",
+    "Radial veins"
+   ]
+  }
+ },
+ "Radial head of flexor digitorum superficialis": {
+  "n": {
+   "t": "Median nerve (C7-T1).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery and radial artery.",
+   "m": [
+    "Ulnar artery",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the brachial veins.",
+   "m": [
+    "Ulnar veins",
+    "Radial veins"
+   ]
+  }
+ },
+ "Flexor digitorum profundus": {
+  "n": {
+   "t": "Medial half (to digits 4-5): ulnar nerve. Lateral half (to digits 2-3): anterior interosseous nerve, a branch of the median nerve (C8-T1).",
+   "m": [
+    "Ulnar nerve",
+    "Anterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Anterior interosseous artery (from the common interosseous artery) and muscular branches of the ulnar artery.",
+   "m": [
+    "Common interosseous artery",
+    "Ulnar artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Flexor pollicis longus": {
+  "n": {
+   "t": "Anterior interosseous nerve, a branch of the median nerve (C7-C8).",
+   "m": [
+    "Anterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Anterior interosseous artery and the radial artery.",
+   "m": [
+    "Common interosseous artery",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the radial and ulnar veins.",
+   "m": [
+    "Radial veins"
+   ]
+  }
+ },
+ "Pronator quadratus": {
+  "n": {
+   "t": "Anterior interosseous nerve, a branch of the median nerve (C7-C8).",
+   "m": [
+    "Anterior interosseous nerve of forearm"
+   ]
+  },
+  "a": {
+   "t": "Anterior interosseous artery (from the common interosseous artery).",
+   "m": [
+    "Common interosseous artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the anterior interosseous artery, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins"
+   ]
+  }
+ },
+ "Abductor pollicis brevis": {
+  "n": {
+   "t": "Recurrent (thenar) branch of the median nerve (C8-T1).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Branches of the radial artery to the thenar eminence (the princeps pollicis artery and the superficial palmar branch), with the superficial palmar arch.",
+   "m": [
+    "Radial artery",
+    "Superficial palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries and the superficial and deep palmar venous arches, draining to the radial veins.",
+   "m": [
+    "Deep venous palmar arch",
+    "Radial veins"
+   ]
+  }
+ },
+ "Opponens pollicis muscle": {
+  "n": {
+   "t": "Recurrent (thenar) branch of the median nerve (C8-T1).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Branches of the radial artery to the thenar eminence (the princeps pollicis artery and the superficial palmar branch), with the superficial palmar arch.",
+   "m": [
+    "Radial artery",
+    "Superficial palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries and the superficial and deep palmar venous arches, draining to the radial veins.",
+   "m": [
+    "Deep venous palmar arch",
+    "Radial veins"
+   ]
+  }
+ },
+ "Superficial head of flexor pollicis brevis": {
+  "n": {
+   "t": "Recurrent (thenar) branch of the median nerve (C8-T1).",
+   "m": [
+    "Median nerve"
+   ]
+  },
+  "a": {
+   "t": "Branches of the radial artery to the thenar eminence (the princeps pollicis artery and the superficial palmar branch), with the superficial palmar arch.",
+   "m": [
+    "Radial artery",
+    "Superficial palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries and the superficial and deep palmar venous arches, draining to the radial veins.",
+   "m": [
+    "Deep venous palmar arch",
+    "Radial veins"
+   ]
+  }
+ },
+ "Deep head of flexor pollicis brevis": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep palmar arch and the princeps pollicis artery (from the radial artery).",
+   "m": [
+    "Deep palmar arch",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Deep venous palmar arch, draining to the radial and ulnar veins.",
+   "m": [
+    "Deep venous palmar arch",
+    "Radial veins"
+   ]
+  }
+ },
+ "Oblique head of adductor pollicis": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep palmar arch and the princeps pollicis artery (from the radial artery).",
+   "m": [
+    "Deep palmar arch",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Deep venous palmar arch, draining to the radial and ulnar veins.",
+   "m": [
+    "Deep venous palmar arch",
+    "Radial veins"
+   ]
+  }
+ },
+ "Transverse head of adductor pollicis": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep palmar arch and the princeps pollicis artery (from the radial artery).",
+   "m": [
+    "Deep palmar arch",
+    "Radial artery"
+   ]
+  },
+  "v": {
+   "t": "Deep venous palmar arch, draining to the radial and ulnar veins.",
+   "m": [
+    "Deep venous palmar arch",
+    "Radial veins"
+   ]
+  }
+ },
+ "Abductor digiti minimi of hand": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery, through the superficial palmar arch and its deep palmar branch.",
+   "m": [
+    "Ulnar artery",
+    "Superficial palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the ulnar artery and the palmar venous arches, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins",
+    "Deep venous palmar arch"
+   ]
+  }
+ },
+ "Flexor digiti minimi of hand": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery, through the superficial palmar arch and its deep palmar branch.",
+   "m": [
+    "Ulnar artery",
+    "Superficial palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the ulnar artery and the palmar venous arches, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins",
+    "Deep venous palmar arch"
+   ]
+  }
+ },
+ "Opponens digiti minimi muscle of hand": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Ulnar artery, through the superficial palmar arch and its deep palmar branch.",
+   "m": [
+    "Ulnar artery",
+    "Superficial palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of the ulnar artery and the palmar venous arches, draining to the ulnar veins.",
+   "m": [
+    "Ulnar veins",
+    "Deep venous palmar arch"
+   ]
+  }
+ },
+ "Lumbrical muscles of hand": {
+  "n": {
+   "t": "First and second lumbricals: median nerve (digital branches). Third and fourth: deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Median nerve",
+    "Deep branch of ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Superficial and deep palmar arches, with their common palmar digital branches.",
+   "m": [
+    "Superficial palmar arch",
+    "Deep palmar arch",
+    "Common palmar digital arteries"
+   ]
+  },
+  "v": {
+   "t": "Palmar venous arches and palmar digital veins, draining to the radial and ulnar veins.",
+   "m": [
+    "Deep venous palmar arch",
+    "Palmar digital veins"
+   ]
+  }
+ },
+ "Palmar interossei muscles": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep palmar arch (palmar metacarpal arteries) and the dorsal metacarpal arteries.",
+   "m": [
+    "Palmar metacarpal arteries",
+    "Dorsal metacarpal arteries",
+    "Deep palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Deep venous palmar arch and dorsal venous network, draining to the radial and ulnar veins.",
+   "m": [
+    "Deep venous palmar arch"
+   ]
+  }
+ },
+ "Dorsal interossei muscles of hand": {
+  "n": {
+   "t": "Deep branch of the ulnar nerve (C8-T1).",
+   "m": [
+    "Deep branch of ulnar nerve",
+    "Ulnar nerve"
+   ]
+  },
+  "a": {
+   "t": "Deep palmar arch (palmar metacarpal arteries) and the dorsal metacarpal arteries.",
+   "m": [
+    "Palmar metacarpal arteries",
+    "Dorsal metacarpal arteries",
+    "Deep palmar arch"
+   ]
+  },
+  "v": {
+   "t": "Deep venous palmar arch and dorsal venous network, draining to the radial and ulnar veins.",
+   "m": [
+    "Deep venous palmar arch"
+   ]
+  }
+ },
+ "Iliacus muscle": {
+  "n": {
+   "t": "Femoral nerve (L2-L3).",
+   "m": [
+    "Femoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Iliac branch of the iliolumbar artery and the deep circumflex iliac artery.",
+   "m": [
+    "Iliacus branch of iliolumbar artery"
+   ]
+  },
+  "v": {
+   "t": "Venae comitantes of these arteries, draining to the iliac veins.",
+   "m": [
+    "Iliolumbar vein"
+   ]
+  }
+ },
+ "Psoas major": {
+  "n": {
+   "t": "Anterior rami of L1-L3 (lumbar plexus).",
+   "m": []
+  },
+  "a": {
+   "t": "Lumbar branch of the iliolumbar artery and the lumbar arteries.",
+   "m": [
+    "Lumbar branch of iliolumbar artery",
+    "Lumbar arteries"
+   ]
+  },
+  "v": {
+   "t": "Lumbar veins and the iliolumbar vein.",
+   "m": [
+    "Lumbar veins",
+    "Iliolumbar vein"
+   ]
+  }
+ },
+ "Gluteus maximus muscle": {
+  "n": {
+   "t": "Inferior gluteal nerve (L5-S2).",
+   "m": []
+  },
+  "a": {
+   "t": "Inferior gluteal artery and superior gluteal artery.",
+   "m": [
+    "Inferior gluteal artery",
+    "Superior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Inferior and superior gluteal veins, draining to the internal iliac vein.",
+   "m": [
+    "Inferior gluteal veins",
+    "Superior gluteal veins"
+   ]
+  }
+ },
+ "Gluteus medius muscle": {
+  "n": {
+   "t": "Superior gluteal nerve (L4-S1).",
+   "m": [
+    "Superior gluteal nerve"
+   ]
+  },
+  "a": {
+   "t": "Superior gluteal artery (deep branch).",
+   "m": [
+    "Superior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Superior gluteal veins, draining to the internal iliac vein.",
+   "m": [
+    "Superior gluteal veins"
+   ]
+  }
+ },
+ "Gluteus minimus muscle": {
+  "n": {
+   "t": "Superior gluteal nerve (L4-S1).",
+   "m": [
+    "Superior gluteal nerve"
+   ]
+  },
+  "a": {
+   "t": "Superior gluteal artery (deep branch).",
+   "m": [
+    "Superior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Superior gluteal veins, draining to the internal iliac vein.",
+   "m": [
+    "Superior gluteal veins"
+   ]
+  }
+ },
+ "Piriformis muscle": {
+  "n": {
+   "t": "Nerve to piriformis (S1-S2).",
+   "m": [
+    "Nerve to piriformis muscle"
+   ]
+  },
+  "a": {
+   "t": "Superior and inferior gluteal arteries.",
+   "m": [
+    "Superior gluteal artery",
+    "Inferior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Superior and inferior gluteal veins, draining to the internal iliac vein.",
+   "m": [
+    "Superior gluteal veins",
+    "Inferior gluteal veins"
+   ]
+  }
+ },
+ "Obturator internus": {
+  "n": {
+   "t": "Nerve to obturator internus (L5-S1).",
+   "m": []
+  },
+  "a": {
+   "t": "Obturator artery and internal pudendal artery.",
+   "m": [
+    "Obturator artery",
+    "Internal pudendal artery"
+   ]
+  },
+  "v": {
+   "t": "Obturator and internal pudendal veins, draining to the internal iliac vein.",
+   "m": [
+    "Internal pudendal vein"
+   ]
+  }
+ },
+ "Superior gemellus muscle": {
+  "n": {
+   "t": "Nerve to obturator internus (L5-S1).",
+   "m": []
+  },
+  "a": {
+   "t": "Inferior gluteal artery.",
+   "m": [
+    "Inferior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Inferior gluteal veins, draining to the internal iliac vein.",
+   "m": [
+    "Inferior gluteal veins"
+   ]
+  }
+ },
+ "Inferior gemellus muscle": {
+  "n": {
+   "t": "Nerve to quadratus femoris (L4-S1).",
+   "m": [
+    "Nerve to quadratus femoris muscle"
+   ]
+  },
+  "a": {
+   "t": "Inferior gluteal artery.",
+   "m": [
+    "Inferior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Inferior gluteal veins, draining to the internal iliac vein.",
+   "m": [
+    "Inferior gluteal veins"
+   ]
+  }
+ },
+ "Quadratus femoris muscle": {
+  "n": {
+   "t": "Nerve to quadratus femoris (L4-S1).",
+   "m": [
+    "Nerve to quadratus femoris muscle"
+   ]
+  },
+  "a": {
+   "t": "Medial circumflex femoral artery and inferior gluteal artery.",
+   "m": [
+    "Medial circumflex femoral artery",
+    "Inferior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Medial circumflex femoral veins and inferior gluteal veins.",
+   "m": [
+    "Medial circumflex femoral veins",
+    "Inferior gluteal veins"
+   ]
+  }
+ },
+ "Obturator externus": {
+  "n": {
+   "t": "Posterior branch of the obturator nerve (L3-L4).",
+   "m": [
+    "Obturator nerve"
+   ]
+  },
+  "a": {
+   "t": "Obturator artery and medial circumflex femoral artery.",
+   "m": [
+    "Obturator artery",
+    "Medial circumflex femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Medial circumflex femoral veins, draining to the femoral or deep femoral vein.",
+   "m": [
+    "Medial circumflex femoral veins"
+   ]
+  }
+ },
+ "Pectineus muscle": {
+  "n": {
+   "t": "Femoral nerve (L2-L3); the deep part is often also supplied by the obturator nerve.",
+   "m": [
+    "Femoral nerve",
+    "Obturator nerve"
+   ]
+  },
+  "a": {
+   "t": "Medial circumflex femoral artery and obturator artery.",
+   "m": [
+    "Medial circumflex femoral artery",
+    "Obturator artery"
+   ]
+  },
+  "v": {
+   "t": "Medial circumflex femoral veins, draining to the femoral or deep femoral vein.",
+   "m": [
+    "Medial circumflex femoral veins"
+   ]
+  }
+ },
+ "Sartorius muscle": {
+  "n": {
+   "t": "Femoral nerve (L2-L3).",
+   "m": [
+    "Femoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Muscular branches of the femoral artery.",
+   "m": [
+    "Femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Femoral vein (accompanying veins of the femoral artery).",
+   "m": [
+    "Femoral vein"
+   ]
+  }
+ },
+ "Rectus femoris muscle": {
+  "n": {
+   "t": "Femoral nerve (L2-L4).",
+   "m": [
+    "Femoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Lateral circumflex femoral artery (ascending and descending branches).",
+   "m": [
+    "Lateral circumflex femoral artery",
+    "Descending branch of lateral circumflex femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Lateral circumflex femoral veins, draining to the deep femoral vein.",
+   "m": [
+    "Lateral circumflex femoral veins"
+   ]
+  }
+ },
+ "Vastus lateralis muscle": {
+  "n": {
+   "t": "Femoral nerve (L2-L4).",
+   "m": [
+    "Femoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Lateral circumflex femoral artery (descending branch) and perforating branches of the deep femoral artery.",
+   "m": [
+    "Lateral circumflex femoral artery",
+    "Descending branch of lateral circumflex femoral artery",
+    "Perforating femoral arteries"
+   ]
+  },
+  "v": {
+   "t": "Lateral circumflex femoral veins, draining to the deep femoral vein.",
+   "m": [
+    "Lateral circumflex femoral veins"
+   ]
+  }
+ },
+ "Vastus intermedius muscle": {
+  "n": {
+   "t": "Femoral nerve (L2-L4).",
+   "m": [
+    "Femoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Lateral circumflex femoral artery (descending branch) and perforating branches of the deep femoral artery.",
+   "m": [
+    "Lateral circumflex femoral artery",
+    "Descending branch of lateral circumflex femoral artery",
+    "Perforating femoral arteries"
+   ]
+  },
+  "v": {
+   "t": "Lateral circumflex femoral veins, draining to the deep femoral vein.",
+   "m": [
+    "Lateral circumflex femoral veins"
+   ]
+  }
+ },
+ "Vastus medialis muscle": {
+  "n": {
+   "t": "Femoral nerve (L2-L4).",
+   "m": [
+    "Femoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Femoral artery (muscular branches), the descending branch of the lateral circumflex femoral artery and the descending genicular artery.",
+   "m": [
+    "Femoral artery",
+    "Descending branch of lateral circumflex femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Femoral vein and lateral circumflex femoral veins.",
+   "m": [
+    "Femoral vein",
+    "Lateral circumflex femoral veins"
+   ]
+  }
+ },
+ "Adductor longus": {
+  "n": {
+   "t": "Obturator nerve (L2-L4), anterior branch.",
+   "m": [
+    "Obturator nerve"
+   ]
+  },
+  "a": {
+   "t": "Perforating branches of the deep femoral artery and the medial circumflex femoral artery (adductor brevis also gets the obturator artery).",
+   "m": [
+    "Deep femoral artery",
+    "Perforating femoral arteries",
+    "Medial circumflex femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Deep femoral vein and its perforating veins, draining to the femoral vein.",
+   "m": [
+    "Deep femoral vein",
+    "Perforating veins"
+   ]
+  }
+ },
+ "Adductor brevis": {
+  "n": {
+   "t": "Obturator nerve (L2-L4), anterior branch.",
+   "m": [
+    "Obturator nerve"
+   ]
+  },
+  "a": {
+   "t": "Perforating branches of the deep femoral artery and the medial circumflex femoral artery (adductor brevis also gets the obturator artery).",
+   "m": [
+    "Deep femoral artery",
+    "Perforating femoral arteries",
+    "Medial circumflex femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Deep femoral vein and its perforating veins, draining to the femoral vein.",
+   "m": [
+    "Deep femoral vein",
+    "Perforating veins"
+   ]
+  }
+ },
+ "Gracilis muscle": {
+  "n": {
+   "t": "Obturator nerve (L2-L3), anterior branch.",
+   "m": [
+    "Obturator nerve"
+   ]
+  },
+  "a": {
+   "t": "Medial circumflex femoral artery.",
+   "m": [
+    "Medial circumflex femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Medial circumflex femoral veins, draining to the deep femoral or femoral vein.",
+   "m": [
+    "Medial circumflex femoral veins"
+   ]
+  }
+ },
+ "Semitendinosus muscle": {
+  "n": {
+   "t": "Tibial division of the sciatic nerve (L5-S2).",
+   "m": [
+    "Sciatic nerve",
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Perforating branches of the deep femoral artery (the upper part also gets the inferior gluteal artery).",
+   "m": [
+    "Deep femoral artery",
+    "Perforating femoral arteries",
+    "Inferior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Perforating veins and the deep femoral vein, draining to the femoral vein.",
+   "m": [
+    "Perforating veins",
+    "Deep femoral vein"
+   ]
+  }
+ },
+ "Semimembranosus muscle": {
+  "n": {
+   "t": "Tibial division of the sciatic nerve (L5-S2).",
+   "m": [
+    "Sciatic nerve",
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Perforating branches of the deep femoral artery (the upper part also gets the inferior gluteal artery).",
+   "m": [
+    "Deep femoral artery",
+    "Perforating femoral arteries",
+    "Inferior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Perforating veins and the deep femoral vein, draining to the femoral vein.",
+   "m": [
+    "Perforating veins",
+    "Deep femoral vein"
+   ]
+  }
+ },
+ "Long head of biceps femoris": {
+  "n": {
+   "t": "Tibial division of the sciatic nerve (L5-S2).",
+   "m": [
+    "Sciatic nerve",
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Perforating branches of the deep femoral artery (the upper part also gets the inferior gluteal artery).",
+   "m": [
+    "Deep femoral artery",
+    "Perforating femoral arteries",
+    "Inferior gluteal artery"
+   ]
+  },
+  "v": {
+   "t": "Perforating veins and the deep femoral vein, draining to the femoral vein.",
+   "m": [
+    "Perforating veins",
+    "Deep femoral vein"
+   ]
+  }
+ },
+ "Short head of biceps femoris": {
+  "n": {
+   "t": "Common fibular division of the sciatic nerve (L5-S2).",
+   "m": [
+    "Sciatic nerve",
+    "Common fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Perforating branches of the deep femoral artery.",
+   "m": [
+    "Deep femoral artery",
+    "Perforating femoral arteries"
+   ]
+  },
+  "v": {
+   "t": "Perforating veins and the deep femoral vein, draining to the femoral vein.",
+   "m": [
+    "Perforating veins",
+    "Deep femoral vein"
+   ]
+  }
+ },
+ "Lateral head of gastrocnemius": {
+  "n": {
+   "t": "Tibial nerve (S1-S2).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Sural arteries, branches of the popliteal artery.",
+   "m": [
+    "Popliteal artery"
+   ]
+  },
+  "v": {
+   "t": "Sural veins, draining to the popliteal vein.",
+   "m": [
+    "Popliteal vein"
+   ]
+  }
+ },
+ "Medial head of gastrocnemius": {
+  "n": {
+   "t": "Tibial nerve (S1-S2).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Sural arteries, branches of the popliteal artery.",
+   "m": [
+    "Popliteal artery"
+   ]
+  },
+  "v": {
+   "t": "Sural veins, draining to the popliteal vein.",
+   "m": [
+    "Popliteal vein"
+   ]
+  }
+ },
+ "Plantaris muscle": {
+  "n": {
+   "t": "Tibial nerve (S1-S2).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Sural branches of the popliteal artery.",
+   "m": [
+    "Popliteal artery"
+   ]
+  },
+  "v": {
+   "t": "Sural veins, draining to the popliteal vein.",
+   "m": [
+    "Popliteal vein"
+   ]
+  }
+ },
+ "Soleus muscle": {
+  "n": {
+   "t": "Tibial nerve (S1-S2).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Posterior tibial artery, fibular artery and sural arteries.",
+   "m": [
+    "Posterior tibial artery",
+    "Fibular artery",
+    "Popliteal artery"
+   ]
+  },
+  "v": {
+   "t": "Posterior tibial veins and fibular veins (the soleal venous sinuses drain into them).",
+   "m": [
+    "Posterior tibial veins",
+    "Fibular veins"
+   ]
+  }
+ },
+ "Popliteus muscle": {
+  "n": {
+   "t": "Tibial nerve (L4-S1).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Inferior medial genicular artery and muscular branches of the popliteal artery.",
+   "m": [
+    "Popliteal artery",
+    "Inferior medial genicular artery"
+   ]
+  },
+  "v": {
+   "t": "Genicular veins, draining to the popliteal vein.",
+   "m": [
+    "Genicular veins",
+    "Popliteal vein"
+   ]
+  }
+ },
+ "Tibialis posterior muscle": {
+  "n": {
+   "t": "Tibial nerve (L4-L5).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Posterior tibial artery and fibular artery.",
+   "m": [
+    "Posterior tibial artery",
+    "Fibular artery"
+   ]
+  },
+  "v": {
+   "t": "Posterior tibial veins and fibular veins, draining to the popliteal vein.",
+   "m": [
+    "Posterior tibial veins",
+    "Fibular veins"
+   ]
+  }
+ },
+ "Flexor digitorum longus": {
+  "n": {
+   "t": "Tibial nerve (L5-S1).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Posterior tibial artery.",
+   "m": [
+    "Posterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Posterior tibial veins, draining to the popliteal vein.",
+   "m": [
+    "Posterior tibial veins"
+   ]
+  }
+ },
+ "Flexor hallucis longus": {
+  "n": {
+   "t": "Tibial nerve (S2-S3).",
+   "m": [
+    "Tibial nerve"
+   ]
+  },
+  "a": {
+   "t": "Fibular artery (with the posterior tibial artery).",
+   "m": [
+    "Fibular artery",
+    "Posterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Fibular veins and posterior tibial veins, draining to the popliteal vein.",
+   "m": [
+    "Fibular veins",
+    "Posterior tibial veins"
+   ]
+  }
+ },
+ "Tibialis anterior muscle": {
+  "n": {
+   "t": "Deep fibular nerve (L4-L5).",
+   "m": [
+    "Deep fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Anterior tibial artery.",
+   "m": [
+    "Anterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Anterior tibial veins, draining to the popliteal vein.",
+   "m": [
+    "Anterior tibial veins"
+   ]
+  }
+ },
+ "Extensor hallucis longus": {
+  "n": {
+   "t": "Deep fibular nerve (L5-S1).",
+   "m": [
+    "Deep fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Anterior tibial artery.",
+   "m": [
+    "Anterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Anterior tibial veins, draining to the popliteal vein.",
+   "m": [
+    "Anterior tibial veins"
+   ]
+  }
+ },
+ "Fibularis tertius muscle": {
+  "n": {
+   "t": "Deep fibular nerve (L5-S1).",
+   "m": [
+    "Deep fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Anterior tibial artery.",
+   "m": [
+    "Anterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Anterior tibial veins, draining to the popliteal vein.",
+   "m": [
+    "Anterior tibial veins"
+   ]
+  }
+ },
+ "Fibularis longus muscle": {
+  "n": {
+   "t": "Superficial fibular nerve (L5-S1).",
+   "m": [
+    "Superficial fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Fibular artery (the upper part also gets muscular branches of the anterior tibial artery).",
+   "m": [
+    "Fibular artery",
+    "Anterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Fibular veins, draining to the posterior tibial veins.",
+   "m": [
+    "Fibular veins"
+   ]
+  }
+ },
+ "Fibularis brevis muscle": {
+  "n": {
+   "t": "Superficial fibular nerve (L5-S1).",
+   "m": [
+    "Superficial fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Fibular artery (the upper part also gets muscular branches of the anterior tibial artery).",
+   "m": [
+    "Fibular artery",
+    "Anterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Fibular veins, draining to the posterior tibial veins.",
+   "m": [
+    "Fibular veins"
+   ]
+  }
+ },
+ "Extensor digitorum brevis": {
+  "n": {
+   "t": "Deep fibular nerve (L5-S1).",
+   "m": [
+    "Deep fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Dorsalis pedis artery (continuation of the anterior tibial artery) and its arcuate branch.",
+   "m": [
+    "Dorsalis pedis artery",
+    "Arcuate artery"
+   ]
+  },
+  "v": {
+   "t": "Dorsal venous arch and anterior tibial veins.",
+   "m": [
+    "Dorsal venous arch of foot",
+    "Anterior tibial veins"
+   ]
+  }
+ },
+ "Extensor hallucis brevis": {
+  "n": {
+   "t": "Deep fibular nerve (L5-S1).",
+   "m": [
+    "Deep fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Dorsalis pedis artery (continuation of the anterior tibial artery) and its arcuate branch.",
+   "m": [
+    "Dorsalis pedis artery",
+    "Arcuate artery"
+   ]
+  },
+  "v": {
+   "t": "Dorsal venous arch and anterior tibial veins.",
+   "m": [
+    "Dorsal venous arch of foot",
+    "Anterior tibial veins"
+   ]
+  }
+ },
+ "Abductor hallucis": {
+  "n": {
+   "t": "Medial plantar nerve (S1-S2).",
+   "m": [
+    "Medial plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Medial plantar artery (from the posterior tibial artery).",
+   "m": [
+    "Medial plantar artery"
+   ]
+  },
+  "v": {
+   "t": "Medial plantar veins, draining to the posterior tibial veins.",
+   "m": [
+    "Medial plantar veins"
+   ]
+  }
+ },
+ "Flexor digitorum brevis": {
+  "n": {
+   "t": "Medial plantar nerve (S1-S2).",
+   "m": [
+    "Medial plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Medial plantar artery (from the posterior tibial artery).",
+   "m": [
+    "Medial plantar artery"
+   ]
+  },
+  "v": {
+   "t": "Medial plantar veins, draining to the posterior tibial veins.",
+   "m": [
+    "Medial plantar veins"
+   ]
+  }
+ },
+ "Medial head of flexor hallucis brevis": {
+  "n": {
+   "t": "Medial plantar nerve (S1-S2).",
+   "m": [
+    "Medial plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Medial plantar artery and the first plantar metatarsal artery.",
+   "m": [
+    "Medial plantar artery",
+    "Plantar metatarsal arteries"
+   ]
+  },
+  "v": {
+   "t": "Medial plantar veins, draining to the posterior tibial veins.",
+   "m": [
+    "Medial plantar veins"
+   ]
+  }
+ },
+ "Lateral head of flexor hallucis brevis": {
+  "n": {
+   "t": "Lateral plantar nerve (S1-S2).",
+   "m": [
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Medial plantar artery and the first plantar metatarsal artery.",
+   "m": [
+    "Medial plantar artery",
+    "Plantar metatarsal arteries"
+   ]
+  },
+  "v": {
+   "t": "Medial plantar veins, draining to the posterior tibial veins.",
+   "m": [
+    "Medial plantar veins"
+   ]
+  }
+ },
+ "Abductor digiti minimi of foot": {
+  "n": {
+   "t": "Lateral plantar nerve (S1-S2).",
+   "m": [
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Lateral plantar artery (from the posterior tibial artery).",
+   "m": [
+    "Lateral plantar artery"
+   ]
+  },
+  "v": {
+   "t": "Lateral plantar veins, draining to the posterior tibial veins.",
+   "m": [
+    "Lateral plantar veins"
+   ]
+  }
+ },
+ "Flexor digiti minimi of foot": {
+  "n": {
+   "t": "Lateral plantar nerve (S1-S2).",
+   "m": [
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Lateral plantar artery (from the posterior tibial artery).",
+   "m": [
+    "Lateral plantar artery"
+   ]
+  },
+  "v": {
+   "t": "Lateral plantar veins, draining to the posterior tibial veins.",
+   "m": [
+    "Lateral plantar veins"
+   ]
+  }
+ },
+ "Lumbrical muscles of foot": {
+  "n": {
+   "t": "First lumbrical: medial plantar nerve. Second to fourth: lateral plantar nerve (S2-S3).",
+   "m": [
+    "Medial plantar nerve",
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Plantar arch and plantar metatarsal arteries.",
+   "m": [
+    "Plantar arch",
+    "Plantar metatarsal arteries"
+   ]
+  },
+  "v": {
+   "t": "Plantar venous arch and plantar metatarsal veins, draining to the posterior tibial veins.",
+   "m": [
+    "Plantar venous arch",
+    "Plantar metatarsal veins"
+   ]
+  }
+ },
+ "Plantar interossei muscles": {
+  "n": {
+   "t": "Deep branch of the lateral plantar nerve (S2-S3).",
+   "m": [
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Plantar arch and plantar metatarsal arteries (the dorsal interossei also get the dorsal metatarsal arteries).",
+   "m": [
+    "Plantar arch",
+    "Plantar metatarsal arteries",
+    "Dorsal metatarsal arteries"
+   ]
+  },
+  "v": {
+   "t": "Plantar venous arch, plantar and dorsal metatarsal veins.",
+   "m": [
+    "Plantar venous arch",
+    "Plantar metatarsal veins",
+    "Dorsal metatarsal veins"
+   ]
+  }
+ },
+ "Dorsal interossei muscles of foot": {
+  "n": {
+   "t": "Deep branch of the lateral plantar nerve (S2-S3).",
+   "m": [
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Plantar arch and plantar metatarsal arteries (the dorsal interossei also get the dorsal metatarsal arteries).",
+   "m": [
+    "Plantar arch",
+    "Plantar metatarsal arteries",
+    "Dorsal metatarsal arteries"
+   ]
+  },
+  "v": {
+   "t": "Plantar venous arch, plantar and dorsal metatarsal veins.",
+   "m": [
+    "Plantar venous arch",
+    "Plantar metatarsal veins",
+    "Dorsal metatarsal veins"
+   ]
+  }
+ },
+ "Oblique head of adductor hallucis": {
+  "n": {
+   "t": "Deep branch of the lateral plantar nerve (S2-S3).",
+   "m": [
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Plantar arch and plantar metatarsal arteries (the dorsal interossei also get the dorsal metatarsal arteries).",
+   "m": [
+    "Plantar arch",
+    "Plantar metatarsal arteries",
+    "Dorsal metatarsal arteries"
+   ]
+  },
+  "v": {
+   "t": "Plantar venous arch, plantar and dorsal metatarsal veins.",
+   "m": [
+    "Plantar venous arch",
+    "Plantar metatarsal veins",
+    "Dorsal metatarsal veins"
+   ]
+  }
+ },
+ "Transverse head of adductor hallucis": {
+  "n": {
+   "t": "Deep branch of the lateral plantar nerve (S2-S3).",
+   "m": [
+    "Lateral plantar nerve"
+   ]
+  },
+  "a": {
+   "t": "Plantar arch and plantar metatarsal arteries (the dorsal interossei also get the dorsal metatarsal arteries).",
+   "m": [
+    "Plantar arch",
+    "Plantar metatarsal arteries",
+    "Dorsal metatarsal arteries"
+   ]
+  },
+  "v": {
+   "t": "Plantar venous arch, plantar and dorsal metatarsal veins.",
+   "m": [
+    "Plantar venous arch",
+    "Plantar metatarsal veins",
+    "Dorsal metatarsal veins"
+   ]
+  }
+ }
+}

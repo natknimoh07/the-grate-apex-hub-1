@@ -510,6 +510,21 @@
 
     #info.pin #isolate, #info.pin #hide { display: none; }
 
+    /* nerve / artery / vein supply of the selected structure (data in supply.json) */
+    #supplyBox { margin: 0 0 12px; }
+    #supplyBox[hidden], #info.pin #supplyBox { display: none; }
+    .supplyBtns { display: flex; flex-wrap: wrap; gap: 6px; }
+    .supplyBtns button.btn { flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 4px 10px; font-size: 12.5px; }
+    .supplyBtns button.btn[aria-pressed="true"] { background: var(--cobalt-2); border-color: var(--cobalt); }
+    .sdot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
+    #supplyText {
+      margin-top: 8px; padding: 9px 11px; border-radius: var(--r-sm); background: var(--well); border: 1px solid var(--line);
+      color: var(--ink-2); font-size: 13px; line-height: 1.45; max-height: min(24vh, 170px); overflow: auto;
+    }
+    #supplyText:empty { display: none; }
+    #supplyText strong { color: var(--ink); }
+    #supplyText small { display: block; margin-top: 6px; color: var(--muted); font-size: 11.5px; line-height: 1.4; }
+
     /* ---------- view controls (dock) ---------- */
     #nav {
       --nb: 40px;
@@ -1037,6 +1052,14 @@
   <section id="info" class="card" aria-live="polite">
     <h2 id="name"></h2>
     <p id="meta"></p>
+    <div id="supplyBox" hidden>
+      <div class="supplyBtns" role="group" aria-label="Nerve and blood supply">
+        <button class="btn" type="button" data-supply="nerve" aria-pressed="false"><span class="sdot" style="--c:#f2c230"></span>Nerve supply</button>
+        <button class="btn" type="button" data-supply="artery" aria-pressed="false"><span class="sdot" style="--c:#e0303c"></span>Arterial supply</button>
+        <button class="btn" type="button" data-supply="vein" aria-pressed="false"><span class="sdot" style="--c:#2f73e0"></span>Venous drainage</button>
+      </div>
+      <div id="supplyText" aria-live="polite"></div>
+    </div>
     <div class="row">
       <button class="btn primary" id="focus">Zoom to</button>
       <button class="btn" id="isolate">Isolate</button>
@@ -2338,6 +2361,7 @@ bool inRegion(vec3 p) {
     }
 
     function select(mesh) {
+      clearSupply();
       restoreSelection();
       selected = mesh;
       selectedPin = null; info.classList.remove('pin');
@@ -2354,10 +2378,12 @@ bool inRegion(vec3 p) {
       for (let o = mesh; o && !onto; o = o.parent) onto = (o.userData && o.userData.onto) || '';
       metaEl.textContent = [side, note, s.label, onto].filter(Boolean).join(' \u00b7 ');
       info.classList.add('open');
+      updateSupplyBox();
       refreshPins();
       post({ type: 'select', name, side, system: s.id, ontology: onto });
     }
     function selectPin(s, i) {
+      clearSupply();
       restoreSelection(); selected = null;
       if (isPeeled(s)) unpeelFor(s);
       if (s.group && !s.group.visible) { s.input.checked = true; s.group.visible = true; }
@@ -2376,10 +2402,109 @@ bool inRegion(vec3 p) {
     }
     const deselect = () => select(null);
 
+    /* ---------- nerve, artery and vein supply of the selected structure ---------- */
+    // supply.json gives, for a structure, the text for each kind of supply and the model parts that show it. A button loads the
+    // nervous or cardiovascular layer if it is not loaded yet, hides everything except the structure and its supply, and colours
+    // the supply (gold nerves, red arteries, blue veins) on the same side as the structure. Pressing the button again, or
+    // selecting anything else, puts the view back as it was.
+    const SUPPLY_KINDS = {
+      nerve: { key: 'n', label: 'Nerve supply', system: 'nervous', colour: 0xf2c230, glow: 0x9a7400, word: 'gold', note: 'Nerve roots are the usual textbook ones; books differ by a segment.' },
+      artery: { key: 'a', label: 'Arterial supply', system: 'cardiovascular', colour: 0xe0303c, glow: 0x8a1018, word: 'red', note: '' },
+      vein: { key: 'v', label: 'Venous drainage', system: 'cardiovascular', colour: 0x2f73e0, glow: 0x153f8f, word: 'blue', note: '' },
+    };
+    const supplyMats = {};
+    for (const [k, d] of Object.entries(SUPPLY_KINDS)) {
+      supplyMats[k] = patchRegion(new THREE.MeshStandardMaterial({ color: d.colour, emissive: d.glow, emissiveIntensity: 0.6, roughness: 0.45, side: THREE.DoubleSide }));
+    }
+    const supplyBox = document.getElementById('supplyBox');
+    const supplyTextEl = document.getElementById('supplyText');
+    const supplyBtns = [...supplyBox.querySelectorAll('button[data-supply]')];
+    let supplyData = null, supplyLoad = null;
+    let supply = null;        // { kind, parts, before: Map(mesh -> was visible), wasIsolated } while a supply view is showing
+    let supplyRun = 0;        // changes whenever the view is closed or replaced, so a slow download can tell it is out of date
+
+    function loadSupply() {
+      if (supplyData) return Promise.resolve(supplyData);
+      if (!supplyLoad) {
+        supplyLoad = fetch(BASE + 'supply.json').then(r => { if (!r.ok) throw new Error('supply.json ' + r.status); return r.json(); })
+          .then(d => (supplyData = d)).catch(err => { console.error(err); supplyLoad = null; return null; });
+      }
+      return supplyLoad;
+    }
+    const supplyEntry = () => (selected && supplyData && supplyData[selected.userData.label.name]) || null;
+    function setSupplyButtons(kind) { for (const b of supplyBtns) b.setAttribute('aria-pressed', String(b.dataset.supply === kind)); }
+    function renderSupplyText(kind, part, extra) {
+      supplyTextEl.replaceChildren();
+      if (!kind) return;
+      const head = document.createElement('strong');
+      head.textContent = SUPPLY_KINDS[kind].label + ': ';
+      supplyTextEl.append(head, part.t);
+      if (extra) { const small = document.createElement('small'); small.textContent = extra; supplyTextEl.append(small); }
+    }
+    function updateSupplyBox() {
+      loadSupply().then(() => {
+        if (supply) return;
+        supplyBox.hidden = !supplyEntry();
+        supplyTextEl.replaceChildren();
+        setSupplyButtons(null);
+      });
+    }
+    // closes the supply view: the supply parts get their usual colour back and, unless the caller is about to reset the view
+    // itself (restoreView = false), everything is shown or hidden as it was before
+    function clearSupply(restoreView = true) {
+      supplyRun++;
+      setSupplyButtons(null);
+      supplyTextEl.replaceChildren();
+      if (!supply) return;
+      for (const m of supply.parts) m.material = selectedParts.includes(m) ? pickMat : baseMat(m);
+      if (restoreView) for (const [m, was] of supply.before) m.visible = was;
+      isolated = supply.wasIsolated;
+      supply = null;
+      updateReveal(); dirty = true;
+    }
+    async function showSupply(kind) {
+      const entry = supplyEntry();
+      if (!entry || !selected) return;
+      if (supply && supply.kind === kind) { clearSupply(); return; }   // pressing it again goes back
+      const target = selected, part = entry[SUPPLY_KINDS[kind].key];
+      clearSupply();
+      const run = ++supplyRun;
+      setSupplyButtons(kind);
+      renderSupplyText(kind, part, part.m.length ? 'Loading the model…' : '');
+      const s = SYSTEMS.find(x => x.id === SUPPLY_KINDS[kind].system);
+      if (part.m.length && s && (!s.group || !s.input.checked)) { s.input.checked = true; await setSystem(s, true); }
+      if (run !== supplyRun || selected !== target) return;   // the learner moved on while it loaded
+      if (s && isPeeled(s)) unpeelFor(s);
+      const side = target.userData.label.side;
+      const wanted = new Set(part.m);
+      const parts = index.filter(e => e.mesh && wanted.has(e.name) && (!side || !e.side || e.side === side)).map(e => e.mesh);
+      const keep = new Set([...selectedParts, ...parts]);
+      const before = new Map();
+      for (const e of index) {
+        if (!e.mesh) continue;
+        before.set(e.mesh, e.mesh.visible);
+        e.mesh.visible = keep.has(e.mesh);
+      }
+      for (const m of parts) m.material = supplyMats[kind];
+      supply = { kind, parts, before, wasIsolated: isolated };
+      isolated = true;
+      updateReveal(); dirty = true;
+      fitMeshes([...keep]);
+      const d = SUPPLY_KINDS[kind];
+      const lines = [];
+      if (parts.length) lines.push('Shown in ' + d.word + ' on the atlas. Press the button again to go back.');
+      else if (part.m.length) lines.push("This part didn't load, so only the text is shown.");
+      else lines.push('This model has no separate part for it, so only the text is shown.');
+      if (d.note) lines.push(d.note);
+      renderSupplyText(kind, part, lines.join(' '));
+    }
+    for (const b of supplyBtns) b.addEventListener('click', () => showSupply(b.dataset.supply));
+
     function updateReveal() {
       revealBtn.classList.toggle('show', isolated || hidden.size > 0 || region !== 0 || peelLevel !== 0);
     }
     function showAll() {
+      clearSupply(false);
       organsClear();
       for (const { mesh } of index) if (mesh) mesh.visible = true;
       hidden.clear(); isolated = false; isoPins = []; setPeel(0); updateReveal(); refreshPins();
@@ -2388,6 +2513,7 @@ bool inRegion(vec3 p) {
     }
     function isolate() {
       if (!selected) return;
+      clearSupply();
       organsClear();
       const keep = new Set(selectedParts);
       for (const { mesh } of index) if (mesh) mesh.visible = keep.has(mesh);
@@ -2395,6 +2521,7 @@ bool inRegion(vec3 p) {
     }
     function hideSelected() {
       if (!selected) return;
+      clearSupply();
       for (const m of selectedParts) { m.visible = false; hidden.add(m); }
       deselect(); updateReveal(); dirty = true;
     }
