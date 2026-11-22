@@ -470,12 +470,6 @@ function StartSimple({ lesson, styles }: { lesson: Lesson; styles: ReturnType<ty
           </View>
         </>
       ) : null}
-      {lesson.objectives?.length ? (
-        <>
-          <Text style={styles.simpleHeading}>By the end you will be able to</Text>
-          {lesson.objectives.map((objective) => <Text key={objective} style={styles.body}>• {objective}</Text>)}
-        </>
-      ) : null}
       <Text style={styles.body}>We start with the basics and build up one small step at a time. When a question comes before the explanation, just give it your best guess: being wrong is part of learning, and nothing is lost.</Text>
     </Card>
   );
