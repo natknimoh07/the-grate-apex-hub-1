@@ -482,15 +482,17 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
       </Canvas>
       <View style={styles.panel} accessibilityLiveRegion="polite">
         {done ? (
-          <View style={styles.panelRow}>
-            <Text style={styles.panelTitle}>
-              Labelled! {firstRight} of {figure.spots.length} right first time.
+          <>
+            <View style={styles.panelRow}>
+              <Text style={styles.panelTitle}>
+                Labelled! {firstRight} of {figure.spots.length} right first time.
+              </Text>
+              <Button label="Again" size="sm" variant="secondary" onPress={restart} />
+            </View>
+            <Text style={styles.muted}>
+              {earnedXp === null ? 'Adding XP…' : earnedXp > 0 ? `+${earnedXp} XP earned` : 'XP already awarded for this round.'}
             </Text>
-            <Button label="Again" size="sm" variant="secondary" onPress={restart} />
-          </View>
-          <Text style={styles.muted}>
-            {earnedXp === null ? 'Adding XP…' : earnedXp > 0 ? `+${earnedXp} XP earned` : 'XP already awarded for this round.'}
-          </Text>
+          </>
         ) : (
           <>
             <Text style={styles.muted}>
