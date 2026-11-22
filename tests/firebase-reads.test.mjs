@@ -72,7 +72,7 @@ test('battles follow opponents only while they are on screen', () => {
   assert.match(read('src/components/social/battle-room.tsx'), /useFocusEffect\(useCallback\(\(\) => \{[\s\S]*?watchRace\(/);
   assert.match(read('src/components/social/battles-card.tsx'), /useFocusEffect\(useCallback\(\(\) => \{[\s\S]*?watchMyRaces\(/);
   const rooms = read('src/data/battle-rooms.ts');
-  assert.match(rooms, /onSnapshot\(doc\(db, 'battleRooms', id\)/);
+  assert.match(rooms, /onSnapshot\(doc\(targetDb, 'battleRooms', id\)/);
   assert.match(rooms, /if \(!denied\(error\)\) return onError\(error\);[\s\S]*?setInterval\(/, 'the room is only polled when the listener is refused');
 });
 

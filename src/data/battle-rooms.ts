@@ -3,16 +3,15 @@
 // start and mark each tap, and watches the room the server writes (battleRooms/{id}).
 // Rules: api/_battle-rules.mjs (shown in the app by data/battle-race-rules.ts).
 //
-// Reads (free plan): the room is one live listener while the battle page is open, the
-// open rooms and my record two listeners while Connect is open. Until the battleRooms
-// rules are published the listener is refused; then the page asks the server for the
-// room every few seconds, and only while a battle page is open.
+// Battle data uses GrAte Apex Live: one room listener while a battle page is open,
+// and room plus stats listeners while Connect is open. If rules refuse a listener,
+// the page asks the server for the data only while that screen is open.
 import { collection, doc, onSnapshot, query, where, type Unsubscribe } from 'firebase/firestore';
 
 import type { BankCourse, BattleCount, BattleDifficulty } from '@/data/battle-race-rules';
 import { auth, db } from '@/lib/firebase';
-import { activateLiveDataFailover, ensureLiveQuizSignIn, isPrimaryFirestoreQuotaError, watchLiveDataFailover } from '@/data/live-quiz';
-import { liveQuizDb } from '@/lib/live-quiz-firebase';
+import { ensureLiveQuizSignIn } from '@/data/live-quiz';
+import { liveQuizDb, liveQuizFirebaseConfigured } from '@/lib/live-quiz-firebase';
 import { API_BASE, LIVE_SITE_LABEL, SITE_BASE } from '@/lib/live-site';
 
 export type RaceStatus = 'invited' | 'lobby' | 'live' | 'done' | 'declined' | 'expired' | 'cancelled';
@@ -107,6 +106,10 @@ export const myRaces = () => call<{ rooms: RaceRoom[]; stats: RaceStats | null }
 export const syncBattleBlockListToLive = (blockedIds: readonly string[]) =>
   call<{ saved: boolean }>('sync-block-list', { blockedIds });
 
+/** Seeds this signed-in learner's known blocks in the battle database without clearing existing entries. */
+export const seedBattleBlockListToLive = (blockedIds: readonly string[]) =>
+  call<{ saved: boolean }>('seed-block-list', { blockedIds });
+
 /** Marks one answer (an option index, or 'skip') to my current question. */
 export const answerRace = (id: string, index: number, pick: number | 'skip') =>
   call<{ room: RaceRoom; result: AnswerResult }>('answer', { id, index, pick });
@@ -119,7 +122,7 @@ export function leaveRaceSoon(id: string) {
 const denied = (error: unknown) => (error as { code?: string })?.code === 'permission-denied';
 
 /**
- * Follows one room live. If the rules for battleRooms are not published yet, it asks
+ * Follows one room in the dedicated battle database. If its rules are not published yet, it asks
  * the server every 2.5 seconds instead (only while the battle page is open).
  */
 export function watchRace(id: string, onRoom: (room: RaceRoom) => void, onError: (error: unknown) => void): Unsubscribe {
@@ -153,20 +156,15 @@ export function watchRace(id: string, onRoom: (room: RaceRoom) => void, onError:
         if (snap.exists()) onRoom(snap.data() as RaceRoom);
       }, (error) => {
         if (denied(error)) return startServer();
-        if (target === 'primary' && isPrimaryFirestoreQuotaError(error)) {
-          void activateLiveDataFailover('quota-exceeded').catch((failure) => { if (!stopped) onError(failure); });
-          return;
-        }
         onError(error);
       });
     };
     if (target === 'live') void ensureLiveQuizSignIn().then(subscribe).catch((error) => { if (!stopped) onError(error); });
     else subscribe();
   };
-  const stopMode = watchLiveDataFailover((active) => startDatabase(active ? 'live' : 'primary'), () => startDatabase('primary'));
+  startDatabase(liveQuizFirebaseConfigured ? 'live' : 'primary');
   return () => {
     stopped = true;
-    stopMode();
     stopCurrent();
   };
 }
@@ -215,29 +213,20 @@ export function watchMyRaces(uid: string, onRooms: (rooms: RaceRoom[]) => void, 
         onRooms(snap.docs.map((item) => item.data() as RaceRoom).filter((room) => room.open).sort((a, b) => b.createdAt - a.createdAt));
       }, (error) => {
         if (denied(error)) return startServer();
-        if (target === 'primary' && isPrimaryFirestoreQuotaError(error)) {
-          void activateLiveDataFailover('quota-exceeded').catch((failure) => { if (!stopped) onError(failure); });
-          return;
-        }
         onError(error);
       });
       stopStats = onSnapshot(doc(targetDb, 'battleStats', uid), (snap) => onStats(snap.exists() ? (snap.data() as RaceStats) : null), (error) => {
         if (denied(error)) return startServer();
-        if (target === 'primary' && isPrimaryFirestoreQuotaError(error)) {
-          void activateLiveDataFailover('quota-exceeded').catch((failure) => { if (!stopped) onError(failure); });
-          return;
-        }
         onError(error);
       });
     };
     if (target === 'live') void ensureLiveQuizSignIn().then(subscribe).catch((error) => { if (!stopped) onError(error); });
     else subscribe();
   };
-  const stopMode = watchLiveDataFailover((active) => startDatabase(active ? 'live' : 'primary'), () => startDatabase('primary'));
+  startDatabase(liveQuizFirebaseConfigured ? 'live' : 'primary');
   return {
     stop() {
       stopped = true;
-      stopMode();
       stopCurrent();
     },
     /** After an action: the listeners update themselves; the fallback asks again. */

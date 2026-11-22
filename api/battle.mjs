@@ -4,9 +4,10 @@
 //
 //   POST /api/battle  { action: 'create' | 'accept' | 'decline' | 'ready' | 'answer' | 'leave' | 'get' | 'mine', ... }
 //
-// Needs the Vercel setting FIREBASE_SERVICE_ACCOUNT (already there for push, reminders and
-// account deletion). The questions come from this deployment's own public/battle-bank/*.json
-// (built by scripts/build-battle-bank.mjs). Rules: battleRooms, battleKeys, battleStats in firestore.rules.
+// Auth is verified against FIREBASE_SERVICE_ACCOUNT; battle state uses
+// LIVE_QUIZ_FIREBASE_SERVICE_ACCOUNT so the learning project's Firestore quota
+// cannot stop a match. Account notifications remain best-effort in the main project.
+// Questions come from this deployment's public/battle-bank/*.json.
 import { BattleError, handleBattle } from '../server/battle-referee.mjs';
 import { restAdmin } from './_admin-rest.mjs';
 import { serviceAccount } from './_admin.mjs';
@@ -16,66 +17,11 @@ const banks = new Map(); // course -> { at, bank }
 const BANK_REUSE_MS = 10 * 60_000;
 const keys = new Map(); // room -> answers (they never change, so one read per room per server instance)
 const MIRROR_AT = '_battleMirrorAt';
-let failoverStatus = { checkedAt: 0, active: false };
-let lastMirrorAt = 0;
-
-function nextMirrorAt() {
-  lastMirrorAt = Math.max(Date.now(), lastMirrorAt + 1);
-  return lastMirrorAt;
-}
-
-function quotaError(error) {
-  return /429|RESOURCE_EXHAUSTED|quota exceeded/i.test(String(error?.message ?? error));
-}
 
 function withoutMirrorAt(value) {
   if (!value || typeof value !== 'object') return value;
   const { [MIRROR_AT]: _ignored, ...clean } = value;
   return clean;
-}
-
-async function mirrorDocument(db, path, value, at = nextMirrorAt()) {
-  if (!db || !value) return;
-  try {
-    const ref = db.doc(path);
-    const existing = await ref.get();
-    if (Number(existing.data?.()?.[MIRROR_AT]) >= at) return;
-    await ref.set({ ...value, [MIRROR_AT]: at });
-  } catch (error) {
-    console.warn(`Could not mirror ${path} to GrAte Apex Live:`, error);
-  }
-}
-
-async function syncBattleProfile(primaryDb, liveDb, uid) {
-  const [profile, blocks] = await Promise.all([
-    primaryDb.doc(`users/${uid}`).get(),
-    primaryDb.collection('blocks').where('blocker', '==', uid).get(),
-  ]);
-  const username = profile.data?.()?.username;
-  const blocked = [...new Set(blocks.docs.map((item) => String(item.data()?.blocked ?? '')).filter((id) => /^[A-Za-z0-9]{6,64}$/.test(id)))].slice(0, 200);
-  const saved = { username: typeof username === 'string' ? username : null, blocked, updatedAt: Date.now() };
-  await liveDb.doc(`battleProfiles/${uid}`).set(saved);
-  return saved;
-}
-
-async function readLiveFailover(liveAdmin) {
-  if (!liveAdmin) return false;
-  if (failoverStatus.active) return true;
-  if (Date.now() - failoverStatus.checkedAt < 10_000) return false;
-  failoverStatus.checkedAt = Date.now();
-  try {
-    failoverStatus.active = (await liveAdmin.db.doc('systemStatus/database').get()).data?.()?.failover === true;
-  } catch {
-    return false;
-  }
-  return failoverStatus.active;
-}
-
-async function activateLiveFailover(liveAdmin, reason) {
-  if (!liveAdmin) return false;
-  await liveAdmin.db.doc('systemStatus/database').set({ failover: true, reason, activatedAt: Date.now(), activatedBy: 'battle-api' });
-  failoverStatus = { checkedAt: Date.now(), active: true };
-  return true;
 }
 
 function origin(req) {
@@ -106,77 +52,46 @@ function tooMany(uid) {
   return list.length > 40;
 }
 
-/** The referee's store: Firestore through the service account. */
-function firestoreStore(db, mirrorDb = null) {
+/** The referee's store: battle data uses GrAte Apex Live; notifications stay in the account project. */
+function firestoreStore(db, notificationDb = db) {
   return {
     async getRoom(id) {
       const snap = await db.doc(`battleRooms/${id}`).get();
       if (!snap.exists) return null;
-      const stored = snap.data();
-      const sourceAt = Number(stored?.[MIRROR_AT]) || Date.parse(snap.updateTime) || nextMirrorAt();
-      if (mirrorDb) await mirrorDocument(mirrorDb, `battleRooms/${id}`, stored, sourceAt);
-      return { room: withoutMirrorAt(stored), version: snap.updateTime };
+      return { room: withoutMirrorAt(snap.data()), version: snap.updateTime };
     },
     async saveRoom(room, version) {
-      const sourceAt = nextMirrorAt();
-      const stored = { ...room, [MIRROR_AT]: sourceAt };
-      await db.doc(`battleRooms/${room.id}`).set(stored, { updateTime: version });
-      if (mirrorDb) await mirrorDocument(mirrorDb, `battleRooms/${room.id}`, stored, sourceAt);
+      await db.doc(`battleRooms/${room.id}`).set(withoutMirrorAt(room), { updateTime: version });
     },
     async createRoom(room, key) {
       await db.doc(`battleKeys/${room.id}`).set(key, { exists: false });
       keys.set(room.id, key.answers);
-      const sourceAt = nextMirrorAt();
-      const stored = { ...room, [MIRROR_AT]: sourceAt };
-      await db.doc(`battleRooms/${room.id}`).set(stored, { exists: false });
-      if (mirrorDb) {
-        await mirrorDocument(mirrorDb, `battleKeys/${room.id}`, key, sourceAt);
-        await mirrorDocument(mirrorDb, `battleRooms/${room.id}`, stored, sourceAt);
-      }
+      await db.doc(`battleRooms/${room.id}`).set(withoutMirrorAt(room), { exists: false });
     },
     async getKey(id) {
       if (keys.has(id)) return { answers: keys.get(id) };
       const snap = await db.doc(`battleKeys/${id}`).get();
       const answers = snap.exists ? snap.data().answers : null;
       if (answers) keys.set(id, answers);
-      if (answers && mirrorDb) await mirrorDocument(mirrorDb, `battleKeys/${id}`, { ...snap.data(), [MIRROR_AT]: nextMirrorAt() });
       if (keys.size > 500) keys.delete(keys.keys().next().value);
       return answers ? { answers } : null;
     },
     async getStats(uid) {
       const snap = await db.doc(`battleStats/${uid}`).get();
       if (!snap.exists) return null;
-      const stored = snap.data();
-      const sourceAt = Number(stored?.[MIRROR_AT]) || Date.parse(snap.updateTime) || nextMirrorAt();
-      if (mirrorDb) await mirrorDocument(mirrorDb, `battleStats/${uid}`, stored, sourceAt);
-      return { stats: withoutMirrorAt(stored), version: snap.updateTime };
+      return { stats: withoutMirrorAt(snap.data()), version: snap.updateTime };
     },
     async saveStats(uid, stats, version) {
-      const sourceAt = nextMirrorAt();
-      const stored = { ...stats, [MIRROR_AT]: sourceAt };
-      await db.doc(`battleStats/${uid}`).set(stored, version ? { updateTime: version } : { exists: false });
-      if (mirrorDb) await mirrorDocument(mirrorDb, `battleStats/${uid}`, stored, sourceAt);
+      await db.doc(`battleStats/${uid}`).set(withoutMirrorAt(stats), version ? { updateTime: version } : { exists: false });
     },
     async openRooms(uid) {
       const { docs } = await db.collection('battleRooms').where('players', 'array-contains', uid).get();
-      const open = docs.map((item) => {
-        const stored = item.data();
-        const sourceAt = Number(stored?.[MIRROR_AT]) || Date.parse(item.updateTime) || nextMirrorAt();
-        return { id: item.id, stored, sourceAt, room: withoutMirrorAt(stored) };
-      }).filter((item) => item.room.open).slice(0, 20);
-      if (mirrorDb) {
-        await Promise.all(open.map(async (item) => {
-          await mirrorDocument(mirrorDb, `battleRooms/${item.id}`, item.stored, item.sourceAt);
-          const key = await db.doc(`battleKeys/${item.id}`).get().catch(() => null);
-          if (key?.exists) await mirrorDocument(mirrorDb, `battleKeys/${item.id}`, key.data(), nextMirrorAt());
-        }));
-      }
-      return open.map((item) => item.room);
+      return docs.map((item) => withoutMirrorAt(item.data())).filter((room) => room.open).slice(0, 20);
     },
     async notify(to, { from, fromName, roomId, course, count }) {
       // The bell on the other player's account (the same shape the app writes).
       const id = `race_${roomId}`;
-      await db.doc(`users/${to}/notifications/${id}`).set({
+      await notificationDb.doc(`users/${to}/notifications/${id}`).set({
         type: 'battle',
         from,
         fromName: fromName ?? '',
@@ -187,44 +102,6 @@ function firestoreStore(db, mirrorDb = null) {
       }, { exists: false });
     },
   };
-}
-
-function publicRaceRoom(room) {
-  return room.status === 'done' ? room : { ...room, answers: null };
-}
-
-async function recoverAppliedAction(store, uid, body) {
-  const action = String(body?.action ?? '');
-  const id = String(body?.id ?? '');
-  if (!id || action === 'create' || action === 'mine') return null;
-  const found = await store.getRoom(id);
-  if (!found || !found.room.players.includes(uid)) return null;
-  const room = found.room;
-  if (action === 'answer') {
-    const index = Number(body.index);
-    const side = room.sides[uid];
-    if (!Number.isInteger(index) || !side || side.pos <= index || typeof side.marks !== 'string') return null;
-    const mark = side.marks[index];
-    const key = await store.getKey(id);
-    if (!key?.answers || typeof key.answers[index] !== 'number') return null;
-    const streak = side.marks.slice(0, index + 1).match(/r*$/)?.[0].length ?? 0;
-    const score = side.marks.slice(0, index + 1).split('').reduce((total, item) => total + (item === 'r' ? 5 : item === 'w' ? -1 : 0), 0);
-    return {
-      room: publicRaceRoom(room),
-      result: { right: mark === 'r', skip: mark === 's', correct: key.answers[index], score, streak },
-      now: Date.now(),
-    };
-  }
-  const applied = action === 'accept'
-    ? room.status !== 'invited' && room.opponent.uid === uid && !['declined', 'expired', 'cancelled'].includes(room.status)
-    : action === 'decline'
-      ? ['declined', 'expired', 'cancelled'].includes(room.status)
-      : action === 'ready'
-        ? room.status === 'live' || room.status === 'done' || room.ready?.[uid] === true
-        : action === 'leave'
-          ? Boolean(room.sides?.[uid]?.left) || ['declined', 'expired', 'cancelled'].includes(room.status)
-          : false;
-  return applied ? { room: publicRaceRoom(room), result: null, now: Date.now() } : null;
 }
 
 export default async function handler(req, res) {
@@ -255,6 +132,20 @@ export default async function handler(req, res) {
   }
   if (tooMany(uid)) return res.status(429).json({ error: 'Slow down a little.' });
 
+  if (body.action === 'seed-block-list') {
+    if (!liveQuizAdmin) return res.status(503).json({ error: 'The separate GrAte Apex Live project is not connected.' });
+    const incoming = Array.isArray(body.blockedIds)
+      ? [...new Set(body.blockedIds.filter((id) => typeof id === 'string' && /^[A-Za-z0-9]{6,64}$/.test(id)))].slice(0, 200)
+      : [];
+    const profileRef = liveQuizAdmin.db.doc(`battleProfiles/${uid}`);
+    const profile = await profileRef.get();
+    const saved = profile.data?.() ?? {};
+    const existing = Array.isArray(saved.blocked) ? saved.blocked.filter((id) => typeof id === 'string') : [];
+    const blocked = [...new Set([...existing, ...incoming])].slice(0, 200);
+    await profileRef.set({ ...saved, blocked, updatedAt: Date.now() });
+    return res.status(200).json({ saved: true });
+  }
+
   if (body.action === 'sync-block-list') {
     if (!liveQuizAdmin) return res.status(503).json({ error: 'The separate GrAte Apex Live project is not connected.' });
     const blocked = Array.isArray(body.blockedIds)
@@ -266,40 +157,22 @@ export default async function handler(req, res) {
     return res.status(200).json({ saved: true });
   }
 
-  let fallbackActive = await readLiveFailover(liveQuizAdmin);
-  const profiles = new Map();
   const opponentUid = body.action === 'create' ? String(body.opponent?.uid ?? '') : '';
-  // Keep the backup profiles warm even after failover has been activated. The
-  // primary database may have recovered while the failover flag is still set;
-  // retrying this read lets a missing opponent profile sync before we create a
-  // room in the backup project. If the primary quota is still exhausted, the
-  // cached profile remains untouched and the normal fail-closed check below
-  // still prevents a challenge that cannot be checked against block settings.
-  if (liveQuizAdmin && ['mine', 'create'].includes(String(body.action))) {
-    const ids = [...new Set([uid, ...(opponentUid && /^[A-Za-z0-9]{6,64}$/.test(opponentUid) ? [opponentUid] : [])])];
-    try {
-      const synced = await Promise.all(ids.map((id) => syncBattleProfile(admin.db, liveQuizAdmin.db, id)));
-      ids.forEach((id, index) => profiles.set(id, synced[index]));
-    } catch (error) {
-      if (!fallbackActive && quotaError(error) && await activateLiveFailover(liveQuizAdmin, 'primary-firestore-quota-exceeded')) fallbackActive = true;
-      else console.warn('Could not refresh the Live project battle profile cache:', error);
-    }
-  }
-
   try {
-    const store = fallbackActive && liveQuizAdmin
-      ? firestoreStore(liveQuizAdmin.db)
-      : firestoreStore(admin.db, liveQuizAdmin?.db ?? null);
+    const battleDb = liveQuizAdmin?.db ?? admin.db;
+    const store = firestoreStore(battleDb, admin.db);
     const base = origin(req);
     // Both players' names come from their own profiles, never from what the app sends, and a
     // learner can't challenge someone who has blocked them (2026-11-10 audit).
-    if (body.action === 'create' && fallbackActive && liveQuizAdmin) {
+    if (body.action === 'create' && liveQuizAdmin) {
       if (!/^[A-Za-z0-9]{6,64}$/.test(opponentUid)) return res.status(400).json({ error: 'Choose who to battle.' });
       const profile = await liveQuizAdmin.db.doc(`battleProfiles/${uid}`).get();
       const other = await liveQuizAdmin.db.doc(`battleProfiles/${opponentUid}`).get();
-      if (!other.exists) return res.status(503).json({ error: 'This learner’s battle details have not synced to the backup yet. Try again when the original database is available.' });
-      const profileData = profile.data?.() ?? {};
       const otherData = other.data?.() ?? {};
+      if (!other.exists || !Array.isArray(otherData.blocked)) {
+        return res.status(503).json({ error: 'This learner needs to open Connect once so their battle settings can sync to GrAte Apex Live. Ask them to open Connect, then try again.' });
+      }
+      const profileData = profile.data?.() ?? {};
       if (Array.isArray(otherData.blocked) && otherData.blocked.includes(uid)) return res.status(403).json({ error: 'You can’t challenge this learner.' });
       body = { ...body, name: typeof profileData.username === 'string' ? profileData.username : null, opponent: { ...(body.opponent ?? {}), name: typeof otherData.username === 'string' ? otherData.username : null } };
     } else if (body.action === 'create') {
@@ -317,17 +190,7 @@ export default async function handler(req, res) {
       };
       body = { ...body, name: nameOf(profile), opponent: { ...(body.opponent ?? {}), name: nameOf(other) } };
     }
-    let reply;
-    try {
-      reply = await handleBattle({ uid, body, store, loadBank: (course) => loadBank(base, course) });
-    } catch (error) {
-      if (fallbackActive || !liveQuizAdmin || !quotaError(error)) throw error;
-      await activateLiveFailover(liveQuizAdmin, 'primary-firestore-quota-exceeded');
-      fallbackActive = true;
-      const backupStore = firestoreStore(liveQuizAdmin.db);
-      const recovered = await recoverAppliedAction(backupStore, uid, body);
-      reply = recovered ?? await handleBattle({ uid, body, store: backupStore, loadBank: (course) => loadBank(base, course) });
-    }
+    const reply = await handleBattle({ uid, body, store, loadBank: (course) => loadBank(base, course) });
     return res.status(200).json(reply);
   } catch (error) {
     if (error instanceof BattleError) return res.status(error.status).json({ error: error.message });

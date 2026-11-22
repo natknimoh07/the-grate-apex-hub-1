@@ -13,9 +13,10 @@ import { Text, TextInput } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { acceptBattle, type Battle, battleRecord, battleStatus, type BattleStatus, declineBattle, watchBattles } from '@/data/battles';
 import { available, BATTLE_RULES, type BankCourse, type BattleCount, type BattleDifficulty, DIFFICULTY_OPTIONS, difficultyName, tierFor } from '@/data/battle-race-rules';
-import { acceptRace, createRace, declineRace, loadBattleIndex, raceView, type RaceRoom, type RaceStats, serverNow, watchMyRaces } from '@/data/battle-rooms';
+import { acceptRace, createRace, declineRace, loadBattleIndex, raceView, seedBattleBlockListToLive, type RaceRoom, type RaceStats, serverNow, watchMyRaces } from '@/data/battle-rooms';
 import { announceBattleResult, announceRace } from '@/lib/web-push';
 import { readClassSelection } from '@/data/class-curriculum';
+import { locallyBlockedLearners } from '@/data/community';
 import { HB2_COURSES } from '@/data/hb2-study';
 import { legacyCoursesForClass } from '@/data/legacy-study';
 import { useProgress } from '@/data/progress';
@@ -68,6 +69,9 @@ export function BattlesCard() {
       setBattles([]);
       return;
     }
+    void locallyBlockedLearners()
+      .then((blocked) => seedBattleBlockListToLive([...blocked]))
+      .catch(() => undefined);
     const stopOlder = watchBattles(uid, (next) => {
       setBattles(next);
     }, () => undefined);

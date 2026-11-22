@@ -306,6 +306,20 @@ export async function blockedLearners(): Promise<Set<string>> {
   return new Set([...saved, ...online]);
 }
 
+/** The device's saved block list only; used to seed the separate battle store without reading the primary Firestore. */
+export async function locallyBlockedLearners(): Promise<Set<string>> {
+  await auth.authStateReady();
+  const uid = auth.currentUser?.uid;
+  if (!uid) return new Set();
+  const raw = await AsyncStorage.getItem(`${BLOCKED_KEY}:${uid}`).catch(() => null);
+  try {
+    const saved: unknown = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(saved) ? saved.filter((id): id is string => typeof id === 'string' && /^[A-Za-z0-9]{6,64}$/.test(id)) : []);
+  } catch {
+    return new Set();
+  }
+}
+
 export async function listCommunityFeed(limitCount = 50): Promise<CommunityPost[]> {
   await auth.authStateReady();
   const [snap, blocked] = await Promise.all([getDocs(query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(limitCount))), blockedLearners()]);
