@@ -277,7 +277,8 @@ export async function submitQuiz(submission: QuizSubmission): Promise<QuizOutcom
       sourceType = 'apex';
       break;
     default: {
-      const kind = submission.practice ? 'practice' : submission.kind === 'topic' ? 'topic' : submission.kind === 'mastery-check' ? 'mastery-check' : 'lesson';
+      const customBuilderQuiz = Boolean(submission.customQuiz && !submission.customQuiz.exam);
+      const kind = customBuilderQuiz ? 'custom' : submission.practice ? 'practice' : submission.kind === 'topic' ? 'topic' : submission.kind === 'mastery-check' ? 'mastery-check' : 'lesson';
       xp = quizXp({ kind, correct: correctQuestions.length, answered: answered.length, total, multiplier: powerup?.multiplier ?? 1 });
       sourceType = submission.practice ? 'practice' : 'quiz';
     }
@@ -314,7 +315,7 @@ export async function submitQuiz(submission: QuizSubmission): Promise<QuizOutcom
       : submission.kind === 'apex'
         ? 'Apex Challenge'
         : submission.practice
-          ? 'Practice'
+          ? submission.customQuiz && !submission.customQuiz.exam ? 'Custom quiz' : 'Practice'
           : submission.kind === 'topic'
             ? `Topic quiz · ${getTopic(submission.topicId)?.title ?? ''}`
             : `Quiz · ${findLesson(submission.lessonId)?.lesson.title ?? ''}`;

@@ -19,6 +19,8 @@ export const XP_RULES = {
   lesson: { default: 25 },
   lessonQuiz: { completion: 20, bonusAt90: 20, bonusAt75: 10, wrongPenalty: 2 },
   topicQuiz: { completion: 30, bonusAt90: 20, bonusAt75: 10, wrongPenalty: 2 },
+  // Custom quiz builder runs are real quizzes, but remain penalty free like practice.
+  customQuiz: { completion: 20, bonusAt90: 20, bonusAt75: 10 },
   practice: { completion: 10 },
   review: { base: 15, perRecalledDue: 2, max: 50 },
   apex: { completion: 20, bonusAt90: 30, bonusAt75: 20, bonusAt50: 10 },
@@ -73,7 +75,7 @@ function finish(lines: XpLine[], multiplier: number): XpBreakdown {
   return { lines: out, gained, penalty, net: gained + penalty, multiplier };
 }
 
-export type QuizKind = 'lesson' | 'topic' | 'practice' | 'mastery-check';
+export type QuizKind = 'lesson' | 'topic' | 'custom' | 'practice' | 'mastery-check';
 
 export function quizXp(input: {
   kind: QuizKind;
@@ -89,6 +91,14 @@ export function quizXp(input: {
 
   if (input.kind === 'practice') {
     return finish([{ label: 'Practice completed', amount: XP_RULES.practice.completion }], multiplier);
+  }
+
+  if (input.kind === 'custom') {
+    if (input.answered <= 0) return finish([], multiplier);
+    const lines: XpLine[] = [{ label: 'Custom quiz completed', amount: XP_RULES.customQuiz.completion }];
+    if (percent >= 90) lines.push({ label: 'Score 90%+', amount: XP_RULES.customQuiz.bonusAt90 });
+    else if (percent >= 75) lines.push({ label: 'Score 75%+', amount: XP_RULES.customQuiz.bonusAt75 });
+    return finish(lines, multiplier);
   }
 
   const rules = input.kind === 'topic' ? XP_RULES.topicQuiz : XP_RULES.lessonQuiz;
