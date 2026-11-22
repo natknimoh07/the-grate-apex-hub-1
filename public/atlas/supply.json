@@ -1,5 +1,5 @@
 {
- "_about": "Nerve, arterial and venous supply of limb muscles for the atlas info card. Keys are model structure names. n / a / v = nerve / artery / vein: t = text shown to the learner, m = model parts to light up (same side as the tapped muscle). Check any change against the lecture notes or a textbook.",
+ "_about": "Nerve, arterial and venous supply of muscles and organs for the atlas info card. Keys are model structure names. n / a / v = nerve / artery / vein: t = text shown to the learner, m = model parts to light up (same side as the tapped muscle). Check any change against the lecture notes or a textbook.",
  "Acromial part of deltoid muscle": {
   "n": {
    "t": "Axillary nerve (C5-C6).",
@@ -2400,6 +2400,999 @@
     "Plantar venous arch",
     "Plantar metatarsal veins",
     "Dorsal metatarsal veins"
+   ]
+  }
+ },
+ "Adductor magnus": {
+  "n": {
+   "t": "Obturator nerve (adductor part) and the tibial part of the sciatic nerve (hamstring part).",
+   "m": [
+    "Obturator nerve",
+    "Sciatic nerve"
+   ]
+  },
+  "a": {
+   "t": "Obturator artery and perforating branches of the deep femoral artery.",
+   "m": [
+    "Obturator artery",
+    "Deep femoral artery"
+   ]
+  },
+  "v": {
+   "t": "Deep femoral vein, draining to the femoral vein.",
+   "m": [
+    "Deep femoral vein"
+   ]
+  }
+ },
+ "Extensor digitorum longus": {
+  "n": {
+   "t": "Deep fibular nerve (L4-S1), from the common fibular nerve.",
+   "m": [
+    "Deep fibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Anterior tibial artery.",
+   "m": [
+    "Anterior tibial artery"
+   ]
+  },
+  "v": {
+   "t": "Anterior tibial veins, draining to the popliteal vein.",
+   "m": [
+    "Anterior tibial veins"
+   ]
+  }
+ },
+ "Rectus abdominis muscle": {
+  "n": {
+   "t": "Lower intercostal nerves (T7-T12).",
+   "m": [
+    "Intercostal nerves"
+   ]
+  },
+  "a": {
+   "t": "Superior epigastric artery (from the internal thoracic) and inferior epigastric artery (from the external iliac).",
+   "m": [
+    "Superior epigastric artery",
+    "Inferior epigastric artery"
+   ]
+  },
+  "v": {
+   "t": "Superior and inferior epigastric veins.",
+   "m": [
+    "Superior epigastric veins",
+    "Inferior epigastric vein"
+   ]
+  }
+ },
+ "External abdominal oblique muscle": {
+  "n": {
+   "t": "Lower intercostal nerves, with the iliohypogastric and ilio-inguinal nerves.",
+   "m": [
+    "Intercostal nerves",
+    "Iliohypogastric nerve",
+    "Ilio-inguinal nerve"
+   ]
+  },
+  "a": {
+   "t": "Lower posterior intercostal and subcostal arteries.",
+   "m": [
+    "Posterior intercostal arteries",
+    "Subcostal artery"
+   ]
+  },
+  "v": {
+   "t": "Tributaries of the superficial epigastric vein and the lower intercostal veins.",
+   "m": [
+    "Superficial epigastric vein"
+   ]
+  }
+ },
+ "Internal abdominal oblique muscle": {
+  "n": {
+   "t": "Lower intercostal nerves, with the iliohypogastric and ilio-inguinal nerves.",
+   "m": [
+    "Intercostal nerves",
+    "Iliohypogastric nerve",
+    "Ilio-inguinal nerve"
+   ]
+  },
+  "a": {
+   "t": "Lower posterior intercostal, subcostal and lumbar arteries.",
+   "m": [
+    "Posterior intercostal arteries",
+    "Subcostal artery",
+    "Lumbar arteries"
+   ]
+  },
+  "v": {
+   "t": "Lumbar and lower posterior intercostal veins.",
+   "m": [
+    "Lumbar veins"
+   ]
+  }
+ },
+ "Quadratus lumborum muscle": {
+  "n": {
+   "t": "Anterior rami of the upper lumbar nerves (T12-L4). The model does not draw these separately.",
+   "m": []
+  },
+  "a": {
+   "t": "Lumbar arteries and the subcostal artery.",
+   "m": [
+    "Lumbar arteries",
+    "Subcostal artery"
+   ]
+  },
+  "v": {
+   "t": "Lumbar veins, draining to the inferior vena cava.",
+   "m": [
+    "Lumbar veins"
+   ]
+  }
+ },
+ "Sternocleidomastoid muscle": {
+  "n": {
+   "t": "Accessory nerve (XI), with branches of the cervical plexus (C2-C3).",
+   "m": [
+    "Accessory nerve (XI)"
+   ]
+  },
+  "a": {
+   "t": "Occipital artery.",
+   "m": [
+    "Occipital artery"
+   ]
+  },
+  "v": {
+   "t": "Internal jugular vein.",
+   "m": [
+    "Internal jugular vein"
+   ]
+  }
+ },
+ "Scalenus anterior muscle": {
+  "n": {
+   "t": "Ventral rami of the lower cervical nerves (C4-C6) through the brachial plexus.",
+   "m": [
+    "Roots of brachial plexus"
+   ]
+  },
+  "a": {
+   "t": "Transverse cervical artery and the thyrocervical trunk.",
+   "m": [
+    "Transverse cervical artery",
+    "Thyrocervical trunk"
+   ]
+  },
+  "v": {
+   "t": "Veins of the neck and subclavian region.",
+   "m": []
+  }
+ },
+ "Scalenus medius muscle": {
+  "n": {
+   "t": "Ventral rami of the lower cervical nerves (C3-C8) through the brachial plexus.",
+   "m": [
+    "Roots of brachial plexus"
+   ]
+  },
+  "a": {
+   "t": "Deep cervical artery and the costocervical trunk.",
+   "m": [
+    "Deep cervical artery",
+    "Costocervical trunk"
+   ]
+  },
+  "v": {
+   "t": "Veins of the neck and subclavian region.",
+   "m": []
+  }
+ },
+ "Scalenus posterior muscle": {
+  "n": {
+   "t": "Dorsal scapular nerve and the lower cervical ventral rami (C7-C8).",
+   "m": [
+    "Dorsal scapular nerve",
+    "Roots of brachial plexus"
+   ]
+  },
+  "a": {
+   "t": "Costocervical trunk.",
+   "m": [
+    "Costocervical trunk"
+   ]
+  },
+  "v": {
+   "t": "Veins of the neck and subclavian region.",
+   "m": []
+  }
+ },
+ "Platysma": {
+  "n": {
+   "t": "Cervical branch of the facial nerve.",
+   "m": [
+    "Facial nerve (VII)"
+   ]
+  },
+  "a": {
+   "t": "Submental artery and the transverse cervical artery.",
+   "m": [
+    "Submental artery",
+    "Transverse cervical artery"
+   ]
+  },
+  "v": {
+   "t": "Anterior jugular vein.",
+   "m": [
+    "Anterior jugular vein"
+   ]
+  }
+ },
+ "Bucinator": {
+  "n": {
+   "t": "Buccal branch of the facial nerve (motor). The buccal nerve supplies the mucosa.",
+   "m": [
+    "Facial nerve (VII)",
+    "Buccal nerve"
+   ]
+  },
+  "a": {
+   "t": "Buccal artery and facial artery.",
+   "m": [
+    "Buccal artery",
+    "Facial artery"
+   ]
+  },
+  "v": {
+   "t": "Facial vein.",
+   "m": [
+    "Facial vein"
+   ]
+  }
+ },
+ "Frontalis muscle": {
+  "n": {
+   "t": "Temporal branches of the facial nerve.",
+   "m": [
+    "Facial nerve (VII)"
+   ]
+  },
+  "a": {
+   "t": "Supratrochlear artery and the supraorbital branches of the ophthalmic artery.",
+   "m": [
+    "Supratrochlear artery"
+   ]
+  },
+  "v": {
+   "t": "Supratrochlear and supraorbital veins, draining to the angular vein.",
+   "m": [
+    "Angular vein"
+   ]
+  }
+ },
+ "Superficial part of masseter": {
+  "n": {
+   "t": "Masseteric nerve from the anterior division of the mandibular nerve.",
+   "m": [
+    "Anterior division of mandibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Masseteric branch of the maxillary artery.",
+   "m": [
+    "Maxillary artery"
+   ]
+  },
+  "v": {
+   "t": "Facial vein and the retromandibular vein.",
+   "m": [
+    "Facial vein"
+   ]
+  }
+ },
+ "Medial pterygoid muscle": {
+  "n": {
+   "t": "Medial pterygoid nerve from the mandibular nerve.",
+   "m": [
+    "Anterior division of mandibular nerve"
+   ]
+  },
+  "a": {
+   "t": "Maxillary artery.",
+   "m": [
+    "Maxillary artery"
+   ]
+  },
+  "v": {
+   "t": "Pterygoid venous plexus, which drains to the maxillary vein.",
+   "m": []
+  }
+ },
+ "Mylohyoid muscle": {
+  "n": {
+   "t": "Mylohyoid nerve, a branch of the inferior alveolar nerve.",
+   "m": [
+    "Nerve to mylohyoid muscle",
+    "Inferior alveolar nerve"
+   ]
+  },
+  "a": {
+   "t": "Submental artery and the mylohyoid branch of the inferior alveolar artery.",
+   "m": [
+    "Submental artery",
+    "Mylohyoid branch of inferior alveolar artery"
+   ]
+  },
+  "v": {
+   "t": "Submental vein.",
+   "m": [
+    "Submental vein"
+   ]
+  }
+ },
+ "Anterior belly of digastric muscle": {
+  "n": {
+   "t": "Mylohyoid nerve.",
+   "m": [
+    "Nerve to mylohyoid muscle"
+   ]
+  },
+  "a": {
+   "t": "Submental artery.",
+   "m": [
+    "Submental artery"
+   ]
+  },
+  "v": {
+   "t": "Submental vein.",
+   "m": [
+    "Submental vein"
+   ]
+  }
+ },
+ "Posterior belly of digastric muscle": {
+  "n": {
+   "t": "Facial nerve (VII).",
+   "m": [
+    "Facial nerve (VII)"
+   ]
+  },
+  "a": {
+   "t": "Occipital artery.",
+   "m": [
+    "Occipital artery"
+   ]
+  },
+  "v": {
+   "t": "Posterior auricular vein.",
+   "m": [
+    "Posterior auricular vein"
+   ]
+  }
+ },
+ "Genioglossus muscle": {
+  "n": {
+   "t": "Hypoglossal nerve (XII).",
+   "m": [
+    "Hypoglossal nerve (XII)"
+   ]
+  },
+  "a": {
+   "t": "Lingual artery (not drawn separately in the model).",
+   "m": []
+  },
+  "v": {
+   "t": "Lingual vein.",
+   "m": [
+    "Lingual vein"
+   ]
+  }
+ },
+ "Hyoglossus muscle": {
+  "n": {
+   "t": "Hypoglossal nerve (XII).",
+   "m": [
+    "Hypoglossal nerve (XII)"
+   ]
+  },
+  "a": {
+   "t": "Lingual artery (not drawn separately in the model).",
+   "m": []
+  },
+  "v": {
+   "t": "Lingual vein.",
+   "m": [
+    "Lingual vein"
+   ]
+  }
+ },
+ "Levator palpebrae superioris": {
+  "n": {
+   "t": "Superior division of the oculomotor nerve (III).",
+   "m": [
+    "Oculomotor nerve (III)"
+   ]
+  },
+  "a": {
+   "t": "Ophthalmic artery.",
+   "m": [
+    "Ophthalmic artery"
+   ]
+  },
+  "v": {
+   "t": "Superior ophthalmic vein.",
+   "m": [
+    "Superior ophthalmic vein"
+   ]
+  }
+ },
+ "Superior rectus muscle": {
+  "n": {
+   "t": "Superior division of the oculomotor nerve (III).",
+   "m": [
+    "Oculomotor nerve (III)"
+   ]
+  },
+  "a": {
+   "t": "Ophthalmic artery.",
+   "m": [
+    "Ophthalmic artery"
+   ]
+  },
+  "v": {
+   "t": "Superior ophthalmic vein.",
+   "m": [
+    "Superior ophthalmic vein"
+   ]
+  }
+ },
+ "Inferior rectus muscle": {
+  "n": {
+   "t": "Inferior division of the oculomotor nerve (III).",
+   "m": [
+    "Oculomotor nerve (III)"
+   ]
+  },
+  "a": {
+   "t": "Ophthalmic artery.",
+   "m": [
+    "Ophthalmic artery"
+   ]
+  },
+  "v": {
+   "t": "Inferior ophthalmic vein.",
+   "m": [
+    "Inferior ophthalmic vein"
+   ]
+  }
+ },
+ "Medial rectus muscle": {
+  "n": {
+   "t": "Inferior division of the oculomotor nerve (III).",
+   "m": [
+    "Oculomotor nerve (III)"
+   ]
+  },
+  "a": {
+   "t": "Ophthalmic artery.",
+   "m": [
+    "Ophthalmic artery"
+   ]
+  },
+  "v": {
+   "t": "Superior ophthalmic vein.",
+   "m": [
+    "Superior ophthalmic vein"
+   ]
+  }
+ },
+ "Lateral rectus muscle": {
+  "n": {
+   "t": "Abducens nerve (VI).",
+   "m": [
+    "Abducens nerve (VI)"
+   ]
+  },
+  "a": {
+   "t": "Lacrimal artery.",
+   "m": [
+    "Lacrimal artery"
+   ]
+  },
+  "v": {
+   "t": "Superior ophthalmic vein.",
+   "m": [
+    "Superior ophthalmic vein"
+   ]
+  }
+ },
+ "Superior oblique muscle": {
+  "n": {
+   "t": "Trochlear nerve (IV).",
+   "m": [
+    "Trochlear nerve (IV)"
+   ]
+  },
+  "a": {
+   "t": "Ophthalmic artery and the supratrochlear artery.",
+   "m": [
+    "Ophthalmic artery",
+    "Supratrochlear artery"
+   ]
+  },
+  "v": {
+   "t": "Superior ophthalmic vein.",
+   "m": [
+    "Superior ophthalmic vein"
+   ]
+  }
+ },
+ "Inferior oblique muscle": {
+  "n": {
+   "t": "Inferior division of the oculomotor nerve (III).",
+   "m": [
+    "Oculomotor nerve (III)"
+   ]
+  },
+  "a": {
+   "t": "Infra-orbital artery.",
+   "m": [
+    "Infra-orbital artery"
+   ]
+  },
+  "v": {
+   "t": "Inferior ophthalmic vein.",
+   "m": [
+    "Inferior ophthalmic vein"
+   ]
+  }
+ },
+ "Heart": {
+  "n": {
+   "t": "Cardiac plexus: parasympathetic fibres from the vagus nerve and sympathetic cardiac nerves from the upper thoracic ganglia.",
+   "m": [
+    "Vagus nerve (X)",
+    "Sympathetic trunk"
+   ]
+  },
+  "a": {
+   "t": "Right and left coronary arteries from the ascending aorta.",
+   "m": [
+    "Right coronary artery",
+    "Left coronary artery"
+   ]
+  },
+  "v": {
+   "t": "Great, middle and small cardiac veins drain to the coronary sinus.",
+   "m": [
+    "Great cardiac vein",
+    "Middle cardiac vein",
+    "Coronary sinus"
+   ]
+  }
+ },
+ "Stomach": {
+  "n": {
+   "t": "Vagus nerve (X): anterior and posterior vagal trunks. Sympathetic fibres reach it through the coeliac plexus.",
+   "m": [
+    "Vagus nerve (X)"
+   ]
+  },
+  "a": {
+   "t": "Left gastric artery and the short gastric and gastro-omental branches of the splenic artery, all from the coeliac trunk.",
+   "m": [
+    "Left gastric artery",
+    "Coeliac trunk"
+   ]
+  },
+  "v": {
+   "t": "Left gastric veins drain to the portal system, and the gastro-omental veins join the splenic vein.",
+   "m": [
+    "Left gastro-omental vein",
+    "Right gastro-omental vein"
+   ]
+  }
+ },
+ "Liver": {
+  "n": {
+   "t": "Hepatic plexus from the vagus nerve and the sympathetic coeliac plexus.",
+   "m": [
+    "Vagus nerve (X)"
+   ]
+  },
+  "a": {
+   "t": "Proper hepatic artery, the continuation of the common hepatic artery from the coeliac trunk.",
+   "m": [
+    "Common hepatic artery",
+    "Proper hepatic artery"
+   ]
+  },
+  "v": {
+   "t": "Hepatic portal vein carries most of the blood from the gut; the hepatic veins drain to the inferior vena cava.",
+   "m": [
+    "Hepatic portal vein",
+    "Hepatic veins"
+   ]
+  }
+ },
+ "Pancreas": {
+  "n": {
+   "t": "Vagus nerve (X), and sympathetic fibres from the coeliac and superior mesenteric plexuses.",
+   "m": [
+    "Vagus nerve (X)"
+   ]
+  },
+  "a": {
+   "t": "Splenic artery and the gastroduodenal and pancreaticoduodenal arteries.",
+   "m": [
+    "Splenic artery",
+    "Gastroduodenal artery",
+    "Inferior pancreaticoduodenal artery"
+   ]
+  },
+  "v": {
+   "t": "Splenic vein, which joins the superior mesenteric vein to form the hepatic portal vein.",
+   "m": [
+    "Splenic vein",
+    "Superior mesenteric vein"
+   ]
+  }
+ },
+ "Duodenum": {
+  "n": {
+   "t": "Vagus nerve (X) and sympathetic fibres from the coeliac and superior mesenteric plexuses.",
+   "m": [
+    "Vagus nerve (X)"
+   ]
+  },
+  "a": {
+   "t": "Gastroduodenal and pancreaticoduodenal arteries.",
+   "m": [
+    "Gastroduodenal artery",
+    "Inferior pancreaticoduodenal artery"
+   ]
+  },
+  "v": {
+   "t": "Veins follow the arteries into the portal system.",
+   "m": [
+    "Superior mesenteric vein"
+   ]
+  }
+ },
+ "Jejunum": {
+  "n": {
+   "t": "Sympathetic and vagal fibres through the superior mesenteric plexus. The model does not draw these separately.",
+   "m": []
+  },
+  "a": {
+   "t": "Jejunal branches of the superior mesenteric artery.",
+   "m": [
+    "Superior mesenteric artery"
+   ]
+  },
+  "v": {
+   "t": "Jejunal veins drain to the superior mesenteric vein.",
+   "m": [
+    "Superior mesenteric vein"
+   ]
+  }
+ },
+ "Oesophagus": {
+  "n": {
+   "t": "Vagus nerve (X), with sympathetic fibres from the thoracic sympathetic trunk.",
+   "m": [
+    "Vagus nerve (X)",
+    "Sympathetic trunk"
+   ]
+  },
+  "a": {
+   "t": "Oesophageal branches of the thoracic aorta, the left gastric artery and the inferior thyroid artery.",
+   "m": [
+    "Thoracic aorta",
+    "Left gastric artery",
+    "Inferior thyroid artery"
+   ]
+  },
+  "v": {
+   "t": "Oesophageal veins drain to the azygos system and to the left gastric vein.",
+   "m": [
+    "Azygos vein"
+   ]
+  }
+ },
+ "Trachea": {
+  "n": {
+   "t": "Recurrent laryngeal nerves, branches of the vagus nerve (X).",
+   "m": [
+    "Vagus nerve (X)"
+   ]
+  },
+  "a": {
+   "t": "Inferior thyroid artery.",
+   "m": [
+    "Inferior thyroid artery"
+   ]
+  },
+  "v": {
+   "t": "Inferior thyroid veins drain to the brachiocephalic veins.",
+   "m": [
+    "Left brachiocephalic vein",
+    "Right brachiocephalic vein"
+   ]
+  }
+ },
+ "Thyroid gland": {
+  "n": {
+   "t": "Recurrent laryngeal and external laryngeal nerves, branches of the vagus nerve (X).",
+   "m": [
+    "Vagus nerve (X)"
+   ]
+  },
+  "a": {
+   "t": "Superior thyroid artery (from the external carotid) and inferior thyroid artery (from the thyrocervical trunk).",
+   "m": [
+    "Inferior thyroid artery"
+   ]
+  },
+  "v": {
+   "t": "Superior thyroid vein drains to the internal jugular vein; the inferior thyroid veins drain to the brachiocephalic veins.",
+   "m": [
+    "Superior thyroid vein",
+    "Internal jugular vein"
+   ]
+  }
+ },
+ "Kidney": {
+  "n": {
+   "t": "Renal plexus of sympathetic fibres. The model does not draw this separately.",
+   "m": []
+  },
+  "a": {
+   "t": "Renal arteries from the abdominal aorta, each dividing into anterior and posterior branches.",
+   "m": [
+    "Right renal artery",
+    "Left renal artery",
+    "Anterior branch of renal artery",
+    "Posterior branch of renal artery"
+   ]
+  },
+  "v": {
+   "t": "Renal veins drain to the inferior vena cava.",
+   "m": [
+    "Right renal vein",
+    "Left renal vein"
+   ]
+  }
+ },
+ "Suprarenal gland": {
+  "n": {
+   "t": "Sympathetic splanchnic fibres to the medulla. The model does not draw these separately.",
+   "m": []
+  },
+  "a": {
+   "t": "Superior, middle and inferior suprarenal arteries; the inferior branch comes from the renal artery.",
+   "m": [
+    "Inferior suprarenal artery"
+   ]
+  },
+  "v": {
+   "t": "Suprarenal veins drain to the inferior vena cava on the right and to the left renal vein on the left.",
+   "m": [
+    "Left renal vein"
+   ]
+  }
+ },
+ "Ascending colon": {
+  "n": {
+   "t": "Vagal and sympathetic fibres through the superior mesenteric plexus.",
+   "m": []
+  },
+  "a": {
+   "t": "Ileocolic and right colic arteries from the superior mesenteric artery.",
+   "m": [
+    "Ileocolic artery",
+    "Right colic artery"
+   ]
+  },
+  "v": {
+   "t": "Ileocolic and right colic veins drain to the superior mesenteric vein.",
+   "m": [
+    "Right colic vein"
+   ]
+  }
+ },
+ "Transverse colon": {
+  "n": {
+   "t": "Vagal fibres to the proximal part; sympathetic fibres to the distal part through the mesenteric plexuses.",
+   "m": []
+  },
+  "a": {
+   "t": "Middle colic artery from the superior mesenteric artery, with branches of the left colic artery from the inferior mesenteric artery.",
+   "m": [
+    "Middle colic artery",
+    "Left colic artery"
+   ]
+  },
+  "v": {
+   "t": "Middle colic vein drains to the superior mesenteric vein.",
+   "m": [
+    "Middle colic vein"
+   ]
+  }
+ },
+ "Descending colon": {
+  "n": {
+   "t": "Lumbar splanchnic sympathetic fibres and pelvic splanchnic fibres.",
+   "m": []
+  },
+  "a": {
+   "t": "Left colic artery from the inferior mesenteric artery.",
+   "m": [
+    "Left colic artery",
+    "Descending branch of left colic artery"
+   ]
+  },
+  "v": {
+   "t": "Inferior mesenteric vein.",
+   "m": [
+    "Inferior mesenteric vein"
+   ]
+  }
+ },
+ "Sigmoid colon": {
+  "n": {
+   "t": "Pelvic splanchnic and lumbar sympathetic fibres.",
+   "m": []
+  },
+  "a": {
+   "t": "Sigmoid arteries from the inferior mesenteric artery.",
+   "m": [
+    "Inferior mesenteric artery",
+    "Sigmoid arteries"
+   ]
+  },
+  "v": {
+   "t": "Sigmoid veins drain to the inferior mesenteric vein.",
+   "m": [
+    "Sigmoid veins"
+   ]
+  }
+ },
+ "Vermiform appendix": {
+  "n": {
+   "t": "Vagal fibres through the superior mesenteric plexus; sympathetic fibres from the coeliac plexus.",
+   "m": []
+  },
+  "a": {
+   "t": "Appendicular artery, a branch of the ileocolic artery.",
+   "m": [
+    "Appendicular artery",
+    "Ileocolic artery"
+   ]
+  },
+  "v": {
+   "t": "Veins drain with the ileocolic vein to the superior mesenteric vein.",
+   "m": [
+    "Superior mesenteric vein"
+   ]
+  }
+ },
+ "Gallbladder": {
+  "n": {
+   "t": "Vagus nerve (X) and sympathetic fibres from the coeliac plexus.",
+   "m": [
+    "Vagus nerve (X)"
+   ]
+  },
+  "a": {
+   "t": "Cystic artery, usually a branch of the right hepatic artery. The model does not draw it separately.",
+   "m": []
+  },
+  "v": {
+   "t": "Cystic vein drains to the hepatic portal system.",
+   "m": []
+  }
+ },
+ "Urinary bladder": {
+  "n": {
+   "t": "Pelvic splanchnic (parasympathetic, S2-S4) and hypogastric (sympathetic) nerves.",
+   "m": []
+  },
+  "a": {
+   "t": "Superior and inferior vesical arteries from the internal iliac artery.",
+   "m": [
+    "Internal iliac artery"
+   ]
+  },
+  "v": {
+   "t": "Vesical venous plexus drains to the internal iliac vein.",
+   "m": [
+    "Internal iliac vein"
+   ]
+  }
+ },
+ "Testis": {
+  "n": {
+   "t": "Testicular plexus of sympathetic fibres from the aorticorenal region, with the genital branch of the genitofemoral nerve.",
+   "m": [
+    "Genitofemoral nerve"
+   ]
+  },
+  "a": {
+   "t": "Left and right testicular arteries from the abdominal aorta. The model draws only the right one on its right side, so it is not highlighted.",
+   "m": []
+  },
+  "v": {
+   "t": "Pampiniform plexus, which drains to the left and right testicular veins.",
+   "m": [
+    "Left testicular vein",
+    "Right testicular vein"
+   ]
+  }
+ },
+ "Parotid gland": {
+  "n": {
+   "t": "Parasympathetic secretomotor fibres from the glossopharyngeal nerve (IX) through the auriculotemporal nerve.",
+   "m": [
+    "Glossopharyngeal nerve (IX)"
+   ]
+  },
+  "a": {
+   "t": "Maxillary artery and superficial temporal branches.",
+   "m": [
+    "Maxillary artery"
+   ]
+  },
+  "v": {
+   "t": "Retromandibular vein.",
+   "m": [
+    "Retromandibular vein"
+   ]
+  }
+ },
+ "Submandibular gland": {
+  "n": {
+   "t": "Parasympathetic fibres from the facial nerve (VII) through the chorda tympani, which joins the lingual nerve.",
+   "m": [
+    "Chorda tympani",
+    "Lingual nerve"
+   ]
+  },
+  "a": {
+   "t": "Facial artery and submental artery.",
+   "m": [
+    "Facial artery",
+    "Submental artery"
+   ]
+  },
+  "v": {
+   "t": "Facial vein.",
+   "m": [
+    "Facial vein"
+   ]
+  }
+ },
+ "Tongue": {
+  "n": {
+   "t": "Hypoglossal nerve (XII) for the muscles; lingual nerve and chorda tympani for sensation and taste.",
+   "m": [
+    "Hypoglossal nerve (XII)",
+    "Lingual nerve",
+    "Chorda tympani"
+   ]
+  },
+  "a": {
+   "t": "Lingual artery from the external carotid. The model does not draw it separately.",
+   "m": []
+  },
+  "v": {
+   "t": "Lingual veins drain to the internal jugular vein.",
+   "m": [
+    "Lingual vein",
+    "Internal jugular vein"
    ]
   }
  }
