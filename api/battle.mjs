@@ -269,13 +269,19 @@ export default async function handler(req, res) {
   let fallbackActive = await readLiveFailover(liveQuizAdmin);
   const profiles = new Map();
   const opponentUid = body.action === 'create' ? String(body.opponent?.uid ?? '') : '';
-  if (!fallbackActive && liveQuizAdmin && ['mine', 'create'].includes(String(body.action))) {
+  // Keep the backup profiles warm even after failover has been activated. The
+  // primary database may have recovered while the failover flag is still set;
+  // retrying this read lets a missing opponent profile sync before we create a
+  // room in the backup project. If the primary quota is still exhausted, the
+  // cached profile remains untouched and the normal fail-closed check below
+  // still prevents a challenge that cannot be checked against block settings.
+  if (liveQuizAdmin && ['mine', 'create'].includes(String(body.action))) {
     const ids = [...new Set([uid, ...(opponentUid && /^[A-Za-z0-9]{6,64}$/.test(opponentUid) ? [opponentUid] : [])])];
     try {
       const synced = await Promise.all(ids.map((id) => syncBattleProfile(admin.db, liveQuizAdmin.db, id)));
       ids.forEach((id, index) => profiles.set(id, synced[index]));
     } catch (error) {
-      if (quotaError(error) && await activateLiveFailover(liveQuizAdmin, 'primary-firestore-quota-exceeded')) fallbackActive = true;
+      if (!fallbackActive && quotaError(error) && await activateLiveFailover(liveQuizAdmin, 'primary-firestore-quota-exceeded')) fallbackActive = true;
       else console.warn('Could not refresh the Live project battle profile cache:', error);
     }
   }
