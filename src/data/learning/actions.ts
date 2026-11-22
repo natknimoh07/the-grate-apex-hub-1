@@ -273,7 +273,7 @@ export async function submitQuiz(submission: QuizSubmission): Promise<QuizOutcom
       sourceType = 'review';
       break;
     case 'apex':
-      xp = apexXp({ correct: correctQuestions.length, total });
+      xp = apexXp({ correct: correctQuestions.length, total, answered: answered.length });
       sourceType = 'apex';
       break;
     default: {

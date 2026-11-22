@@ -17,7 +17,6 @@ import { Text } from '@/components/ui/text';
 import { setPendingXpReward } from '@/components/xp-toast';
 import { Type, type ThemeColors } from '@/constants/theme';
 import { APEX } from '@/data/learning/apex';
-import { dayKey } from '@/data/learning/time';
 import { XP_RULES } from '@/data/learning/xp-rules';
 import { bankHasAll, bankQuestions, buildPractice, legacyCourse, lessonQuestionTest, loadLegacyBank, loadLegacyLessonList, toQuestion } from '@/data/legacy-study';
 import { shuffleSeeded } from '@/data/legacy-questions';
@@ -61,6 +60,7 @@ function LegacyPracticeAttempt() {
   const history = useQuestionHistory();
   const [reviewIds] = useState(() => (review && course ? new Set(legacyReviewFor(course.id, legacyQuestionMemory(history), Date.now())[review]) : null));
   const attempt = param(params.attempt) ?? 'first';
+  const [runId] = useState(() => `${Date.now().toString(36)}:${Math.random().toString(36).slice(2)}`);
   const [questions, setQuestions] = useState<Question[] | null>(null);
   const [title, setTitle] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -347,8 +347,9 @@ function LegacyPracticeAttempt() {
   async function awardApexXp(stats: ApexStats) {
     const percent = stats.total ? (stats.correct / stats.total) * 100 : 0;
     const bonus = percent >= 90 ? XP_RULES.apex.bonusAt90 : percent >= 75 ? XP_RULES.apex.bonusAt75 : percent >= 50 ? XP_RULES.apex.bonusAt50 : 0;
-    const amount = Math.min(XP_RULES.taskMax, XP_RULES.apex.completion + bonus);
-    const xp = await awardXp({ sourceType: 'apex', sourceId: `hb:${course!.id}:apex:${dayKey(Date.now())}`, amount, label: `${course!.name} · Apex Challenge` });
+    const answered = Object.keys(stats.answers).length;
+    const amount = answered > 0 ? XP_RULES.apex.completion + bonus + answered * XP_RULES.perQuestion : 0;
+    const xp = amount > 0 ? await awardXp({ sourceType: 'apex', sourceId: `hb:${course!.id}:apex:${runId}`, amount, label: `${course!.name} · Apex Challenge` }) : 0;
     if (xp > 0) setPendingXpReward({ amount: xp, message: `Apex Challenge · ${stats.correct}/${stats.total}` });
     setApexXp(xp);
   }
@@ -377,18 +378,24 @@ function LegacyPracticeAttempt() {
       return;
     }
     const percent = total ? (correct / total) * 100 : 0;
-    // XP once a day per practice source, scaled like this app's quizzes.
+    const answered = asked.filter((question) => isAnswerComplete(question, session.answers[question.id])).length;
     const base = apex ? XP_RULES.apex.completion : XP_RULES.lessonQuiz.completion;
     const bonus = apex
       ? percent >= 90 ? XP_RULES.apex.bonusAt90 : percent >= 75 ? XP_RULES.apex.bonusAt75 : percent >= 50 ? XP_RULES.apex.bonusAt50 : 0
       : percent >= 90 ? XP_RULES.lessonQuiz.bonusAt90 : percent >= 75 ? XP_RULES.lessonQuiz.bonusAt75 : 0;
-    const amount = Math.min(XP_RULES.taskMax, base + bonus);
-    const xp = await awardXp({
+    const questionXp = answered * XP_RULES.perQuestion;
+    const amount = answered > 0 ? base + bonus + questionXp : 0;
+    const xpLines = [
+      { label: `${title} completed`, amount: base },
+      ...(questionXp > 0 ? [{ label: `${answered} questions answered × ${XP_RULES.perQuestion} XP`, amount: questionXp }] : []),
+      ...(bonus > 0 ? [{ label: 'Score bonus', amount: bonus }] : []),
+    ];
+    const xp = amount > 0 ? await awardXp({
       sourceType: apex ? 'apex' : 'practice',
-      sourceId: `hb:${course!.id}:${settings.key}:${dayKey(Date.now())}`,
+      sourceId: `hb:${course!.id}:${settings.key}:${runId}`,
       amount,
       label: title,
-    });
+    }) : 0;
     if (xp > 0) setPendingXpReward({ amount: xp, message: `${title} · ${correct}/${total}` });
     // Every practice except the pre/post-test ends on the full results page (owner, 2026-11-02:
     // "sometimes the full results page does not show, just the XP"), like the lesson quizzes.
@@ -415,7 +422,7 @@ function LegacyPracticeAttempt() {
         ...(Object.keys(session.confidence).length ? { confidence: session.confidence } : {}),
         feedbackMode: mode,
         practice: false,
-        xp: { net: xp, lines: xp > 0 ? [{ label: title, amount: xp }] : [] },
+        xp: { net: xp, lines: xp > 0 ? xpLines : [] },
         questions: asked,
         coursePractice: { title, retake: `/learn/hb-practice?${again.toString()}`, back: routes.legacyCourse(course!.id) as string, backLabel: 'Back to the course' },
       });

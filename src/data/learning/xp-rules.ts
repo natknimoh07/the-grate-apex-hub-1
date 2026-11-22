@@ -1,8 +1,7 @@
 // GRATEAPEX XP economy — every reward and penalty in one place.
 //
 // Principles (product decisions):
-// - Short tasks are worth 10–50 XP by importance. Longer custom quizzes also
-//   earn XP per answered question, so a long session is worth more than a short one.
+// - Quizzes earn XP per answered question, so a long session is worth more than a short one.
 // - Wrong answers in a lesson quiz deduct XP (−2 each). Practising wrong
 //   answers and Review are NOT penalised: forgetting is expected there and
 //   remediation should never cost the learner.
@@ -16,20 +15,22 @@
 export const XP_RULES = {
   taskMin: 10,
   taskMax: 50,
+  perQuestion: 1,
   lesson: { default: 25 },
   lessonQuiz: { completion: 20, bonusAt90: 20, bonusAt75: 10, wrongPenalty: 2 },
   topicQuiz: { completion: 30, bonusAt90: 20, bonusAt75: 10, wrongPenalty: 2 },
   // Custom quiz builder runs are real quizzes, but remain penalty free like practice.
-  customQuiz: { completion: 10, perQuestion: 1, bonusAt90: 20, bonusAt75: 10 },
+  customQuiz: { completion: 10, bonusAt90: 20, bonusAt75: 10 },
   practice: { completion: 10 },
+  // `max` caps the base + due-recall bonus; answered-question XP is added separately.
   review: { base: 15, perRecalledDue: 2, max: 50 },
   apex: { completion: 20, bonusAt90: 30, bonusAt75: 20, bonusAt50: 10 },
   milestones: { topicCompleted: 50, conceptMastered: 5 },
   // Question of the Day: once a day, more for a correct answer.
   questionOfTheDay: { correct: 15, answered: 5 },
-  // 3D atlas quiz ("name the highlighted structure"): finishing a round pays once a day, so repeating
-  // rounds can't be farmed; every round still counts as study for the streak. Practice, so no penalty.
+  // 3D atlas quiz ("name the highlighted structure"). Practice, so no penalty.
   atlasQuiz: { completion: 10, bonusAt90: 10, bonusAt75: 5 },
+  labelDiagram: { completion: 10, bonusAt90: 20, bonusAt75: 10 },
   // AI Questions in a lesson (owner, 2026-11-04): finishing a set of 5, 10, 15 or 20 pays that
   // many XP. The AI writes new sets endlessly, so a lesson pays for at most 3 sets a day.
   aiQuestions: { perQuestion: 1, setsPerLessonPerDay: 3 },
@@ -85,20 +86,23 @@ export function quizXp(input: {
   multiplier?: number;
 }): XpBreakdown {
   const multiplier = input.multiplier ?? getActiveMultiplier();
-  if (input.total <= 0) return finish([], multiplier);
+  if (input.total <= 0 || input.answered <= 0) return finish([], multiplier);
   const percent = Math.round((input.correct / input.total) * 100);
   const wrong = Math.max(0, input.answered - input.correct);
 
   if (input.kind === 'practice') {
-    return finish([{ label: 'Practice completed', amount: XP_RULES.practice.completion }], multiplier);
+    return finish([
+      { label: 'Practice completed', amount: XP_RULES.practice.completion },
+      { label: `${input.answered} question${input.answered === 1 ? '' : 's'} answered × ${XP_RULES.perQuestion} XP`, amount: input.answered * XP_RULES.perQuestion },
+    ], multiplier);
   }
 
   if (input.kind === 'custom') {
     if (input.answered <= 0) return finish([], multiplier);
     const lines: XpLine[] = [{ label: 'Custom quiz completed', amount: XP_RULES.customQuiz.completion }];
     lines.push({
-      label: `${input.answered} question${input.answered === 1 ? '' : 's'} answered × ${XP_RULES.customQuiz.perQuestion} XP`,
-      amount: input.answered * XP_RULES.customQuiz.perQuestion,
+      label: `${input.answered} question${input.answered === 1 ? '' : 's'} answered × ${XP_RULES.perQuestion} XP`,
+      amount: input.answered * XP_RULES.perQuestion,
     });
     if (percent >= 90) lines.push({ label: 'Score 90%+', amount: XP_RULES.customQuiz.bonusAt90 });
     else if (percent >= 75) lines.push({ label: 'Score 75%+', amount: XP_RULES.customQuiz.bonusAt75 });
@@ -107,6 +111,10 @@ export function quizXp(input: {
 
   const rules = input.kind === 'topic' ? XP_RULES.topicQuiz : XP_RULES.lessonQuiz;
   const lines: XpLine[] = [{ label: input.kind === 'topic' ? 'Topic quiz completed' : 'Quiz completed', amount: rules.completion }];
+  lines.push({
+    label: `${input.answered} question${input.answered === 1 ? '' : 's'} answered × ${XP_RULES.perQuestion} XP`,
+    amount: input.answered * XP_RULES.perQuestion,
+  });
   if (percent >= 90) lines.push({ label: 'Score 90%+', amount: rules.bonusAt90 });
   else if (percent >= 75) lines.push({ label: 'Score 75%+', amount: rules.bonusAt75 });
   if (wrong > 0) lines.push({ label: `${wrong} incorrect × −${rules.wrongPenalty}`, amount: -wrong * rules.wrongPenalty });
@@ -118,6 +126,7 @@ export function atlasQuizXp(input: { correct: number; total: number; multiplier?
   if (input.total <= 0) return finish([], multiplier);
   const percent = Math.round((input.correct / input.total) * 100);
   const lines: XpLine[] = [{ label: 'Atlas quiz completed', amount: XP_RULES.atlasQuiz.completion }];
+  lines.push({ label: `${input.total} questions × ${XP_RULES.perQuestion} XP`, amount: input.total * XP_RULES.perQuestion });
   if (percent >= 90) lines.push({ label: 'Score 90%+', amount: XP_RULES.atlasQuiz.bonusAt90 });
   else if (percent >= 75) lines.push({ label: 'Score 75%+', amount: XP_RULES.atlasQuiz.bonusAt75 });
   return finish(lines, multiplier);
@@ -136,18 +145,34 @@ export function reviewXp(input: { recalledDue: number; answered: number; multipl
     input.recalledDue * XP_RULES.review.perRecalledDue
   );
   const lines: XpLine[] = [{ label: 'Review session completed', amount: XP_RULES.review.base }];
+  lines.push({ label: `${input.answered} question${input.answered === 1 ? '' : 's'} answered × ${XP_RULES.perQuestion} XP`, amount: input.answered * XP_RULES.perQuestion });
   if (bonus > 0) lines.push({ label: `${input.recalledDue} due concept${input.recalledDue === 1 ? '' : 's'} recalled`, amount: bonus });
   return finish(lines, multiplier);
 }
 
-export function apexXp(input: { correct: number; total: number; multiplier?: number }): XpBreakdown {
+export function apexXp(input: { correct: number; total: number; answered?: number; multiplier?: number }): XpBreakdown {
   const multiplier = input.multiplier ?? getActiveMultiplier();
   if (input.total <= 0) return finish([], multiplier);
+  const answered = input.answered ?? input.total;
+  if (answered <= 0) return finish([], multiplier);
   const percent = Math.round((input.correct / input.total) * 100);
   const lines: XpLine[] = [{ label: 'Apex Challenge completed', amount: XP_RULES.apex.completion }];
+  lines.push({ label: `${answered} question${answered === 1 ? '' : 's'} answered × ${XP_RULES.perQuestion} XP`, amount: answered * XP_RULES.perQuestion });
   if (percent >= 90) lines.push({ label: 'Accuracy 90%+', amount: XP_RULES.apex.bonusAt90 });
   else if (percent >= 75) lines.push({ label: 'Accuracy 75%+', amount: XP_RULES.apex.bonusAt75 });
   else if (percent >= 50) lines.push({ label: 'Accuracy 50%+', amount: XP_RULES.apex.bonusAt50 });
+  return finish(lines, multiplier);
+}
+
+/** A completed diagram-labeling round: one question per labeled part, plus accuracy bonuses. */
+export function labelDiagramXp(input: { correct: number; total: number; multiplier?: number }): XpBreakdown {
+  const multiplier = input.multiplier ?? getActiveMultiplier();
+  if (input.total <= 0) return finish([], multiplier);
+  const percent = Math.round((input.correct / input.total) * 100);
+  const lines: XpLine[] = [{ label: 'Diagram labelled', amount: XP_RULES.labelDiagram.completion }];
+  lines.push({ label: `${input.total} labels × ${XP_RULES.perQuestion} XP`, amount: input.total * XP_RULES.perQuestion });
+  if (percent >= 90) lines.push({ label: 'Score 90%+', amount: XP_RULES.labelDiagram.bonusAt90 });
+  else if (percent >= 75) lines.push({ label: 'Score 75%+', amount: XP_RULES.labelDiagram.bonusAt75 });
   return finish(lines, multiplier);
 }
 

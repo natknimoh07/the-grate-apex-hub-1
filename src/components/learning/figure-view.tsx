@@ -28,6 +28,8 @@ import { spotQuestionFor } from '@/data/figure-practice';
 import { getFigure, getSpot } from '@/data/figures';
 import { recordAnswer } from '@/data/learning/actions';
 import { chipDone, labelChips, labelFits } from '@/data/learning/label-it';
+import { labelDiagramXp } from '@/data/learning/xp-rules';
+import { awardXp } from '@/data/progress';
 import type { FigureSpot, LessonFigure } from '@/data/lesson-types';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -394,6 +396,8 @@ function ModeRow({ figure, mode, onChange }: { figure: LessonFigure; mode: Board
 function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right: number, total: number) => void }) {
   const styles = useThemedStyles(createStyles);
   const [round, setRound] = useState(0);
+  const [sessionId] = useState(() => `${figure.id}:${Date.now().toString(36)}:${Math.random().toString(36).slice(2)}`);
+  const [earnedXp, setEarnedXp] = useState<number | null>(null);
   const chips = useMemo(() => labelChips(figure.spots, `${figure.id}:${round}`), [figure, round]);
   const [chip, setChip] = useState<string | null>(null);
   const [placed, setPlaced] = useState<ReadonlySet<string>>(new Set());
@@ -411,6 +415,7 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
     setFirstRight(0);
     setWrongPin(null);
     setMessage(null);
+    setEarnedXp(null);
   }
 
   function record(spot: FigureSpot, label: string, correct: boolean) {
@@ -418,7 +423,7 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
     if (!question || question.type !== 'choice') return;
     const picked = question.options.findIndex((option) => option.trim().toLowerCase() === label.trim().toLowerCase());
     const answer = correct ? question.answer : picked >= 0 && picked !== question.answer ? picked : (question.answer + 1) % question.options.length;
-    void recordAnswer(question, answer, 'practice', `label:${figure.id}:${round}`).catch(() => undefined);
+    void recordAnswer(question, answer, 'practice', `label:${sessionId}:${round}`).catch(() => undefined);
   }
 
   function tapPin(spot: FigureSpot) {
@@ -447,6 +452,12 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
       const right = firstRight + (tried.has(spot.id) ? 0 : 1);
       setMessage(null);
       void markQuest('label').catch(() => undefined);
+      void awardXp({
+        sourceType: 'practice',
+        sourceId: `label-diagram:${sessionId}:${round}`,
+        amount: labelDiagramXp({ correct: right, total: figure.spots.length }),
+        label: `Label diagram · ${figure.title}`,
+      }).then(setEarnedXp).catch(() => setEarnedXp(0));
       onDone?.(right, figure.spots.length);
     }
   }
@@ -477,6 +488,9 @@ function LabelBoard({ figure, onDone }: { figure: LessonFigure; onDone?: (right:
             </Text>
             <Button label="Again" size="sm" variant="secondary" onPress={restart} />
           </View>
+          <Text style={styles.muted}>
+            {earnedXp === null ? 'Adding XP…' : earnedXp > 0 ? `+${earnedXp} XP earned` : 'XP already awarded for this round.'}
+          </Text>
         ) : (
           <>
             <Text style={styles.muted}>
