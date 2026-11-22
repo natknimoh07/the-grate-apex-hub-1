@@ -1,8 +1,8 @@
 // GRATEAPEX XP economy — every reward and penalty in one place.
 //
 // Principles (product decisions):
-// - A task is worth 10–50 XP, by importance. Trivial repeated clicks earn
-//   nothing on their own; completing meaningful learning does.
+// - Short tasks are worth 10–50 XP by importance. Longer custom quizzes also
+//   earn XP per answered question, so a long session is worth more than a short one.
 // - Wrong answers in a lesson quiz deduct XP (−2 each). Practising wrong
 //   answers and Review are NOT penalised: forgetting is expected there and
 //   remediation should never cost the learner.
@@ -20,7 +20,7 @@ export const XP_RULES = {
   lessonQuiz: { completion: 20, bonusAt90: 20, bonusAt75: 10, wrongPenalty: 2 },
   topicQuiz: { completion: 30, bonusAt90: 20, bonusAt75: 10, wrongPenalty: 2 },
   // Custom quiz builder runs are real quizzes, but remain penalty free like practice.
-  customQuiz: { completion: 20, bonusAt90: 20, bonusAt75: 10 },
+  customQuiz: { completion: 10, perQuestion: 1, bonusAt90: 20, bonusAt75: 10 },
   practice: { completion: 10 },
   review: { base: 15, perRecalledDue: 2, max: 50 },
   apex: { completion: 20, bonusAt90: 30, bonusAt75: 20, bonusAt50: 10 },
@@ -96,6 +96,10 @@ export function quizXp(input: {
   if (input.kind === 'custom') {
     if (input.answered <= 0) return finish([], multiplier);
     const lines: XpLine[] = [{ label: 'Custom quiz completed', amount: XP_RULES.customQuiz.completion }];
+    lines.push({
+      label: `${input.answered} question${input.answered === 1 ? '' : 's'} answered × ${XP_RULES.customQuiz.perQuestion} XP`,
+      amount: input.answered * XP_RULES.customQuiz.perQuestion,
+    });
     if (percent >= 90) lines.push({ label: 'Score 90%+', amount: XP_RULES.customQuiz.bonusAt90 });
     else if (percent >= 75) lines.push({ label: 'Score 75%+', amount: XP_RULES.customQuiz.bonusAt75 });
     return finish(lines, multiplier);
