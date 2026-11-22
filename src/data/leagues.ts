@@ -271,7 +271,12 @@ async function serverTierRows(week: string, tier: number, me: string): Promise<L
     const token = await auth.currentUser?.getIdToken();
     if (!token) return null;
     const response = await fetch(`${API_BASE}/api/league?week=${week}&tier=${tier}`, { headers: { Authorization: `Bearer ${token}` } });
-    if (!response.ok) return null;
+    if (!response.ok) {
+      const body = await response.json().catch(() => null) as { code?: unknown } | null;
+      if (body?.code === 'live-backup-not-configured') throw new Error('The league backup needs a server setting. Please ask the administrator to check Vercel.');
+      if (body?.code === 'live-backup-unavailable') throw new Error('The league backup is not responding. Your progress is kept; try again later.');
+      return null;
+    }
     const body = (await response.json()) as { rows?: { userId?: unknown; username?: unknown; weeklyXp?: unknown }[] };
     if (!Array.isArray(body.rows)) return null;
     return body.rows.map((row) => ({
@@ -293,7 +298,7 @@ const LEAGUE_REUSE_MS = 10 * 60_000;
 // When Firebase's daily free reads run out it keeps retrying instead of failing, which left the
 // league on "Loading…" (2026-10-26): give up after a while with a message instead.
 const LEAGUE_TIMEOUT_MS = 25_000;
-const LEAGUE_BUSY = 'The league can’t be loaded right now (the app has reached today’s database limit). It will be back within a few hours, and your place is kept.';
+const LEAGUE_BUSY = 'The league is taking longer than expected. Your place is kept; please try again soon.';
 
 function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
   return new Promise<T>((resolve, reject) => {

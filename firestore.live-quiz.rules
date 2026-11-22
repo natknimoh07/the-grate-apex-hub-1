@@ -44,7 +44,8 @@ service cloud.firestore {
     match /xpLedgers/{uid} {
       allow read: if signedIn() && request.auth.uid == uid;
       allow create, update: if signedIn() && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'streakFreezes', 'freezeWeeks', 'lostStreak', 'savedAt', 'updatedAt']);
+        && request.resource.data.keys().hasOnly(['xp', 'xpEvents', 'xpSeq', 'streak', 'lastActivityDate', 'streakFreezes', 'freezeWeeks', 'lostStreak', 'lessonProgress', 'savedAt', 'updatedAt'])
+        && (!('lessonProgress' in request.resource.data) || request.resource.data.lessonProgress is map);
       allow delete: if false;
     }
 

@@ -1,4 +1,4 @@
-import { doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { useSyncExternalStore } from 'react';
 
 import { findLesson, getSubjectTopics } from '@/data/curriculum';
@@ -467,12 +467,27 @@ export function watchCloudProgress(userId: string): () => void {
   let stopPrimaryProgress: (() => void) | null = null;
   const startFallbackXp = () => {
     if (stopFallbackXp) return;
-    stopFallbackXp = watchCloudXpLedger(userId, (ledger) => {
+    stopFallbackXp = watchCloudXpLedger(userId, (ledger, completedLessons) => {
       void ensureProgressLoaded().then(async () => {
         if ((await getAuthenticatedLearningUserId()) !== userId) return;
         const before = `${progress.xp}|${progress.cloudSeq}`;
         applyCloudLedger(ledger);
-        if (before === `${progress.xp}|${progress.cloudSeq}`) return;
+        let changed = before !== `${progress.xp}|${progress.cloudSeq}`;
+        for (const row of completedLessons) {
+          if (!findLesson(row.lessonId) && !isLegacyLessonId(row.lessonId)) continue;
+          if (!progress.completedLessons.includes(row.lessonId)) {
+            progress.completedLessons.push(row.lessonId);
+            changed = true;
+          }
+          const localCompletedAt = progress.lessonCompletedAt[row.lessonId];
+          if (row.completedAt && (!localCompletedAt || row.completedAt < localCompletedAt)) {
+            progress.lessonCompletedAt[row.lessonId] = row.completedAt;
+            changed = true;
+          }
+        }
+        if (!changed) return;
+        progress.lessonsCompleted = progress.completedLessons.length;
+        syncSubjectProgress();
         await saveProgress();
         notify();
       });
@@ -515,9 +530,41 @@ export function watchCloudProgress(userId: string): () => void {
         stopPrimaryProgress?.();
         stopPrimaryProgress = null;
         if (isPrimaryFirestoreQuotaError(error)) void activateLiveDataFailover('quota-exceeded').catch((fallbackError) => console.warn('Could not activate the Live project XP backup:', fallbackError));
-      }
+      } // offline or signed out: the sync on return still runs
     );
   };
+  const stopCompletions = onSnapshot(
+    collection(db, 'progress', userId, 'completions'),
+    (snap) => {
+      if (snap.metadata.fromCache) return;
+      void ensureProgressLoaded().then(async () => {
+        if ((await getAuthenticatedLearningUserId()) !== userId) return;
+        let changed = false;
+        for (const item of snap.docs) {
+          const lessonId = item.id;
+          const completedAt = Number(item.data().completedAt) || 0;
+          if ((!findLesson(lessonId) && !isLegacyLessonId(lessonId)) || !completedAt) continue;
+          if (!progress.completedLessons.includes(lessonId)) {
+            progress.completedLessons.push(lessonId);
+            changed = true;
+          }
+          const localCompletedAt = progress.lessonCompletedAt[lessonId];
+          if (!localCompletedAt || completedAt < localCompletedAt) {
+            progress.lessonCompletedAt[lessonId] = completedAt;
+            changed = true;
+          }
+        }
+        if (!changed) return;
+        progress.lessonsCompleted = progress.completedLessons.length;
+        syncSubjectProgress();
+        await saveProgress();
+        notify();
+      });
+    },
+    (error) => {
+      if (isPrimaryFirestoreQuotaError(error)) void activateLiveDataFailover('quota-exceeded').catch((fallbackError) => console.warn('Could not activate the Live project XP backup:', fallbackError));
+    }
+  );
   const stopFailoverWatch = watchLiveDataFailover((active) => {
     fallbackActive = active;
     if (active) {
@@ -530,15 +577,18 @@ export function watchCloudProgress(userId: string): () => void {
       startPrimaryProgress();
     }
   }, () => {
+    // If the backup's status cannot be read, keep using the current primary path.
     if (!fallbackActive) startPrimaryProgress();
   });
   return () => {
     stopPrimaryProgress?.();
+    stopCompletions();
     stopFailoverWatch();
     stopFallbackXp?.();
     if (timer) clearTimeout(timer);
   };
 }
+
 function ensureProgressLoaded() {
   if (!progressLoadPromise) progressLoadPromise = loadProgress();
   return progressLoadPromise;

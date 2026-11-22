@@ -112,6 +112,10 @@ export default async function handler(req, res) {
     const rows = await entry.rows;
     return res.status(200).json({ week, tier, at: entry.at, rows: rows.map(({ league: _league, ...row }) => row) });
   } catch (error) {
+    if (isQuotaError(error) && !liveAdmin) {
+      console.error('Live league failover is unavailable: LIVE_QUIZ_FIREBASE_SERVICE_ACCOUNT is missing or invalid.');
+      return res.status(503).json({ error: 'The league backup needs a server setting. Please ask the administrator to check Vercel.', code: 'live-backup-not-configured' });
+    }
     if (isQuotaError(error) && liveAdmin) {
       try {
         await activateLiveFailover('primary-firestore-quota-exceeded');
@@ -119,6 +123,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ week, tier, at: Date.now(), rows, source: 'grate-apex-live' });
       } catch (fallbackError) {
         console.error('Live league failover failed:', fallbackError);
+        return res.status(502).json({ error: 'The league backup is not responding. Your progress is kept; try again later.', code: 'live-backup-unavailable' });
       }
     }
     console.error('League table failed:', error);

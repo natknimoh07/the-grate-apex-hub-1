@@ -128,6 +128,70 @@ const LEARNING_EVENT_LIMIT = 1500;
 const mirroredXpSeq = new Map<string, number>();
 
 const emptyCloudLedger = (): CloudLedger => ({ xp: 0, xpEvents: {}, xpSeq: 0 });
+const MAX_FALLBACK_LESSONS = 2000;
+const mirroredLessonProgress = new Map<string, string>();
+
+function lessonProgressMap(value: unknown): Record<string, number | null> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  return Object.fromEntries(Object.entries(value as Record<string, unknown>)
+    .filter(([id, at]) => id.length > 0 && id.length <= 160 && (at === null || (typeof at === 'number' && Number.isFinite(at) && at >= 0)))
+    .slice(-MAX_FALLBACK_LESSONS)) as Record<string, number | null>;
+}
+
+function lessonProgressRows(value: unknown): CloudLessonRow[] {
+  return Object.entries(lessonProgressMap(value)).map(([lessonId, completedAt]) => ({ lessonId, completedAt }));
+}
+
+function mergeLessonProgress(current: unknown, incoming: readonly { lessonId: string; completedAt?: number | null }[]) {
+  const merged = lessonProgressMap(current);
+  for (const row of incoming) {
+    if (typeof row.lessonId !== 'string' || !row.lessonId || row.lessonId.length > 160) continue;
+    const at = typeof row.completedAt === 'number' && Number.isFinite(row.completedAt) && row.completedAt > 0 ? Math.round(row.completedAt) : null;
+    if (!(row.lessonId in merged)) merged[row.lessonId] = at;
+    else if (at !== null && (merged[row.lessonId] === null || at < merged[row.lessonId]!)) merged[row.lessonId] = at;
+  }
+  const entries = Object.entries(merged);
+  return Object.fromEntries(entries.slice(-MAX_FALLBACK_LESSONS));
+}
+
+function sameLessonProgress(left: Record<string, number | null>, right: Record<string, number | null>) {
+  const a = Object.keys(left).sort();
+  const b = Object.keys(right).sort();
+  return a.length === b.length && a.every((key, index) => key === b[index] && left[key] === right[key]);
+}
+
+async function mirrorLessonProgressToLiveProject(userId: string, rows: readonly CloudLessonRow[]) {
+  if (!liveQuizFirebaseConfigured || rows.length === 0) return;
+  const incoming = mergeLessonProgress({}, rows);
+  const signature = JSON.stringify(Object.entries(incoming).sort(([a], [b]) => a.localeCompare(b)));
+  if (mirroredLessonProgress.get(userId) === signature) return;
+  await ensureLiveQuizSignIn();
+  const ref = doc(liveQuizDb, 'xpLedgers', userId);
+  await runTransaction(liveQuizDb, async (transaction) => {
+    const current = await transaction.get(ref);
+    const currentData = current.data() ?? {};
+    const saved = lessonProgressMap(currentData.lessonProgress);
+    const merged = mergeLessonProgress(saved, rows);
+    if (!sameLessonProgress(saved, merged)) transaction.set(ref, { lessonProgress: merged, updatedAt: Date.now() }, { mergeFields: ['lessonProgress', 'updatedAt'] });
+  });
+  mirroredLessonProgress.set(userId, signature);
+}
+
+async function saveFallbackLearningProgress(userId: string, completedLessons: readonly { lessonId: string; completedAt?: number | null }[], stats: CloudLearningStats) {
+  await ensureLiveQuizSignIn();
+  const ref = doc(liveQuizDb, 'xpLedgers', userId);
+  let savedLessonProgress: Record<string, number | null> = {};
+  await runTransaction(liveQuizDb, async (transaction) => {
+    const current = await transaction.get(ref);
+    const currentData = current.data() ?? {};
+    const lessonProgress = mergeLessonProgress(currentData.lessonProgress, completedLessons);
+    transaction.set(ref, { lessonProgress, ...summaryFields(stats), updatedAt: Date.now() }, {
+      mergeFields: ['lessonProgress', 'streak', 'lastActivityDate', 'savedAt', 'updatedAt', ...Object.keys(streakFields(stats))],
+    });
+    savedLessonProgress = lessonProgress;
+  });
+  mirroredLessonProgress.set(userId, JSON.stringify(Object.entries(savedLessonProgress).sort(([a], [b]) => a.localeCompare(b))));
+}
 
 async function loadFallbackXpLedger(userId: string) {
   await ensureLiveQuizSignIn();
@@ -274,14 +338,6 @@ export async function loadCloudProgress(): Promise<CloudProgress | null> {
 
     const d = snap.data() || {};
     const ledger = cloudLedgerOf(d);
-    await mirrorXpLedgerToLiveProject(userId, ledger, {
-      total_xp: ledger.xp,
-      current_streak: typeof d.streak === 'number' ? d.streak : streakFromDays(d.days),
-      last_activity_date: typeof d.lastActivityDate === 'string' ? d.lastActivityDate : null,
-      streak_freezes: Number(d.streakFreezes) || 0,
-      freeze_weeks: Array.isArray(d.freezeWeeks) ? d.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string') : [],
-      lost_streak: d.lostStreak ?? null,
-    }).catch((error) => console.warn('Could not refresh the XP backup:', error));
     // This app's own streak field, else the current streak from the original
     // app's daily activity (not the number of days ever studied).
     const streak = typeof d.streak === 'number' ? d.streak : streakFromDays(d.days);
@@ -301,13 +357,21 @@ export async function loadCloudProgress(): Promise<CloudProgress | null> {
       stored ? [...stored].map(([id, value]) => ({ id, data: value })) : [],
       d.lessons
     );
+    const stats: CloudLearningStats = {
+      total_xp: ledger.xp,
+      current_streak: typeof d.streak === 'number' ? d.streak : streakFromDays(d.days),
+      last_activity_date: typeof d.lastActivityDate === 'string' ? d.lastActivityDate : null,
+      streak_freezes: Number(d.streakFreezes) || 0,
+      freeze_weeks: Array.isArray(d.freezeWeeks) ? d.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string') : [],
+      lost_streak: d.lostStreak ?? null,
+    };
+    await Promise.all([
+      mirrorXpLedgerToLiveProject(userId, ledger, stats).catch((error) => console.warn('Could not refresh the XP backup:', error)),
+      mirrorLessonProgressToLiveProject(userId, completedLessons).catch((error) => console.warn('Could not refresh the lesson-progress backup:', error)),
+    ]);
 
     return {
-      stats: {
-        total_xp: ledger.xp,
-        current_streak: streak,
-        last_activity_date: lastActivity,
-      },
+      stats: { ...stats, current_streak: streak, last_activity_date: lastActivity },
       completedLessons,
       streak: 'streakFreezes' in d || 'freezeWeeks' in d || 'lostStreak' in d
         ? {
@@ -344,7 +408,7 @@ async function fallbackCloudProgress(userId: string): Promise<CloudProgress> {
       freeze_weeks: Array.isArray(d.freezeWeeks) ? d.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string') : [],
       lost_streak: d.lostStreak ?? null,
     },
-    completedLessons: [],
+    completedLessons: lessonProgressRows(d.lessonProgress),
     streak: {
       freezes: Number(d.streakFreezes) || 0,
       freezeWeeks: Array.isArray(d.freezeWeeks) ? d.freezeWeeks.filter((week: unknown): week is string => typeof week === 'string') : [],
@@ -355,7 +419,7 @@ async function fallbackCloudProgress(userId: string): Promise<CloudProgress> {
 }
 
 /** Live XP updates after the account-wide quota switch has moved the ledger. */
-export function watchCloudXpLedger(userId: string, onChange: (ledger: CloudLedger) => void, onError?: (error: Error) => void) {
+export function watchCloudXpLedger(userId: string, onChange: (ledger: CloudLedger, completedLessons: CloudLessonRow[]) => void, onError?: (error: Error) => void) {
   let active = true;
   let stop: (() => void) | null = null;
   void ensureLiveQuizSignIn()
@@ -363,7 +427,8 @@ export function watchCloudXpLedger(userId: string, onChange: (ledger: CloudLedge
       if (!active) return;
       stop = onSnapshot(doc(liveQuizDb, 'xpLedgers', userId), (snapshot) => {
         if (snapshot.metadata.fromCache) return;
-        onChange(cloudLedgerOf(snapshot.data()));
+        const data = snapshot.data();
+        onChange(cloudLedgerOf(data), lessonProgressRows(data?.lessonProgress));
       }, (error) => onError?.(error));
     })
     .catch((error) => onError?.(error instanceof Error ? error : new Error('Could not connect to the XP backup.')));
@@ -510,6 +575,15 @@ export async function saveCloudProgress(
 ) {
   const userId = await getUserId();
   if (!userId) return;
+  const fallbackActive = await isLiveDataFailoverActive().catch(() => false);
+  if (fallbackActive) {
+    try {
+      await saveFallbackLearningProgress(userId, completedLessons, stats);
+    } catch (error) {
+      console.warn('Could not save learning progress to the Live project:', error);
+    }
+    return;
+  }
 
   try {
     // Only this app's own fields, merged: the shared `lessons` map is not written, and the
@@ -539,6 +613,10 @@ export async function saveCloudProgress(
         await batch.commit();
       }
       rememberCompletions(userId, writes);
+      await mirrorLessonProgressToLiveProject(userId, [
+        ...[...stored].map(([lessonId, value]) => ({ lessonId, completedAt: value.completedAt || null })),
+        ...completedLessons.map((lesson) => ({ lessonId: lesson.lessonId, completedAt: lesson.completedAt ?? null })),
+      ]).catch((error) => console.warn('Could not refresh the lesson-progress backup:', error));
       return;
     }
 
@@ -547,7 +625,21 @@ export async function saveCloudProgress(
     const snap = await getDoc(progressDocRef);
     // Never the original app's own lessons: that map holds its section counts.
     await setDoc(progressDocRef, { lessons: mergeAppLessons(snap.data()?.lessons, completedLessons.filter((lesson) => !isLegacyLessonId(lesson.lessonId))) }, { merge: true });
+    await mirrorLessonProgressToLiveProject(userId, [
+      ...readCompletions([], snap.data()?.lessons),
+      ...completedLessons.map((lesson) => ({ lessonId: lesson.lessonId, completedAt: lesson.completedAt ?? null })),
+    ])
+      .catch((error) => console.warn('Could not refresh the lesson-progress backup:', error));
   } catch (error) {
+    if (isPrimaryFirestoreQuotaError(error)) {
+      try {
+        await activateLiveDataFailover('quota-exceeded');
+        await saveFallbackLearningProgress(userId, completedLessons, stats);
+        return;
+      } catch (fallbackError) {
+        console.warn('Could not save learning progress to the Live project:', fallbackError);
+      }
+    }
     console.warn('Could not save learning progress to Firestore:', error);
   }
 }
