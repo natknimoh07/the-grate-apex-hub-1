@@ -36,6 +36,13 @@ describe('3D atlas wiring', () => {
     assert.ok(rule, 'no Cache-Control rule for /atlas/*.glb');
     assert.match(rule.headers.find((h) => h.key === 'Cache-Control')?.value ?? '', /max-age=31536000/);
   });
+  it('the atlas starts the first model early, with the current model version, and keeps its libraries cached', () => {
+    const html = read('public/atlas/anatomy.html');
+    const version = /const MODEL_VERSION = '(\d+)'/.exec(html)?.[1];
+    assert.equal(/SkeletalSystem100\.glb\?m=(\d+)'/.exec(html)?.[1], version, 'the early model download must use the same ?m= as MODEL_VERSION, or the model is downloaded twice');
+    assert.match(html, /rel="modulepreload" href="\.\/vendor\/three\/build\/three\.module\.min\.js"/);
+    assert.ok((vercel.headers ?? []).some((r) => r.source === '/atlas/vendor/(.*)'), 'no Cache-Control rule for /atlas/vendor');
+  });
   it('the atlas asks for models with the current model version', () => {
     const html = read('public/atlas/anatomy.html');
     assert.match(html, /f \+ '\?m=' \+ MODEL_VERSION/, 'model addresses must end in ?m=<MODEL_VERSION>');

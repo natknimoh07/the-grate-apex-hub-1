@@ -888,6 +888,42 @@
       #hint { top: 50%; }
     }
   </style>
+  <!-- Speed: the 3D libraries import each other in layers, so without these hints the browser finds them one layer
+       at a time (a round trip each). Listing them lets it fetch them all at once, together with the first model. -->
+  <link rel="modulepreload" href="./vendor/three/build/three.module.min.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/controls/OrbitControls.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/loaders/GLTFLoader.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/utils/BufferGeometryUtils.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/libs/meshopt_decoder.module.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/environments/RoomEnvironment.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/postprocessing/EffectComposer.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/postprocessing/RenderPass.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/postprocessing/GTAOPass.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/postprocessing/OutputPass.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/postprocessing/Pass.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/postprocessing/ShaderPass.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/postprocessing/MaskPass.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/shaders/CopyShader.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/shaders/GTAOShader.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/shaders/PoissonDenoiseShader.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/shaders/OutputShader.js">
+  <link rel="modulepreload" href="./vendor/three/examples/jsm/math/SimplexNoise.js">
+  <script>
+    // Start downloading the first model (the skeleton) now, while the libraries above load, instead of after them.
+    // Same address the viewer asks for later (see MODEL_VERSION / MODEL_DIR below), so it is downloaded only once.
+    (function () {
+      try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('base')) return;
+        var quality = q.get('quality');
+        var lite = quality ? quality === 'lite' : matchMedia('(pointer: coarse)').matches;
+        var link = document.createElement('link');
+        link.rel = 'preload'; link.as = 'fetch'; link.crossOrigin = 'anonymous';
+        link.href = './' + (lite ? 'lite/' : '') + 'SkeletalSystem100.glb?m=1';
+        document.head.appendChild(link);
+      } catch (e) { }
+    })();
+  </script>
   <script type="importmap">
 { "imports": {
     "three": "./vendor/three/build/three.module.min.js",
