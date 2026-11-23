@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet } from '@/components/ui/sheet';
 import { Text } from '@/components/ui/text';
 import { Type, type ThemeColors } from '@/constants/theme';
-import { LEAGUE_TIERS, loadLeague, type LeagueView, savedLeague, saveWeeklyLeagueXp, weekKey } from '@/data/leagues';
+import { LEAGUE_TIERS, loadLeague, requestLeagueSettlement, type LeagueView, savedLeague, saveWeeklyLeagueXp, weekKey } from '@/data/leagues';
 import { markNotificationsRead, type AppNotification } from '@/data/notifications';
 import { useProgress } from '@/data/progress';
 import { useAuth } from '@/hooks/use-auth';
@@ -84,7 +84,21 @@ export function LeaguePromotionWatcher() {
     const check = async () => {
       try {
         const saved = savedLeague(league, week);
-        const promotion = promotionOf(saved.settled ? saved : await loadLeague());
+        let view: Pick<LeagueView, 'tier' | 'prev'> | typeof saved;
+        if (saved.settled) {
+          view = saved;
+        } else {
+          const before = await loadLeague();
+          if (before.settling) {
+            // The scheduled server job is the normal path. If it missed, any signed-in
+            // learner can safely ask the same server calculation to finish the week.
+            await requestLeagueSettlement();
+            view = await loadLeague({ fresh: true });
+          } else {
+            view = before;
+          }
+        }
+        const promotion = promotionOf(view);
         if (saved.settled) void saveWeeklyLeagueXp(league, username);
         if (!live || !promotion) return;
         const tier = LEAGUE_TIERS[promotion.tier];

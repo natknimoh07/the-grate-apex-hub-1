@@ -1,5 +1,6 @@
 // GET /api/leagues   (run by Vercel Cron on Mondays at 00:00 UTC, midnight in Ghana; see vercel.json)
 //   Authorization: Bearer <CRON_SECRET>      (Vercel adds this itself when CRON_SECRET is set)
+//   Signed-in learners may also request the most recently ended week if the cron missed it.
 //   ?dry=1               count who WOULD move, change nothing
 //   ?week=YYYY-MM-DD     settle that week (its Monday) instead of the one that just ended
 //
@@ -16,6 +17,24 @@
 import { adminToken, serviceAccount } from './_admin.mjs';
 import { DB, encode, firestore, leagueTableWrites, lifetimeXp, savedWeeklyXp, usersWhere, weeklyContributionTotal } from './_league-store.mjs';
 import { leagueFinalPlaces, leagueWeek, nextLeagueTier, settledLeagueFix } from './_push-logic.mjs';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
+
+const PROJECT = 'grate-apex';
+const KEYS = createRemoteJWKSet(new URL('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'));
+
+/** Vercel's cron uses CRON_SECRET; a signed-in app may also request a missed settlement. */
+async function isAuthorized(req) {
+  const authorization = String(req.headers.authorization ?? '');
+  const secret = process.env.CRON_SECRET;
+  if (secret && authorization === `Bearer ${secret}`) return 'cron';
+  const token = authorization.replace(/^Bearer\s+/i, '');
+  try {
+    await jwtVerify(token, KEYS, { issuer: `https://securetoken.google.com/${PROJECT}`, audience: PROJECT });
+    return 'learner';
+  } catch {
+    return null;
+  }
+}
 
 /** Settles one finished week. Returns what changed (or would, when dry). */
 export async function settleLeagueWeek(call, week, newWeek, dry) {
@@ -99,15 +118,16 @@ export async function settleLeagueWeek(call, week, newWeek, dry) {
 
 export default async function handler(req, res) {
   res.setHeader('cache-control', 'no-store');
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return res.status(503).json({ error: 'Set CRON_SECRET in Vercel first.' });
-  if (req.headers.authorization !== `Bearer ${secret}`) return res.status(401).json({ error: 'Not allowed.' });
+  if (req.method !== 'GET') return res.status(405).json({ error: 'GET only.' });
+  const authorization = await isAuthorized(req);
+  if (!authorization) return res.status(401).json({ error: 'Not allowed.' });
   const account = serviceAccount();
   if (!account && !process.env.FIRESTORE_EMULATOR_HOST) return res.status(503).json({ error: 'Set FIREBASE_SERVICE_ACCOUNT in Vercel first.' });
 
   const now = Date.now();
   const newWeek = leagueWeek(now);
   const asked = typeof req.query?.week === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(req.query.week) ? req.query.week : null;
+  if (authorization === 'learner' && asked) return res.status(403).json({ error: 'Learners can only settle the most recently ended week.' });
   const week = asked ?? leagueWeek(now - 7 * 86_400_000);
   if (week >= newWeek) return res.status(400).json({ error: `The week of ${week} has not ended yet.` });
   try {

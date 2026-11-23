@@ -338,6 +338,18 @@ export function savedLeague(value: unknown, week = weekKey()): { settled: boolea
   return { settled: !recheck, tier: entry.tier, prev: entry.prev && entry.prev.week !== week ? entry.prev : null };
 }
 
+/** Ask the server to recover a missed end-of-week cron run. It verifies the Firebase ID token. */
+export async function requestLeagueSettlement() {
+  const token = await auth.currentUser?.getIdToken();
+  if (!token) throw new Error('Sign in to settle the league week.');
+  const response = await fetch(`${API_BASE}/api/leagues`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null) as { error?: unknown } | null;
+    throw new Error(typeof body?.error === 'string' ? body.error : 'The league could not be settled yet.');
+  }
+  return response.json() as Promise<{ week: string; newWeek: string }>;
+}
+
 /**
  * Keeps this week's XP on the learner's own league entry and in the shared table up to
  * date (others' league tables read them), with no reads: the entry comes from the live
