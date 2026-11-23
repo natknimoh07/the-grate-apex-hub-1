@@ -2197,19 +2197,24 @@ bool inRegion(vec3 p) {
         if (loop.length >= 3 && v === start) loops.push(loop);
       }
       if (!loops.length) return 0;
-      const count = pos.count + loops.length;
-      const P = new Float32Array(count * 3); P.set(pos.array.subarray(0, pos.count * 3));
-      const N = nrm ? new Float32Array(count * 3) : null; if (N) N.set(nrm.array.subarray(0, nrm.count * 3));
-      const U = uv ? new Float32Array(count * 2) : null; if (U) U.set(uv.array.subarray(0, uv.count * 2));
+      // The model stores positions/normals compressed (and interleaved), so they are read one value at a time
+      // (getX/getY...) and written back as plain Float32 arrays.
+      const n0 = pos.count, count = n0 + loops.length;
+      const P = new Float32Array(count * 3);
+      for (let i = 0; i < n0; i++) { P[i * 3] = pos.getX(i); P[i * 3 + 1] = pos.getY(i); P[i * 3 + 2] = pos.getZ(i); }
+      const N = nrm ? new Float32Array(count * 3) : null;
+      if (N) for (let i = 0; i < n0; i++) { N[i * 3] = nrm.getX(i); N[i * 3 + 1] = nrm.getY(i); N[i * 3 + 2] = nrm.getZ(i); }
+      const U = uv ? new Float32Array(count * 2) : null;
+      if (U) for (let i = 0; i < n0; i++) { U[i * 2] = uv.getX(i); U[i * 2 + 1] = uv.getY(i); }
       const faces = [];
       loops.forEach((loop, j) => {
-        const c = pos.count + j, n = loop.length;
+        const c = n0 + j, n = loop.length;
         let cx = 0, cy = 0, cz = 0, nx = 0, ny = 0, nz = 0, ux = 0, uy = 0;
         for (const w of loop) {
           const i = rep[w];
-          cx += pos.getX(i); cy += pos.getY(i); cz += pos.getZ(i);
-          if (N) { nx += nrm.getX(i); ny += nrm.getY(i); nz += nrm.getZ(i); }
-          if (U) { ux += uv.getX(i); uy += uv.getY(i); }
+          cx += P[i * 3]; cy += P[i * 3 + 1]; cz += P[i * 3 + 2];
+          if (N) { nx += N[i * 3]; ny += N[i * 3 + 1]; nz += N[i * 3 + 2]; }
+          if (U) { ux += U[i * 2]; uy += U[i * 2 + 1]; }
         }
         P[c * 3] = cx / n; P[c * 3 + 1] = cy / n; P[c * 3 + 2] = cz / n;
         if (N) { const len = Math.hypot(nx, ny, nz) || 1; N[c * 3] = nx / len; N[c * 3 + 1] = ny / len; N[c * 3 + 2] = nz / len; }
@@ -2218,9 +2223,9 @@ bool inRegion(vec3 p) {
       });
       const idx = new Uint32Array(oldIndex.length + faces.length);
       idx.set(oldIndex); idx.set(faces, oldIndex.length);
-      geo.setAttribute('position', new pos.constructor(P, 3));
-      if (N) geo.setAttribute('normal', new nrm.constructor(N, 3));
-      if (U) geo.setAttribute('uv', new uv.constructor(U, 2));
+      geo.setAttribute('position', new THREE.BufferAttribute(P, 3));
+      if (N) geo.setAttribute('normal', new THREE.BufferAttribute(N, 3));
+      if (U) geo.setAttribute('uv', new THREE.BufferAttribute(U, 2));
       geo.setIndex(new THREE.BufferAttribute(idx, 1));
       return loops.length;
     }
@@ -2332,6 +2337,7 @@ bool inRegion(vec3 p) {
             if (/\.j(-mesh)?$/i.test(rawName(o))) { drops.push(o); return; }
             if (s.keep && !s.keep.includes(o.name)) { drops.push(o); return; }   // only the listed structures
             if (s.id === 'visceral' && /^sigmoid[ _]colon$/i.test(o.name || '')) { drops.push(o); return; }   // removed: it stopped short of the midline and the model has no rectum
+            if (s.id === 'visceral' && /^stomach$/i.test(o.name || '')) fillOpenHoles(o.geometry);   // the source stomach has gaps in its wall: close them
             let owner = s;
             for (let n = o; kids.length && n && n !== s.group; n = n.parent) {
               const hit = kids.find(c => (c.match && c.match.test(rawName(n))) || (c.node && c.node.test(n.name || '')));
@@ -2339,7 +2345,10 @@ bool inRegion(vec3 p) {
             }
             if (owner.tube) o.geometry = ribbonToTube(o.geometry, owner.tube / (Math.abs(o.getWorldScale(new THREE.Vector3()).x) || 1));   // the tube's radius is in metres; the mesh is scaled
             const d = describe(o);
-            o.userData.plainMat = owner.mat;
+            // In the skeleton's single-colour view, cartilages (costal, nasal, laryngeal) keep their own blue so they are not mistaken for bone.
+            let cartilage = false;
+            if (owner.id === 'skeletal') for (let n = o; n && n !== s.group.parent; n = n.parent) { if (/cartilage/i.test((n.userData && n.userData.name) || n.name || '')) { cartilage = true; break; } }
+            o.userData.plainMat = cartilage ? paintMat(0x3d9be9, owner) : owner.mat;
             o.userData.paintMat = owner.paint ? paintMat(owner.paint(d.name, o), owner) : owner.mat;
             o.userData.naturalMat = owner.naturalPaint ? paintMat(owner.naturalPaint(d.name, o), owner) : o.userData.paintMat;
             const mat = owner.mode === 'natural' ? o.userData.naturalMat : owner.coded === false ? o.userData.plainMat : o.userData.paintMat;
