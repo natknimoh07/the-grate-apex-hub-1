@@ -68,7 +68,7 @@ export const EXPLORE_TEAM: readonly ExploreTeamMember[] = [
   { name: 'Gracious Annor Afriyie', role: 'Co-founder', icon: 'sparkle' },
   { name: 'Evans Agalega', role: 'Co-founder', icon: 'sparkle' },
   { name: 'OrigiNate', role: 'Co-developer / Technical officer', icon: 'profile' },
-  { name: 'Pernellluvsya', role: 'Co-developer / Technical officer', icon: 'profile' },
+  { name: 'Sticky Fingers', role: 'Co-developer / Technical officer', icon: 'profile' },
   { name: 'Kwame Twumasi', role: 'Co-developer / Technical officer', icon: 'profile' },
   { name: 'retr0', role: 'Gameplay director', icon: 'profile' },
   { name: 'Patricia', role: 'Strategic consultant', icon: 'profile' },

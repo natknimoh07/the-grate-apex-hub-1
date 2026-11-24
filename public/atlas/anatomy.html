@@ -338,15 +338,15 @@
 
     .sys .stat.err { color: var(--bad); font-weight: 600; }
 
-    /* peel slider */
-    #peel {
+    /* peel slider (the cross-section slider looks the same) */
+    #peel, #cutPos {
       width: 100%;
       margin: 6px 0 2px;
       accent-color: var(--cobalt);
       height: 28px;
     }
 
-    #peelLabel {
+    #peelLabel, #cutLabel {
       display: inline-block;
       padding: 3px 10px;
       border-radius: 999px;
@@ -730,7 +730,7 @@
       .searchwrap svg { top: 14px; }
       button.btn { min-height: 44px; }
       .iconbtn { width: 40px; height: 40px; }
-      #peel { height: 44px; }
+      #peel, #cutPos { height: 44px; }
       #nav .seg button { padding: 9px 12px; }
       #nav .nt { width: 36px; height: 36px; }
       #results button { padding: 12px 10px; }
@@ -1056,6 +1056,22 @@
           <input id="peel" type="range" min="0" max="6" step="1" value="0"
             aria-label="Peel layers from the outside in" aria-describedby="peelLabel">
           <div id="peelLabel">All layers shown</div>
+        </div>
+      </details>
+
+      <details class="sec explore-only" open>
+        <summary>Cross-section</summary>
+        <div class="body">
+          <label class="sys"><input type="checkbox" id="cutOn"><span class="swatch"
+              style="--c:#e7b9a6"></span><span>Cross-section mode</span><span class="stat">slice the body</span></label>
+          <div id="cutControls" hidden>
+            <div id="cutPlane" class="chips" role="group" aria-label="Cutting plane"></div>
+            <input id="cutPos" type="range" step="0.005" aria-label="Move the cut through the body"
+              aria-describedby="cutLabel">
+            <div id="cutLabel"></div>
+            <p class="organstatus" style="margin:8px 0 4px">Which side to remove</p>
+            <div id="cutSide" class="chips" role="group" aria-label="Which side of the cut to remove"></div>
+          </div>
         </div>
       </details>
 
@@ -1525,6 +1541,11 @@
     // same test on the GPU: discard fragments outside the active region
     const REGION_GLSL = `
 uniform int uRegion; uniform float uLimbSide, uLimbLo, uLimbHi; varying vec3 vRW;
+uniform float uCutOn, uCutD, uCutSide; uniform vec3 uCutN;
+bool cutKeeps(vec3 p) {
+  if (uCutOn < 0.5) return true;
+  return (dot(p, uCutN) - uCutD) * uCutSide <= 0.0;
+}
 bool inRegion(vec3 p) {
   if (uRegion == 0) return true;
   float ax = abs(p.x), y = p.y;
@@ -1541,20 +1562,36 @@ bool inRegion(vec3 p) {
   if (uRegion == 7) return y < 1.00 && !(y >= 0.78 && ax <= 0.135) && onSide;
   return true;
 }`;
+    // Cross-section mode: one flat cut through the body. uCutN is the plane's direction (x, y or z axis), uCutD where it sits
+    // along that axis (metres), uCutSide which half is removed (+1 removes what is above / in front of / left of the cut).
+    // uCutOn is 0 when the mode is off, so every shader keeps the whole body. (Kept out of the region code above, which
+    // tests/atlas-quiz.test.mjs runs on its own without three.js.)
+    const cutOnU = { value: 0 }, cutNU = { value: new THREE.Vector3(0, 1, 0) }, cutDU = { value: 1.2 }, cutSideU = { value: 1 };
     function patchRegion(m) {
       m.onBeforeCompile = sh => {
         sh.uniforms.uRegion = regionU;
         sh.uniforms.uLimbSide = limbSideU;
         sh.uniforms.uLimbLo = limbLoU;
         sh.uniforms.uLimbHi = limbHiU;
+        sh.uniforms.uCutOn = cutOnU;
+        sh.uniforms.uCutN = cutNU;
+        sh.uniforms.uCutD = cutDU;
+        sh.uniforms.uCutSide = cutSideU;
         sh.vertexShader = sh.vertexShader
           .replace('#include <common>', '#include <common>\nvarying vec3 vRW;')
           .replace('#include <begin_vertex>', '#include <begin_vertex>\nvRW = (modelMatrix * vec4(transformed, 1.0)).xyz;');
         sh.fragmentShader = sh.fragmentShader
           .replace('#include <common>', '#include <common>\n' + REGION_GLSL)
-          .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\nif (!inRegion(vRW)) discard;');
+          .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\nif (!inRegion(vRW) || !cutKeeps(vRW)) discard;');
+        // Solid structures are hollow shells, so after a cut you would look into an empty shell. Where a cut shows the inside
+        // (a back face), paint it flat in a lightened copy of the structure's own colour, so the cut face reads as solid tissue.
+        // See-through materials (x-ray, sheets, pins) are left alone.
+        if (!m.transparent) {
+          sh.fragmentShader = sh.fragmentShader.replace('#include <opaque_fragment>',
+            '#include <opaque_fragment>\nif (uCutOn > 0.5 && !gl_FrontFacing) gl_FragColor = vec4(mix(diffuseColor.rgb, vec3(0.96, 0.80, 0.72), 0.4) * 0.92, gl_FragColor.a);');
+        }
       };
-      m.customProgramCacheKey = () => 'region-cut';
+      m.customProgramCacheKey = () => 'region-cut' + (m.transparent ? 't' : '');
       return m;
     }
 
@@ -1913,7 +1950,7 @@ bool inRegion(vec3 p) {
     const xrayEl = document.getElementById('xray');
     xrayEl.addEventListener('change', () => setXray(xrayEl.checked));
     // AO reads depth/normals of every mesh, so it can't see the region cut or translucent layers: pause it then.
-    const aoActive = () => aoEl.checked && !xrayOn && region === 0 && !SYSTEMS.some(s => s.ghost && s.group && s.group.visible);
+    const aoActive = () => aoEl.checked && !xrayOn && region === 0 && !cut.on && !SYSTEMS.some(s => s.ghost && s.group && s.group.visible);
     let lastMove = 0, needRefine = false;
 
     function resize() {
@@ -2602,7 +2639,7 @@ bool inRegion(vec3 p) {
     for (const b of supplyBtns) b.addEventListener('click', () => showSupply(b.dataset.supply));
 
     function updateReveal() {
-      revealBtn.classList.toggle('show', isolated || hidden.size > 0 || region !== 0 || peelLevel !== 0);
+      revealBtn.classList.toggle('show', isolated || hidden.size > 0 || region !== 0 || peelLevel !== 0 || cut.on);
     }
     function showAll() {
       clearSupply(false);
@@ -2610,6 +2647,7 @@ bool inRegion(vec3 p) {
       for (const { mesh } of index) if (mesh) mesh.visible = true;
       hidden.clear(); isolated = false; isoPins = []; setPeel(0); updateReveal(); refreshPins();
       if (region) setRegion(0);
+      if (cut.on) setCut(false);
       applyPelvis();
     }
     function isolate() {
@@ -2750,7 +2788,7 @@ bool inRegion(vec3 p) {
       }
       // Give fascia first priority when it is enabled, so it can be selected over underlying muscles.
 // The general translucent-sheet priority toggle remains available for other ghost layers.
-const hits = ray.intersectObjects(pool, false).filter(h => inRegion(h.point));
+const hits = ray.intersectObjects(pool, false).filter(h => inRegion(h.point) && inCut(h.point));
 
 const fascia = SYSTEMS.find(s => s.id === 'fascia');
 
@@ -2769,6 +2807,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
         const r = s.pinData[i];
         tmp.set(r[2], r[3], r[4]);
         if (region && !inRegion(tmp)) continue;
+        if (!inCut(tmp)) continue;
         const camDist = camera.position.distanceTo(tmp);
         tmp.project(camera);
         if (tmp.z > 1 || tmp.z < -1) continue;
@@ -2928,6 +2967,114 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
       }
       dirty = true;
     }
+
+    /* ---------- cross-section mode ---------- */
+    // One flat cut through the body, drawn on the GPU like the region cut (see cutKeeps in REGION_GLSL). The learner picks the
+    // plane (Horizontal, Front-back, Left-right), slides it through the body and chooses which half to remove. Looking at the
+    // cut face is the point, so the camera moves to face it whenever the plane or the side changes (not while sliding).
+    // The model: x is right (-) to left (+), y is up, z is back (-) to front (+). Ranges come from the landmark extents.
+    const CUT_PLANES = [
+      { id: 'axial', label: 'Horizontal', n: [0, 1, 0], min: 0.02, max: 1.70, def: 1.20,
+        sides: [{ v: 1, label: 'Remove top' }, { v: -1, label: 'Remove bottom' }] },
+      { id: 'coronal', label: 'Front-back', n: [0, 0, 1], min: -0.11, max: 0.13, def: 0.0,
+        sides: [{ v: 1, label: 'Remove front' }, { v: -1, label: 'Remove back' }] },
+      { id: 'sagittal', label: 'Left-right', n: [1, 0, 0], min: -0.30, max: 0.30, def: 0.0,
+        sides: [{ v: 1, label: 'Remove left' }, { v: -1, label: 'Remove right' }] },
+    ];
+    const cutEl = document.getElementById('cutOn');
+    const cutControlsEl = document.getElementById('cutControls');
+    const cutPlaneEl = document.getElementById('cutPlane');
+    const cutSideEl = document.getElementById('cutSide');
+    const cutPosEl = document.getElementById('cutPos');
+    const cutLabelEl = document.getElementById('cutLabel');
+    const cut = { on: false, plane: CUT_PLANES[0], side: 1, pos: CUT_PLANES[0].def };
+    // is a point on the half that is kept? (the same test as cutKeeps in the shader; used for tapping and landmark pins)
+    function inCut(p) {
+      if (!cut.on) return true;
+      const v = cut.plane.n[0] * p.x + cut.plane.n[1] * p.y + cut.plane.n[2] * p.z;
+      return (v - cut.pos) * cut.side <= 0;
+    }
+    function cutLevelName(y) {
+      // REGIONS 1-5 run from the head down; the first one whose upper edge is at or below y is the level
+      const r = REGIONS.find(x => x.id <= 5 && y >= ({ 1: 1.51, 2: 1.40, 3: 1.18, 4: 1.00, 5: 0.78 })[x.id]);
+      return r ? r.label.toLowerCase() : 'legs';
+    }
+    function drawCutLabel() {
+      const p = cut.plane, cm = Math.round(cut.pos * 100);
+      cutLabelEl.textContent = p.id === 'axial'
+        ? `Cut at ${cm} cm from the floor (${cutLevelName(cut.pos)})`
+        : p.id === 'coronal'
+          ? (Math.abs(cm) < 1 ? 'Cut through the middle, front to back' :`Cut ${Math.abs(cm)} cm ${cm > 0 ? 'in front of' : 'behind'} the middle`)
+          : (Math.abs(cm) < 1 ? 'Cut down the midline' : `Cut ${Math.abs(cm)} cm to the ${cm > 0 ? 'left' : 'right'} of the midline`);
+    }
+    function drawCutSideChips() {
+      cutSideEl.replaceChildren();
+      for (const s of cut.plane.sides) {
+        const b = document.createElement('button');
+        b.className = 'chip'; b.type = 'button'; b.textContent = s.label;
+        b.setAttribute('aria-pressed', String(s.v === cut.side));
+        b.onclick = () => { if (s.v !== cut.side) { cut.side = s.v; syncCut(true); } };
+        cutSideEl.appendChild(b);
+      }
+    }
+    // Where to look from so the cut face is seen: from the side that was removed.
+    function faceCut() {
+      const p = cut.plane, s = cut.side;
+      const mid = new THREE.Vector3(0, 0.88, 0);
+      let target, dir, dist;
+      if (p.id === 'axial') { target = new THREE.Vector3(0, cut.pos, 0); dir = new THREE.Vector3(0, s, 0.5); dist = 1.7; }
+      else if (p.id === 'coronal') { target = new THREE.Vector3(0, mid.y, cut.pos); dir = new THREE.Vector3(0, 0.08, s); dist = 3.0; }
+      else { target = new THREE.Vector3(cut.pos, mid.y, 0); dir = new THREE.Vector3(s, 0.08, 0.35); dist = 3.0; }
+      flyTo(target.clone().add(dir.normalize().multiplyScalar(dist)), target);
+    }
+    // refresh the uniforms, the chips and the label; look at the cut when the plane or side changed (move = true)
+    function syncCut(move) {
+      cutOnU.value = cut.on ? 1 : 0;
+      cutNU.value.set(...cut.plane.n);
+      cutDU.value = cut.pos;
+      cutSideU.value = cut.side;
+      cutControlsEl.hidden = !cut.on;
+      for (const [id, b] of cutPlaneBtns) b.setAttribute('aria-pressed', String(id === cut.plane.id));
+      cutPosEl.min = cut.plane.min; cutPosEl.max = cut.plane.max; cutPosEl.value = cut.pos;
+      drawCutLabel(); drawCutSideChips();
+      if (cut.on) {
+        // drop a selection that was on the removed half
+        if (selected) { const c = new THREE.Box3().setFromObject(selected).getCenter(new THREE.Vector3()); if (!inCut(c)) deselect(); }
+        if (selectedPin) { const r = selectedPin.s.pinData[selectedPin.i]; if (!inCut({ x: r[2], y: r[3], z: r[4] })) deselect(); }
+        if (move) faceCut();
+      }
+      cutEl.checked = cut.on;
+      updateReveal(); refreshPins(); dirty = true;
+    }
+    function setCut(on, move = true) {
+      if (cut.on === !!on) { if (!on) cutEl.checked = false; return; }
+      cut.on = !!on;
+      syncCut(cut.on && move);
+    }
+    const cutPlaneBtns = new Map();
+    for (const p of CUT_PLANES) {
+      const b = document.createElement('button');
+      b.className = 'chip'; b.type = 'button'; b.textContent = p.label;
+      b.onclick = () => {
+        if (p === cut.plane) return;
+        cut.plane = p; cut.pos = p.def; cut.side = p.sides[0].v;
+        syncCut(true);
+      };
+      cutPlaneEl.appendChild(b); cutPlaneBtns.set(p.id, b);
+    }
+    cutPosEl.addEventListener('input', () => {
+      cut.pos = Number(cutPosEl.value);
+      cutDU.value = cut.pos;
+      drawCutLabel();
+      if (selected) { const c = new THREE.Box3().setFromObject(selected).getCenter(new THREE.Vector3()); if (!inCut(c)) deselect(); }
+      dirty = true;
+    });
+    cutEl.addEventListener('change', () => setCut(cutEl.checked));
+    // first draw of the menu and shader values (the cut starts off, so nothing else needs refreshing yet)
+    cutNU.value.set(...cut.plane.n); cutDU.value = cut.pos; cutSideU.value = cut.side;
+    for (const [id, b] of cutPlaneBtns) b.setAttribute('aria-pressed', String(id === cut.plane.id));
+    cutPosEl.min = cut.plane.min; cutPosEl.max = cut.plane.max; cutPosEl.value = cut.pos;
+    drawCutLabel(); drawCutSideChips();
 
     /* ---------- search ---------- */
     const q = document.getElementById('q');
@@ -3220,7 +3367,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
 
     function quizEnterScene(s) {
       deselect();
-      showAll();
+      showAll();   // also turns the cross-section off, so a quiz never sees a half-cut body
       for (const x of SYSTEMS) if (x.group) x.group.visible = s.ids.includes(x.id);
       xrayEl.checked = true; setXray(true);
       if (quiz.reg) { limbSide = quiz.side; limbSideU.value = quiz.side; setRegion(quiz.reg, true, quiz.part); }   // only the chosen region (and limb part) is drawn
@@ -3235,6 +3382,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
       applyPelvis();
       xrayEl.checked = sv.xray; setXray(sv.xray);
       limbSide = sv.limbSide; limbSideU.value = sv.limbSide; setRegion(sv.region, true, sv.part);   // the Explore tab's own region, limb side and limb part
+      if (sv.cutOn) setCut(true, false);   // the Explore tab's cross-section, where it was (the camera is left alone)
       refreshPins(); updateReveal(); dirty = true;
     }
 
@@ -3242,7 +3390,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
       if (quiz.active || quiz.starting) return;
       const s = quiz.sys;
       quiz.starting = true; quizStartBtn.disabled = true;
-      quiz.saved = { xray: xrayOn, region, limbSide, part: limbPartIdx, systems: SYSTEMS.map(x => [x, x.input.checked]) };
+      quiz.saved = { xray: xrayOn, region, limbSide, part: limbPartIdx, cutOn: cut.on, systems: SYSTEMS.map(x => [x, x.input.checked]) };
       try {
         const members = s.ids.map(id => SYSTEMS.find(x => x.id === id)).filter(Boolean);
         const todo = members.filter(m => !m.group);

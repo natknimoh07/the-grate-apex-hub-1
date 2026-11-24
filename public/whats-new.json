@@ -2,6 +2,15 @@
   "about": "What is new in each update, shown to learners in the 'Update ready' popup and in Settings → Help → App updates. Newest first. Each update: a unique id, the date, a short title (up to 48 characters) and 1–3 plain points (up to 120 characters each). Add one whenever you push something learners will notice.",
   "updates": [
     {
+      "id": "2026-11-24-atlas-cross-section",
+      "date": "2026-11-24",
+      "title": "Cross-section mode in the 3D atlas",
+      "points": [
+        "Turn on Cross-section, then slice the body horizontally, front-back or left-right.",
+        "Slide the cut through the body and choose which half to remove to see inside."
+      ]
+    },
+    {
       "id": "2026-11-24-atlas-fascia",
       "date": "2026-11-24",
       "title": "Select fascia in the 3D atlas",
