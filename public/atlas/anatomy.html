@@ -525,6 +525,16 @@
     #supplyText strong { color: var(--ink); }
     #supplyText small { display: block; margin-top: 6px; color: var(--muted); font-size: 11.5px; line-height: 1.4; }
 
+    /* origin and insertion of the selected muscle (data in attachments.json) */
+    #attachBox {
+      margin: 0 0 12px; padding: 9px 11px; border-radius: var(--r-sm); background: var(--well); border: 1px solid var(--line);
+      color: var(--ink-2); font-size: 13px; line-height: 1.45;
+    }
+    #attachBox[hidden], #info.pin #attachBox { display: none; }
+    #attachBox p { margin: 0 0 4px; }
+    #attachBox strong { color: var(--ink); }
+    #attachBox small { display: block; margin-top: 4px; color: var(--muted); font-size: 11.5px; line-height: 1.4; }
+
     /* ---------- view controls (dock) ---------- */
     #nav {
       --nb: 40px;
@@ -1081,6 +1091,10 @@
         <p>Vagina and ligaments, female reproductive organs, breasts: HuBMAP Human Reference
           Atlas 3D reference objects (Visible Human
           Female, National Library of Medicine), licensed CC BY 4.0. Positioned and renamed for this viewer.</p>
+        <p>Muscle origins and insertions: written in our own words from OpenStax <em>Anatomy and Physiology</em>
+          (<a data-ext href="https://openstax.org/details/books/anatomy-and-physiology">openstax.org</a>) and
+          <em>Human Anatomy</em> by the ASCCC Open Educational Resources Initiative, both licensed
+          <a data-ext href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
       </details>
     </div>
   </aside>
@@ -1088,6 +1102,7 @@
   <section id="info" class="card" aria-live="polite">
     <h2 id="name"></h2>
     <p id="meta"></p>
+    <div id="attachBox" hidden></div>
     <div id="supplyBox" hidden>
       <div class="supplyBtns" role="group" aria-label="Nerve and blood supply">
         <button class="btn" type="button" data-supply="nerve" aria-pressed="false"><span class="sdot" style="--c:#f2c230"></span>Nerve supply</button>
@@ -2424,6 +2439,7 @@ bool inRegion(vec3 p) {
       metaEl.textContent = [side, note, s.label, onto].filter(Boolean).join(' \u00b7 ');
       info.classList.add('open');
       updateSupplyBox();
+      updateAttachBox();
       refreshPins();
       post({ type: 'select', name, side, system: s.id, ontology: onto });
     }
@@ -2446,6 +2462,44 @@ bool inRegion(vec3 p) {
       post({ type: 'select', kind: 'landmark', name: r[0], side, system: s.id });
     }
     const deselect = () => select(null);
+
+    /* ---------- origin and insertion of the selected muscle ---------- */
+    // attachments.json gives, for a muscle, where it starts (origin) and where it ends (insertion). The text is shown on the info
+    // card; it is only text, so nothing on the model changes. A few entries carry a note (for example "whole muscle").
+    const attachBox = document.getElementById('attachBox');
+    let attachData = null, attachLoad = null;
+    function loadAttach() {
+      if (attachData) return Promise.resolve(attachData);
+      if (!attachLoad) {
+        attachLoad = fetch(BASE + 'attachments.json').then(r => { if (!r.ok) throw new Error('attachments.json ' + r.status); return r.json(); })
+          .then(d => (attachData = d)).catch(err => { console.error(err); attachLoad = null; return null; });
+      }
+      return attachLoad;
+    }
+    function updateAttachBox() {
+      attachBox.hidden = true;
+      attachBox.replaceChildren();
+      const target = selected;
+      loadAttach().then(() => {
+        if (selected !== target) return;   // the learner moved on while it loaded
+        const e = target && attachData && attachData[target.userData.label.name];
+        if (!e) return;
+        for (const [label, text] of [['Origin', e.o], ['Insertion', e.i]]) {
+          const p = document.createElement('p');
+          const b = document.createElement('strong');
+          b.textContent = label + ': ';
+          p.append(b, text);
+          attachBox.append(p);
+        }
+        for (const text of [e.n, 'Source: ' + attachData._source]) {
+          if (!text) continue;
+          const small = document.createElement('small');
+          small.textContent = text;
+          attachBox.append(small);
+        }
+        attachBox.hidden = false;
+      });
+    }
 
     /* ---------- nerve, artery and vein supply of the selected structure ---------- */
     // supply.json gives, for a structure, the text for each kind of supply and the model parts that show it. A button loads the

@@ -1,0 +1,580 @@
+{
+ "_about": "Origin and insertion of muscles for the atlas info card. Keys are model structure names (same as supply.json). o = origin, i = insertion, n = optional note shown under the text (for example when a part of a muscle shows the text of the whole muscle). Wording is our own, from OpenStax Anatomy and Physiology (CC BY 4.0) and Human Anatomy (OERI, ASCCC; CC BY 4.0). Muscles those books give no origin and insertion for are left out. Check any change against the lecture notes or a textbook.",
+ "_source": "OpenStax Anatomy and Physiology (CC BY 4.0); Human Anatomy, ASCCC Open Educational Resources Initiative (CC BY 4.0)",
+ "Acromial part of deltoid muscle": {
+  "o": "Clavicle, acromion and spine of the scapula",
+  "i": "Deltoid tuberosity of the humerus",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Clavicular part of deltoid muscle": {
+  "o": "Clavicle, acromion and spine of the scapula",
+  "i": "Deltoid tuberosity of the humerus",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Scapular spinal part of deltoid muscle": {
+  "o": "Clavicle, acromion and spine of the scapula",
+  "i": "Deltoid tuberosity of the humerus",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Supraspinatus muscle": {
+  "o": "Supraspinous fossa of the scapula",
+  "i": "Greater tubercle of the humerus"
+ },
+ "Infraspinatus muscle": {
+  "o": "Infraspinous fossa of the scapula",
+  "i": "Greater tubercle of the humerus"
+ },
+ "Teres minor muscle": {
+  "o": "Lateral border of the back of the scapula",
+  "i": "Greater tubercle of the humerus"
+ },
+ "Subscapularis muscle": {
+  "o": "Subscapular fossa of the scapula",
+  "i": "Lesser tubercle of the humerus"
+ },
+ "Teres major muscle": {
+  "o": "Back of the scapula",
+  "i": "Intertubercular sulcus of the humerus"
+ },
+ "Latissimus dorsi muscle": {
+  "o": "Vertebrae T7-T12 and lumbar vertebrae, ribs 9-12, iliac crest",
+  "i": "Intertubercular sulcus of the humerus"
+ },
+ "Descending part of trapezius muscle": {
+  "o": "Skull and vertebral column",
+  "i": "Acromion and spine of the scapula; clavicle",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Transverse part of trapezius muscle": {
+  "o": "Skull and vertebral column",
+  "i": "Acromion and spine of the scapula; clavicle",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Ascending part of trapezius muscle": {
+  "o": "Skull and vertebral column",
+  "i": "Acromion and spine of the scapula; clavicle",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Rhomboid major muscle": {
+  "o": "Vertebrae T2-T5",
+  "i": "Medial border of the scapula"
+ },
+ "Rhomboid minor muscle": {
+  "o": "Vertebrae C7 and T1",
+  "i": "Medial border of the scapula"
+ },
+ "Serratus anterior muscle": {
+  "o": "Slips from ribs 1-8 (sometimes 1-9)",
+  "i": "Front of the vertebral border of the scapula"
+ },
+ "Clavicular head of pectoralis major muscle": {
+  "o": "Clavicle, sternum, costal cartilages, external oblique aponeurosis",
+  "i": "Greater tubercle of the humerus (lateral lip of the intertubercular sulcus)",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Sternocostal head of pectoralis major muscle": {
+  "o": "Clavicle, sternum, costal cartilages, external oblique aponeurosis",
+  "i": "Greater tubercle of the humerus (lateral lip of the intertubercular sulcus)",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "(Abdominal part of pectoralis major muscle)": {
+  "o": "Clavicle, sternum, costal cartilages, external oblique aponeurosis",
+  "i": "Greater tubercle of the humerus (lateral lip of the intertubercular sulcus)",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Pectoralis minor muscle": {
+  "o": "Front of ribs 2-4 or 3-5",
+  "i": "Coracoid process of the scapula"
+ },
+ "Long head of biceps brachii": {
+  "o": "Supraglenoid tubercle and coracoid process of the scapula",
+  "i": "Radial tuberosity",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Short head of biceps brachii": {
+  "o": "Supraglenoid tubercle and coracoid process of the scapula",
+  "i": "Radial tuberosity",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Brachialis muscle": {
+  "o": "Front of the lower humerus",
+  "i": "Coronoid process of the ulna"
+ },
+ "Coracobrachialis muscle": {
+  "o": "Coracoid process of the scapula",
+  "i": "Medial shaft of the humerus"
+ },
+ "Long head of triceps brachii": {
+  "o": "Infraglenoid tubercle of the scapula and back of the humerus",
+  "i": "Olecranon of the ulna",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Lateral head of triceps brachii": {
+  "o": "Infraglenoid tubercle of the scapula and back of the humerus",
+  "i": "Olecranon of the ulna",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Medial head of triceps brachii": {
+  "o": "Infraglenoid tubercle of the scapula and back of the humerus",
+  "i": "Olecranon of the ulna",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Anconeus muscle": {
+  "o": "Lateral epicondyle of the humerus",
+  "i": "Lateral side of the olecranon"
+ },
+ "Brachioradialis muscle": {
+  "o": "Lateral supracondylar ridge of the humerus",
+  "i": "Base of the radial styloid process"
+ },
+ "Extensor carpi radialis longus": {
+  "o": "Lateral supracondylar ridge of the humerus",
+  "i": "Base of metacarpal 2"
+ },
+ "Extensor carpi radialis brevis": {
+  "o": "Lateral epicondyle of the humerus",
+  "i": "Base of metacarpal 3"
+ },
+ "Supinator": {
+  "o": "Lateral epicondyle of the humerus and upper ulna",
+  "i": "Upper radius"
+ },
+ "Extensor digitorum": {
+  "o": "Lateral epicondyle of the humerus",
+  "i": "Extensor expansions and distal phalanges of fingers 2-5"
+ },
+ "Extensor digiti minimi": {
+  "o": "Lateral epicondyle of the humerus",
+  "i": "Extensor expansion and distal phalanx of the little finger"
+ },
+ "Humeral head of extensor carpi ulnaris": {
+  "o": "Lateral epicondyle of the humerus and the ulna",
+  "i": "Base of metacarpal 5",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Ulnar head of extensor carpi ulnaris": {
+  "o": "Lateral epicondyle of the humerus and the ulna",
+  "i": "Base of metacarpal 5",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Abductor pollicis longus": {
+  "o": "Radius, ulna and interosseous membrane",
+  "i": "Base of metacarpal 1 and the trapezium"
+ },
+ "Extensor pollicis brevis": {
+  "o": "Radius, ulna and interosseous membrane",
+  "i": "Base of the thumb proximal phalanx"
+ },
+ "Extensor pollicis longus": {
+  "o": "Radius, ulna and interosseous membrane",
+  "i": "Base of the thumb distal phalanx"
+ },
+ "Extensor indicis": {
+  "o": "Lower ulna and interosseous membrane",
+  "i": "Extensor digitorum tendon of the index finger"
+ },
+ "Superficial head of pronator teres": {
+  "o": "Medial epicondyle of the humerus and coronoid process of the ulna",
+  "i": "Lateral surface of the radius",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Deep head of pronator teres": {
+  "o": "Medial epicondyle of the humerus and coronoid process of the ulna",
+  "i": "Lateral surface of the radius",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Flexor carpi radialis": {
+  "o": "Medial epicondyle of the humerus",
+  "i": "Bases of metacarpals 2 and 3"
+ },
+ "Palmaris longus muscle": {
+  "o": "Medial epicondyle of the humerus",
+  "i": "Palmar aponeurosis and fascia of the palm"
+ },
+ "Humeral head of flexor carpi ulnaris": {
+  "o": "Medial epicondyle of the humerus, olecranon and ulna",
+  "i": "Pisiform, hamate and base of metacarpal 5",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Ulnar head of flexor carpi ulnaris": {
+  "o": "Medial epicondyle of the humerus, olecranon and ulna",
+  "i": "Pisiform, hamate and base of metacarpal 5",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Humero-ulnar head of flexor digitorum superficialis": {
+  "o": "Medial epicondyle, coronoid process of the ulna and shaft of the radius",
+  "i": "Middle phalanges of fingers 2-5",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Radial head of flexor digitorum superficialis": {
+  "o": "Medial epicondyle, coronoid process of the ulna and shaft of the radius",
+  "i": "Middle phalanges of fingers 2-5",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Flexor digitorum profundus": {
+  "o": "Coronoid process, ulna and interosseous membrane",
+  "i": "Distal phalanges of fingers 2-5"
+ },
+ "Flexor pollicis longus": {
+  "o": "Front of the radius and interosseous membrane",
+  "i": "Distal phalanx of the thumb"
+ },
+ "Pronator quadratus": {
+  "o": "Lower front of the ulna",
+  "i": "Lower front of the radius"
+ },
+ "Abductor pollicis brevis": {
+  "o": "Flexor retinaculum and nearby carpal bones",
+  "i": "Lateral base of the thumb proximal phalanx"
+ },
+ "Opponens pollicis muscle": {
+  "o": "Flexor retinaculum and trapezium",
+  "i": "Front of metacarpal 1"
+ },
+ "Superficial head of flexor pollicis brevis": {
+  "o": "Flexor retinaculum and trapezium",
+  "i": "Lateral base of the thumb proximal phalanx",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Deep head of flexor pollicis brevis": {
+  "o": "Flexor retinaculum and trapezium",
+  "i": "Lateral base of the thumb proximal phalanx",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Oblique head of adductor pollicis": {
+  "o": "Capitate and bases of metacarpals 2-4",
+  "i": "Medial base of the thumb proximal phalanx",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Transverse head of adductor pollicis": {
+  "o": "Capitate and bases of metacarpals 2-4",
+  "i": "Medial base of the thumb proximal phalanx",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Abductor digiti minimi of hand": {
+  "o": "Pisiform",
+  "i": "Medial side of the little finger proximal phalanx"
+ },
+ "Flexor digiti minimi of hand": {
+  "o": "Hamate and flexor retinaculum",
+  "i": "Medial side of the little finger proximal phalanx"
+ },
+ "Opponens digiti minimi muscle of hand": {
+  "o": "Hamate and flexor retinaculum",
+  "i": "Medial side of metacarpal 5"
+ },
+ "Lumbrical muscles of hand": {
+  "o": "Tendons of flexor digitorum profundus",
+  "i": "Extensor expansions of fingers 2-5"
+ },
+ "Palmar interossei muscles": {
+  "o": "Sides of metacarpals facing metacarpal 3",
+  "i": "Extensor expansion of each finger except finger 3"
+ },
+ "Dorsal interossei muscles of hand": {
+  "o": "Sides of the metacarpals",
+  "i": "Finger 3 on both sides; extensor expansion of the other fingers"
+ },
+ "Iliacus muscle": {
+  "o": "Iliac fossa, iliac crest and lateral sacrum",
+  "i": "Lesser trochanter of the femur"
+ },
+ "Psoas major": {
+  "o": "Lumbar vertebrae L1-L5 and T12",
+  "i": "Lesser trochanter of the femur"
+ },
+ "Gluteus maximus muscle": {
+  "o": "Back of the ilium, sacrum and coccyx",
+  "i": "Gluteal tuberosity and iliotibial tract"
+ },
+ "Gluteus medius muscle": {
+  "o": "Lateral surface of the ilium",
+  "i": "Greater trochanter of the femur"
+ },
+ "Gluteus minimus muscle": {
+  "o": "Outer surface of the ilium",
+  "i": "Greater trochanter of the femur"
+ },
+ "Piriformis muscle": {
+  "o": "Front of the sacrum, lateral part",
+  "i": "Greater trochanter of the femur"
+ },
+ "Obturator internus": {
+  "o": "Inner obturator membrane and greater sciatic notch",
+  "i": "Greater trochanter of the femur"
+ },
+ "Superior gemellus muscle": {
+  "o": "Ischial spine",
+  "i": "Greater trochanter of the femur"
+ },
+ "Inferior gemellus muscle": {
+  "o": "Ischial tuberosity",
+  "i": "Greater trochanter of the femur"
+ },
+ "Quadratus femoris muscle": {
+  "o": "Ischial tuberosity",
+  "i": "Trochanteric crest of the femur"
+ },
+ "Obturator externus": {
+  "o": "Outer obturator membrane, pubis and ischium",
+  "i": "Trochanteric fossa of the femur"
+ },
+ "Pectineus muscle": {
+  "o": "Pectineal line of the pubis",
+  "i": "Femur, from the lesser trochanter to the linea aspera"
+ },
+ "Sartorius muscle": {
+  "o": "Anterior superior iliac spine",
+  "i": "Medial upper tibia"
+ },
+ "Rectus femoris muscle": {
+  "o": "Anterior inferior iliac spine and rim of the acetabulum",
+  "i": "Patella and tibial tuberosity"
+ },
+ "Vastus lateralis muscle": {
+  "o": "Greater trochanter and linea aspera",
+  "i": "Patella and tibial tuberosity"
+ },
+ "Vastus intermedius muscle": {
+  "o": "Upper shaft of the femur",
+  "i": "Patella and tibial tuberosity"
+ },
+ "Vastus medialis muscle": {
+  "o": "Linea aspera and intertrochanteric line",
+  "i": "Patella and tibial tuberosity"
+ },
+ "Adductor longus": {
+  "o": "Pubis near the pubic symphysis",
+  "i": "Linea aspera of the femur"
+ },
+ "Adductor brevis": {
+  "o": "Body and inferior ramus of the pubis",
+  "i": "Linea aspera of the femur, above adductor longus"
+ },
+ "Gracilis muscle": {
+  "o": "Pubic and ischial rami",
+  "i": "Medial tibia"
+ },
+ "Semitendinosus muscle": {
+  "o": "Ischial tuberosity",
+  "i": "Upper shaft of the tibia"
+ },
+ "Semimembranosus muscle": {
+  "o": "Ischial tuberosity",
+  "i": "Medial tibial condyle and lateral femoral condyle"
+ },
+ "Long head of biceps femoris": {
+  "o": "Ischial tuberosity, linea aspera and lower femur",
+  "i": "Head of the fibula and lateral tibial condyle",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Short head of biceps femoris": {
+  "o": "Ischial tuberosity, linea aspera and lower femur",
+  "i": "Head of the fibula and lateral tibial condyle",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Lateral head of gastrocnemius": {
+  "o": "Medial and lateral femoral condyles",
+  "i": "Back of the calcaneus",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Medial head of gastrocnemius": {
+  "o": "Medial and lateral femoral condyles",
+  "i": "Back of the calcaneus",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Plantaris muscle": {
+  "o": "Back of the femur above the lateral condyle",
+  "i": "Calcaneus or calcaneal tendon"
+ },
+ "Soleus muscle": {
+  "o": "Upper tibia and fibula",
+  "i": "Back of the calcaneus"
+ },
+ "Popliteus muscle": {
+  "o": "Lateral femoral condyle and lateral meniscus",
+  "i": "Upper tibia"
+ },
+ "Tibialis posterior muscle": {
+  "o": "Upper tibia and fibula",
+  "i": "Tarsal bones and metatarsals 2-4"
+ },
+ "Flexor digitorum longus": {
+  "o": "Back of the tibia",
+  "i": "Distal phalanges of toes 2-5"
+ },
+ "Flexor hallucis longus": {
+  "o": "Mid shaft of the fibula",
+  "i": "Distal phalanx of the big toe"
+ },
+ "Tibialis anterior muscle": {
+  "o": "Lateral tibial condyle and upper tibia",
+  "i": "Medial cuneiform and metatarsal 1"
+ },
+ "Extensor hallucis longus": {
+  "o": "Anteromedial fibula",
+  "i": "Distal phalanx of the big toe"
+ },
+ "Fibularis longus muscle": {
+  "o": "Upper lateral fibula",
+  "i": "Metatarsal 1 and medial cuneiform"
+ },
+ "Fibularis brevis muscle": {
+  "o": "Lower shaft of the fibula",
+  "i": "Base of metatarsal 5"
+ },
+ "Extensor digitorum brevis": {
+  "o": "Calcaneus and extensor retinaculum",
+  "i": "Big toe phalanx and extensor expansions of toes 2-5"
+ },
+ "Extensor hallucis brevis": {
+  "o": "Calcaneus and extensor retinaculum",
+  "i": "Big toe phalanx and extensor expansions of toes 2-5",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Abductor hallucis": {
+  "o": "Calcaneal tuberosity and flexor retinaculum",
+  "i": "Proximal phalanx of the big toe"
+ },
+ "Flexor digitorum brevis": {
+  "o": "Calcaneal tuberosity",
+  "i": "Middle phalanges of toes 2-4"
+ },
+ "Medial head of flexor hallucis brevis": {
+  "o": "Lateral cuneiform and cuboid",
+  "i": "Proximal phalanx of the big toe",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Lateral head of flexor hallucis brevis": {
+  "o": "Lateral cuneiform and cuboid",
+  "i": "Proximal phalanx of the big toe",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Abductor digiti minimi of foot": {
+  "o": "Calcaneal tuberosity",
+  "i": "Proximal phalanx of the little toe"
+ },
+ "Flexor digiti minimi of foot": {
+  "o": "Base of metatarsal 5",
+  "i": "Proximal phalanx of the little toe"
+ },
+ "Lumbrical muscles of foot": {
+  "o": "Tendons of flexor digitorum longus",
+  "i": "Medial side of the proximal phalanges of toes 2-5"
+ },
+ "Plantar interossei muscles": {
+  "o": "Sides of metatarsals facing metatarsal 2",
+  "i": "Extensor expansions of toes 3-5"
+ },
+ "Dorsal interossei muscles of foot": {
+  "o": "Sides of the metatarsals",
+  "i": "Toe 2 on both sides; extensor expansions of the other toes"
+ },
+ "Oblique head of adductor hallucis": {
+  "o": "Bases of metatarsals 2-4 and nearby ligaments",
+  "i": "Proximal phalanx of the big toe",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Transverse head of adductor hallucis": {
+  "o": "Bases of metatarsals 2-4 and nearby ligaments",
+  "i": "Proximal phalanx of the big toe",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Adductor magnus": {
+  "o": "Ischial and pubic rami and ischial tuberosity",
+  "i": "Linea aspera and adductor tubercle of the femur"
+ },
+ "Extensor digitorum longus": {
+  "o": "Lateral tibial condyle and upper fibula",
+  "i": "Phalanges of toes 2-5"
+ },
+ "Rectus abdominis muscle": {
+  "o": "Pubis",
+  "i": "Sternum and ribs 5 and 7"
+ },
+ "External abdominal oblique muscle": {
+  "o": "Ilium and ribs 5-12",
+  "i": "Ribs 7-10, linea alba and ilium",
+  "n": "The textbooks give one combined row for both oblique muscles."
+ },
+ "Internal abdominal oblique muscle": {
+  "o": "Ilium and ribs 5-12",
+  "i": "Ribs 7-10, linea alba and ilium",
+  "n": "The textbooks give one combined row for both oblique muscles."
+ },
+ "Quadratus lumborum muscle": {
+  "o": "Ilium and ribs 5-10",
+  "i": "Rib 12 and vertebrae L1-L4"
+ },
+ "Sternocleidomastoid muscle": {
+  "o": "Sternum and clavicle",
+  "i": "Mastoid process of the temporal bone and occipital bone"
+ },
+ "Bucinator": {
+  "o": "Maxilla, mandible and the pterygomandibular raphe",
+  "i": "Orbicularis oris"
+ },
+ "Frontalis muscle": {
+  "o": "Epicranial aponeurosis",
+  "i": "Skin of the forehead"
+ },
+ "Superficial part of masseter": {
+  "o": "Maxillary and zygomatic arches",
+  "i": "Mandible",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Medial pterygoid muscle": {
+  "o": "Sphenoid bone and maxilla",
+  "i": "Mandible and temporomandibular joint"
+ },
+ "Mylohyoid muscle": {
+  "o": "Mandible",
+  "i": "Hyoid bone and median raphe"
+ },
+ "Anterior belly of digastric muscle": {
+  "o": "Mandible and temporal bone",
+  "i": "Hyoid bone",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Posterior belly of digastric muscle": {
+  "o": "Mandible and temporal bone",
+  "i": "Hyoid bone",
+  "n": "This part is modelled on its own; the text describes the whole muscle."
+ },
+ "Genioglossus muscle": {
+  "o": "Mandible",
+  "i": "Underside of the tongue and the hyoid bone"
+ },
+ "Hyoglossus muscle": {
+  "o": "Hyoid bone",
+  "i": "Sides of the tongue"
+ },
+ "Levator palpebrae superioris": {
+  "o": "Roof of the orbit (sphenoid bone)",
+  "i": "Skin of the upper eyelid"
+ },
+ "Superior rectus muscle": {
+  "o": "Common tendinous ring",
+  "i": "Upper surface of the eyeball"
+ },
+ "Inferior rectus muscle": {
+  "o": "Common tendinous ring",
+  "i": "Lower surface of the eyeball"
+ },
+ "Medial rectus muscle": {
+  "o": "Common tendinous ring",
+  "i": "Medial surface of the eyeball"
+ },
+ "Lateral rectus muscle": {
+  "o": "Common tendinous ring",
+  "i": "Lateral surface of the eyeball"
+ },
+ "Superior oblique muscle": {
+  "o": "Sphenoid bone",
+  "i": "Eyeball surface between superior and lateral rectus"
+ },
+ "Inferior oblique muscle": {
+  "o": "Floor of the orbit (maxilla)",
+  "i": "Eyeball surface between inferior and lateral rectus"
+ }
+}

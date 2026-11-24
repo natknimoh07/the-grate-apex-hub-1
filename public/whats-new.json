@@ -2,6 +2,15 @@
   "about": "What is new in each update, shown to learners in the 'Update ready' popup and in Settings → Help → App updates. Newest first. Each update: a unique id, the date, a short title (up to 48 characters) and 1–3 plain points (up to 120 characters each). Add one whenever you push something learners will notice.",
   "updates": [
     {
+      "id": "2026-11-24-atlas-attachments",
+      "date": "2026-11-24",
+      "title": "Muscle origins and insertions in the 3D atlas",
+      "points": [
+        "Tap a muscle to see where it starts (origin) and where it ends (insertion).",
+        "Covers 134 muscles of the head, trunk, arm, hand, leg and foot."
+      ]
+    },
+    {
       "id": "2026-11-22-atlas-supply",
       "date": "2026-11-22",
       "title": "Nerve and blood supply in the 3D atlas",
