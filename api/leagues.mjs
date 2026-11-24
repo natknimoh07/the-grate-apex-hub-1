@@ -15,12 +15,15 @@
 // that changed after it was read is left to that learner's app (never overwritten).
 // Needs FIREBASE_SERVICE_ACCOUNT (like api/reminders.mjs).
 import { adminToken, serviceAccount } from './_admin.mjs';
+import { restAdmin } from './_admin-rest.mjs';
 import { DB, encode, firestore, leagueTableWrites, lifetimeXp, savedWeeklyXp, usersWhere, weeklyContributionTotal } from './_league-store.mjs';
 import { leagueFinalPlaces, leagueWeek, nextLeagueTier, settledLeagueFix } from './_push-logic.mjs';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
 const PROJECT = 'grate-apex';
 const KEYS = createRemoteJWKSet(new URL('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'));
+const liveAccount = serviceAccount('LIVE_QUIZ_FIREBASE_SERVICE_ACCOUNT');
+const liveAdmin = liveAccount ? restAdmin(liveAccount) : null;
 
 /** Vercel's cron uses CRON_SECRET; a signed-in app may also request a missed settlement. */
 async function isAuthorized(req) {
@@ -116,6 +119,122 @@ export async function settleLeagueWeek(call, week, newWeek, dry) {
   return { week, newWeek, learners: waiting.length, alreadyMoved: movedOn.length, ...counts, written, skipped, dry, ...(dry ? { changes: writes.map((write) => ({ uid: write.update.name.split('/').pop(), league: write.update.fields.league })) } : {}) };
 }
 
+/**
+ * Uses the mirrored league entries when the primary Firestore has exhausted its read quota.
+ * The Live project already holds each learner's saved weekly XP and league entry; scores are
+ * deliberately not re-read from the exhausted primary project.
+ */
+export async function settleLeagueWeekFromLive(admin, week, newWeek, dry) {
+  const read = async (field) => {
+    const snapshot = await admin.db.collection('leagueEntries').where(field, '==', week).get();
+    return snapshot.docs.map((doc) => ({ id: doc.id, ref: doc.ref, ...doc.data() }));
+  };
+  const [waiting, movedOn] = await Promise.all([read('league.week'), read('league.prev.week')]);
+  const waitingIds = new Set(waiting.map((person) => person.id));
+  const tiers = new Map();
+  const add = (tier, row) => {
+    if (!tiers.has(tier)) tiers.set(tier, []);
+    tiers.get(tier).push(row);
+  };
+  for (const person of waiting) {
+    const entry = person.league ?? {};
+    add(Math.round(Number(entry.tier) || 0), {
+      uid: person.id,
+      weeklyXp: weeklyContributionTotal(entry, week, true),
+      person,
+      moved: false,
+    });
+  }
+  for (const person of movedOn) {
+    if (waitingIds.has(person.id)) continue;
+    const entry = person.league ?? {};
+    const prev = entry.prev ?? {};
+    add(Math.round(Number(prev.tier) || 0), {
+      uid: person.id,
+      weeklyXp: weeklyContributionTotal(prev, week, true),
+      person,
+      moved: true,
+    });
+  }
+
+  const counts = { promoted: 0, stays: 0, relegated: 0, corrected: 0 };
+  const newTables = new Map();
+  const writes = [];
+  const mutations = [];
+  for (const [tier, rows] of tiers) {
+    const places = leagueFinalPlaces(rows);
+    for (const row of places.values()) counts[row.outcome] += 1;
+    for (const row of rows) {
+      const place = places.get(row.uid);
+      if (row.moved) {
+        const fix = settledLeagueFix(row.person.league, week, place);
+        if (!fix) continue;
+        counts.corrected += 1;
+        writes.push({ uid: row.uid, league: { tier: fix.tier, prev: fix.prev } });
+        mutations.push({ ref: row.person.ref, changes: { 'league.tier': fix.tier, 'league.prev': fix.prev, updatedAt: Date.now() } });
+        continue;
+      }
+
+      const entry = row.person.league ?? {};
+      const since = entry.nextWeek === newWeek && typeof entry.nextXp === 'number'
+        ? Math.max(0, Math.round(entry.nextXp))
+        : null;
+      const league = {
+        week: newWeek,
+        tier: nextLeagueTier(tier, place.outcome),
+        startXp: Math.max(0, Number(entry.startXp) || 0) + place.weeklyXp,
+        ...(since !== null ? { weeklyXp: since, xpWeek: newWeek } : {}),
+        prev: { week, tier, weeklyXp: place.weeklyXp, position: place.position, size: place.size, outcome: place.outcome, rechecked: true },
+      };
+      writes.push({ uid: row.uid, league });
+      if (!newTables.has(league.tier)) newTables.set(league.tier, []);
+      newTables.get(league.tier).push({ uid: row.uid, username: row.person.username ?? null, weeklyXp: since ?? 0 });
+      mutations.push({ ref: row.person.ref, changes: { league, updatedAt: Date.now() } });
+    }
+  }
+
+  let tableWrites = 0;
+  if (!dry) {
+    for (let i = 0; i < mutations.length; i += 25) {
+      await Promise.all(mutations.slice(i, i + 25).map(({ ref, changes }) => ref.update(changes)));
+    }
+    for (const [tier, rows] of newTables) {
+      const ref = admin.db.doc(`leagueTables/${newWeek}_${tier}`);
+      if (!(await ref.get()).exists) await ref.set({ week: newWeek, tier, rows: {} });
+      const changes = { week: newWeek, tier };
+      for (const row of rows) changes[`rows.${row.uid}`] = { username: row.username, weeklyXp: Math.max(0, Math.round(row.weeklyXp) || 0) };
+      await ref.update(changes);
+      tableWrites += 1;
+    }
+  }
+  return {
+    week,
+    newWeek,
+    learners: waiting.length,
+    alreadyMoved: movedOn.length,
+    ...counts,
+    written: dry ? 0 : writes.length + tableWrites,
+    skipped: 0,
+    dry,
+    source: 'live-fallback',
+    ...(dry ? { changes: writes } : {}),
+  };
+}
+
+function isQuotaError(error) {
+  return /429|RESOURCE_EXHAUSTED|quota exceeded/i.test(String(error?.code ?? '') + ' ' + String(error?.message ?? error));
+}
+
+async function liveFailoverActive() {
+  if (!liveAdmin) return false;
+  return (await liveAdmin.db.doc('systemStatus/database').get()).data?.()?.failover === true;
+}
+
+async function activateLiveFailover(reason) {
+  if (!liveAdmin) throw new Error('The Live project service account is not configured.');
+  await liveAdmin.db.doc('systemStatus/database').set({ failover: true, reason, activatedAt: Date.now(), activatedBy: 'league-cron' });
+}
+
 export default async function handler(req, res) {
   res.setHeader('cache-control', 'no-store');
   if (req.method !== 'GET') return res.status(405).json({ error: 'GET only.' });
@@ -132,7 +251,19 @@ export default async function handler(req, res) {
   if (week >= newWeek) return res.status(400).json({ error: `The week of ${week} has not ended yet.` });
   try {
     const call = firestore(account ? await adminToken(account) : '');
-    const report = await settleLeagueWeek(call, week, newWeek, req.query?.dry === '1');
+    const dry = req.query?.dry === '1';
+    let report;
+    if (await liveFailoverActive().catch(() => false)) {
+      report = await settleLeagueWeekFromLive(liveAdmin, week, newWeek, dry);
+    } else {
+      try {
+        report = await settleLeagueWeek(call, week, newWeek, dry);
+      } catch (error) {
+        if (!isQuotaError(error) || !liveAdmin) throw error;
+        await activateLiveFailover('primary-firestore-quota-exceeded');
+        report = await settleLeagueWeekFromLive(liveAdmin, week, newWeek, dry);
+      }
+    }
     console.log('League week settled:', JSON.stringify(report));
     return res.status(200).json(report);
   } catch (problem) {
