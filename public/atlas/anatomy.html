@@ -1074,7 +1074,7 @@
           <label class="sys"><input type="checkbox" id="pinsOn" checked><span class="swatch"
               style="--c:#ffffff;--b:#8896a3"></span><span>Landmark pins</span><span class="stat">on isolate</span></label>
           <label class="sys"><input type="checkbox" id="pickSheets"><span class="swatch"
-              style="--c:#e8d6a8"></span><span>Tap selects fascia</span><span class="stat">sheets first</span></label>
+              style="--c:#e8d6a8"></span><span>Prioritize translucent sheets</span><span class="stat">fascia first</span></label>
           <label class="sys"><input type="checkbox" id="aoOn" checked><span class="swatch"
               style="--c:#8a96a3"></span><span>Ambient occlusion</span><span class="stat">depth</span></label>
         </div>
@@ -2738,7 +2738,7 @@ bool inRegion(vec3 p) {
     const ray = new THREE.Raycaster();
     const ndc = new THREE.Vector2();
     const tmp = new THREE.Vector3();
-    let pickSheets = false;   // "Tap selects fascia" in the Display menu
+    let pickSheets = false;   // prioritize translucent layers generally (fascia has its own priority)
     document.getElementById('pickSheets').addEventListener('change', e => { pickSheets = e.target.checked; });
     function pickMesh(cx, cy) {
       ndc.set((cx / innerWidth) * 2 - 1, -(cy / innerHeight) * 2 + 1);
@@ -2748,10 +2748,18 @@ bool inRegion(vec3 p) {
         if (!s.group || !s.group.visible) continue;
         s.group.traverse(o => { if (o.isMesh && o.visible) pool.push(o); });
       }
-      // translucent layers (fascia, membranes) only catch clicks where nothing solid is behind them, unless "Tap selects fascia"
-      // is on: then the nearest thing under the pointer wins, so a fascia sheet lying over a muscle can be selected
-      const hits = ray.intersectObjects(pool, false).filter(h => inRegion(h.point));
-      return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) || hits[0] || null;
+      // Give fascia first priority when it is enabled, so it can be selected over underlying muscles.
+// The general translucent-sheet priority toggle remains available for other ghost layers.
+const hits = ray.intersectObjects(pool, false).filter(h => inRegion(h.point));
+
+const fascia = SYSTEMS.find(s => s.id === 'fascia');
+
+if (fascia?.input.checked && fascia.group?.visible) {
+  const fasciaHit = hits.find(h => h.object.userData.system.id === 'fascia');
+  if (fasciaHit) return fasciaHit;
+}
+
+return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) || hits[0] || null;
     }
     function nearestPin(cx, cy, boneDist) {
       if (!pinsOn || !isolated) return null;
