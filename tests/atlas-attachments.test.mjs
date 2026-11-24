@@ -29,13 +29,12 @@ function muscleNames() {
   return found;
 }
 
-// Muscles the source textbooks (OpenStax Anatomy and Physiology; Human Anatomy, OERI) give no origin and insertion for.
+// Muscles with no source yet for origin and insertion (not in OpenStax Anatomy and Physiology or Human Anatomy, OERI, nor the course notes).
 const NOT_IN_TEXTBOOKS = [
   'Levator scapulae',
   'Scalenus anterior muscle',
   'Scalenus medius muscle',
   'Scalenus posterior muscle',
-  'Platysma',
   'Fibularis tertius muscle',
 ];
 

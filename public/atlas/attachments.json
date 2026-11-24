@@ -1,5 +1,5 @@
 {
- "_about": "Origin and insertion of muscles for the atlas info card. Keys are model structure names (same as supply.json). o = origin, i = insertion, n = optional note shown under the text (for example when a part of a muscle shows the text of the whole muscle). Wording is our own, from OpenStax Anatomy and Physiology (CC BY 4.0) and Human Anatomy (OERI, ASCCC; CC BY 4.0). Muscles those books give no origin and insertion for are left out. Check any change against the lecture notes or a textbook.",
+ "_about": "Origin and insertion of muscles for the atlas info card. Keys are model structure names (same as supply.json). o = origin, i = insertion, n = optional note shown under the text (for example when a part of a muscle shows the text of the whole muscle). Wording is our own, from OpenStax Anatomy and Physiology (CC BY 4.0) and Human Anatomy (OERI, ASCCC; CC BY 4.0). Platysma comes from the course lecture notes. Muscles with no source are left out. Check any change against the lecture notes or a textbook.",
  "_source": "OpenStax Anatomy and Physiology (CC BY 4.0); Human Anatomy, ASCCC Open Educational Resources Initiative (CC BY 4.0)",
  "Acromial part of deltoid muscle": {
   "o": "Clavicle, acromion and spine of the scapula",
@@ -576,5 +576,10 @@
  "Inferior oblique muscle": {
   "o": "Floor of the orbit (maxilla)",
   "i": "Eyeball surface between inferior and lateral rectus"
+ },
+ "Platysma": {
+  "o": "Skin below the clavicle and upper thorax",
+  "i": "Mandible and the muscles around the mouth",
+  "n": "From the course lecture notes."
  }
 }
