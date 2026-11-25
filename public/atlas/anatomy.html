@@ -926,6 +926,7 @@
         var q = new URLSearchParams(location.search);
         if (q.get('base')) return;
         var quality = q.get('quality');
+        if (!quality) { try { quality = localStorage.getItem('grateapex_atlas_quality'); } catch (e) { } }   // the learner's "Full detail" choice
         var lite = quality ? quality === 'lite' : matchMedia('(pointer: coarse)').matches;
         var link = document.createElement('link');
         link.rel = 'preload'; link.as = 'fetch'; link.crossOrigin = 'anonymous';
@@ -1093,6 +1094,8 @@
               style="--c:#e8d6a8"></span><span>Prioritize translucent sheets</span><span class="stat">fascia first</span></label>
           <label class="sys"><input type="checkbox" id="aoOn" checked><span class="swatch"
               style="--c:#8a96a3"></span><span>Ambient occlusion</span><span class="stat">depth</span></label>
+          <label class="sys"><input type="checkbox" id="fullDetail"><span class="swatch"
+              style="--c:#6fcf97"></span><span>Full detail</span><span class="stat">more triangles</span></label>
         </div>
       </details>
 
@@ -1469,8 +1472,11 @@
     ];
 
     // Quality: phones and tablets (coarse pointer) load the lighter models in ./lite/ (about half the triangles);
-    // everything else loads the full-detail set. Override with ?quality=lite or ?quality=high.
-    const QUALITY = new URLSearchParams(location.search).get('quality');
+    // everything else loads the full-detail set. Override with ?quality=lite or ?quality=high, or with the
+    // "Full detail" switch in the Display menu (kept on this device, same key as the early download in the head).
+    const QUALITY_KEY = 'grateapex_atlas_quality';
+    const savedQuality = () => { try { return localStorage.getItem(QUALITY_KEY); } catch (e) { return null; } };
+    const QUALITY = new URLSearchParams(location.search).get('quality') || savedQuality();
     const LITE = QUALITY ? QUALITY === 'lite' : matchMedia('(pointer: coarse)').matches;
     const MODEL_DIR = LITE ? 'lite/' : '';
     const MB_LITE = { 'SkeletalSystem100.glb': 5.4, 'Joints100.glb': 1.8, 'MuscularSystem100.glb': 5.0, 'NervousSystem100.glb': 5.9, 'CardioVascular41.glb': 5.0, 'VisceralSystem100.glb': 3.0, 'LymphoidOrgans100.glb': 0.6, 'References100.glb': 0.1 };
@@ -1948,6 +1954,15 @@ bool inRegion(vec3 p) {
     const aoEl = document.getElementById('aoOn');
     aoEl.checked = !matchMedia('(pointer: coarse)').matches;   // off by default on phones/tablets
     aoEl.addEventListener('change', () => { dirty = true; });
+    // Full detail: the models are chosen when the page opens, so changing the switch saves the choice and reloads.
+    const detailEl = document.getElementById('fullDetail');
+    detailEl.checked = !LITE;
+    detailEl.addEventListener('change', () => {
+      try { localStorage.setItem(QUALITY_KEY, detailEl.checked ? 'high' : 'lite'); } catch (e) { }
+      const u = new URL(location.href);
+      u.searchParams.delete('quality');   // a ?quality= in the address would win over the choice just made
+      location.replace(u.toString());
+    });
     const xrayEl = document.getElementById('xray');
     let xrayAuto = false;   // true while x-ray was switched on by a search (see the search handler), so deselecting can switch it off
     xrayEl.addEventListener('change', () => { xrayAuto = false; setXray(xrayEl.checked); });
