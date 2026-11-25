@@ -1949,7 +1949,8 @@ bool inRegion(vec3 p) {
     aoEl.checked = !matchMedia('(pointer: coarse)').matches;   // off by default on phones/tablets
     aoEl.addEventListener('change', () => { dirty = true; });
     const xrayEl = document.getElementById('xray');
-    xrayEl.addEventListener('change', () => setXray(xrayEl.checked));
+    let xrayAuto = false;   // true while x-ray was switched on by a search (see the search handler), so deselecting can switch it off
+    xrayEl.addEventListener('change', () => { xrayAuto = false; setXray(xrayEl.checked); });
     // AO reads depth/normals of every mesh, so it can't see the region cut or translucent layers: pause it then.
     const aoActive = () => aoEl.checked && !xrayOn && region === 0 && !cut.on && !SYSTEMS.some(s => s.ghost && s.group && s.group.visible);
     let lastMove = 0, needRefine = false;
@@ -2465,7 +2466,11 @@ bool inRegion(vec3 p) {
       restoreSelection();
       selected = mesh;
       selectedPin = null; info.classList.remove('pin');
-      if (!mesh) { info.classList.remove('open'); syncXrayFocus(); refreshPins(); return; }
+      if (!mesh) {
+        info.classList.remove('open');
+        if (xrayAuto && !quiz.active) { xrayAuto = false; xrayEl.checked = false; setXray(false); }   // x-ray was only on for the searched part
+        syncXrayFocus(); refreshPins(); return;
+      }
       const s = mesh.userData.system;
       if (isPeeled(s)) unpeelFor(s);
       if (s.group && !s.group.visible) { s.input.checked = true; s.group.visible = true; }
@@ -3101,7 +3106,12 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
         b.onclick = () => {
           if (region) setRegion(0, true);
           if (f.pin) { selectPin(f.system, f.i); const r = f.system.pinData[f.i]; focusPoint(new THREE.Vector3(r[2], r[3], r[4])); }
-          else { select(f.mesh); for (const m of selectedParts) m.visible = true; focusOn(f.mesh); }
+          else {
+            select(f.mesh); for (const m of selectedParts) m.visible = true; focusOn(f.mesh);
+            // a searched part may be buried under other tissue: turn x-ray on so the rest turns see-through and the part shows
+            // solid; deselecting turns it off again (only when the search switched it on, not when the learner already had it on)
+            if (!xrayOn) { xrayEl.checked = true; setXray(true); xrayAuto = true; }
+          }
           q.value = ''; results.innerHTML = '';
         };
         li.appendChild(b);
