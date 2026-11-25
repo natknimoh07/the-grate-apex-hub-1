@@ -1584,11 +1584,12 @@ bool inRegion(vec3 p) {
           .replace('#include <common>', '#include <common>\n' + REGION_GLSL)
           .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\nif (!inRegion(vRW) || !cutKeeps(vRW)) discard;');
         // Solid structures are hollow shells, so after a cut you would look into an empty shell. Where a cut shows the inside
-        // (a back face), paint it flat in a lightened copy of the structure's own colour, so the cut face reads as solid tissue.
+        // (a back face), paint it as a deeper shade of the structure's own colour (so muscle stays red, bone stays cream),
+        // with a little shading by how squarely it faces the camera, so the cut face reads as solid tissue with some depth.
         // See-through materials (x-ray, sheets, pins) are left alone.
         if (!m.transparent) {
           sh.fragmentShader = sh.fragmentShader.replace('#include <opaque_fragment>',
-            '#include <opaque_fragment>\nif (uCutOn > 0.5 && !gl_FrontFacing) gl_FragColor = vec4(mix(diffuseColor.rgb, vec3(0.96, 0.80, 0.72), 0.4) * 0.92, gl_FragColor.a);');
+            '#include <opaque_fragment>\nif (uCutOn > 0.5 && !gl_FrontFacing) { float cf = clamp(dot(normalize(normal), normalize(vViewPosition)), 0.0, 1.0); gl_FragColor = vec4(diffuseColor.rgb * (0.58 + 0.30 * cf), gl_FragColor.a); }');
         }
       };
       m.customProgramCacheKey = () => 'region-cut' + (m.transparent ? 't' : '');
