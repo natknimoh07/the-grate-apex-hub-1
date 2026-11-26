@@ -11,7 +11,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
 // Update both values together whenever an atlas model (.glb) is changed (see the atlas tests below).
-const KNOWN_MODELS = { version: '1', fingerprint: 'ab6bb914e2085911146be7bfd4e65fc008605f4b7fcf80773ef152b8808cf828' };
+const KNOWN_MODELS = { version: '2', fingerprint: '89576202cb739cb34210648f5d0e91f289f4b5592c725f3bce467fa098b8fb81' };
 
 const read = (path) => readFileSync(path, 'utf8');
 const vercel = JSON.parse(read('vercel.json'));
@@ -39,7 +39,7 @@ describe('3D atlas wiring', () => {
   it('the atlas starts the first model early, with the current model version, and keeps its libraries cached', () => {
     const html = read('public/atlas/anatomy.html');
     const version = /const MODEL_VERSION = '(\d+)'/.exec(html)?.[1];
-    assert.equal(/SkeletalSystem100\.glb\?m=(\d+)'/.exec(html)?.[1], version, 'the early model download must use the same ?m= as MODEL_VERSION, or the model is downloaded twice');
+    assert.equal(/meshes-skeletal\.glb\?m=(\d+)'/.exec(html)?.[1], version, 'the early model download must use the same ?m= as MODEL_VERSION, or the model is downloaded twice');
     assert.match(html, /rel="modulepreload" href="\.\/vendor\/three\/build\/three\.module\.min\.js"/);
     assert.ok((vercel.headers ?? []).some((r) => r.source === '/atlas/vendor/(.*)'), 'no Cache-Control rule for /atlas/vendor');
   });

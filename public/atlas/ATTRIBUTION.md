@@ -59,3 +59,14 @@ pelvic bones when the Female pelvis option is selected.
 
 The female pelvis option now uses only the female sacrum and coccyx from that file; the male hip bones are kept in both
 modes because the female reference set doesn't provide separate hip bones.
+## Anatomy Atlas prototype models (`models/`)
+
+The atlas now shows the models from the "Anatomy Atlas 3D (prototype)": Z-Anatomy (Gauthier Kervyn), derived from
+BodyParts3D (Kousaku Okubo, Database Center for Life Science), CC BY-SA 4.0. Structure names and their translations
+(`models/names.json`) are the Terminologia Anatomica (TA2) names as published with Z-Anatomy.
+
+Changes: each body system was split into a base `.glb` and a `-more.glb` (16-bit quantised positions, no normals),
+made by `scripts/atlas-models/convert-prototype.py`. The old model files in this folder are kept only for the 3D
+simulations (`/sim3d/`); the atlas page itself no longer loads them. `landmarks.json` belongs to the old models, so
+landmark pins are switched off. The prototype notes that its source has no whole-organ surfaces for the heart,
+brain or skin, and lacks parts of the bowel (ileum, caecum, rectum) and the larynx.

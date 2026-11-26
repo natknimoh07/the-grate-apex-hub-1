@@ -1,0 +1,62 @@
+[
+ {
+  "key": "meshes-digestive",
+  "label": "Digestive",
+  "color": "#d9a441"
+ },
+ {
+  "key": "meshes-lymph",
+  "label": "Lymphatic",
+  "color": "#6fa3b8"
+ },
+ {
+  "key": "meshes-resp",
+  "label": "Respiratory",
+  "color": "#7fbf9a"
+ },
+ {
+  "key": "meshes-uro",
+  "label": "Urogenital",
+  "color": "#c98b8b"
+ },
+ {
+  "key": "meshes-endocrine_other",
+  "label": "Endocrine",
+  "color": "#b07cc6"
+ },
+ {
+  "key": "meshes-skeletal",
+  "label": "Skeletal",
+  "color": "#e6dcc6"
+ },
+ {
+  "key": "meshes-muscle",
+  "label": "Muscular",
+  "color": "#c4553d"
+ },
+ {
+  "key": "meshes-fascia",
+  "label": "Fasciae",
+  "color": "#b9a37a"
+ },
+ {
+  "key": "meshes2-cardio",
+  "label": "Heart & vessels",
+  "color": "#c94f4f"
+ },
+ {
+  "key": "meshes2-nervous",
+  "label": "Brain, nerves & spinal cord",
+  "color": "#8a6fb5"
+ },
+ {
+  "key": "meshes2-sense",
+  "label": "Sense organs",
+  "color": "#5a9bd5"
+ },
+ {
+  "key": "meshes2-resp",
+  "label": "Lungs & bronchi",
+  "color": "#7fbf9a"
+ }
+]

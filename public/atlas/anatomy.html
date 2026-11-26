@@ -925,12 +925,9 @@
       try {
         var q = new URLSearchParams(location.search);
         if (q.get('base')) return;
-        var quality = q.get('quality');
-        if (!quality) { try { quality = localStorage.getItem('grateapex_atlas_quality'); } catch (e) { } }   // the learner's "Full detail" choice
-        var lite = quality ? quality === 'lite' : matchMedia('(pointer: coarse)').matches;
         var link = document.createElement('link');
         link.rel = 'preload'; link.as = 'fetch'; link.crossOrigin = 'anonymous';
-        link.href = './' + (lite ? 'lite/' : '') + 'SkeletalSystem100.glb?m=1';
+        link.href = './models/meshes-skeletal.glb?m=2';
         document.head.appendChild(link);
       } catch (e) { }
     })();
@@ -1414,61 +1411,32 @@
     // The .glb models are kept by the browser for a long time (vercel.json), so they are only downloaded once.
     // They are asked for as `file.glb?m=<MODEL_VERSION>`: change this number whenever ANY .glb file changes,
     // so everyone fetches the new models once (tests/deploy-wiring.test.mjs fails if you forget).
-    const MODEL_VERSION = '1';
+    const MODEL_VERSION = '2';
 
+    const pair = k => ['models/' + k + '.glb', 'models/' + k + '-more.glb'];
     const SYSTEMS = [
-      // listed in the order of the Body systems panel: the eight systems first, then what else is in the model
-      { id: 'visceral', label: 'Organs', file: 'VisceralSystem100.glb', mb: 4.5, color: 0xd98c7a, paint: organColor, hidden: true },
-      // The Organs file is split by the model's own groups into body systems. These are children of 'visceral' (the file),
-      // which is hidden: every structure in it belongs to exactly one of them.
-      { id: 'alimentary', label: 'Alimentary', via: 'visceral', top: true, match: /^(Digestive system|Abdominopelvic cavity)\.g$/i, color: 0xd98c7a, paint: organColor },
+      // The models are the Anatomy Atlas prototype's: 12 body systems, each a base file plus a "-more" file (see
+      // scripts/atlas-models/convert-prototype.py). Structures are named "<id>|<English name>" in the files; names.json has
+      // every name in seven languages. Listed in the order of the Body systems panel.
+      { id: 'skeletal', label: 'Skeletal', files: pair('meshes-skeletal'), mb: 4.6, color: 0xe6dcc6, on: true, paint: boneColor, coded: false,
+        code: { label: 'Bones', hint: 'by region', swatch: 'linear-gradient(90deg,#e6c98a 20%,#8fb4e8 20% 40%,#8ccf9b 40% 60%,#f2b36a 60% 80%,#e88a9a 80%)' } },
+      { id: 'muscular', label: 'Muscular', files: pair('meshes-muscle'), mb: 9.8, color: 0xc4553d, paint: muscleColor },
+      { id: 'fascia', label: 'Fasciae', files: ['models/meshes-fascia-more.glb'], mb: 0.8, color: 0xb9a37a, ghost: true, opacity: 0.3 },
       {
-        id: 'nervous', label: 'Nervous', file: 'NervousSystem100.glb', mb: 9.0, color: 0xe8c547, swatch: 'linear-gradient(90deg,#7aa2e0 25%,#e6b85c 25% 50%,#7cc98a 50% 75%,#e8c547 75%)', paint: nervousColor, naturalPaint: naturalNervousColor, coded: true,
-        code: { label: 'Brain', hint: 'by lobe', swatch: 'linear-gradient(90deg,#7aa2e0 25%,#e6b85c 25% 50%,#7cc98a 50% 75%,#b77ad6 75%)' },
-        natural: { label: 'Brain & spinal cord', hint: 'natural colour', swatch: 'linear-gradient(90deg,#b0998e 40%,#efe8d8 40% 75%,#e6dfcc 75%)' }
-      },
-      {
-        id: 'cardiovascular', label: 'Cardiovascular', file: 'CardioVascular41.glb', mb: 7.6, color: 0xc22d3a, swatch: 'linear-gradient(90deg,#d62f3b 50%,#2f6fd6 50%)', paint: vesselColor, coded: true,
+        id: 'cardiovascular', label: 'Heart & vessels', files: pair('meshes2-cardio'), mb: 4.5, color: 0xc94f4f, swatch: 'linear-gradient(90deg,#d62f3b 50%,#2f6fd6 50%)', paint: vesselColor, coded: true,
         code: { label: 'Blood vessels', hint: 'artery / vein', swatch: 'linear-gradient(90deg,#d62f3b 50%,#2f6fd6 50%)' }
       },
-      { id: 'lymphoid', label: 'Lymphatic', file: 'LymphoidOrgans100.glb', mb: 0.6, color: 0x6fb58a },
-      { id: 'muscular', label: 'Muscular', file: 'MuscularSystem100.glb', mb: 6.7, color: 0xb5473f, paint: muscleColor },
-      { id: 'fascia', label: 'Fascia', via: 'muscular', match: /fasci/i, color: 0xe8d6a8, ghost: true, opacity: 0.3 },
-      { id: 'bursae', label: 'Bursae, tendon sheaths', via: 'muscular', match: /bursa|tendon sheath/i, color: 0x2fb8a0, paint: sacColor },
+      { id: 'lymphoid', label: 'Lymphatic', files: pair('meshes-lymph'), mb: 1.2, color: 0x6fa3b8 },
       {
-        id: 'skeletal', label: 'Skeletal', file: 'SkeletalSystem100.glb', mb: 7.4, color: 0xcdbf9f, on: true, paint: boneColor, coded: false,
-        code: { label: 'Bones', hint: 'by region', swatch: 'linear-gradient(90deg,#e6c98a 20%,#8fb4e8 20% 40%,#8ccf9b 40% 60%,#f2b36a 60% 80%,#e88a9a 80%)' }
+        id: 'nervous', label: 'Brain, nerves & spinal cord', files: pair('meshes2-nervous'), mb: 7.9, color: 0x8a6fb5, swatch: 'linear-gradient(90deg,#7aa2e0 25%,#e6b85c 25% 50%,#7cc98a 50% 75%,#e8c547 75%)', paint: nervousColor, coded: true,
+        code: { label: 'Brain', hint: 'by lobe', swatch: 'linear-gradient(90deg,#7aa2e0 25%,#e6b85c 25% 50%,#7cc98a 50% 75%,#b77ad6 75%)' }
       },
-      { id: 'attachments', label: 'Muscle attachment sites', via: 'skeletal', match: /(\.|muscle)[oe]\d*[lr](-mesh)?$/i, color: 0xb5473f },
-      { id: 'sinuses', label: 'Paranasal sinuses', via: 'skeletal', match: /^sinus of /i, color: 0xd946c0 },   // frontal + sphenoid air spaces, split out so they never share the bone colour
-      { id: 'joints', label: 'Joints', sub: true, file: 'Joints100.glb', mb: 2.1, color: 0x86a3cc, paint: jointColor },
-      { id: 'urinary', label: 'Urinary', via: 'visceral', top: true, match: /^Urinary system\.g$/i, color: 0x9d3a3f, paint: organColor },
-      { id: 'reproductive', label: 'Reproductive', via: 'visceral', top: true, match: /^Genital systems\.g$/i, node: /^VH_F/, color: 0xe6a0a8, paint: organColor },
-      {
-        id: 'breasts', label: 'Female breasts', sub: true, color: 0xf2b8c0, mb: 8.0,
-        files: ['reproductive/breasts.glb'], offset: [0.0125, 0.866, 0.098],   // 6 cm forward of the other female organs, so the base sits on the pectoral muscles
-        paint: n => (/fat/i.test(n) ? 0xf0d8a0 : /lactiferous|areolar/i.test(n) ? 0xc0606e : 0xf2b8c0),
-      },
-      {
-        id: 'pelvis', label: 'Sacrum and coccyx (female)', hidden: true, keep: ['VH_F_sacrum', 'VH_F_coccyx'], color: 0xcdbf9f, paint: boneColor, coded: false, mb: 1.04,
-        files: ['reproductive/pelvis-bones.glb'], offset: [0.0125, 0.866, 0.038],   // same local frame as the uterus files
-      },
-      {
-        id: 'femur', label: 'Femur (female)', hidden: true, color: 0xe6dcc4, paint: boneColor, coded: false, mb: 0,
-        files: ['reproductive/vagina-ligaments.glb'], keep: ['VH_F_femur_R', 'VH_F_femur_L'],
-        offset: [0.0125, 0.866, 0.038],
-      },
-      { id: 'respiratory', label: 'Respiratory', via: 'visceral', top: true, match: /^(Respiratory system|Thoracic cavity)\.g$/i, color: 0xd4838f, paint: organColor },
-      { id: 'endocrine', label: 'Endocrine', via: 'visceral', top: true, match: /^Endocrine glands\.g$/i, color: 0xe6b64a, paint: organColor },
-      { id: 'serosa', label: 'Pleura, omenta, mesenteries', via: 'visceral', top: true, match: /pleura|omentum|meso-appendix|mesocolon/i, color: 0xe9cdbd, ghost: true },
-      // The reference file is split by kind, each with its own colour: the three families of plane (see-through), the surface
-      // lines (rebuilt as thin tubes, because the model's own ribbons are edge-on from the front), the direction arrows and the
-      // movement arrows. 'references' is only the file and is hidden; these four are the rows.
-      { id: 'references', label: 'Reference lines', file: 'References100.glb', mb: 0.1, color: 0x9aa0a6, hidden: true },
-      { id: 'refplanes', label: 'Reference planes', via: 'references', top: true, match: / planes?(\.g)?$/i, color: 0x4aa3f0, ghost: true, opacity: 0.16, noXray: true, paint: refPlaneColor },
-      { id: 'reflines', label: 'Surface lines', via: 'references', top: true, match: / line(\.[lr])?$/i, color: 0xff9f43, tube: 0.003, noXray: true, paint: refLineColor },
-      { id: 'refmoves', label: 'Movements', via: 'references', top: true, match: /^(Abduction|Adduction|Circumduction|(Lateral|Medial) rotation|Supination|Pronation|Inversion|Eversion|Plantar flexion|Dorsiflexion)$/i, color: 0xff6f61, noXray: true, paint: () => 0xff6f61 },
-      { id: 'refdirs', label: 'Directions', via: 'references', top: true, match: /^(Distal|Proximal|Dorsal|Ventral|Frontal|Occipital|Cranial|Caudal|Radial|Ulnar|Tibial|Fibular|Palmar|Plantar)$/i, color: 0xe9edf2, noXray: true, paint: () => 0xe9edf2 },
+      { id: 'sense', label: 'Sense organs', files: pair('meshes2-sense'), mb: 1.4, color: 0xd9a066, paint: organColor },
+      { id: 'lungs', label: 'Lungs & bronchi', files: pair('meshes2-resp'), mb: 0.2, color: 0xd4838f, paint: organColor },
+      { id: 'respiratory', label: 'Respiratory', files: pair('meshes-resp'), mb: 0.2, color: 0x7fbf9a, paint: organColor },
+      { id: 'alimentary', label: 'Digestive', files: pair('meshes-digestive'), mb: 1.5, color: 0xd9a441, paint: organColor },
+      { id: 'urinary', label: 'Urogenital', files: pair('meshes-uro'), mb: 0.2, color: 0xc98b8b, paint: organColor },
+      { id: 'endocrine', label: 'Endocrine', files: pair('meshes-endocrine_other'), mb: 0.1, color: 0xb07cc6, paint: organColor },
     ];
 
     // Quality: phones and tablets (coarse pointer) load the lighter models in ./lite/ (about half the triangles);
@@ -1769,6 +1737,14 @@ bool inRegion(vec3 p) {
       const sulcal = /sulc|sulci|fissure|lat.fis/.test(nl);
       const gyral = (hex, k) => { const c = new THREE.Color(tint(hex, nl, 1.2)); if (sulcal) c.multiplyScalar(k || 0.78); return c.getHex(); };
       const flat = hex => hex;
+      // The prototype's models are flat lists (no "Frontal lobe" group around the gyri), so the lobe is read from the gyrus's own name.
+      if (!/nerve|ganglion|plexus|trunk|branch|ramus|root|tract|spinal/.test(nl)) {
+        if (/frontal|precentral|orbital gyr|rectus gyr/.test(nl)) chain.unshift('frontal lobe');
+        else if (/parietal|postcentral|supramarginal|angular|precuneus/.test(nl)) chain.unshift('parietal lobe');
+        else if (/temporal|heschl|parahippocamp|fusiform/.test(nl)) chain.unshift('temporal lobe');
+        else if (/occipital|cuneus|calcarine|lingual gyr|striate/.test(nl)) chain.unshift('occipital lobe');
+        else if (/cingulate|limbic|subcallosal/.test(nl)) chain.unshift('limbic lobe');
+      }
       const rules = [
         [/choroid plexus/, 0xb5524a, flat],
         [/ventricle|aqueduct|central canal/, 0x5ec2f0, flat],
@@ -1957,6 +1933,7 @@ bool inRegion(vec3 p) {
     // Full detail: the models are chosen when the page opens, so changing the switch saves the choice and reloads.
     const detailEl = document.getElementById('fullDetail');
     detailEl.checked = !LITE;
+    detailEl.closest('label').style.display = 'none';   // one model set only: nothing to switch
     detailEl.addEventListener('change', () => {
       try { localStorage.setItem(QUALITY_KEY, detailEl.checked ? 'high' : 'lite'); } catch (e) { }
       const u = new URL(location.href);
@@ -2154,10 +2131,9 @@ bool inRegion(vec3 p) {
       pinHi.visible = !!selectedPin;
       dirty = true;
     }
-    fetch(BASE + 'landmarks.json').then(r => r.json()).then(d => {
-      landmarkData = d;
-      for (const s of SYSTEMS) addPins(s);
-    }).catch(() => { });
+    // landmarks.json belongs to the previous model set (its points are named after structures that set had), so the pins are off
+    // for the prototype models. addPins() and the pin code stay, ready for a landmarks file made for these models.
+    // fetch(BASE + 'landmarks.json').then(r => r.json()).then(d => { landmarkData = d; for (const s of SYSTEMS) addPins(s); }).catch(() => { });
 
     const systemsEl = document.getElementById('systems');
     for (const s of SYSTEMS) {
@@ -2303,7 +2279,17 @@ bool inRegion(vec3 p) {
 
 
     
+    // names of every structure in seven languages (models/names.json), keyed by the id in the model's node names
+    const namesLoad = fetch(BASE + 'models/names.json').then(r => r.json()).catch(() => ({}));
+    let NAME_LIST = {};
+    namesLoad.then(n => { NAME_LIST = n; });
     function describe(mesh) {
+      const d0 = describe0(mesh);
+      const nm = NAME_LIST[mesh.userData && mesh.userData.pid];
+      if (nm && nm.la && nm.la.toLowerCase() !== (nm.en || '').toLowerCase() && !d0.note) d0.note = 'Latin: ' + nm.la;
+      return d0;
+    }
+    function describe0(mesh) {
       let raw = rawName(mesh).replace(/-mesh$/i, '');
       // muscle / tendon / ligament footprints on bones: ".or" = origin right, ".e2l" = insertion left, etc.
       const att = raw.match(/^(.*?)(?:\.|(?<=muscle))([oe])\d*([lr])$/i);
@@ -2382,6 +2368,7 @@ bool inRegion(vec3 p) {
         renderLoadStatus();
         setTimeout(renderLoadStatus, 12500);   // shows the slow-connection hint even if no progress arrives
         try {
+          const NAMES = await namesLoad;
           const files = s.files || [s.file];
           const parts = [];
           for (const f of files) {
@@ -2398,12 +2385,21 @@ bool inRegion(vec3 p) {
           if (parts.length === 1) s.group = parts[0];
           else { s.group = new THREE.Group(); parts.forEach(p => s.group.add(p)); }
           if (s.offset) s.group.position.set(...s.offset);
+          // prototype models: "<id>|<English name>[ (left)|(right)]" -> clean name, with .l / .r for the side, and the id for the names list
+          s.group.traverse(n => {
+            const raw = n.userData && n.userData.name;
+            const m = typeof raw === 'string' && /^([^|]+)\|(.+)$/.exec(raw);
+            if (!m) return;
+            n.userData.pid = m[1];
+            n.userData.name = m[2].replace(/\s*\((left|right)\)\s*$/i, (_, w) => (w.toLowerCase() === 'left' ? '.l' : '.r'));
+          });
           s.group.traverse(n => { if (/^VH_F_/.test(n.name || '')) { n.userData.name = vhName(n.name); if (REPRO_IDS[n.name]) n.userData.onto = REPRO_IDS[n.name]; } });
           const kids = SYSTEMS.filter(c => c.via === s.id);
           const moves = [], drops = [];
           s.group.updateMatrixWorld(true);
           s.group.traverse(o => {
             if (!o.isMesh) return;
+            if (!o.geometry.attributes.normal) o.geometry.computeVertexNormals();   // the packed meshes ship without normals
             // ".j" meshes are baked label leader-lines from the Blender source, not anatomy
             if (/\.j(-mesh)?$/i.test(rawName(o))) { drops.push(o); return; }
             if (s.keep && !s.keep.includes(o.name)) { drops.push(o); return; }   // only the listed structures
@@ -2445,7 +2441,7 @@ bool inRegion(vec3 p) {
           s.stat.textContent = 'Failed';
           s.stat.classList.add('err');
           s.input.checked = false;
-          if (location.protocol === 'file:') showNotice(`Couldn't load <code>${s.file}</code>. Serve this folder over http (for example <code>npx serve .</code>) instead of opening the file directly, or set <code>?base=</code> to where the models are hosted.`);
+          if (location.protocol === 'file:') showNotice(`Couldn't load <code>${(s.files || [s.file]).join(', ')}</code>. Serve this folder over http (for example <code>npx serve .</code>) instead of opening the file directly, or set <code>?base=</code> to where the models are hosted.`);
           else if (!s.hidden) loadFailed(s);   // a hidden file (Organs) is reported by the system that asked for it
         }
         s.loading = false;
@@ -2702,18 +2698,14 @@ bool inRegion(vec3 p) {
     // is not loaded yet, hides everything else and flies the camera to it. Choosing several shows them together.
     // "Show everything again" (or Escape) brings the whole body back.
     const ORGANS = [
-      { id: 'brain', label: 'Brain', sys: 'nervous', node: /^Brain\.g$/ },
+      // The prototype's models are flat lists of named structures, so each organ is picked by name (inside its body system).
+      { id: 'brain', label: 'Brain', sys: 'nervous', node: /^(?!.*(nerve|ganglion|plexus|trunk|spino|spinal|proprius|intermedi|horn|funicul|root|ramus|branch|cord|central canal|gelatinosa|tract|lemniscus|decussation))(?=.*(cerebr|cerebell|gyrus|gyri|lobe|sulcus|ventric|thalam|hippocamp|midbrain|pons\b|medulla oblongata|amygdal|caudate|putamen|globus|hypothal|callosum|commissure|fornix|insula|colliculus|falx|aqueduct|striat|pallid|nucleus|brain|lobule|fissure|septum pellucidum|pole|lingula|vermis|tonsil))/i },
       {
-        id: 'heart', label: 'Heart', sys: 'cardiovascular', node: /^Heart\.g$/,
-        // "Include great vessels" adds what the usual heart diagrams show: aorta (ascending, arch, its branch stubs, a stretch of the
-        // descending part), pulmonary trunk and arteries, pulmonary veins, venae cavae, coronary arteries and cardiac veins. The model
-        // gives every vessel its own short stem mesh ("..._1") apart from its long branches, so only the stems are taken: stubs, not trees.
-        extra: {
-          groups: /^(Ascending aorta|Aortic arch|Pulmonary trunk|Arteries of heart\.g|Cardiac veins\.g)$/,
-          stems: /^(Thoracic_aorta_1|(Left|Right)_common_carotid_artery_1|(Left|Right)_subclavian_artery_1|Superior_vena_cava_1|(Left|Right)_brachiocephalic_vein_1|Inferior_vena_cava_\(thoracic_part\)_1|(Left|Right)_pulmonary_artery_1|(Left|Right)_(superior|inferior)_pulmonary_vein_1)$/,
-        },
+        id: 'heart', label: 'Heart', sys: 'cardiovascular', node: /(ventricle|atrium|atrial|papillary|chordae|cusp|valve of|interventricular septum|interatrial septum|auricle|trabecula)/i,
+        // "Include great vessels" adds what the usual heart diagrams show: the aorta, pulmonary trunk, venae cavae and the heart's own vessels.
+        extra: { groups: /^(ascending aorta|aortic arch|pulmonary trunk|superior vena cava|inferior vena cava|brachiocephalic trunk|(left|right) (pulmonary|brachiocephalic)|.*(cardiac vein|artery of heart|coronary|interventricular artery|circumflex artery of heart))/i },
       },
-      { id: 'lungs', label: 'Lungs', sys: 'respiratory', node: /^Lungs\.g$/ },
+      { id: 'lungs', label: 'Lungs', sys: 'lungs', node: /lung|bronch/i },
     ];
     const organsActive = new Set();
     const organBtns = new Map(ORGANS.map(o => [o.id, document.querySelector('#organs [data-organ="' + o.id + '"]')]));
@@ -2725,13 +2717,9 @@ bool inRegion(vec3 p) {
     function inOrgan(mesh, def) {
       const sys = mesh.userData.system;
       if (!sys || sys.id !== def.sys) return false;
-      const extra = def.extra && vesselsEl.checked ? def.extra : null;
-      if (extra && extra.stems.test(mesh.name || '')) return true;
-      for (let n = mesh; n; n = n.parent) {
-        const nm = n.userData && n.userData.name;
-        if (nm && (def.node.test(nm) || (extra && extra.groups.test(nm)))) return true;
-      }
-      return false;
+      const nm = rawName(mesh);
+      if (def.node.test(nm)) return true;
+      return !!(def.extra && vesselsEl.checked && def.extra.groups.test(nm));
     }
     function syncOrganUI(msg) {
       for (const [id, b] of organBtns) if (b) b.setAttribute('aria-pressed', String(organsActive.has(id)));
@@ -3136,6 +3124,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
 
     /* ---------- pelvis: male (skeleton) or female (HRA) ---------- */
     let pelvisMode = 'male';
+    document.getElementById('pelvis').closest('details').style.display = 'none';   // the models are one body: no male / female choice
     const pelvisBtns = [...document.getElementById('pelvis').querySelectorAll('button')];
     const isPelvicBone = mesh => {
       for (let o = mesh; o; o = o.parent) {
@@ -3171,6 +3160,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
       if (breasts && breasts.row) breasts.row.style.display = mode === 'female' ? '' : 'none';
       for (const id of ['femur']) {   // the female sacrum ('pelvis') is no longer shown
         const fem = SYSTEMS.find(x => x.id === id);
+        if (!fem) continue;
         fem.input.checked = mode === 'female';
         await setSystem(fem, mode === 'female');
       }
@@ -3178,17 +3168,16 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
     }
     pelvisBtns.forEach(b => b.addEventListener('click', () => setPelvis(b.dataset.mode)));
 
-    const ORGAN_SYSTEM_IDS = ['alimentary', 'urinary', 'reproductive', 'respiratory', 'endocrine'];   // what the old single Organs system became
+    const ORGAN_SYSTEM_IDS = ['alimentary', 'urinary', 'respiratory', 'lungs', 'endocrine'];   // what the old single Organs system became
 
     /* ---------- layer peeling ---------- */
     // outermost first; each step of the slider removes the next layer. Skeleton and reference lines always stay.
     const LAYERS = [
-      { label: 'Fascia and breasts', ids: ['fascia', 'serosa', 'breasts'] },
-      { label: 'Muscles', ids: ['muscular', 'bursae'] },
+      { label: 'Fasciae', ids: ['fascia'] },
+      { label: 'Muscles', ids: ['muscular'] },
       { label: 'Vessels, lymphatics', ids: ['cardiovascular', 'lymphoid'] },
-      { label: 'Nerves', ids: ['nervous'] },
-      { label: 'Organs', ids: [...ORGAN_SYSTEM_IDS, 'visceral'] },
-      { label: 'Joints', ids: ['joints'] },
+      { label: 'Nerves and sense organs', ids: ['nervous', 'sense'] },
+      { label: 'Organs', ids: ORGAN_SYSTEM_IDS },
     ];
     const peelEl = document.getElementById('peel');
     const peelLabelEl = document.getElementById('peelLabel');
@@ -3245,14 +3234,13 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
     const QUIZ_MIN_SIZE = 0.012;   // metres (diagonal of the structure): anything smaller is too tiny to see or fairly ask about
     const QUIZ_SYSTEMS = [
       { id: 'alimentary', label: 'Alimentary', ids: ['alimentary'] },
-      { id: 'nervous', label: 'Nervous', ids: ['nervous'] },
+      { id: 'nervous', label: 'Nervous', ids: ['nervous', 'sense'] },
       { id: 'cardiovascular', label: 'Cardiovascular', ids: ['cardiovascular'] },
       { id: 'lymphatic', label: 'Lymphatic', ids: ['lymphoid'] },
       { id: 'muscular', label: 'Muscular', ids: ['muscular'] },
-      { id: 'skeletal', label: 'Skeletal', ids: ['skeletal', 'joints'] },
+      { id: 'skeletal', label: 'Skeletal', ids: ['skeletal'] },
       { id: 'urinary', label: 'Urinary', ids: ['urinary'] },
-      { id: 'reproductive', label: 'Reproductive', ids: ['reproductive'] },   // follows the Male / Female choice
-      { id: 'respiratory', label: 'Respiratory', ids: ['respiratory'] },
+      { id: 'respiratory', label: 'Respiratory', ids: ['respiratory', 'lungs'] },
       { id: 'endocrine', label: 'Endocrine', ids: ['endocrine'] },
     ];
     // reg: 0 = whole body, otherwise a REGIONS id (6 and 7 are the limbs, which also use side: -1 right, +1 left,
