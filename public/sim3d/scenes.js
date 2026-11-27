@@ -4,7 +4,7 @@
 
 // Must match MODEL_VERSION in /atlas/anatomy.html so the browser reuses saved models
 // (tests/deploy-wiring.test.mjs checks this).
-export const MODEL_VERSION = '3';
+export const MODEL_VERSION = '4';
 
 // Tissue colours, from the part's name.
 const RULES = [

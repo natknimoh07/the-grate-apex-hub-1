@@ -76,3 +76,7 @@ brain or skin, and lacks parts of the bowel (ileum, caecum, rectum) and the lary
 `models/meshes-joints.glb` and `models/meshes-muscle-pectoralis.glb` are structures copied unchanged in shape from
 Z-Anatomy's `Joints100.glb` and `MuscularSystem100.glb` (same CC BY-SA 4.0 licence, same coordinates), recompressed with
 Meshopt. They replace the viewer's 75-vertex pectoralis major scrap and add the joints and ligaments system.
+
+`models/meshes2-nervous-spinal.glb` is copied the same way from `NervousSystem100.glb`: the full-length white matter, anterior
+and posterior horns and central canal of the spinal cord (the viewer's own copies were 2 cm stubs), plus the lateral fissure
+branches and Jensen's sulcus.
