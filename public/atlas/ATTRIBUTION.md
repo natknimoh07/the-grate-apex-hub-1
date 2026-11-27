@@ -70,3 +70,9 @@ made by `scripts/atlas-models/convert-prototype.py`. The old model files in this
 simulations (`/sim3d/`); the atlas page itself no longer loads them. `landmarks.json` belongs to the old models, so
 landmark pins are switched off. The prototype notes that its source has no whole-organ surfaces for the heart,
 brain or skin, and lacks parts of the bowel (ileum, caecum, rectum) and the larynx.
+
+## Joints and ligaments, pectoralis major (2026-11-27)
+
+`models/meshes-joints.glb` and `models/meshes-muscle-pectoralis.glb` are structures copied unchanged in shape from
+Z-Anatomy's `Joints100.glb` and `MuscularSystem100.glb` (same CC BY-SA 4.0 licence, same coordinates), recompressed with
+Meshopt. They replace the viewer's 75-vertex pectoralis major scrap and add the joints and ligaments system.

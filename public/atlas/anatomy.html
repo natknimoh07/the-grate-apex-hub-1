@@ -927,7 +927,7 @@
         if (q.get('base')) return;
         var link = document.createElement('link');
         link.rel = 'preload'; link.as = 'fetch'; link.crossOrigin = 'anonymous';
-        link.href = './models/meshes-skeletal.glb?m=2';
+        link.href = './models/meshes-skeletal.glb?m=3';
         document.head.appendChild(link);
       } catch (e) { }
     })();
@@ -1411,7 +1411,7 @@
     // The .glb models are kept by the browser for a long time (vercel.json), so they are only downloaded once.
     // They are asked for as `file.glb?m=<MODEL_VERSION>`: change this number whenever ANY .glb file changes,
     // so everyone fetches the new models once (tests/deploy-wiring.test.mjs fails if you forget).
-    const MODEL_VERSION = '2';
+    const MODEL_VERSION = '3';
 
     const pair = k => ['models/' + k + '.glb', 'models/' + k + '-more.glb'];
     const SYSTEMS = [
@@ -1420,7 +1420,11 @@
       // every name in seven languages. Listed in the order of the Body systems panel.
       { id: 'skeletal', label: 'Skeletal', files: pair('meshes-skeletal'), mb: 4.6, color: 0xe6dcc6, on: true, paint: boneColor, coded: false,
         code: { label: 'Bones', hint: 'by region', swatch: 'linear-gradient(90deg,#e6c98a 20%,#8fb4e8 20% 40%,#8ccf9b 40% 60%,#f2b36a 60% 80%,#e88a9a 80%)' } },
-      { id: 'muscular', label: 'Muscular', files: pair('meshes-muscle'), mb: 9.8, color: 0xc4553d, paint: muscleColor },
+      // Joints and ligaments: copied from Z-Anatomy's Joints100.glb (scripts/atlas-models/extract-zanatomy.mjs); the prototype set has none.
+      { id: 'joints', label: 'Joints & ligaments', files: ['models/meshes-joints.glb'], mb: 2.2, color: 0x86a3cc, paint: jointColor },
+      // The prototype's "Pectoralis major muscle" is a 6 cm scrap (75 vertices), so it is dropped and the three real heads, both sides,
+      // are copied in from Z-Anatomy's MuscularSystem100.glb (same coordinates).
+      { id: 'muscular', label: 'Muscular', files: [...pair('meshes-muscle'), 'models/meshes-muscle-pectoralis.glb'], drop: /^Pectoralis major muscle$/i, mb: 9.9, color: 0xc4553d, paint: muscleColor },
       { id: 'fascia', label: 'Fasciae', files: ['models/meshes-fascia-more.glb'], mb: 0.8, color: 0xb9a37a, ghost: true, opacity: 0.3 },
       {
         id: 'cardiovascular', label: 'Heart & vessels', files: pair('meshes2-cardio'), mb: 4.5, color: 0xc94f4f, swatch: 'linear-gradient(90deg,#d62f3b 50%,#2f6fd6 50%)', paint: vesselColor, coded: true,
@@ -2403,6 +2407,7 @@ bool inRegion(vec3 p) {
             // ".j" meshes are baked label leader-lines from the Blender source, not anatomy
             if (/\.j(-mesh)?$/i.test(rawName(o))) { drops.push(o); return; }
             if (s.keep && !s.keep.includes(o.name)) { drops.push(o); return; }   // only the listed structures
+            if (s.drop && s.drop.test(rawName(o))) { drops.push(o); return; }   // structures a better copy replaces (see the Muscular system)
             if (s.id === 'visceral' && /^sigmoid[ _]colon$/i.test(o.name || '')) { drops.push(o); return; }   // removed: it stopped short of the midline and the model has no rectum
             if (s.id === 'visceral' && /^stomach$/i.test(o.name || '')) fillOpenHoles(o.geometry);   // the source stomach has gaps in its wall: close them
             let owner = s;
@@ -3175,6 +3180,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
     const LAYERS = [
       { label: 'Fasciae', ids: ['fascia'] },
       { label: 'Muscles', ids: ['muscular'] },
+      { label: 'Joints, ligaments', ids: ['joints'] },
       { label: 'Vessels, lymphatics', ids: ['cardiovascular', 'lymphoid'] },
       { label: 'Nerves and sense organs', ids: ['nervous', 'sense'] },
       { label: 'Organs', ids: ORGAN_SYSTEM_IDS },
