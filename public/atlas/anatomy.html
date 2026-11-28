@@ -2381,6 +2381,9 @@ bool inRegion(vec3 p) {
           if (parts.length === 1) s.group = parts[0];
           else { s.group = new THREE.Group(); parts.forEach(p => s.group.add(p)); }
           if (s.offset) s.group.position.set(...s.offset);
+          // The model's internal oblique reaches the midline in the same plane as the rectus abdominis (front faces 0.122 vs 0.120 m),
+          // so they overlap and flicker. In life the rectus lies in its sheath, in front of the deep muscles: bring it forward 5 mm.
+          s.group.traverse(n => { if (/^Rectus abdominis muscle\.[lr]$/i.test(n.name || '')) n.position.z += 0.005; });
           s.group.traverse(n => { if (/^VH_F_/.test(n.name || '')) { n.userData.name = vhName(n.name); if (REPRO_IDS[n.name]) n.userData.onto = REPRO_IDS[n.name]; } });
           const kids = SYSTEMS.filter(c => c.via === s.id);
           const moves = [], drops = [];
