@@ -11,7 +11,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
 // Update both values together whenever an atlas model (.glb) is changed (see the atlas tests below).
-const KNOWN_MODELS = { version: '5', fingerprint: '49f8ecb347389342d1d8e06bca337728a45c53417b28c5a74d1d3d69cac7f060' };
+const KNOWN_MODELS = { version: '4', fingerprint: '6674a2e5b10347333b265fa8b8ad2b777de245b6c2d9a4f5490031fe9cb1dd39' };
 
 const read = (path) => readFileSync(path, 'utf8');
 const vercel = JSON.parse(read('vercel.json'));
