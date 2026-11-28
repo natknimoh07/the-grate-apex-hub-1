@@ -4,10 +4,10 @@
     {
       "id": "2026-11-27-atlas-joints-pectoralis",
       "date": "2026-11-27",
-      "title": "Joints, spinal cord and pectoralis major",
+      "title": "Sharper 3D atlas, joints and spinal cord",
       "points": [
-        "New Joints & ligaments layer in the 3D atlas: ligaments, capsules, menisci and discs.",
-        "Pectoralis major is now complete, with all three heads on both sides.",
+        "Muscles, heart, lungs and organs in the atlas now use finer 3D meshes.",
+        "New Joints & ligaments layer, and a complete pectoralis major.",
         "The spinal cord's grey and white matter now run its full length."
       ]
     },

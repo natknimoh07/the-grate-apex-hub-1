@@ -80,3 +80,11 @@ Meshopt. They replace the viewer's 75-vertex pectoralis major scrap and add the 
 `models/meshes2-nervous-spinal.glb` is copied the same way from `NervousSystem100.glb`: the full-length white matter, anterior
 and posterior horns and central canal of the spinal cord (the viewer's own copies were 2 cm stubs), plus the lateral fissure
 branches and Jensen's sulcus.
+
+## Finer meshes (2026-11-27)
+
+`models/hd/` and `models/hd-lite/` hold finer copies of 204 structures (muscles, heart, lungs and airways, organs, eye and ear
+parts) taken from Z-Anatomy's `MuscularSystem100.glb`, `NervousSystem100.glb`, `CardioVascular41.glb` and
+`VisceralSystem100.glb` (and their `lite/` copies for phones). Same CC BY-SA 4.0 licence; the meshes were merged per structure,
+renamed to the viewer's structure names and recompressed with Meshopt. The same structures were removed from the coarser
+`models/meshes*.glb` files so nothing is downloaded twice. Made by `scripts/atlas-models/upgrade-meshes.mjs`.
