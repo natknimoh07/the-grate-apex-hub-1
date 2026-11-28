@@ -2,25 +2,6 @@
   "about": "What is new in each update, shown to learners in the 'Update ready' popup and in Settings → Help → App updates. Newest first. Each update: a unique id, the date, a short title (up to 48 characters) and 1–3 plain points (up to 120 characters each). Add one whenever you push something learners will notice.",
   "updates": [
     {
-      "id": "2026-11-27-atlas-joints-pectoralis",
-      "date": "2026-11-27",
-      "title": "Joints, spinal cord and pectoralis major",
-      "points": [
-        "New Joints & ligaments layer in the 3D atlas: ligaments, capsules, menisci and discs.",
-        "Pectoralis major is now complete, with all three heads on both sides.",
-        "The spinal cord's grey and white matter now run its full length."
-      ]
-    },
-    {
-      "id": "2026-11-26-atlas-new-models",
-      "date": "2026-11-26",
-      "title": "New 3D atlas models",
-      "points": [
-        "The atlas now has about 1,440 structures, including the cerebral gyri, cranial nerves and many more muscles and vessels.",
-        "Tap a structure to see its Latin name; Brain, Heart and Lungs still show one organ on its own."
-      ]
-    },
-    {
       "id": "2026-11-25-atlas-full-detail",
       "date": "2026-11-25",
       "title": "Sharper 3D atlas models on phones",
