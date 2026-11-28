@@ -926,7 +926,6 @@
         var q = new URLSearchParams(location.search);
         if (q.get('base')) return;
         var quality = q.get('quality');
-        if (!quality) { try { quality = localStorage.getItem('grateapex_atlas_quality'); } catch (e) { } }   // the learner's "Full detail" choice
         var lite = quality ? quality === 'lite' : matchMedia('(pointer: coarse)').matches;
         var link = document.createElement('link');
         link.rel = 'preload'; link.as = 'fetch'; link.crossOrigin = 'anonymous';
@@ -1094,8 +1093,6 @@
               style="--c:#e8d6a8"></span><span>Prioritize translucent sheets</span><span class="stat">fascia first</span></label>
           <label class="sys"><input type="checkbox" id="aoOn" checked><span class="swatch"
               style="--c:#8a96a3"></span><span>Ambient occlusion</span><span class="stat">depth</span></label>
-          <label class="sys"><input type="checkbox" id="fullDetail"><span class="swatch"
-              style="--c:#6fcf97"></span><span>Full detail</span><span class="stat">more triangles</span></label>
         </div>
       </details>
 
@@ -1472,11 +1469,8 @@
     ];
 
     // Quality: phones and tablets (coarse pointer) load the lighter models in ./lite/ (about half the triangles);
-    // everything else loads the full-detail set. Override with ?quality=lite or ?quality=high, or with the
-    // "Full detail" switch in the Display menu (kept on this device, same key as the early download in the head).
-    const QUALITY_KEY = 'grateapex_atlas_quality';
-    const savedQuality = () => { try { return localStorage.getItem(QUALITY_KEY); } catch (e) { return null; } };
-    const QUALITY = new URLSearchParams(location.search).get('quality') || savedQuality();
+    // everything else loads the full-detail set. Override with ?quality=lite or ?quality=high.
+    const QUALITY = new URLSearchParams(location.search).get('quality');
     const LITE = QUALITY ? QUALITY === 'lite' : matchMedia('(pointer: coarse)').matches;
     const MODEL_DIR = LITE ? 'lite/' : '';
     const MB_LITE = { 'SkeletalSystem100.glb': 5.4, 'Joints100.glb': 1.8, 'MuscularSystem100.glb': 5.0, 'NervousSystem100.glb': 5.9, 'CardioVascular41.glb': 5.0, 'VisceralSystem100.glb': 3.0, 'LymphoidOrgans100.glb': 0.6, 'References100.glb': 0.1 };
@@ -1590,12 +1584,11 @@ bool inRegion(vec3 p) {
           .replace('#include <common>', '#include <common>\n' + REGION_GLSL)
           .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\nif (!inRegion(vRW) || !cutKeeps(vRW)) discard;');
         // Solid structures are hollow shells, so after a cut you would look into an empty shell. Where a cut shows the inside
-        // (a back face), paint it as a deeper shade of the structure's own colour (so muscle stays red, bone stays cream),
-        // with a little shading by how squarely it faces the camera, so the cut face reads as solid tissue with some depth.
+        // (a back face), paint it flat in a lightened copy of the structure's own colour, so the cut face reads as solid tissue.
         // See-through materials (x-ray, sheets, pins) are left alone.
         if (!m.transparent) {
           sh.fragmentShader = sh.fragmentShader.replace('#include <opaque_fragment>',
-            '#include <opaque_fragment>\nif (uCutOn > 0.5 && !gl_FrontFacing) { float cf = clamp(dot(normalize(normal), normalize(vViewPosition)), 0.0, 1.0); gl_FragColor = vec4(diffuseColor.rgb * (0.58 + 0.30 * cf), gl_FragColor.a); }');
+            '#include <opaque_fragment>\nif (uCutOn > 0.5 && !gl_FrontFacing) gl_FragColor = vec4(mix(diffuseColor.rgb, vec3(0.96, 0.80, 0.72), 0.4) * 0.92, gl_FragColor.a);');
         }
       };
       m.customProgramCacheKey = () => 'region-cut' + (m.transparent ? 't' : '');
@@ -1954,18 +1947,8 @@ bool inRegion(vec3 p) {
     const aoEl = document.getElementById('aoOn');
     aoEl.checked = !matchMedia('(pointer: coarse)').matches;   // off by default on phones/tablets
     aoEl.addEventListener('change', () => { dirty = true; });
-    // Full detail: the models are chosen when the page opens, so changing the switch saves the choice and reloads.
-    const detailEl = document.getElementById('fullDetail');
-    detailEl.checked = !LITE;
-    detailEl.addEventListener('change', () => {
-      try { localStorage.setItem(QUALITY_KEY, detailEl.checked ? 'high' : 'lite'); } catch (e) { }
-      const u = new URL(location.href);
-      u.searchParams.delete('quality');   // a ?quality= in the address would win over the choice just made
-      location.replace(u.toString());
-    });
     const xrayEl = document.getElementById('xray');
-    let xrayAuto = false;   // true while x-ray was switched on by a search (see the search handler), so deselecting can switch it off
-    xrayEl.addEventListener('change', () => { xrayAuto = false; setXray(xrayEl.checked); });
+    xrayEl.addEventListener('change', () => setXray(xrayEl.checked));
     // AO reads depth/normals of every mesh, so it can't see the region cut or translucent layers: pause it then.
     const aoActive = () => aoEl.checked && !xrayOn && region === 0 && !cut.on && !SYSTEMS.some(s => s.ghost && s.group && s.group.visible);
     let lastMove = 0, needRefine = false;
@@ -2481,11 +2464,7 @@ bool inRegion(vec3 p) {
       restoreSelection();
       selected = mesh;
       selectedPin = null; info.classList.remove('pin');
-      if (!mesh) {
-        info.classList.remove('open');
-        if (xrayAuto && !quiz.active) { xrayAuto = false; xrayEl.checked = false; setXray(false); }   // x-ray was only on for the searched part
-        syncXrayFocus(); refreshPins(); return;
-      }
+      if (!mesh) { info.classList.remove('open'); syncXrayFocus(); refreshPins(); return; }
       const s = mesh.userData.system;
       if (isPeeled(s)) unpeelFor(s);
       if (s.group && !s.group.visible) { s.input.checked = true; s.group.visible = true; }
@@ -3121,12 +3100,7 @@ return (pickSheets ? hits[0] : hits.find(h => !h.object.userData.system.ghost)) 
         b.onclick = () => {
           if (region) setRegion(0, true);
           if (f.pin) { selectPin(f.system, f.i); const r = f.system.pinData[f.i]; focusPoint(new THREE.Vector3(r[2], r[3], r[4])); }
-          else {
-            select(f.mesh); for (const m of selectedParts) m.visible = true; focusOn(f.mesh);
-            // a searched part may be buried under other tissue: turn x-ray on so the rest turns see-through and the part shows
-            // solid; deselecting turns it off again (only when the search switched it on, not when the learner already had it on)
-            if (!xrayOn) { xrayEl.checked = true; setXray(true); xrayAuto = true; }
-          }
+          else { select(f.mesh); for (const m of selectedParts) m.visible = true; focusOn(f.mesh); }
           q.value = ''; results.innerHTML = '';
         };
         li.appendChild(b);
