@@ -1,0 +1,17 @@
+{
+  "config_version": 2,
+  "source": "Z-Anatomy Startup.blend; paths reviewed against 1,944-row GitHub Actions inventory",
+  "status": "inventory-confirmed paths; exports still require pilot validation",
+  "systems": [
+    {"key":"skeletal","label":"Skeletal system","collections":["Bonus collection/Skeletal system"]},
+    {"key":"muscular","label":"Muscular system","collections":["Bonus collection/Muscular system"]},
+    {"key":"muscular_insertions","label":"Muscular insertions","collections":["2: Muscular insertions"]},
+    {"key":"joints","label":"Joints / Arthrology","collections":["Bonus collection/Arthrology"]},
+    {"key":"cardiovascular","label":"Cardiovascular system","collections":["Bonus collection/Cardiovascular system"]},
+    {"key":"lymphatic","label":"Lymphatic system","collections":["6: Lymphoid organs","Bonus collection/Cardiovascular system/Great lymphatic vessels","Bonus collection/Visceral systems/Lymphoid system"]},
+    {"key":"nervous","label":"Nervous system & sense organs","collections":["Bonus collection/Nervous system"]},
+    {"key":"visceral","label":"Visceral systems","collections":["Bonus collection/Visceral systems"]},
+    {"key":"integument","label":"Integument","collections":["Bonus collection/Regions of human body/Integument"]},
+    {"key":"body_regions","label":"Body regions / Main divisions","collections":["Bonus collection/Regions of human body/Main divisions"]}
+  ]
+}

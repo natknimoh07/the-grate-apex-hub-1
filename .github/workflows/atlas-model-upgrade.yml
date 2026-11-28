@@ -3,18 +3,16 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Run collection inventory first, or export systems after mapping review'
+        description: 'Inventory only, pilot export, or all-system export'
         required: true
         type: choice
-        options:
-          - inventory
-          - export
+        options: [inventory, pilot, export]
         default: inventory
       config_path:
-        description: 'Repository-relative JSON system mapping (used for export mode)'
+        description: 'Reviewed system mapping JSON'
         required: false
         type: string
-        default: 'atlas-upgrade/systems.initial.json'
+        default: 'atlas-upgrade/systems.reviewed.json'
       lite_ratio:
         description: 'Mobile decimation ratio (0.1–1.0)'
         required: false
@@ -37,16 +35,24 @@ jobs:
           BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
           blender -b "$BLEND" -P atlas-upgrade/pipeline/inventory_blend.py -- \
             --out atlas-upgrade/output/collection-inventory.json
-      - name: Export full and mobile GLBs
+      - name: Pilot export (skeletal + muscular insertions)
+        if: inputs.mode == 'pilot'
+        run: |
+          BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
+          blender -b "$BLEND" -P atlas-upgrade/pipeline/export_collections.py -- \
+            --config "${{ inputs.config_path }}" \
+            --only skeletal,muscular_insertions \
+            --out atlas-upgrade/output/glb \
+            --lite-ratio "${{ inputs.lite_ratio }}"
+      - name: Export all reviewed systems
         if: inputs.mode == 'export'
         run: |
-          test -f "${{ inputs.config_path }}"
           BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
           blender -b "$BLEND" -P atlas-upgrade/pipeline/export_collections.py -- \
             --config "${{ inputs.config_path }}" \
             --out atlas-upgrade/output/glb \
             --lite-ratio "${{ inputs.lite_ratio }}"
-      - name: Upload inventory and GLB exports
+      - name: Upload inventory and exports
         uses: actions/upload-artifact@v4
         with:
           name: atlas-z-anatomy-${{ inputs.mode }}

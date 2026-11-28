@@ -1,96 +1,112 @@
 #!/usr/bin/env python3
-"""Export named Z-Anatomy collection groups to full and mobile GLBs.
-
-Usage: blender -b Startup.blend -P export_collections.py -- --config systems.json --out dist/raw
-Collections are matched by full path (or exact collection name if a path has no slash).
-Objects remain separate, retain anatomical labels, and get stable ids for Atlas selection.
+"""Blender headless exporter: collection-path systems to full + lite GLB.
+Objects are duplicated into a temporary collection, deduplicated by source object,
+converted curves are meshified, FONT labels are intentionally omitted, and names
+are preserved for Atlas node selection.
 """
-import bpy, argparse, json, sys, hashlib, re
+import bpy, argparse, json, sys, os
 from pathlib import Path
 
-def args_after_dash():
-    a=sys.argv
-    return a[a.index('--')+1:] if '--' in a else []
+def cli_args():
+    argv=sys.argv
+    return argv[argv.index('--')+1:] if '--' in argv else []
 
-p=argparse.ArgumentParser(); p.add_argument('--config',required=True); p.add_argument('--out',required=True); p.add_argument('--lite-ratio',type=float,default=0.58); opts=p.parse_args(args_after_dash())
-if not 0.1 <= opts.lite_ratio <= 1: raise SystemExit('--lite-ratio must be 0.1..1.0')
-config=json.loads(Path(opts.config).read_text(encoding='utf-8'))
-out=Path(opts.out); out.mkdir(parents=True,exist_ok=True)
-# Build path->collection index.
-collections={}
-def index_coll(c,prefix=''):
-    path=f'{prefix}/{c.name}' if prefix else c.name
-    collections[path]=c
-    for ch in c.children: index_coll(ch,path)
-for c in bpy.data.collections: index_coll(c)
+p=argparse.ArgumentParser()
+p.add_argument('--config', required=True)
+p.add_argument('--out', required=True)
+p.add_argument('--lite-ratio', type=float, default=.58)
+p.add_argument('--only', default='', help='Comma-separated export keys for pilot runs')
+args=p.parse_args(cli_args())
+if not 0.05 <= args.lite_ratio <= 1.0:
+    raise SystemExit('--lite-ratio must be between 0.05 and 1.0')
+config=json.loads(Path(args.config).read_text(encoding='utf-8'))
+out=Path(args.out); out.mkdir(parents=True, exist_ok=True)
 
-def resolve(path):
-    if path in collections: return collections[path]
-    matches=[c for c in collections.values() if c.name==path]
-    if len(matches)==1: return matches[0]
-    if not matches: raise ValueError(f'Collection not found: {path}')
-    raise ValueError(f'Collection name is ambiguous; use full path: {path}')
+# Build full, unambiguous collection path lookup.
+collection_paths={}
+def walk_collection(c, path=''):
+    full=f'{path}/{c.name}' if path else c.name
+    collection_paths[full]=c
+    for child in sorted(c.children, key=lambda x:x.name.casefold()): walk_collection(child, full)
+for root in bpy.context.scene.collection.children: walk_collection(root)
 
-def descendants(c):
-    yield c
-    for ch in c.children:
-        yield from descendants(ch)
+missing=[]
+for system in config.get('systems', []):
+    for path in system.get('collections', []):
+        if path not in collection_paths: missing.append((system['key'], path))
+if missing:
+    print('Missing configured collection paths:')
+    for key,path in missing: print(f'  {key}: {path}')
+    raise SystemExit(2)
 
-def collect(paths):
-    objs={}
-    for path in paths:
-        c=resolve(path)
-        for sub in descendants(c):
-            for o in sub.objects:
-                if o.type=='MESH' and o.data and len(o.data.polygons): objs[o.name]=o
-    return sorted(objs.values(),key=lambda o:o.name.lower())
+selected_keys=set(k.strip() for k in args.only.split(',') if k.strip())
+if selected_keys:
+    systems=[s for s in config['systems'] if s['key'] in selected_keys]
+    unknown=selected_keys-{s['key'] for s in systems}
+    if unknown: raise SystemExit('Unknown pilot keys: '+', '.join(sorted(unknown)))
+else: systems=config['systems']
 
-def clean_label(name):
-    # Strip Blender's collision suffix only when it looks like a generated numeric suffix.
-    return re.sub(r'\.\d{3}$','',name).strip()
+# Blender operator helper context; duplicate objects to isolate conversions/modifiers.
+def export_variant(system, variant, ratio):
+    key=system['key']; src_objects=[]
+    seen=set()
+    for path in system['collections']:
+        col=collection_paths[path]
+        for obj in col.all_objects:
+            if obj.as_pointer() in seen: continue
+            seen.add(obj.as_pointer())
+            if obj.type in {'MESH','CURVE','SURFACE','META'}: src_objects.append(obj)
+            elif obj.type == 'FONT': continue # anatomy labels are not geometry
+    if not src_objects:
+        raise RuntimeError(f'{key}: resolved collection paths but found no exportable objects')
+    tmp=bpy.data.collections.new(f'__ATLAS_TMP_{key}_{variant}')
+    bpy.context.scene.collection.children.link(tmp)
+    copies=[]
+    try:
+        for source in src_objects:
+            dup=source.copy()
+            if source.data: dup.data=source.data.copy()
+            dup.name=source.name
+            tmp.objects.link(dup)
+            copies.append(dup)
+        # Convert curve-like anatomy (e.g. vessels/nerve paths) into exportable mesh.
+        convertables=[o for o in copies if o.type in {'CURVE','SURFACE','META'}]
+        if convertables:
+            bpy.ops.object.select_all(action='DESELECT')
+            for o in convertables: o.select_set(True)
+            bpy.context.view_layer.objects.active=convertables[0]
+            bpy.ops.object.convert(target='MESH')
+        if ratio < 0.999:
+            for obj in copies:
+                if obj.type!='MESH' or not obj.data or len(obj.data.polygons)<4: continue
+                mod=obj.modifiers.new('Atlas_Lite_Decimate','DECIMATE')
+                mod.ratio=ratio
+                bpy.context.view_layer.objects.active=obj
+                obj.select_set(True)
+                bpy.ops.object.modifier_apply(modifier=mod.name)
+                obj.select_set(False)
+        bpy.ops.object.select_all(action='DESELECT')
+        for obj in copies: obj.select_set(True)
+        bpy.context.view_layer.objects.active=copies[0]
+        file=out/f'{key}{"-lite" if variant=="lite" else ""}.glb'
+        bpy.ops.export_scene.gltf(filepath=str(file), export_format='GLB', use_selection=True,
+            export_materials='EXPORT', export_texcoords=True, export_normals=True,
+            export_colors=True, export_cameras=False, export_lights=False,
+            export_animations=False, export_yup=True)
+        names=[]
+        for obj in copies:
+            names.append({'node':obj.name,'source_type':obj.type,'system':key})
+        (out/f'{key}{"-lite" if variant=="lite" else ""}-names.json').write_text(json.dumps(names,indent=2),encoding='utf-8')
+        print(f'EXPORTED {file} | objects={len(copies)} | ratio={ratio}')
+    finally:
+        # Remove only temporary copies and temporary collection; original blend stays untouched.
+        for obj in list(tmp.objects): bpy.data.objects.remove(obj, do_unlink=True)
+        bpy.data.collections.remove(tmp)
 
-def stable_id(name):
-    return hashlib.sha1(name.encode('utf-8')).hexdigest()[:12]
-
-def export_group(key, group, objects, ratio=None):
-    bpy.ops.object.select_all(action='DESELECT')
-    for o in objects: o.select_set(True)
-    bpy.context.view_layer.objects.active=objects[0] if objects else None
-    if ratio is not None and ratio < 0.999:
-        for o in objects:
-            if len(o.data.polygons)<120: continue
-            mod=o.modifiers.new('Atlas mobile reduction','DECIMATE')
-            mod.ratio=ratio
-    filepath=str(out/f'{key}{"-lite" if ratio is not None else ""}.glb')
-    if not objects:
-        print(f'WARNING: {key} has no exportable mesh objects'); return
-    bpy.ops.export_scene.gltf(filepath=filepath,export_format='GLB',use_selection=True,
-        export_apply=True,export_yup=True,export_normals=True,export_materials='NONE',
-        export_texcoords=False,export_animations=False,export_skins=False)
-    # Remove temporary decimate modifiers after export so the next (full) export remains intact.
-    if ratio is not None:
-        for o in objects:
-            for m in list(o.modifiers):
-                if m.name=='Atlas mobile reduction': o.modifiers.remove(m)
-    print(f'{key}: {len(objects)} objects -> {filepath}')
-
-names={}
-for entry in config['systems']:
-    key=entry['key']; paths=entry['collections']; objects=collect(paths)
-    # Keep original names keyed by object identity: renaming before export must not
-    # break restoration when the full and Lite exports run consecutively.
-    originals={o: o.name for o in objects}
-    for o in objects:
-        original=originals[o]
-        label=clean_label(original)
-        sid=stable_id(original)
-        # Viewer parser uses "id|label" and later converts trailing (left/right) into .l/.r.
-        o.name=f'{sid}|{label}'
-        names[sid]={'en':label,'source':original}
-    export_group(key,entry,objects,ratio=None)
-    export_group(key,entry,objects,ratio=opts.lite_ratio)
-    # restore original Blender object names after export to avoid affecting later groups
-    for o in objects:
-        o.name=originals[o]
-Path(out/'names.json').write_text(json.dumps(names,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
-Path(out/'systems.json').write_text(json.dumps(config,indent=2),encoding='utf-8')
+summary=[]
+for system in systems:
+    export_variant(system,'full',1.0)
+    export_variant(system,'lite',args.lite_ratio)
+    summary.append({'key':system['key'],'label':system.get('label',system['key']),'collections':system['collections']})
+(out/'export-systems.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
+print('Atlas export pipeline completed.')
