@@ -33,22 +33,31 @@ jobs:
       - name: Inventory source collections
         run: |
           BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
-          blender -b "$BLEND" -P atlas-upgrade/pipeline/inventory_blend.py -- \
+          blender -b "$BLEND" --python-exit-code 1 -P atlas-upgrade/pipeline/inventory_blend.py -- \
             --out atlas-upgrade/output/collection-inventory.json
       - name: Pilot export (skeletal + muscular insertions)
         if: inputs.mode == 'pilot'
         run: |
           BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
-          blender -b "$BLEND" -P atlas-upgrade/pipeline/export_collections.py -- \
+          blender -b "$BLEND" --python-exit-code 1 -P atlas-upgrade/pipeline/export_collections.py -- \
             --config "${{ inputs.config_path }}" \
             --only skeletal,muscular_insertions \
             --out atlas-upgrade/output/glb \
             --lite-ratio "${{ inputs.lite_ratio }}"
+          python3 - <<'PY'
+          from pathlib import Path
+          required = ['skeletal.glb', 'skeletal-lite.glb', 'muscular_insertions.glb', 'muscular_insertions-lite.glb']
+          out = Path('atlas-upgrade/output/glb')
+          missing = [name for name in required if not (out / name).is_file() or (out / name).stat().st_size < 1024]
+          if missing:
+              raise SystemExit('Pilot GLB validation failed; missing/empty: ' + ', '.join(missing))
+          print('Pilot output validated:', ', '.join(required))
+          PY
       - name: Export all reviewed systems
         if: inputs.mode == 'export'
         run: |
           BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
-          blender -b "$BLEND" -P atlas-upgrade/pipeline/export_collections.py -- \
+          blender -b "$BLEND" --python-exit-code 1 -P atlas-upgrade/pipeline/export_collections.py -- \
             --config "${{ inputs.config_path }}" \
             --out atlas-upgrade/output/glb \
             --lite-ratio "${{ inputs.lite_ratio }}"

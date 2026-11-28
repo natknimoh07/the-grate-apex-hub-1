@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Blender headless exporter: collection-path systems to full + lite GLB.
 Objects are duplicated into a temporary collection, deduplicated by source object,
-converted curves are meshified, FONT labels are intentionally omitted, and names
-are preserved for Atlas node selection.
+curve-like anatomy is converted to meshes, and source names are preserved.
 """
 import bpy, argparse, json, sys, os
 from pathlib import Path
@@ -22,7 +21,6 @@ if not 0.05 <= args.lite_ratio <= 1.0:
 config=json.loads(Path(args.config).read_text(encoding='utf-8'))
 out=Path(args.out); out.mkdir(parents=True, exist_ok=True)
 
-# Build full, unambiguous collection path lookup.
 collection_paths={}
 def walk_collection(c, path=''):
     full=f'{path}/{c.name}' if path else c.name
@@ -46,30 +44,24 @@ if selected_keys:
     if unknown: raise SystemExit('Unknown pilot keys: '+', '.join(sorted(unknown)))
 else: systems=config['systems']
 
-# Blender operator helper context; duplicate objects to isolate conversions/modifiers.
 def export_variant(system, variant, ratio):
-    key=system['key']; src_objects=[]
-    seen=set()
+    key=system['key']; src_objects=[]; seen=set()
     for path in system['collections']:
         col=collection_paths[path]
         for obj in col.all_objects:
             if obj.as_pointer() in seen: continue
             seen.add(obj.as_pointer())
             if obj.type in {'MESH','CURVE','SURFACE','META'}: src_objects.append(obj)
-            elif obj.type == 'FONT': continue # anatomy labels are not geometry
+            elif obj.type == 'FONT': continue
     if not src_objects:
         raise RuntimeError(f'{key}: resolved collection paths but found no exportable objects')
     tmp=bpy.data.collections.new(f'__ATLAS_TMP_{key}_{variant}')
-    bpy.context.scene.collection.children.link(tmp)
-    copies=[]
+    bpy.context.scene.collection.children.link(tmp); copies=[]
     try:
         for source in src_objects:
             dup=source.copy()
             if source.data: dup.data=source.data.copy()
-            dup.name=source.name
-            tmp.objects.link(dup)
-            copies.append(dup)
-        # Convert curve-like anatomy (e.g. vessels/nerve paths) into exportable mesh.
+            dup.name=source.name; tmp.objects.link(dup); copies.append(dup)
         convertables=[o for o in copies if o.type in {'CURVE','SURFACE','META'}]
         if convertables:
             bpy.ops.object.select_all(action='DESELECT')
@@ -79,34 +71,30 @@ def export_variant(system, variant, ratio):
         if ratio < 0.999:
             for obj in copies:
                 if obj.type!='MESH' or not obj.data or len(obj.data.polygons)<4: continue
-                mod=obj.modifiers.new('Atlas_Lite_Decimate','DECIMATE')
-                mod.ratio=ratio
-                bpy.context.view_layer.objects.active=obj
-                obj.select_set(True)
-                bpy.ops.object.modifier_apply(modifier=mod.name)
-                obj.select_set(False)
+                mod=obj.modifiers.new('Atlas_Lite_Decimate','DECIMATE'); mod.ratio=ratio
+                bpy.context.view_layer.objects.active=obj; obj.select_set(True)
+                bpy.ops.object.modifier_apply(modifier=mod.name); obj.select_set(False)
         bpy.ops.object.select_all(action='DESELECT')
         for obj in copies: obj.select_set(True)
         bpy.context.view_layer.objects.active=copies[0]
         file=out/f'{key}{"-lite" if variant=="lite" else ""}.glb'
+        # Blender 5.x removed the legacy export_colors operator argument.
+        # Color attributes remain handled by the glTF exporter defaults.
         bpy.ops.export_scene.gltf(filepath=str(file), export_format='GLB', use_selection=True,
             export_materials='EXPORT', export_texcoords=True, export_normals=True,
-            export_colors=True, export_cameras=False, export_lights=False,
-            export_animations=False, export_yup=True)
-        names=[]
-        for obj in copies:
-            names.append({'node':obj.name,'source_type':obj.type,'system':key})
+            export_cameras=False, export_lights=False, export_animations=False, export_yup=True)
+        names=[{'node':obj.name,'source_type':obj.type,'system':key} for obj in copies]
         (out/f'{key}{"-lite" if variant=="lite" else ""}-names.json').write_text(json.dumps(names,indent=2),encoding='utf-8')
-        print(f'EXPORTED {file} | objects={len(copies)} | ratio={ratio}')
+        if not file.exists() or file.stat().st_size < 1024:
+            raise RuntimeError(f'{key} {variant}: GLB output missing or suspiciously small: {file}')
+        print(f'EXPORTED {file} | objects={len(copies)} | ratio={ratio} | bytes={file.stat().st_size}')
     finally:
-        # Remove only temporary copies and temporary collection; original blend stays untouched.
         for obj in list(tmp.objects): bpy.data.objects.remove(obj, do_unlink=True)
         bpy.data.collections.remove(tmp)
 
 summary=[]
 for system in systems:
-    export_variant(system,'full',1.0)
-    export_variant(system,'lite',args.lite_ratio)
+    export_variant(system,'full',1.0); export_variant(system,'lite',args.lite_ratio)
     summary.append({'key':system['key'],'label':system.get('label',system['key']),'collections':system['collections']})
 (out/'export-systems.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
 print('Atlas export pipeline completed.')
