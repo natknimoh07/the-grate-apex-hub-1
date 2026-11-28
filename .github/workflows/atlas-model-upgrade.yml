@@ -1,0 +1,55 @@
+name: Atlas Z-Anatomy Model Pipeline
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run collection inventory first, or export systems after mapping review'
+        required: true
+        type: choice
+        options:
+          - inventory
+          - export
+        default: inventory
+      config_path:
+        description: 'Repository-relative JSON system mapping (used for export mode)'
+        required: false
+        type: string
+        default: 'atlas-upgrade/systems.initial.json'
+      lite_ratio:
+        description: 'Mobile decimation ratio (0.1–1.0)'
+        required: false
+        type: string
+        default: '0.58'
+permissions:
+  contents: read
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and source tools
+        run: sudo apt-get update && sudo apt-get install -y blender unzip curl
+      - name: Stage and verify Z-Anatomy source
+        run: ./atlas-upgrade/pipeline/fetch-source.sh
+      - name: Inventory source collections
+        run: |
+          BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
+          blender -b "$BLEND" -P atlas-upgrade/pipeline/inventory_blend.py -- \
+            --out atlas-upgrade/output/collection-inventory.json
+      - name: Export full and mobile GLBs
+        if: inputs.mode == 'export'
+        run: |
+          test -f "${{ inputs.config_path }}"
+          BLEND="$(cat atlas-upgrade/source/BLEND_PATH)"
+          blender -b "$BLEND" -P atlas-upgrade/pipeline/export_collections.py -- \
+            --config "${{ inputs.config_path }}" \
+            --out atlas-upgrade/output/glb \
+            --lite-ratio "${{ inputs.lite_ratio }}"
+      - name: Upload inventory and GLB exports
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-z-anatomy-${{ inputs.mode }}
+          path: atlas-upgrade/output/
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,12 @@
+{
+  "source": "Z-Anatomy Startup.blend (verified source archive)",
+  "license": "CC BY-SA 4.0; see SOURCE-CREDITS.md",
+  "systems": [
+    {"key":"skeletal","label":"Skeletal","collections":["Skeletal system"]},
+    {"key":"muscular","label":"Muscular","collections":["Muscular system"]},
+    {"key":"cardiovascular","label":"Heart & vessels","collections":["Cardiovascular system"]},
+    {"key":"nervous","label":"Nerves & spinal cord","collections":["Nervous system"]},
+    {"key":"visceral","label":"Viscera","collections":["Visceral systems","6: Lymphoid organs"]},
+    {"key":"integument","label":"Integument","collections":["Integument"]}
+  ]
+}
